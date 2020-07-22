@@ -19,6 +19,30 @@ import java.util.List;
 @Slf4j
 public class TestProccessInstance {
 
+    /*总结*/
+    /* Execution 执行对象
+        act_ru_execution 正在执行的信息   流程启动一次只要没执行完就会有一条数据
+        act_hi_procinst  已经执行完的历史流程实例信息
+     *  act_hi_actinst   存放历史所有完成的信息 历史活动节点表
+     **/
+    /* ProcessInstance 流程实例
+     *   如果是单线流程，执行对象DI就是实例ID
+     *   如果一个流程有分支和聚合，那么执行对象ID和流程实例ID就不同
+     *   一个流程中，流程实例只有一个，执行对象可以存在多个
+     * */
+    /*Task 任务
+     * 执行到某任务环节时生成的任务信息
+     * act_ru_task 正在执行的任务信息
+     * act_hi_taskinst 已经执行完的历史任务信息
+     * */
+    /*相关ID总结
+     * 部署ID        act_re_deployment
+     * 流程定义ID  act_re_procdef
+     * 流程实例ID  act_ru_execution
+     * 执行实例ID  act_ru_task execution_id
+     * 任务ID     act_ru_task id
+     * */
+
     //得到流程引擎
     private ProcessEngine processEngine = ProcessEngines.getDefaultProcessEngine();
     /*流程部署定义*/
@@ -82,7 +106,7 @@ public class TestProccessInstance {
     @Test
     public void queryMyTask(){
         TaskService taskService = this.processEngine.getTaskService();
-        String assignee="李四"; //执行人
+        String assignee="王五"; //执行人
         List<Task> list = taskService.createTaskQuery()
                 //条件
                 .taskAssignee(assignee) //根据任务办理人查询条件
@@ -123,7 +147,7 @@ public class TestProccessInstance {
     @Test
     public void completeTask(){
         TaskService taskService = this.processEngine.getTaskService();
-        String taskid="17502";
+        String taskid="12502";
         //根据ID去完成任务
         taskService.complete(taskid);
         //根据ID去完成任务 并指定流程变量
@@ -138,7 +162,7 @@ public class TestProccessInstance {
         /*act_ru_task*/
         //已知流程实例ID
         RuntimeService runtimeService = this.processEngine.getRuntimeService();
-        String processInstanceId="2501";
+        String processInstanceId="2505";
         ProcessInstance processInstance = runtimeService.createProcessInstanceQuery()
                 .processInstanceId(processInstanceId).singleResult();
         if(null!=processInstance){
@@ -206,29 +230,7 @@ public class TestProccessInstance {
 
     }
 
-    /*总结*/
-    /* Execution 执行对象
-        act_ru_execution 正在执行的信息   流程启动一次只要没执行完就会有一条数据
-        act_hi_procinst  已经执行完的历史流程实例信息
-     *  act_hi_actinst   存放历史所有完成的信息 历史活动节点表
-     **/
-    /* ProcessInstance 流程实例
-    *   如果是单线流程，执行对象DI就是实例ID
-    *   如果一个流程有分支和聚合，那么执行对象ID和流程实例ID就不同
-    *   一个流程中，流程实例只有一个，执行对象可以存在多个
-    * */
-    /*Task 任务
-    * 执行到某任务环节时生成的任务信息
-    * act_ru_task 正在执行的任务信息
-    * act_hi_taskinst 已经执行完的历史任务信息
-    * */
-    /*相关ID总结
-    * 部署ID        act_re_deployment
-    * 流程定义ID  act_re_procdef
-    * 流程实例ID  act_ru_execution
-    * 执行实例ID  act_ru_task execution_id
-    * 任务ID     act_ru_task id
-    * */
+
 
 
 
