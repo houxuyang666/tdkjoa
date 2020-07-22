@@ -201,4 +201,21 @@ public class TestProccessDef {
         }
     }
 
+    /*已知Key
+    * 删除流程定义（删除key相同的所有不同版本的流程定义）
+    * */
+    @Test
+    public void deleteAllSameVersion(){
+        RepositoryService repositoryService = this.processEngine.getRepositoryService();
+        //根据流程定义的key查询流程集合
+        String processDefinitionKey="leavebill";
+        List<ProcessDefinition> list = repositoryService.createProcessDefinitionQuery().processDefinitionKey(processDefinitionKey).list();
+        if(null!=list&&list.size()>0){
+            for (ProcessDefinition pd : list) {
+                repositoryService.deleteDeployment(pd.getDeploymentId(),true);
+                log.info("删除流程定义："+pd.getId()+"成功");
+            }
+        }
+    }
+
 }
