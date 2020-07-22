@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tdkj.System.dao.CorpbasicinfoDao">
+
+    <resultMap type="com.tdkj.System.entity.Corpbasicinfo" id="CorpbasicinfoMap">
+        <result property="corpid" column="CorpId" jdbcType="INTEGER"/>
+        <result property="corpcode" column="CorpCode" jdbcType="VARCHAR"/>
+        <result property="corpname" column="CorpName" jdbcType="VARCHAR"/>
+        <result property="corptype" column="CorpType" jdbcType="INTEGER"/>
+        <result property="licensenum" column="LicenseNum" jdbcType="VARCHAR"/>
+        <result property="address" column="Address" jdbcType="VARCHAR"/>
+        <result property="zipcode" column="ZipCode" jdbcType="VARCHAR"/>
+        <result property="legalman" column="LegalMan" jdbcType="VARCHAR"/>
+        <result property="legalmanduty" column="LegalManDuty" jdbcType="VARCHAR"/>
+        <result property="legalmanidcardtype" column="LegalManIdCardType" jdbcType="INTEGER"/>
+        <result property="legalmanidcardnumber" column="LegalManIdCardNumber" jdbcType="VARCHAR"/>
+        <result property="registerdate" column="RegisterDate" jdbcType="TIMESTAMP"/>
+        <result property="establishdate" column="EstablishDate" jdbcType="TIMESTAMP"/>
+        <result property="officphone" column="OfficPhone" jdbcType="VARCHAR"/>
+        <result property="faxnumber" column="FaxNumber" jdbcType="VARCHAR"/>
+        <result property="linkman" column="LinkMan" jdbcType="VARCHAR"/>
+        <result property="linkphone" column="LinkPhone" jdbcType="VARCHAR"/>
+        <result property="signname" column="SignName" jdbcType="VARCHAR"/>
+        <result property="signurl" column="SignUrl" jdbcType="VARCHAR"/>
+        <result property="email" column="Email" jdbcType="VARCHAR"/>
+        <result property="website" column="Website" jdbcType="VARCHAR"/>
+        <result property="createdate" column="CreateDate" jdbcType="TIMESTAMP"/>
+        <result property="modifydate" column="ModifyDate" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="CorpbasicinfoMap">
+        select
+          CorpId, CorpCode, CorpName, CorpType, LicenseNum, Address, ZipCode, LegalMan, LegalManDuty, LegalManIdCardType, LegalManIdCardNumber, RegisterDate, EstablishDate, OfficPhone, FaxNumber, LinkMan, LinkPhone, SignName, SignUrl, Email, Website, CreateDate, ModifyDate
+        from corpbasicinfo
+        where CorpId = #{corpid}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="CorpbasicinfoMap">
+        select
+          CorpId, CorpCode, CorpName, CorpType, LicenseNum, Address, ZipCode, LegalMan, LegalManDuty, LegalManIdCardType, LegalManIdCardNumber, RegisterDate, EstablishDate, OfficPhone, FaxNumber, LinkMan, LinkPhone, SignName, SignUrl, Email, Website, CreateDate, ModifyDate
+        from corpbasicinfo
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="CorpbasicinfoMap">
+        select
+        CorpId, CorpCode, CorpName, CorpType, LicenseNum, Address, ZipCode, LegalMan, LegalManDuty, LegalManIdCardType,
+        LegalManIdCardNumber, RegisterDate, EstablishDate, OfficPhone, FaxNumber, LinkMan, LinkPhone, SignName, SignUrl,
+        Email, Website, CreateDate, ModifyDate
+        from corpbasicinfo
+        <where>
+            <if test="corpid != null">
+                and CorpId = #{corpid}
+            </if>
+            <if test="corpcode != null and corpcode != ''">
+                and CorpCode = #{corpcode}
+            </if>
+            <if test="corpname != null and corpname != ''">
+                and CorpName = #{corpname}
+            </if>
+            <if test="corptype != null">
+                and CorpType = #{corptype}
+            </if>
+            <if test="licensenum != null and licensenum != ''">
+                and LicenseNum = #{licensenum}
+            </if>
+            <if test="address != null and address != ''">
+                and Address = #{address}
+            </if>
+            <if test="zipcode != null and zipcode != ''">
+                and ZipCode = #{zipcode}
+            </if>
+            <if test="legalman != null and legalman != ''">
+                and LegalMan = #{legalman}
+            </if>
+            <if test="legalmanduty != null and legalmanduty != ''">
+                and LegalManDuty = #{legalmanduty}
+            </if>
+            <if test="legalmanidcardtype != null">
+                and LegalManIdCardType = #{legalmanidcardtype}
+            </if>
+            <if test="legalmanidcardnumber != null and legalmanidcardnumber != ''">
+                and LegalManIdCardNumber = #{legalmanidcardnumber}
+            </if>
+            <if test="registerdate != null">
+                and RegisterDate = #{registerdate}
+            </if>
+            <if test="establishdate != null">
+                and EstablishDate = #{establishdate}
+            </if>
+            <if test="officphone != null and officphone != ''">
+                and OfficPhone = #{officphone}
+            </if>
+            <if test="faxnumber != null and faxnumber != ''">
+                and FaxNumber = #{faxnumber}
+            </if>
+            <if test="linkman != null and linkman != ''">
+                and LinkMan = #{linkman}
+            </if>
+            <if test="linkphone != null and linkphone != ''">
+                and LinkPhone = #{linkphone}
+            </if>
+            <if test="signname != null and signname != ''">
+                and SignName = #{signname}
+            </if>
+            <if test="signurl != null and signurl != ''">
+                and SignUrl = #{signurl}
+            </if>
+            <if test="email != null and email != ''">
+                and Email = #{email}
+            </if>
+            <if test="website != null and website != ''">
+                and Website = #{website}
+            </if>
+            <if test="createdate != null">
+                and CreateDate = #{createdate}
+            </if>
+            <if test="modifydate != null">
+                and ModifyDate = #{modifydate}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="corpid" useGeneratedKeys="true">
+        insert into corpbasicinfo(CorpCode, CorpName, CorpType, LicenseNum, Address, ZipCode, LegalMan, LegalManDuty, LegalManIdCardType, LegalManIdCardNumber, RegisterDate, EstablishDate, OfficPhone, FaxNumber, LinkMan, LinkPhone, SignName, SignUrl, Email, Website, CreateDate, ModifyDate)
+        values (#{corpcode}, #{corpname}, #{corptype}, #{licensenum}, #{address}, #{zipcode}, #{legalman}, #{legalmanduty}, #{legalmanidcardtype}, #{legalmanidcardnumber}, #{registerdate}, #{establishdate}, #{officphone}, #{faxnumber}, #{linkman}, #{linkphone}, #{signname}, #{signurl}, #{email}, #{website}, #{createdate}, #{modifydate})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update corpbasicinfo
+        <set>
+            <if test="corpcode != null and corpcode != ''">
+                CorpCode = #{corpcode},
+            </if>
+            <if test="corpname != null and corpname != ''">
+                CorpName = #{corpname},
+            </if>
+            <if test="corptype != null">
+                CorpType = #{corptype},
+            </if>
+            <if test="licensenum != null and licensenum != ''">
+                LicenseNum = #{licensenum},
+            </if>
+            <if test="address != null and address != ''">
+                Address = #{address},
+            </if>
+            <if test="zipcode != null and zipcode != ''">
+                ZipCode = #{zipcode},
+            </if>
+            <if test="legalman != null and legalman != ''">
+                LegalMan = #{legalman},
+            </if>
+            <if test="legalmanduty != null and legalmanduty != ''">
+                LegalManDuty = #{legalmanduty},
+            </if>
+            <if test="legalmanidcardtype != null">
+                LegalManIdCardType = #{legalmanidcardtype},
+            </if>
+            <if test="legalmanidcardnumber != null and legalmanidcardnumber != ''">
+                LegalManIdCardNumber = #{legalmanidcardnumber},
+            </if>
+            <if test="registerdate != null">
+                RegisterDate = #{registerdate},
+            </if>
+            <if test="establishdate != null">
+                EstablishDate = #{establishdate},
+            </if>
+            <if test="officphone != null and officphone != ''">
+                OfficPhone = #{officphone},
+            </if>
+            <if test="faxnumber != null and faxnumber != ''">
+                FaxNumber = #{faxnumber},
+            </if>
+            <if test="linkman != null and linkman != ''">
+                LinkMan = #{linkman},
+            </if>
+            <if test="linkphone != null and linkphone != ''">
+                LinkPhone = #{linkphone},
+            </if>
+            <if test="signname != null and signname != ''">
+                SignName = #{signname},
+            </if>
+            <if test="signurl != null and signurl != ''">
+                SignUrl = #{signurl},
+            </if>
+            <if test="email != null and email != ''">
+                Email = #{email},
+            </if>
+            <if test="website != null and website != ''">
+                Website = #{website},
+            </if>
+            <if test="createdate != null">
+                CreateDate = #{createdate},
+            </if>
+            <if test="modifydate != null">
+                ModifyDate = #{modifydate},
+            </if>
+        </set>
+        where CorpId = #{corpid}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from corpbasicinfo where CorpId = #{corpid}
+    </delete>
+
+    <select id="queryByCode" resultMap="CorpbasicinfoMap">
+        select
+          CorpId, CorpCode, CorpName, CorpType, LicenseNum, Address, ZipCode, LegalMan, LegalManDuty, LegalManIdCardType, LegalManIdCardNumber, RegisterDate, EstablishDate, OfficPhone, FaxNumber, LinkMan, LinkPhone, SignName, SignUrl, Email, Website, CreateDate, ModifyDate
+        from corpbasicinfo
+        where CorpCode = #{corpcode}
+    </select>
+
+    <select id="queryByemployeeId" resultMap="CorpbasicinfoMap">
+        select c.Corpid as corpid, CorpCode, CorpName, CorpType, LicenseNum, c.Address as address, ZipCode, LegalMan, LegalManDuty, LegalManIdCardType, LegalManIdCardNumber, RegisterDate, EstablishDate, OfficPhone, FaxNumber, LinkMan, LinkPhone, SignName, SignUrl, c.Email as email, Website
+        from employee e LEFT JOIN corpbasicinfo c on e.CorpId =c.CorpId
+        where EmployeeId=#{employeeid}
+    </select>
+
+
+</mapper>

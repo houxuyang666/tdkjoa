@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>用户资料卡</title>
+    <link rel="stylesheet" href="/statics/lib/layui-v2.5.5/css/layui.css" media="all">
+    <link rel="stylesheet" href="/css/public.css" media="all">
+</head>
+<body>
+<div class="layuimini-container">
+    <div class="layuimini-main">
+        <blockquote class="layui-elem-quote layui-text" style="margin-bottom: 10px">
+            这是你的资料卡 请务必填写你的真实资料哦
+        </blockquote>
+        <fieldset class="layui-elem-field layui-field-title"></fieldset>
+        <div style="padding: 20px;background-color: #F2F2F2;">
+            <div class="layui-row layui-col-space15">
+                <div class="layui-col-md4">
+                    <div class="layui-card">
+                        <div class="layui-card-header" style="">个人资料</div>
+                        <div class="layui-card-body" style="padding: 20px;">
+                            <table class="layui-table" lay-skin="line">
+                                <colgroup>
+                                    <col width="80">
+                                    <col width="150">
+                                </colgroup>
+                                <tbody>
+                                <tr>
+                                    <td>姓名:</td>
+                                    <td><label id="name">柴佳楠</label></td>
+                                </tr>
+                                <tr>
+                                    <td>性别:</td>
+                                    <td><label id="sex">男</label></td>
+                                </tr>
+                                <tr>
+                                    <td>年龄:</td>
+                                    <td><label id="age">23</label></td>
+                                </tr>
+                                <tr>
+                                    <td>联系电话:</td>
+                                    <td><label id="phone">15225513715</label></td>
+                                </tr>
+                                <tr>
+                                    <td>所属公司:</td>
+                                    <td><label id="company">河南唐都科技有限公司</label></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-md8">
+                    <div class="layui-card">
+                        <div class="layui-card-header">资料修改</div>
+                        <div class="layui-card-body" style="padding: 20px;">
+                            <form class="layui-form layui-form-pane" action="">
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">姓名</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="name" lay-verify="required" lay-reqtext="姓名不能为空"
+                                               autocomplete="off" placeholder="请输入姓名" class="layui-input">
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">性别</label>
+                                    <div class="layui-input-block">
+                                        <select name="sex" lay-filter="sex">
+                                            <option value=""></option>
+                                            <option value="1">男</option>
+                                            <option value="0">女</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">年龄</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="age" lay-verify="age" onkeyup="value=Zhzs(this.value)"
+                                               autocomplete="off" placeholder="请输入年龄" class="layui-input">
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">电话</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="tel" lay-verify="required|phone" lay-reqtext="电话不能为空"
+                                               autocomplete="off" placeholder="请输入电话" class="layui-input">
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">所属公司</label>
+                                    <div class="layui-input-block">
+                                        <select name="companyId" id="companyList" lay-verify="requiredCompany"
+                                                lay-filter="companyId">
+                                            <option value=""></option>
+
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="layui-form-item">
+                                    <button class="layui-btn layui-btn-normal" lay-submit="" lay-filter="saveBtn">确认保存
+                                    </button>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+
+<script src="/statics/lib/jquery-3.4.1/jquery-3.4.1.min.js" charset="utf-8"></script>
+<script src="/statics/lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
+
+<script type="text/javascript">
+    layui.use(['form'], function () {
+        var form = layui.form
+            , layer = layui.layer;
+
+        //直接赋值资料信息
+        InitInfo();
+
+        //表单验证
+        form.verify({
+            requiredCompany: function (value) {
+                if(value=="")
+                {
+                    return "请选择公司";
+                }
+            }
+        });
+
+        //监听修改提交
+        form.on('submit(saveBtn)', function (data) {
+            /* layer.alert(JSON.stringify(data.field), {
+                 title: '最终的提交信息'
+             })*/
+            var FormData=data.field;
+            $.ajax({
+                url:"/userinfo/setUserinfo",
+                data:FormData,
+                dataType:"json",
+                type:"POST",
+                success:function (msg) {
+                    if(msg.responseCode=="200"){
+                        layer.msg("修改成功");
+                        InitInfo();
+                    }else {
+                        layer.msg("修改失败");
+                    }
+                },
+                error:function () {
+                    layer.msg("网络异常,请检查后重试", {
+                        icon: 2,
+                        shade: this.shade,
+                        scrollbar: false,
+                        time: 3000,
+                        shadeClose: true
+                    });
+                }
+            })
+            return false;
+        });
+
+        function InitInfo() {
+            $.ajax({
+                url: "/userinfo/userinfo",
+                data: "",
+                dataType: "json",
+                type: "POST",
+                //请求成功时的数据1.40
+                success: function (msg) {
+                    if (msg.responseCode == "200") {
+
+                        $("#name").text(msg.data.name);
+                        if (msg.data.sex == "0") {
+                            $("#sex").text("女");
+                        } else if (msg.data.sex == "1") {
+                            $("#sex").text("男");
+                        } else {
+                            $("#sex").text("未知");
+                        }
+
+                        $("#age").text(msg.data.age);
+                        $("#phone").text(msg.data.tel);
+                        $("#company").text(msg.data.companyName);
+                        $('input[name="name"]').val(msg.data.name);
+                        $('input[name="age"]').val(msg.data.age);
+                        $('input[name="tel"]').val(msg.data.tel);
+
+                        var listData = msg.data2;
+                        //layer.msg(JSON.stringify(msg.data2[1].companyId));
+                        if (msg.data2 == null && msg.data2 == "") {
+                            layer.msg("暂无公司下拉信息");
+                        } else {
+                            var html = '';
+                            for (var i = 0; i < listData.length; i++) {
+                                html += '<option value="' + listData[i].companyId + '">' + listData[i].companyName + '</option>';
+                            }
+                            //alert(html);
+                        }
+                        $('#companyList').append(html);
+                    }
+                    //layui.form.render("select");
+                    $('#companyList').val(msg.data.companyId);
+                    layui.form.render("select");
+                },
+                //请求出错时的处理
+                error: function () {
+                    layer.msg("网络异常,请检查后再试", {
+                        icon: 2,
+                        shade: this.shade,
+                        scrollbar: false,
+                        time: 3000,
+                        shadeClose: true
+                    });
+                }
+            });
+        }
+
+
+
+    })
+
+    //转化为整数
+    function Zhzs(value) {
+        value = value.replace(/[^\d]/g, "");
+        if ("" != value) {
+            value = parseInt(value);
+        }else {
+            layer.msg("填写数字");
+        }
+        return value;
+    }
+
+
+</script>
+
+
+</body>
+</html>

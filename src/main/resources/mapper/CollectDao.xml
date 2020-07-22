@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tdkj.System.dao.CollectDao">
+
+    <resultMap type="com.tdkj.System.entity.Collect" id="CollectMap">
+        <result property="collectid" column="CollectId" jdbcType="INTEGER"/>
+        <result property="corpid" column="CorpId" jdbcType="INTEGER"/>
+        <result property="deptid" column="DeptId" jdbcType="INTEGER"/>
+        <result property="userid" column="UserId" jdbcType="INTEGER"/>
+        <result property="goodsname" column="GoodsName" jdbcType="VARCHAR"/>
+        <result property="unit" column="Unit" jdbcType="VARCHAR"/>
+        <result property="type" column="Type" jdbcType="VARCHAR"/>
+        <result property="numbe" column="Numbe" jdbcType="INTEGER"/>
+        <result property="createdate" column="CreateDate" jdbcType="TIMESTAMP"/>
+        <result property="modifydate" column="ModifyDate" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="CollectMap">
+        select
+          CollectId, CorpId, DeptId, UserId, GoodsName, Unit, Type, Numbe, CreateDate, ModifyDate
+        from tdkjoa.collect
+        where CollectId = #{collectid}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="CollectMap">
+        select
+          CollectId, CorpId, DeptId, UserId, GoodsName, Unit, Type, Numbe, CreateDate, ModifyDate
+        from tdkjoa.collect
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="CollectMap">
+        select
+        CollectId, CorpId, DeptId, UserId, GoodsName, Unit, Type, Numbe, CreateDate, ModifyDate
+        from tdkjoa.collect
+        <where>
+            <if test="collectid != null">
+                and CollectId = #{collectid}
+            </if>
+            <if test="corpid != null">
+                and CorpId = #{corpid}
+            </if>
+            <if test="deptid != null">
+                and DeptId = #{deptid}
+            </if>
+            <if test="userid != null">
+                and UserId = #{userid}
+            </if>
+            <if test="goodsname != null and goodsname != ''">
+                and GoodsName = #{goodsname}
+            </if>
+            <if test="unit != null and unit != ''">
+                and Unit = #{unit}
+            </if>
+            <if test="type != null and type != ''">
+                and Type = #{type}
+            </if>
+            <if test="numbe != null">
+                and Numbe = #{numbe}
+            </if>
+            <if test="createdate != null">
+                and CreateDate = #{createdate}
+            </if>
+            <if test="modifydate != null">
+                and ModifyDate = #{modifydate}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="collectid" useGeneratedKeys="true">
+        insert into tdkjoa.collect(CorpId, DeptId, UserId, GoodsName, Unit, Type, Numbe, CreateDate, ModifyDate)
+        values (#{corpid}, #{deptid}, #{userid}, #{goodsname}, #{unit}, #{type}, #{numbe}, #{createdate}, #{modifydate})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update tdkjoa.collect
+        <set>
+            <if test="corpid != null">
+                CorpId = #{corpid},
+            </if>
+            <if test="deptid != null">
+                DeptId = #{deptid},
+            </if>
+            <if test="userid != null">
+                UserId = #{userid},
+            </if>
+            <if test="goodsname != null and goodsname != ''">
+                GoodsName = #{goodsname},
+            </if>
+            <if test="unit != null and unit != ''">
+                Unit = #{unit},
+            </if>
+            <if test="type != null and type != ''">
+                Type = #{type},
+            </if>
+            <if test="numbe != null">
+                Numbe = #{numbe},
+            </if>
+            <if test="createdate != null">
+                CreateDate = #{createdate},
+            </if>
+            <if test="modifydate != null">
+                ModifyDate = #{modifydate},
+            </if>
+        </set>
+        where CollectId = #{collectid}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from tdkjoa.collect where CollectId = #{collectid}
+    </delete>
+
+</mapper>

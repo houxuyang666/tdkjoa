@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tdkj.System.dao.VehicleinfoDao">
+
+    <resultMap type="com.tdkj.System.entity.Vehicleinfo" id="VehicleinfoMap">
+        <result property="vehicleinfoid" column="VehicleinfoID" jdbcType="INTEGER"/>
+        <result property="vehicletype" column="VehicleType" jdbcType="VARCHAR"/>
+        <result property="vehicleseatsnumber" column="VehicleSeatsNumber" jdbcType="INTEGER"/>
+        <result property="vehicleaffiliationcompany" column="VehicleAffiliationCompany" jdbcType="INTEGER"/>
+        <result property="vehicleaffiliationpersonal" column="VehicleaffiliationPersonal" jdbcType="INTEGER"/>
+        <result property="status" column="Status" jdbcType="INTEGER"/>
+        <result property="createdate" column="CreateDate" jdbcType="TIMESTAMP"/>
+        <result property="modifydate" column="ModifyDate" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="VehicleinfoMap">
+        select
+          VehicleinfoID, VehicleType, VehicleSeatsNumber, VehicleAffiliationCompany, VehicleaffiliationPersonal, Status, CreateDate, ModifyDate
+        from tdkjoa.vehicleinfo
+        where VehicleinfoID = #{vehicleinfoid}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="VehicleinfoMap">
+        select
+          VehicleinfoID, VehicleType, VehicleSeatsNumber, VehicleAffiliationCompany, VehicleaffiliationPersonal, Status, CreateDate, ModifyDate
+        from tdkjoa.vehicleinfo
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="VehicleinfoMap">
+        select
+        VehicleinfoID, VehicleType, VehicleSeatsNumber, VehicleAffiliationCompany, VehicleaffiliationPersonal, Status,
+        CreateDate, ModifyDate
+        from tdkjoa.vehicleinfo
+        <where>
+            <if test="vehicleinfoid != null">
+                and VehicleinfoID = #{vehicleinfoid}
+            </if>
+            <if test="vehicletype != null and vehicletype != ''">
+                and VehicleType = #{vehicletype}
+            </if>
+            <if test="vehicleseatsnumber != null">
+                and VehicleSeatsNumber = #{vehicleseatsnumber}
+            </if>
+            <if test="vehicleaffiliationcompany != null">
+                and VehicleAffiliationCompany = #{vehicleaffiliationcompany}
+            </if>
+            <if test="vehicleaffiliationpersonal != null">
+                and VehicleaffiliationPersonal = #{vehicleaffiliationpersonal}
+            </if>
+            <if test="status != null">
+                and Status = #{status}
+            </if>
+            <if test="createdate != null">
+                and CreateDate = #{createdate}
+            </if>
+            <if test="modifydate != null">
+                and ModifyDate = #{modifydate}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="vehicleinfoid" useGeneratedKeys="true">
+        insert into tdkjoa.vehicleinfo(VehicleType, VehicleSeatsNumber, VehicleAffiliationCompany, VehicleaffiliationPersonal, Status, CreateDate, ModifyDate)
+        values (#{vehicletype}, #{vehicleseatsnumber}, #{vehicleaffiliationcompany}, #{vehicleaffiliationpersonal}, #{status}, #{createdate}, #{modifydate})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update tdkjoa.vehicleinfo
+        <set>
+            <if test="vehicletype != null and vehicletype != ''">
+                VehicleType = #{vehicletype},
+            </if>
+            <if test="vehicleseatsnumber != null">
+                VehicleSeatsNumber = #{vehicleseatsnumber},
+            </if>
+            <if test="vehicleaffiliationcompany != null">
+                VehicleAffiliationCompany = #{vehicleaffiliationcompany},
+            </if>
+            <if test="vehicleaffiliationpersonal != null">
+                VehicleaffiliationPersonal = #{vehicleaffiliationpersonal},
+            </if>
+            <if test="status != null">
+                Status = #{status},
+            </if>
+            <if test="createdate != null">
+                CreateDate = #{createdate},
+            </if>
+            <if test="modifydate != null">
+                ModifyDate = #{modifydate},
+            </if>
+        </set>
+        where VehicleinfoID = #{vehicleinfoid}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from tdkjoa.vehicleinfo where VehicleinfoID = #{vehicleinfoid}
+    </delete>
+
+</mapper>

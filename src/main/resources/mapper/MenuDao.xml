@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tdkj.System.dao.MenuDao">
+
+    <resultMap type="com.tdkj.System.entity.Menu" id="MenuMap">
+        <result property="menuid" column="MenuId" jdbcType="INTEGER"/>
+        <result property="parentid" column="ParentId" jdbcType="INTEGER"/>
+        <result property="title" column="Title" jdbcType="VARCHAR"/>
+        <result property="href" column="Href" jdbcType="VARCHAR"/>
+        <result property="perms" column="Perms" jdbcType="VARCHAR"/>
+        <result property="icon" column="Icon" jdbcType="VARCHAR"/>
+        <result property="target" column="Target" jdbcType="VARCHAR"/>
+        <result property="createdate" column="CreateDate" jdbcType="TIMESTAMP"/>
+        <result property="modifydate" column="ModifyDate" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="MenuMap">
+        select
+          MenuId, ParentId, Title, Href, Perms, Icon, Target, CreateDate, ModifyDate
+        from tdkjoa.menu
+        where MenuId = #{menuid}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="MenuMap">
+        select
+          MenuId, ParentId, Title, Href, Perms, Icon, Target, CreateDate, ModifyDate
+        from tdkjoa.menu
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="MenuMap">
+        select
+        MenuId, ParentId, Title, Href, Perms, Icon, Target, CreateDate, ModifyDate
+        from tdkjoa.menu
+        <where>
+            <if test="menuid != null">
+                and MenuId = #{menuid}
+            </if>
+            <if test="parentid != null">
+                and ParentId = #{parentid}
+            </if>
+            <if test="title != null and title != ''">
+                and Title = #{title}
+            </if>
+            <if test="href != null and href != ''">
+                and Href = #{href}
+            </if>
+            <if test="perms != null and perms != ''">
+                and Perms = #{perms}
+            </if>
+            <if test="icon != null and icon != ''">
+                and Icon = #{icon}
+            </if>
+            <if test="target != null and target != ''">
+                and Target = #{target}
+            </if>
+            <if test="createdate != null">
+                and CreateDate = #{createdate}
+            </if>
+            <if test="modifydate != null">
+                and ModifyDate = #{modifydate}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="menuid" useGeneratedKeys="true">
+        insert into tdkjoa.menu(ParentId, Title, Href, Perms, Icon, Target, CreateDate, ModifyDate)
+        values (#{parentid}, #{title}, #{href}, #{perms}, #{icon}, #{target}, #{createdate}, #{modifydate})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update tdkjoa.menu
+        <set>
+            <if test="parentid != null">
+                ParentId = #{parentid},
+            </if>
+            <if test="title != null and title != ''">
+                Title = #{title},
+            </if>
+            <if test="href != null and href != ''">
+                Href = #{href},
+            </if>
+            <if test="perms != null and perms != ''">
+                Perms = #{perms},
+            </if>
+            <if test="icon != null and icon != ''">
+                Icon = #{icon},
+            </if>
+            <if test="target != null and target != ''">
+                Target = #{target},
+            </if>
+            <if test="createdate != null">
+                CreateDate = #{createdate},
+            </if>
+            <if test="modifydate != null">
+                ModifyDate = #{modifydate},
+            </if>
+        </set>
+        where MenuId = #{menuid}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from tdkjoa.menu where MenuId = #{menuid}
+    </delete>
+
+    <!--根据用户id查询用户具有的权限-->
+    <select id="findByIdGetPerms" resultMap="MenuMap">
+        select m.Perms as perms
+        from user u join role_menu rm on u.RoleId= rm.RoleId
+        join menu m on rm.MenuId =m.MenuId
+        where u.UserID=#{userid} and m.Perms is not null
+    </select>
+
+
+    <select id="findByUsernameGetMenu" resultType="com.tdkj.System.entity.Menu">
+        select m.menuid as menuid,
+            m.ParentId as parentid,
+            m.Title as title,
+            m.Href as href,
+            m.Icon as icon,
+            m.Target as target
+        from user u JOIN role_menu rm on u.RoleId =rm.RoleId
+        JOIN menu m on rm.MenuId =m.MenuId where u.UserName =#{username} and m.Href !='#'
+    </select>
+
+</mapper>

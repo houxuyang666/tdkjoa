@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tdkj.System.dao.UserDao">
+
+    <resultMap type="com.tdkj.System.entity.User" id="UserMap">
+        <result property="userid" column="UserId" jdbcType="INTEGER"/>
+        <result property="employeeid" column="EmployeeId" jdbcType="INTEGER"/>
+        <result property="username" column="UserName" jdbcType="VARCHAR"/>
+        <result property="password" column="Password" jdbcType="VARCHAR"/>
+        <result property="salt" column="Salt" jdbcType="VARCHAR"/>
+        <result property="status" column="Status" jdbcType="INTEGER"/>
+        <result property="roleid" column="RoleId" jdbcType="INTEGER"/>
+        <result property="createdate" column="CreateDate" jdbcType="TIMESTAMP"/>
+        <result property="modifydate" column="ModifyDate" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="UserMap">
+        select
+          UserId, EmployeeId, UserName, Password, Salt, Status, RoleId, CreateDate, ModifyDate
+        from user
+        where UserId = #{userid}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="UserMap">
+        select
+          UserId, EmployeeId, UserName, Password, Salt, Status, RoleId, CreateDate, ModifyDate
+        from user
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="UserMap">
+        select
+        UserId, EmployeeId, UserName, Password, Salt, Status, RoleId, CreateDate, ModifyDate
+        from user
+        <where>
+            <if test="userid != null">
+                and UserId = #{userid}
+            </if>
+            <if test="employeeid != null">
+                and EmployeeId = #{employeeid}
+            </if>
+            <if test="username != null and username != ''">
+                and UserName = #{username}
+            </if>
+            <if test="password != null and password != ''">
+                and Password = #{password}
+            </if>
+            <if test="salt != null and salt != ''">
+                and Salt = #{salt}
+            </if>
+            <if test="status != null">
+                and Status = #{status}
+            </if>
+            <if test="roleid != null">
+                and RoleId = #{roleid}
+            </if>
+            <if test="createdate != null">
+                and CreateDate = #{createdate}
+            </if>
+            <if test="modifydate != null">
+                and ModifyDate = #{modifydate}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="userid" useGeneratedKeys="true">
+        insert into user(EmployeeId, UserName, Password, Salt, Status, RoleId, CreateDate, ModifyDate)
+        values (#{employeeid}, #{username}, #{password}, #{salt}, #{status}, #{roleid}, #{createdate}, #{modifydate})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update user
+        <set>
+            <if test="employeeid != null">
+                EmployeeId = #{employeeid},
+            </if>
+            <if test="username != null and username != ''">
+                UserName = #{username},
+            </if>
+            <if test="password != null and password != ''">
+                Password = #{password},
+            </if>
+            <if test="salt != null and salt != ''">
+                Salt = #{salt},
+            </if>
+            <if test="status != null">
+                Status = #{status},
+            </if>
+            <if test="roleid != null">
+                RoleId = #{roleid},
+            </if>
+            <if test="createdate != null">
+                CreateDate = #{createdate},
+            </if>
+            <if test="modifydate != null">
+                ModifyDate = #{modifydate},
+            </if>
+        </set>
+        where UserId = #{userid}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from user where UserId = #{userid}
+    </delete>
+
+
+    <!--根据用户名称返回对象-->
+    <select id="findByName" resultMap="UserMap">
+        select
+          UserId, EmployeeId, UserName, Password, Salt, Status, RoleId, CreateDate, ModifyDate
+        from user
+        where UserName = #{username}
+    </select>
+
+</mapper>

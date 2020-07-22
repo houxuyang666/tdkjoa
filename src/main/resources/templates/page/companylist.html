@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:shiro="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>公司列表</title>
+    <link rel="stylesheet" href="/statics/lib/layui-v2.5.5/css/layui.css" media="all">
+    <link rel="stylesheet" href="/css/public.css" media="all">
+    <link rel="stylesheet" href="/css/themes/default.css" media="all">
+    <link rel="stylesheet" href="/statics/lib/font-awesome-4.7.0/css/font-awesome.min.css" media="all">
+    <script src="/statics/lib/jquery-3.4.1/jquery-3.4.1.min.js"></script>
+</head>
+<body>
+<div class="layuimini-container">
+    <div class="layuimini-main">
+        <blockquote class="layui-elem-quote">
+            公司列表<br>
+        </blockquote>
+        <div>
+
+            <fieldset class="table-search-fieldset">
+                <legend>搜索信息</legend>
+                <div style="margin: 10px 10px 10px 10px">
+                    <form class="layui-form layui-form-pane" action="">
+                        <div class="layui-form-item">
+                            <div class="layui-inline">
+                                <label class="layui-form-label">公司名称</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="companyName" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-inline">
+                                <label class="layui-form-label">车辆负责人</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="vehicleOfficerName" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-inline">
+                                <button type="submit" class="layui-btn layui-btn-primary" lay-submit
+                                        lay-filter="searchBtn"><i class="layui-icon"></i> 搜 索
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </fieldset>
+
+
+            <table id="companyList" lay-filter="companyList" class="layui-hide"></table>
+
+            <script type="text/html" id="toolbar">
+                <div class="layui-btn-container">
+                    <button shiro:hasPermission="company:add" class="layui-btn layui-btn-normal layui-btn-sm " lay-event="add"><i class="layui-icon">&#xe654;</i>
+                        添加
+                    </button>
+                    <button shiro:hasPermission="company:update" class="layui-btn layui-btn-sm layui-btn-warm " lay-event="update"><i class="layui-icon">&#xe642;</i>修改
+                    </button>
+                   <!-- <button class="layui-btn layui-btn-sm layui-btn-danger" lay-event="deleteRows"><i
+                            class="layui-icon">&#xe640;</i>多行删除
+                    </button>-->
+                    <button class="layui-btn layui-btn-sm " lay-event="refresh"><i class="layui-icon">&#xe669;</i>刷新
+                    </button>
+                </div>
+            </script>
+
+            <script type="text/html" id="currentTableBar">
+                <a  shiro:hasPermission="company:delete" class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="delete"><i class="layui-icon">&#xe640;</i>删除</a>
+            </script>
+
+        </div>
+    </div>
+</div>
+
+<script src="/statics/lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
+<script type="text/javascript" th:inline="none">
+    layui.use(['form', 'table'], function () {
+        var $ = layui.jquery,
+            form = layui.form,
+            table = layui.table;
+
+        //实例化表格
+        table.render({
+            elem: '#companyList',
+            url: '/company/selectcompany',
+            toolbar: '#toolbar',
+            defaultToolbar: ['filter', 'exports', 'print'],
+            parseData: function (res) { //res 即为原始返回的数据
+                return {
+                    "code": res.code, //解析接口状态
+                    "msg": res.message, //解析提示文本
+                    "count": res.data.total, //解析数据长度
+                    "data": res.data.list //解析数据列表
+                };
+            },
+            cols: [[
+                {field: "checkbox", type: 'checkbox'},
+                {field: "companyId", title: "公司编号", sort: true,},
+                {field: "companyName", title: "公司名称"},
+                {field: "vehicleOfficerName", title: "车辆负责人",},
+                {field: "vehicleOfficerTel", title: "车辆负责人电话"},
+                {field: "companyAddress", title: "公司地址",},
+                {
+                    field: "createTime", title: "录入时间", sort: true, templet: function (d) {
+                        return layui.util.toDateString(d.createTime, 'yyyy-MM-dd HH:mm:ss');
+                    }
+                },
+                {title: '操作', toolbar: '#currentTableBar', align: "center", fixed: 'right'}
+            ]],
+            limits: [10, 15, 20, 25, 50, 100],
+            limit: 10,
+            page: true
+            //skin: 'line'
+        });
+
+        //搜索事件操作
+        form.on("submit(searchBtn)", function (data) {
+            var formData = data.field;//获取搜索新信息
+            //layer.alert(JSON.stringify(formData));
+            //搜索重载
+            table.reload("companyList", {
+                page: {
+                    curr: 1
+                },
+                where: {
+                    companyName:formData.companyName,
+                    vehicleOfficerName:formData.vehicleOfficerName
+                }
+            }, "data");
+            return false;
+        });
+
+        //表格删除操作事件 delcompany
+        table.on("tool(companyList)", function (obj) {
+            var data = obj.data;
+            if (obj.event === "delete") {
+                layer.msg(data.companyId);
+                layer.confirm("确定删除此用户吗?",function (index) {
+                    //删除操作
+                    $.ajax({
+                        url:"/company/delcompany",
+                        datatype:"json",
+                        type:"post",
+                        data:{companyId:data.companyId},
+                        success:function (res) {
+                            if(res.responseCode==200){
+                                layer.msg(res.message);
+                                layui.table.reload("companyList");
+                            }else {
+                                layer.msg(res.message);
+                            }
+                        },
+                        error:function () {
+                            layer.msg("请求失败，请检查网络或联系管理员", {
+                                icon: 2,
+                                shade: this.shade,
+                                scrollbar: false,
+                                time: 3000,
+                                shadeClose: true
+                            });
+                        }
+                    })
+                    layer.close(index);
+                })
+            }
+        });
+
+        //添加修改刷新操作
+        table.on("toolbar(companyList)", function (obj) {
+            var checkStatus = table.checkStatus(obj.config.id);
+            switch (obj.event) {
+                case "add":
+                    Add();
+                    break;
+               /* case "deleteRows":
+                    DelRows(checkStatus);
+                    break;*/
+                case "update":
+                    UpdateRow(checkStatus.data);
+                    break;
+                case "refresh":
+                    table.reload("companyList");
+                    break;
+            }
+        });
+    });
+
+    //添加操作
+    function Add() {
+        var index = layer.open({
+            title: '添加用户',
+            type: 2,
+            shade: 0.2,
+            maxmin: true,
+            shadeClose: true,
+            area: ['50%', '60%'],
+            content: '/table/goaddcompany',
+            end:function () {
+                layui.table.reload("companyList");//添加成功后刷新表格
+            }
+        });
+        $(window).on("resize", function () {
+            layer.full(index);
+        });
+    }
+
+    //多行删除操作  未用
+    function DelRows(checkStatus) {
+        var chkData = checkStatus.data;
+        var delList = [];
+        chkData.forEach(function (n, i) {
+            delList.push(n.companyId);
+        });
+        if (delList != "" && delList != null) {
+            alert(delList);
+            /* layer.confirm("确定要删除所选项吗？",{btn:["确定","取消"]},function () {
+                 //执行删除操作
+
+             });*/
+        } else {
+            layer.msg("请选择你要删除的行！！！")
+        }
+    }
+
+    //修改操作
+    function UpdateRow(checkStatus) {
+        var chkData = checkStatus;
+        if (chkData.length == 1) {
+            //获取选中行的数量 判断  修改时一次只能选择一行
+            //若为一行是 执行修改操作
+            layer.open({
+                title: '修改用户',
+                type: 2,
+                shade: 0.2,
+                maxmin: true,
+                shadeClose: true,
+                area: ['50%', '60%'],
+                content: '/table/goupdatecompany',
+                success:function (layero,index) {
+                    var body=layer.getChildFrame('body',index);
+                    //位子窗口元素赋值
+                    chkData.forEach(function (n,i) {
+                        body.contents().find('input[name="companyId"]').val(n.companyId);
+                        body.contents().find('input[name="companyName"]').val(n.companyName);
+                        body.contents().find('input[name="companyAddress"]').val(n.companyAddress);
+                        body.contents().find('input[name="vehicleOfficerName"]').val(n.vehicleOfficerName);
+                        body.contents().find('input[name="vehicleOfficerTel"]').val(n.vehicleOfficerTel);
+                    });
+                },
+                end:function () {
+                    layui.table.reload("companyList");//关闭弹窗后刷新页面
+                }
+            });
+        } else if (chkData.length > 1) {
+            layer.msg("一次只能修改一行数据！！！");
+        } else {
+            layer.msg("你没有选中任何行！！！")
+        }
+    }
+
+</script>
+</body>
+</html>

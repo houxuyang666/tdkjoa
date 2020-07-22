@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tdkj.System.dao.EmployeeDao">
+
+    <resultMap type="com.tdkj.System.entity.Employee" id="EmployeeMap">
+        <result property="employeeid" column="EmployeeId" jdbcType="INTEGER"/>
+        <result property="corpid" column="CorpId" jdbcType="INTEGER"/>
+        <result property="departmentid" column="DepartmentId" jdbcType="INTEGER"/>
+        <result property="name" column="Name" jdbcType="VARCHAR"/>
+        <result property="jobtitle" column="JobTitle" jdbcType="VARCHAR"/>
+        <result property="idcardtype" column="IdcardType" jdbcType="INTEGER"/>
+        <result property="idcardnumber" column="IdcardNumber" jdbcType="VARCHAR"/>
+        <result property="status" column="Status" jdbcType="INTEGER"/>
+        <result property="gender" column="Gender" jdbcType="INTEGER"/>
+        <result property="age" column="Age" jdbcType="INTEGER"/>
+        <result property="nation" column="Nation" jdbcType="VARCHAR"/>
+        <result property="edulevel" column="EduLevel" jdbcType="INTEGER"/>
+        <result property="birthday" column="Birthday" jdbcType="DATE"/>
+        <result property="address" column="Address" jdbcType="VARCHAR"/>
+        <result property="entrydate" column="EntryDate" jdbcType="DATE"/>
+        <result property="regulardate" column="RegularDate" jdbcType="DATE"/>
+        <result property="departuredate" column="DepartureDate" jdbcType="DATE"/>
+        <result property="headimageurl" column="HeadimageUrl" jdbcType="VARCHAR"/>
+        <result property="politicstype" column="PoliticsType" jdbcType="INTEGER"/>
+        <result property="cellphone" column="CellPhone" jdbcType="VARCHAR"/>
+        <result property="email" column="Email" jdbcType="VARCHAR"/>
+        <result property="authorizationcode" column="AuthorizationCode" jdbcType="VARCHAR"/>
+        <result property="urgentlinkman" column="UrgentLinkMan" jdbcType="VARCHAR"/>
+        <result property="urgentlinkmanphone" column="UrgentLinkManPhone" jdbcType="VARCHAR"/>
+        <result property="positiveidcardimageurl" column="PositiveIdCardImageurl" jdbcType="VARCHAR"/>
+        <result property="negativeidcardimageurl" column="NegativeIdCardImageurl" jdbcType="VARCHAR"/>
+        <result property="fileinfoid" column="FileinfoId" jdbcType="INTEGER"/>
+        <result property="createdate" column="CreateDate" jdbcType="TIMESTAMP"/>
+        <result property="modifydate" column="ModifyDate" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="EmployeeMap">
+        select
+          EmployeeId, CorpId, DepartmentId, Name, JobTitle, IdcardType, IdcardNumber, Status, Gender, age, Nation, EduLevel, Birthday, Address, EntryDate, RegularDate, DepartureDate, HeadimageUrl, PoliticsType, CellPhone, Email, AuthorizationCode,  UrgentLinkMan, UrgentLinkManPhone, PositiveIdCardImageurl, NegativeIdCardImageurl, FileinfoId, CreateDate, ModifyDate
+        from employee
+        where EmployeeId = #{employeeid}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="EmployeeMap">
+        select
+          EmployeeId, CorpId, DepartmentId, Name, JobTitle, IdcardType, IdcardNumber, Status, Gender, age, Nation, EduLevel, Birthday, Address, EntryDate, RegularDate, DepartureDate, HeadimageUrl, PoliticsType, CellPhone, Email, AuthorizationCode,  UrgentLinkMan, UrgentLinkManPhone, PositiveIdCardImageurl, NegativeIdCardImageurl, FileinfoId, CreateDate, ModifyDate
+        from employee
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="EmployeeMap">
+        select
+        EmployeeId, CorpId, DepartmentId, Name, JobTitle, IdcardType, IdcardNumber, Status, Gender, age, Nation,
+        EduLevel, Birthday, Address, EntryDate, RegularDate, DepartureDate, HeadimageUrl, PoliticsType, CellPhone,
+        Email, AuthorizationCode, UrgentLinkMan, UrgentLinkManPhone, PositiveIdCardImageurl,
+        NegativeIdCardImageurl, FileinfoId, CreateDate, ModifyDate
+        from employee
+        <where>
+            <if test="employeeid != null">
+                and EmployeeId = #{employeeid}
+            </if>
+            <if test="corpid != null">
+                and CorpId = #{corpid}
+            </if>
+            <if test="departmentid != null">
+                and DepartmentId = #{departmentid}
+            </if>
+            <if test="name != null and name != ''">
+                and Name = #{name}
+            </if>
+            <if test="jobtitle != null and jobtitle != ''">
+                and JobTitle = #{jobtitle}
+            </if>
+            <if test="idcardtype != null">
+                and IdcardType = #{idcardtype}
+            </if>
+            <if test="idcardnumber != null and idcardnumber != ''">
+                and IdcardNumber = #{idcardnumber}
+            </if>
+            <if test="status != null">
+                and Status = #{status}
+            </if>
+            <if test="gender != null">
+                and Gender = #{gender}
+            </if>
+            <if test="age != null">
+                and age = #{age}
+            </if>
+            <if test="nation != null and nation != ''">
+                and Nation = #{nation}
+            </if>
+            <if test="edulevel != null and edulevel != ''">
+                and EduLevel = #{edulevel}
+            </if>
+            <if test="birthday != null">
+                and Birthday = #{birthday}
+            </if>
+            <if test="address != null and address != ''">
+                and Address = #{address}
+            </if>
+            <if test="entrydate != null">
+                and EntryDate = #{entrydate}
+            </if>
+            <if test="regulardate != null">
+                and RegularDate = #{regulardate}
+            </if>
+            <if test="departuredate != null">
+                and DepartureDate = #{departuredate}
+            </if>
+            <if test="headimageurl != null and headimageurl != ''">
+                and HeadimageUrl = #{headimageurl}
+            </if>
+            <if test="politicstype != null">
+                and PoliticsType = #{politicstype}
+            </if>
+            <if test="cellphone != null and cellphone != ''">
+                and CellPhone = #{cellphone}
+            </if>
+            <if test="email != null and email != ''">
+                and Email = #{email}
+            </if>
+            <if test="authorizationcode != null and authorizationcode != ''">
+                and AuthorizationCode = #{authorizationcode}
+            </if>
+            <if test="urgentlinkman != null and urgentlinkman != ''">
+                and UrgentLinkMan = #{urgentlinkman}
+            </if>
+            <if test="urgentlinkmanphone != null and urgentlinkmanphone != ''">
+                and UrgentLinkManPhone = #{urgentlinkmanphone}
+            </if>
+            <if test="positiveidcardimageurl != null and positiveidcardimageurl != ''">
+                and PositiveIdCardImageurl = #{positiveidcardimageurl}
+            </if>
+            <if test="negativeidcardimageurl != null and negativeidcardimageurl != ''">
+                and NegativeIdCardImageurl = #{negativeidcardimageurl}
+            </if>
+            <if test="fileinfoid != null">
+                and FileinfoId = #{fileinfoid}
+            </if>
+            <if test="createdate != null">
+                and CreateDate = #{createdate}
+            </if>
+            <if test="modifydate != null">
+                and ModifyDate = #{modifydate}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="employeeid" useGeneratedKeys="true">
+        insert into employee(CorpId, DepartmentId, Name, JobTitle, IdcardType, IdcardNumber, Status, Gender, age, Nation, EduLevel, Birthday, Address, EntryDate, RegularDate, DepartureDate, HeadimageUrl, PoliticsType, CellPhone, Email, AuthorizationCode,  UrgentLinkMan, UrgentLinkManPhone, PositiveIdCardImageurl, NegativeIdCardImageurl, FileinfoId, CreateDate, ModifyDate)
+        values (#{corpid}, #{departmentid}, #{name}, #{jobtitle}, #{idcardtype}, #{idcardnumber}, #{status}, #{gender}, #{age}, #{nation}, #{edulevel}, #{birthday}, #{address}, #{entrydate}, #{regulardate}, #{departuredate}, #{headimageurl}, #{politicstype}, #{cellphone}, #{email}, #{authorizationcode}, #{urgentlinkman}, #{urgentlinkmanphone}, #{positiveidcardimageurl}, #{negativeidcardimageurl}, #{fileinfoid}, #{createdate}, #{modifydate})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update employee
+        <set>
+            <if test="corpid != null">
+                CorpId = #{corpid},
+            </if>
+            <if test="departmentid != null">
+                DepartmentId = #{departmentid},
+            </if>
+            <if test="name != null and name != ''">
+                Name = #{name},
+            </if>
+            <if test="jobtitle != null and jobtitle != ''">
+                JobTitle = #{jobtitle},
+            </if>
+            <if test="idcardtype != null">
+                IdcardType = #{idcardtype},
+            </if>
+            <if test="idcardnumber != null and idcardnumber != ''">
+                IdcardNumber = #{idcardnumber},
+            </if>
+            <if test="status != null">
+                Status = #{status},
+            </if>
+            <if test="gender != null">
+                Gender = #{gender},
+            </if>
+            <if test="age != null">
+                age = #{age},
+            </if>
+            <if test="nation != null and nation != ''">
+                Nation = #{nation},
+            </if>
+            <if test="edulevel != null and edulevel != ''">
+                EduLevel = #{edulevel},
+            </if>
+            <if test="birthday != null">
+                Birthday = #{birthday},
+            </if>
+            <if test="address != null and address != ''">
+                Address = #{address},
+            </if>
+            <if test="entrydate != null">
+                EntryDate = #{entrydate},
+            </if>
+            <if test="regulardate != null">
+                RegularDate = #{regulardate},
+            </if>
+            <if test="departuredate != null">
+                DepartureDate = #{departuredate},
+            </if>
+            <if test="headimageurl != null and headimageurl != ''">
+                HeadimageUrl = #{headimageurl},
+            </if>
+            <if test="politicstype != null">
+                PoliticsType = #{politicstype},
+            </if>
+            <if test="cellphone != null and cellphone != ''">
+                CellPhone = #{cellphone},
+            </if>
+            <if test="email != null and email != ''">
+                Email = #{email},
+            </if>
+            <if test="authorizationcode != null and authorizationcode != ''">
+                AuthorizationCode = #{authorizationcode},
+            </if>
+            <if test="urgentlinkman != null and urgentlinkman != ''">
+                UrgentLinkMan = #{urgentlinkman},
+            </if>
+            <if test="urgentlinkmanphone != null and urgentlinkmanphone != ''">
+                UrgentLinkManPhone = #{urgentlinkmanphone},
+            </if>
+            <if test="positiveidcardimageurl != null and positiveidcardimageurl != ''">
+                PositiveIdCardImageurl = #{positiveidcardimageurl},
+            </if>
+            <if test="negativeidcardimageurl != null and negativeidcardimageurl != ''">
+                NegativeIdCardImageurl = #{negativeidcardimageurl},
+            </if>
+            <if test="fileinfoid != null">
+                FileinfoId = #{fileinfoid},
+            </if>
+            <if test="createdate != null">
+                CreateDate = #{createdate},
+            </if>
+            <if test="modifydate != null">
+                ModifyDate = #{modifydate},
+            </if>
+        </set>
+        where EmployeeId = #{employeeid}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from employee where EmployeeId = #{employeeid}
+    </delete>
+
+    <!--查询单个-->
+    <select id="getName" resultType="java.lang.String">
+        select name from employee
+        where EmployeeId = #{employeeid}
+    </select>
+
+    <!--查询公司所有人-->
+    <select id="queryAllEmployee" resultType="com.tdkj.System.entity.VO.EmployeeVO">
+            select e.EmployeeId as employeeid,
+				e.CorpId as corpid,
+				c.CorpName as  corpname,
+				e.DepartmentId as  departmentid,
+				d.DeptName as deptname,
+				e.Name as name,
+				e.JobTitle as jobtitle,
+				e.IdcardType as idcardtype,
+				e.IdcardNumber as idcardnumber,
+				e.Status as status,
+				e.Gender as gender,
+				e.Age as age,
+				e.Nation as nation,
+				e.EduLevel as edulevel,
+				e.Birthday	as birthday,
+				e.EntryDate as entrydate,
+				e.RegularDate as regulardate,
+				e.DepartureDate as departuredate,
+				e.HeadimageUrl as headimageurl,
+				e.PoliticsType as politicstype,
+				e.CellPhone as cellphone,
+				e.email as email,
+				e.UrgentLinkMan as urgentlinkman,
+				e.UrgentLinkManPhone as  urgentlinkmanphone,
+				e.PositiveIdCardImageurl as positiveidcardimageurl,
+				e.NegativeIdCardImageurl as negativeidcardimageurl,
+				e.FileinfoId as fileinfoid,
+				f.URL as fileUrl,
+				e.CreateDate as createdate,
+				e.ModifyDate as modifydate
+            from employee e LEFT join corpbasicinfo c on e.CorpId =c.CorpId
+                            LEFT JOIN  department d on e.DepartmentId =d.DeptId
+                            LEFT JOIN fileinfo f on e.FileinfoId =f.FileInfoID
+            where e.CorpId = #{corpid}
+    </select>
+
+    <!--查询当前用户的部门ID-->
+    <select id="queryByUserIdGetDeptID" resultType="java.lang.Integer">
+        select DepartmentId from employee where EmployeeId = #{employeeid}
+    </select>
+
+
+
+</mapper>

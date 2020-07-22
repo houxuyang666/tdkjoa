@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tdkj.System.dao.AttendanceDao">
+
+    <resultMap type="com.tdkj.System.entity.Attendance" id="AttendanceMap">
+        <result property="attendanceid" column="AttendanceID" jdbcType="INTEGER"/>
+        <result property="userid" column="UserID" jdbcType="INTEGER"/>
+        <result property="deptid" column="DeptID" jdbcType="INTEGER"/>
+        <result property="workdate" column="WorkDate" jdbcType="TIMESTAMP"/>
+        <result property="closedate" column="CloseDate" jdbcType="TIMESTAMP"/>
+        <result property="attendanceDesc" column="AttendanceDesc" jdbcType="VARCHAR"/>
+        <result property="createdate" column="CreateDate" jdbcType="TIMESTAMP"/>
+        <result property="modifydate" column="ModifyDate" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="AttendanceMap">
+        select
+          AttendanceID, UserID, DeptID, WorkDate, CloseDate, AttendanceDesc, CreateDate, ModifyDate
+        from attendance
+        where AttendanceID = #{attendanceid}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="AttendanceMap">
+        select
+          AttendanceID, UserID, DeptID, WorkDate, CloseDate, AttendanceDesc, CreateDate, ModifyDate
+        from attendance
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="AttendanceMap">
+        select
+        AttendanceID, UserID, DeptID, WorkDate, CloseDate, AttendanceDesc, CreateDate, ModifyDate
+        from attendance
+        <where>
+            <if test="attendanceid != null">
+                and AttendanceID = #{attendanceid}
+            </if>
+            <if test="userid != null">
+                and UserID = #{userid}
+            </if>
+            <if test="deptid != null">
+                and DeptID = #{deptid}
+            </if>
+            <if test="workdate != null">
+                and WorkDate = #{workdate}
+            </if>
+            <if test="closedate != null">
+                and CloseDate = #{closedate}
+            </if>
+            <if test="attendanceDesc != null and attendanceDesc != ''">
+                and AttendanceDesc = #{desc}
+            </if>
+            <if test="createdate != null">
+                and CreateDate = #{createdate}
+            </if>
+            <if test="modifydate != null">
+                and ModifyDate = #{modifydate}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="attendanceid" useGeneratedKeys="true">
+        insert into attendance(UserID, DeptID, WorkDate, CloseDate, AttendanceDesc, CreateDate, ModifyDate)
+        values (#{userid}, #{deptid}, #{workdate}, #{closedate}, #{attendanceDesc}, #{createdate}, #{modifydate})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update attendance
+        <set>
+            <if test="userid != null">
+                UserID = #{userid},
+            </if>
+            <if test="deptid != null">
+                DeptID = #{deptid},
+            </if>
+            <if test="workdate != null">
+                WorkDate = #{workdate},
+            </if>
+            <if test="closedate != null">
+                CloseDate = #{closedate},
+            </if>
+            <if test="attendanceDesc != null and attendanceDesc != ''">
+                AttendanceDesc = #{attendanceDesc},
+            </if>
+            <if test="createdate != null">
+                CreateDate = #{createdate},
+            </if>
+            <if test="modifydate != null">
+                ModifyDate = #{modifydate},
+            </if>
+        </set>
+        where AttendanceID = #{attendanceid}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from attendance where AttendanceID = #{attendanceid}
+    </delete>
+
+    <!--查询今天是否签到-->
+    <select id="queryByIdAndData" resultMap="AttendanceMap">
+        select
+          AttendanceID, UserID, DeptID, WorkDate, CloseDate, AttendanceDesc, CreateDate, ModifyDate
+        from attendance
+        where UserID = #{userid} and WorkDate BETWEEN concat(#{today},' 00:00:00') AND concat(#{today},' 23:59:59')
+    </select>
+
+</mapper>

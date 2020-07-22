@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tdkj.System.dao.ProcurementDao">
+
+    <resultMap type="com.tdkj.System.entity.Procurement" id="ProcurementMap">
+        <result property="proid" column="ProId" jdbcType="VARCHAR"/>
+        <result property="corpid" column="CorpId" jdbcType="INTEGER"/>
+        <result property="prodate" column="ProDate" jdbcType="TIMESTAMP"/>
+        <result property="protype" column="ProType" jdbcType="INTEGER"/>
+        <result property="goodsname" column="GoodsName" jdbcType="VARCHAR"/>
+        <result property="unit" column="Unit" jdbcType="VARCHAR"/>
+        <result property="type" column="Type" jdbcType="VARCHAR"/>
+        <result property="numbe" column="Numbe" jdbcType="INTEGER"/>
+        <result property="price" column="Price" jdbcType="NUMERIC"/>
+        <result property="totalamount" column="TotalAmount" jdbcType="NUMERIC"/>
+        <result property="applicantid" column="ApplicantId" jdbcType="INTEGER"/>
+        <result property="applicationdeptid" column="ApplicationDeptId" jdbcType="INTEGER"/>
+        <result property="prodesc" column="ProDesc" jdbcType="VARCHAR"/>
+        <result property="reviewer" column="Reviewer" jdbcType="INTEGER"/>
+        <result property="reviewerdesc" column="ReviewerDesc" jdbcType="VARCHAR"/>
+        <result property="acceptorid" column="AcceptorId" jdbcType="INTEGER"/>
+        <result property="fileinfoid" column="FileinfoId" jdbcType="INTEGER"/>
+        <result property="status" column="Status" jdbcType="INTEGER"/>
+        <result property="createdate" column="CreateDate" jdbcType="TIMESTAMP"/>
+        <result property="modifydate" column="ModifyDate" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="ProcurementMap">
+        select
+          ProId, CorpId, ProDate, ProType, GoodsName, Unit, Type, Numbe, Price, TotalAmount, ApplicantId, ApplicationDeptId, ProDesc, Reviewer, ReviewerDesc, AcceptorId, FileinfoId, Status, CreateDate, ModifyDate
+        from tdkjoa.procurement
+        where ProId = #{proid}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="ProcurementMap">
+        select
+          ProId, CorpId, ProDate, ProType, GoodsName, Unit, Type, Numbe, Price, TotalAmount, ApplicantId, ApplicationDeptId, ProDesc, Reviewer, ReviewerDesc, AcceptorId, FileinfoId, Status, CreateDate, ModifyDate
+        from tdkjoa.procurement
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="ProcurementMap">
+        select
+        ProId, CorpId, ProDate, ProType, GoodsName, Unit, Type, Numbe, Price, TotalAmount, ApplicantId,
+        ApplicationDeptId, ProDesc, Reviewer, ReviewerDesc, AcceptorId, FileinfoId, Status, CreateDate, ModifyDate
+        from tdkjoa.procurement
+        <where>
+            <if test="proid != null and proid != ''">
+                and ProId = #{proid}
+            </if>
+            <if test="corpid != null">
+                and CorpId = #{corpid}
+            </if>
+            <if test="prodate != null">
+                and ProDate = #{prodate}
+            </if>
+            <if test="protype != null">
+                and ProType = #{protype}
+            </if>
+            <if test="goodsname != null and goodsname != ''">
+                and GoodsName = #{goodsname}
+            </if>
+            <if test="unit != null and unit != ''">
+                and Unit = #{unit}
+            </if>
+            <if test="type != null and type != ''">
+                and Type = #{type}
+            </if>
+            <if test="numbe != null">
+                and Numbe = #{numbe}
+            </if>
+            <if test="price != null">
+                and Price = #{price}
+            </if>
+            <if test="totalamount != null">
+                and TotalAmount = #{totalamount}
+            </if>
+            <if test="applicantid != null">
+                and ApplicantId = #{applicantid}
+            </if>
+            <if test="applicationdeptid != null">
+                and ApplicationDeptId = #{applicationdeptid}
+            </if>
+            <if test="prodesc != null and prodesc != ''">
+                and ProDesc = #{prodesc}
+            </if>
+            <if test="reviewer != null">
+                and Reviewer = #{reviewer}
+            </if>
+            <if test="reviewerdesc != null and reviewerdesc != ''">
+                and ReviewerDesc = #{reviewerdesc}
+            </if>
+            <if test="acceptorid != null">
+                and AcceptorId = #{acceptorid}
+            </if>
+            <if test="fileinfoid != null">
+                and FileinfoId = #{fileinfoid}
+            </if>
+            <if test="status != null">
+                and Status = #{status}
+            </if>
+            <if test="createdate != null">
+                and CreateDate = #{createdate}
+            </if>
+            <if test="modifydate != null">
+                and ModifyDate = #{modifydate}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="proid" useGeneratedKeys="true">
+        insert into tdkjoa.procurement(CorpId, ProDate, ProType, GoodsName, Unit, Type, Numbe, Price, TotalAmount, ApplicantId, ApplicationDeptId, ProDesc, Reviewer, ReviewerDesc, AcceptorId, FileinfoId, Status, CreateDate, ModifyDate)
+        values (#{corpid}, #{prodate}, #{protype}, #{goodsname}, #{unit}, #{type}, #{numbe}, #{price}, #{totalamount}, #{applicantid}, #{applicationdeptid}, #{prodesc}, #{reviewer}, #{reviewerdesc}, #{acceptorid}, #{fileinfoid}, #{status}, #{createdate}, #{modifydate})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update tdkjoa.procurement
+        <set>
+            <if test="corpid != null">
+                CorpId = #{corpid},
+            </if>
+            <if test="prodate != null">
+                ProDate = #{prodate},
+            </if>
+            <if test="protype != null">
+                ProType = #{protype},
+            </if>
+            <if test="goodsname != null and goodsname != ''">
+                GoodsName = #{goodsname},
+            </if>
+            <if test="unit != null and unit != ''">
+                Unit = #{unit},
+            </if>
+            <if test="type != null and type != ''">
+                Type = #{type},
+            </if>
+            <if test="numbe != null">
+                Numbe = #{numbe},
+            </if>
+            <if test="price != null">
+                Price = #{price},
+            </if>
+            <if test="totalamount != null">
+                TotalAmount = #{totalamount},
+            </if>
+            <if test="applicantid != null">
+                ApplicantId = #{applicantid},
+            </if>
+            <if test="applicationdeptid != null">
+                ApplicationDeptId = #{applicationdeptid},
+            </if>
+            <if test="prodesc != null and prodesc != ''">
+                ProDesc = #{prodesc},
+            </if>
+            <if test="reviewer != null">
+                Reviewer = #{reviewer},
+            </if>
+            <if test="reviewerdesc != null and reviewerdesc != ''">
+                ReviewerDesc = #{reviewerdesc},
+            </if>
+            <if test="acceptorid != null">
+                AcceptorId = #{acceptorid},
+            </if>
+            <if test="fileinfoid != null">
+                FileinfoId = #{fileinfoid},
+            </if>
+            <if test="status != null">
+                Status = #{status},
+            </if>
+            <if test="createdate != null">
+                CreateDate = #{createdate},
+            </if>
+            <if test="modifydate != null">
+                ModifyDate = #{modifydate},
+            </if>
+        </set>
+        where ProId = #{proid}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from tdkjoa.procurement where ProId = #{proid}
+    </delete>
+
+</mapper>

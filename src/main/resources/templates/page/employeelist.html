@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:shiro="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>用户管理</title>
+    <link rel="stylesheet" href="/statics/lib/layui-v2.5.5/css/layui.css" media="all">
+    <link rel="stylesheet" href="/css/public.css" media="all">
+    <link rel="stylesheet" href="/css/themes/default.css" media="all">
+    <link rel="stylesheet" href="/statics/lib/font-awesome-4.7.0/css/font-awesome.min.css" media="all">
+</head>
+<body>
+<div class="layuimini-container">
+    <div class="layuimini-main">
+        <blockquote class="layui-elem-quote">
+            用户列表<br>
+        </blockquote>
+        <div>
+
+            <fieldset class="table-search-fieldset">
+                <legend>搜索信息</legend>
+                <div style="margin: 10px 10px 10px 10px">
+                    <form class="layui-form layui-form-pane" action="">
+                        <div class="layui-form-item">
+                            <div class="layui-inline">
+                                <label class="layui-form-label">员工名称</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="name" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-inline">
+                                <label class="layui-form-label">所属公司</label>
+                                <div class="layui-input-inline">
+                                    <select name="companyName" id="companyList"  lay-filter="companyId">
+                                        <option value=""></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="layui-inline">
+                                <label class="layui-form-label">电话号码</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="tel" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-inline">
+                                <button type="submit" class="layui-btn layui-btn-primary"  lay-submit lay-filter="searchBtn"><i class="layui-icon"></i> 搜 索</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </fieldset>
+
+
+            <table id="userList" lay-filter="employeeList" class="layui-hide"></table>
+
+            <script type="text/html" id="currentTableBar">
+                <a   class="layui-btn layui-btn-xs " lay-event="ChongZhiPwd"><i class="layui-icon">&#xe673;</i>重置密码</a>
+                {{# if(d.status==0){ }}
+                    <a  class="layui-btn layui-btn-xs layui-btn-danger " lay-event="delete"><i class="layui-icon">&#xe67e;</i>注销</a>
+                {{#  } else { }}
+                     <a   class="layui-btn layui-btn-xs layui-btn-normal " lay-event="delete"><i class="layui-icon">&#xe624;</i>启用</a>
+                {{#  } }}
+            </script>
+
+        </div>
+    </div>
+</div>
+
+<script src="/statics/lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
+<script src="/js/public.js" charset="utf-8"></script>
+<script type="text/javascript" th:inline="none">
+    PublicFun.ImportJs("/statics/lib/jquery-3.4.1/jquery-3.4.1.min.js");
+    layui.use(['form', 'table'], function () {
+        var $ = layui.jquery,
+            form = layui.form,
+            table = layui.table;
+
+        //实例化表格
+        table.render({
+              elem: '#employeeList',
+              url: '/employee/selectemployee',
+              toolbar: '#toolbarDemo',
+              defaultToolbar: ['filter', 'exports', 'print'],
+            parseData: function (res) { //res 即为原始返回的数据
+                return {
+                    "code": res.code, //解析接口状态
+                    "msg": res.message, //解析提示文本
+                    "count": res.data.total, //解析数据长度
+                    "data": res.data.list //解析数据列表
+                };
+            },
+              cols:[[
+                  {field:"checkbox",type:'checkbox'},
+                  {field:"id",title:"编号",width:80,sort:true,},
+                  {field:"username",title:"账号名称"},
+                  {field:"status",title:"状态",sort:true,templet:function (data) {
+                          if(data.status==0) return "正常";
+                          else  return "锁定";
+                      }},
+                  {field:"rid",title:"角色ID",sort:true,},
+                  {field:"rolename",title:"角色名称",},
+                  {field:"userinfoId",title:"用户ID",sort:true,},
+                  {field:"name",title:"用户名称",},
+                  {field:"sex",title:"用户性别",sort:true,templet:function (data) {
+                          if(data.sex==0) return "女"
+                          else if(data.sex==1) return "男"
+                          else  return "未知"
+                      }},
+                  {field:"tel",title:"电话号码",sort:true,},
+                  {field:"age",title:"年龄",sort:true,},
+                  {field:"companyName",width:200,title:"所属公司",},
+                  {title: '操作', toolbar: '#currentTableBar', width:200, align: "center",fixed: 'right'}
+              ]],
+              limits: [10, 15, 20, 25, 50, 100],
+              limit: 10,
+              page: true,
+              skin: 'line'
+        });
+
+        //搜索事件操作
+        form.on("submit(searchBtn)",function (data) {
+            var formData=data.field;//获取搜索新信息
+            var selectText=$("#companyList").find("option:selected").text();
+            //layer.msg(selectText);
+            var canshu={
+                "name":formData.name,
+                "tel":formData.tel,
+                "companyName":selectText,
+            }
+            //搜索重载
+            table.reload("userList",{
+                url:"/user/selectuserbycondition",
+                page:{
+                    curr:1
+                },
+                where:canshu
+            },"data");
+            return false;
+        });
+
+        //表格操作事件
+        table.on("tool(userList)",function (obj) {
+            var  data=obj.data;
+            switch (obj.event) {
+                case "ChongZhiPwd":
+                    ChongZhiPwd(data.id);
+                    break;
+                case "delete":
+                    DeleteUser(data);
+                    break;
+            }
+        });
+
+        //下拉框绑定
+        PublicFun.BindCompanyList();
+
+    });
+    //重置密码操作
+    function ChongZhiPwd(id) {
+        $.ajax({
+            url:"/user/setpsd",
+            type:"post",
+            dataType:"json",
+            data:{id:id},
+            success:function (res) {
+                if(res.responseCode=="200"){
+                    layer.msg(res.message);
+                }else {
+                    layer.msg(res.message);
+                }
+            },
+            error:function () {
+                layer.msg("网络异常,请检查后再试", {
+                    icon: 2,
+                    shade: this.shade,
+                    scrollbar: false,
+                    time: 3000,
+                    shadeClose: true
+                });
+            }
+        })
+    }
+
+    //修改用户状态操作
+    function DeleteUser(data) {
+        layer.confirm("确定要更改此用户状态吗?",function (index) {
+            //更改操作
+            $.ajax({
+                url:"/user/setuserstatus",
+                type:"post",
+                dataType:"json",
+                data:{id:data.id,status:data.status},
+                success:function (res) {
+                    if(res.responseCode=="200"){
+                        //layer.msg(res.message);
+                        layui.table.reload("userList");
+                    }else {
+                        layer.msg(res.message);
+                    }
+                },
+                error:function () {
+                    layer.msg("网络异常,请检查后再试", {
+                        icon: 2,
+                        shade: this.shade,
+                        scrollbar: false,
+                        time: 3000,
+                        shadeClose: true
+                    });
+                }
+            });
+
+            layer.close(index);
+        })
+    }
+
+    //监听公司下拉框绑定
+    function BindCompany() {
+        $.ajax({
+            url:"/company/selectallcompany",
+            dataType:"json",
+            type:"post",
+            success:function (res) {
+                var data=res.data;
+                //layer.alert(JSON.stringify(data));
+                var html = '';
+                if(data!=null && data!=""){
+                    for (var i = 0; i < data.length; i++) {
+                        html += '<option value="' + data[i].companyId + '">' + data[i].companyName + '</option>';
+                    }
+                }else {
+                    html+="";
+                }
+                $('#companyList').append(html);
+                layui.form.render("select");
+            },
+            error:function () {
+                layer.msg("公司下拉框请求失败", {
+                    icon: 2,
+                    shade: this.shade,
+                    scrollbar: false,
+                    time: 3000,
+                    shadeClose: true
+                });
+            }
+        })
+    }
+
+
+</script>
+</body>
+</html>
