@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="/statics/lib/layui-v2.5.5/css/layui.css" media="all">
+    <link rel="stylesheet" href="/css/public.css" media="all">
+    <style>
+        body {
+            background-color: #ffffff;
+        }
+        #contain{
+            padding: 25px;
+        }
+    </style>
+</head>
+<body>
+<div id="contain">
+    <form action="/leavebill/add" method="post"  enctype="multipart/form-data">
+        标题：<input type="text" name="title"><br>
+        内容：<input type="text" name="content"><br>
+        天数：<input type="text" name="days"><br>
+        申请时间：<input type="date" name="leavetime"><br>
+        <input type="submit" value="提交">
+    </form>
+
+</div>
+
+</body>
+</html>

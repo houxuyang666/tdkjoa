@@ -21,6 +21,5 @@ public class Tableinit {
         pec.setDatabaseSchemaUpdate("drop-create");
         // 获取流程引擎对象
         ProcessEngine processEngine=pec.buildProcessEngine();
-
     }
 }

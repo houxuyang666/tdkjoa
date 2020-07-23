@@ -6,6 +6,7 @@ import com.tdkj.System.Enum.EmployeeStatusEnmu;
 import com.tdkj.System.Enum.EmployeeTypeEnmu;
 import com.tdkj.System.Enum.FileTypeEnmu;
 import com.tdkj.System.Enum.UserStatusEnmu;
+import com.tdkj.System.activiti.TestParallelGateWay;
 import com.tdkj.System.common.OAResponse;
 import com.tdkj.System.common.OAResponseList;
 import com.tdkj.System.entity.*;
@@ -13,6 +14,11 @@ import com.tdkj.System.entity.VO.EmployeeVO;
 import com.tdkj.System.service.*;
 import com.tdkj.System.utils.*;
 import lombok.extern.slf4j.Slf4j;
+import org.activiti.engine.ProcessEngine;
+import org.activiti.engine.ProcessEngines;
+import org.activiti.engine.RepositoryService;
+import org.activiti.engine.repository.Deployment;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -205,5 +211,4 @@ public class EmployeeController {
         }while(1!=value);
         return OAResponse.setResult(HTTP_RNS_CODE_200,ADD_SUCCESS);
     }
-
-}
+    }

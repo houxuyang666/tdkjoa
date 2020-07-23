@@ -40,6 +40,7 @@ public class ActivitiServiceImpl implements ActivitiService{
     //private static final String PROCESS_DEFINE_KEY = "test.bpmn";
     private static final String PROCESS_DEFINE_KEY = "leave";
     private static final String NEXT_ASSIGNEE = "huangxu2";
+
     @Resource
     private RuntimeService runtimeService;
     @Resource

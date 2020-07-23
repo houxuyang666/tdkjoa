@@ -31,7 +31,7 @@ public class TestParallelGateWay {
         //通过路径部署流程信息
         RepositoryService repositoryService= this.processEngine.getRepositoryService();
         Deployment deploy=repositoryService.createDeployment().name("购物流程") //流程设置一个名字
-                .addClasspathResource("processes/ParallelGateWay.bpmn").deploy();
+                .addClasspathResource("pro/ParallelGateWay.bpmn").deploy();
         log.info("部署成功：流程部署ID："+deploy.getId());
     }
 
