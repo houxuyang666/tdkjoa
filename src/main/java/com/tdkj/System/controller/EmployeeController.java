@@ -186,8 +186,23 @@ public class EmployeeController {
         user.setRoleid(EmployeeTypeEnmu.Admin.getCode());
         user.setCreatedate(new Date());
         userService.insert(user);
-        EmailUtils.sandEmail("smtp.163.com","houxuyang0801@163.com","KXIRPGFLESJBQYAO",email,corpbasicinfo.getCorpname(),"尊敬的"+name+"你好！ 欢迎加入"+corpbasicinfo.getCorpname()+"，您的职位为"+jobtitle+",OA地址为："+"固定网址"+";账号为："+username+";密码为：123456;请尽快登录修改密码");
         log.info("账号生成成功");
+        /*使用do while会更好*/
+        int value=0;
+        int i=0;
+        do{
+            value=EmailUtils.sandEmail("smtp.163.com","houxuyang0801@163.com","KXIRPGFLESJBQYAO",email,corpbasicinfo.getCorpname(),"尊敬的"+name+"你好！ 欢迎加入"+corpbasicinfo.getCorpname()+"，您的职位为"+jobtitle+",OA地址为："+"固定网址"+";账号为："+username+";密码为：123456;请尽快登录修改密码");
+            if(1==value){
+                log.info("邮件发送成功");
+                break;
+            }else{
+                i++;
+                if(i==3){
+                    log.info("发送三次失败");
+                    break;
+                }
+            }
+        }while(1!=value);
         return OAResponse.setResult(HTTP_RNS_CODE_200,ADD_SUCCESS);
     }
 

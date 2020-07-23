@@ -3,7 +3,9 @@ package com.tdkj.System.activiti;
 import org.activiti.engine.HistoryService;
 import org.activiti.engine.ProcessEngine;
 import org.activiti.engine.ProcessEngines;
+import org.activiti.engine.history.HistoricActivityInstance;
 import org.activiti.engine.history.HistoricProcessInstance;
+import org.activiti.engine.history.HistoricTaskInstance;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -51,7 +53,50 @@ public class TestHistoryQuery {
             }
 
         }
+    }
 
+    /*查询历史活动  act_hi_actinst      意义不大*/
+    @Test
+    public void queryHistoryAct(){
+        HistoryService historyService = this.processEngine.getHistoryService();
+        List<HistoricActivityInstance> list = historyService.createHistoricActivityInstanceQuery().orderByHistoricActivityInstanceEndTime().asc().list();
+        if(null!=list&&list.size()>0){
+            for (HistoricActivityInstance hi : list) {
+                System.out.println("ID: "+hi.getId());
+                System.out.println("流程定义ID: "+hi.getProcessDefinitionId()); //processdefinitionid 流程定义ID
+                System.out.println("流程实例id: "+hi.getProcessInstanceId()); //ProcessInstanceId  流程实例id
+                System.out.println("执行实例id: "+hi.getExecutionId()); //执行实例id
+                System.out.println("活动id: "+hi.getActivityId()); //活动id
+                System.out.println("任务Id: "+hi.getTaskId()); //任务Id
+                System.out.println("活动名称: "+hi.getActivityName()); //活动名称
+                System.out.println("活动类型: "+hi.getActivityType());//活动类型
+                System.out.println("办理人名称: "+hi.getAssignee()); //办理人名称
+                System.out.println("开始时间: "+hi.getStartTime().toLocaleString()); //开始时间
+                System.out.println("结束时间: "+hi.getEndTime().toLocaleString()); //结束时间
+                System.out.println("办理时长: "+hi.getDurationInMillis()); //办理时长
+            }
+        }
+
+    }
+
+    /*查询历史任务  act_hi_taskinst*/
+    @Test
+    public void queryHistoryTask(){
+        HistoryService historyService = this.processEngine.getHistoryService();
+        List<HistoricTaskInstance> list = historyService.createHistoricTaskInstanceQuery().orderByHistoricTaskInstanceStartTime().asc().list();
+        if(null!=list&&list.size()>0){
+            for (HistoricTaskInstance hi : list) {
+                System.out.println("ID: "+hi.getId());
+                System.out.println("流程定义ID: "+hi.getProcessDefinitionId()); //processdefinitionid 流程定义ID
+                System.out.println("流程实例id: "+hi.getProcessInstanceId()); //ProcessInstanceId  流程实例id
+                System.out.println("执行实例id: "+hi.getExecutionId()); //执行实例id
+
+                System.out.println("办理人名称: "+hi.getAssignee()); //办理人名称
+                System.out.println("开始时间: "+hi.getStartTime().toLocaleString()); //开始时间
+                System.out.println("结束时间: "+hi.getEndTime().toLocaleString()); //结束时间
+                System.out.println("办理时长: "+hi.getDurationInMillis()); //办理时长
+            }
+        }
 
     }
 }
