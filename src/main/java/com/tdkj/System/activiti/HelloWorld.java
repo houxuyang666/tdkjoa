@@ -25,8 +25,8 @@ public class HelloWorld {
     public void deployProcess(){
 
         RepositoryService repositoryService= this.processEngine.getRepositoryService();
-        Deployment deploy=repositoryService.createDeployment().name("请假流程002") //流程设置一个名字
-        .addClasspathResource("processes/leavebill.bpmn").deploy();
+        Deployment deploy=repositoryService.createDeployment().name("请假流程") //流程设置一个名字
+        .addClasspathResource("processes/Leavebill.bpmn").deploy();
         /*部署流程 会插入三张表数据
             ACT_RE_PROCDEF
             ACT_RE_DEPLOYMENT

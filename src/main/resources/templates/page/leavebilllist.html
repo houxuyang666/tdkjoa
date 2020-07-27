@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>我的申请</title>
+    <link rel="stylesheet" href="/statics/lib/layui-v2.5.5/css/layui.css" media="all">
+    <link rel="stylesheet" href="/css/public.css" media="all">
+    <link rel="stylesheet" href="/css/themes/default.css" media="all">
+    <link rel="stylesheet" href="/statics/lib/font-awesome-4.7.0/css/font-awesome.min.css" media="all">
+    <script src="/statics/lib/jquery-3.4.1/jquery-3.4.1.min.js"></script>
+</head>
+<body>
+<div class="layuimini-container">
+    <div class="layuimini-main">
+        <div>
+
+            <table id="leavebillList" lay-filter="leavebillList" class="layui-hide"></table>
+
+            <!--表格工具条-->
+            <script type="text/html" id="toolbar">
+
+                    <button  class="layui-btn layui-btn-normal layui-btn-sm " lay-event="add"><i class="layui-icon">&#xe654;</i>
+                        添加
+                    </button>
+                    <button class="layui-btn layui-btn-sm " lay-event="refresh"><i class="layui-icon">&#xe669;</i>刷新
+                    </button>
+
+            </script>
+                <script type="text/html" id="leaveBillListBar">
+                    {{#  if(d.state==0){ }}
+                    <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="startProcess">提交申请</a>
+                    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+                    <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">删除</a>
+                    {{#  } else if(d.state==1){ }}
+                    <a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="viewSpProcess">审批查询</a>
+                    {{#  } else if(d.state==2){ }}
+                    <a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="viewSpProcess">审批查询</a>
+                    {{#  } else if(d.state==3){ }}
+                    <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">删除</a>
+                    <a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="viewSpProcess">审批查询</a>
+                    {{#  } }}
+
+            </script>
+        </div>
+    </div>
+</div>
+
+<script src="/statics/lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
+<script type="text/javascript" th:inline="none">
+    layui.use(['form', 'table'], function () {
+        var $ = layui.jquery,
+            form = layui.form,
+            table = layui.table;
+
+        //实例化表格
+        table.render({
+            elem: '#leavebillList',
+            url: '/leavebill/selectleavebill',
+            toolbar: '#toolbar',
+            defaultToolbar: ['filter', 'exports', 'print'],
+            parseData: function (res) { //res 即为原始返回的数据
+                return {
+                    "code": res.code, //解析接口状态
+                    "msg": res.message, //解析提示文本
+                    "count": res.data.total, //解析数据长度
+                    "data": res.data.list //解析数据列表
+                };
+            },
+
+            cols: [[
+                {field: "checkbox", type: 'checkbox'},
+                {field: 'id', title: 'ID', minWidth:100, align:"center"},
+                {field: 'title', title: '标题', minWidth:100, align:"center"},
+                {field: 'content', title: '原因', minWidth:100, align:"center"},
+                {field: 'days', title: '天数', minWidth:100, align:"center"},
+                {field: 'leavetime', title: '申请时间', minWidth:100, align:"center"},
+                {field: 'state', title: '状态', minWidth:100, align:"center",templet:function(d){
+                        var html="";
+                        if(d.state==0){
+                            html="<font color=red>未提交</font>"
+                        }else if(d.state==1){
+                            html="<font color=yellow>审批中</font>"
+                        }else if(d.state==2){
+                            html="<font color=blue>审批完成</font>"
+                        }else if(d.state==3){
+                            html="<font color=gray>已放弃</font>"
+                        }else{
+                            html="<font color=red>未知状态</font>"
+                        }
+                        return html;
+                    }},
+                {title: '操作', toolbar: '#leaveBillListBar', align: "center", fixed: 'right'}
+            ]],
+
+            limits: [10, 15, 20, 25, 50, 100],
+            limit: 10,
+            page: true
+            //skin: 'line'
+        });
+        //监听头工具栏事件
+        table.on('toolbar(leavebillList)', function(obj){
+            switch(obj.event){
+                case 'add':
+                    toAddLeaveBill();
+                    break;
+                case 'batchDel':
+                    batchDelete();
+                    break;
+            };
+        });
+        //列表操作
+        table.on('tool(leavebillList)', function(obj){
+            var layEvent = obj.event,
+                data = obj.data;
+            if(layEvent === 'edit'){ //编辑
+                updateLeaveBill(data);//data主当前点击的行
+            }else if(layEvent === 'del'){ //删除
+                layer.confirm('确定删【'+data.title+'】请假单吗？',{icon:3, title:'提示信息'},function(index){
+                    $.post("/leavebill/delete",{
+                        id : data.id  //将需要删除的id作为参数传入
+                    },function(data){
+                        //刷新table
+                        tableIns.reload();
+                        //关闭提示框
+                        layer.close(index);
+                    })
+                });
+            }else if(layEvent==="startProcess"){
+                startProcess(data);//请假单的对象
+            }else if(layEvent==='viewSpProcess'){
+                viewSpProcess(data);
+            }
+        });
+
+        //打开  添加请假单的弹出层
+        function toAddLeaveBill(){
+            var index = layui.layer.open({
+                title : "添加请假单",
+                type : 2,//ifream层
+                area:["800px","500px"],
+                content : "/leavebill/goadd",
+                success : function(layero, index){
+                    setTimeout(function(){
+                        layui.layer.tips('点击此处返回请假单列表', '.layui-layer-setwin .layui-layer-close', {
+                            tips: 3
+                        });
+                    },500)
+                }
+            })
+            //layui.layer.full(index);
+            //改变窗口大小时，重置弹窗的宽高，防止超出可视区域（如F12调出debug的操作）
+            $(window).on("resize",function(){
+                layui.layer.full(index);
+            })
+        }
+
+        //修改请假单
+        function updateLeaveBill(data){
+            var index = layui.layer.open({
+                title : "修改请假单",
+                type : 2,
+                area:["800px","500px"],
+                content : "/leavebill/goupdate?id="+data.id,
+                success : function(layero, index){
+                    setTimeout(function(){
+                        layui.layer.tips('点击此处返回请假单列表', '.layui-layer-setwin .layui-layer-close', {
+                            tips: 3
+                        });
+                    },500)
+                }
+            })
+            //layui.layer.full(index);
+            //改变窗口大小时，重置弹窗的宽高，防止超出可视区域（如F12调出debug的操作）
+            $(window).on("resize",function(){
+                layui.layer.full(index);
+            })
+        }
+
+        //启动流程
+        function startProcess(data){
+            layer.confirm('确定要提交【'+data.title+'】请假单吗？',{icon:3, title:'提示信息'},function(index){
+                $.post("/workflow/startProcess",{
+                    leavbillid : data.id  //将需要删除的id作为参数传入
+                },function(data){
+                    //刷新table
+                    tableIns.reload();
+                    //关闭提示框
+                    layer.close(index);
+                })
+            });
+        }
+        //查看审批进度
+        function viewSpProcess(data){
+            var index = layui.layer.open({
+                title : data.title+"的审批进度",
+                type : 2,
+                area:["800px","500px"],
+                content : "/workflow/viewSpProcess.action?id="+data.id,
+                success : function(layero, index){
+                    setTimeout(function(){
+                        layui.layer.tips('点击此处返回请假单列表', '.layui-layer-setwin .layui-layer-close', {
+                            tips: 3
+                        });
+                    },500)
+                }
+            })
+            //layui.layer.full(index);
+            //改变窗口大小时，重置弹窗的宽高，防止超出可视区域（如F12调出debug的操作）
+            $(window).on("resize",function(){
+                layui.layer.full(index);
+            })
+        }
+
+
+    });
+</script>
+</body>
+</html>

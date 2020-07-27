@@ -15,7 +15,7 @@
     <select id="queryById" resultMap="LogMap">
         select
           LogId, Operateor, OperateType, OperateDate, OperateResult, Ip
-        from tdkjoa.log
+        from log
         where LogId = #{logid}
     </select>
 
@@ -23,7 +23,7 @@
     <select id="queryAllByLimit" resultMap="LogMap">
         select
           LogId, Operateor, OperateType, OperateDate, OperateResult, Ip
-        from tdkjoa.log
+        from log
         limit #{offset}, #{limit}
     </select>
 
@@ -31,7 +31,7 @@
     <select id="queryAll" resultMap="LogMap">
         select
         LogId, Operateor, OperateType, OperateDate, OperateResult, Ip
-        from tdkjoa.log
+        from log
         <where>
             <if test="logid != null">
                 and LogId = #{logid}
@@ -56,13 +56,13 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="logid" useGeneratedKeys="true">
-        insert into tdkjoa.log(Operateor, OperateType, OperateDate, OperateResult, Ip)
+        insert into log(Operateor, OperateType, OperateDate, OperateResult, Ip)
         values (#{operateor}, #{operatetype}, #{operatedate}, #{operateresult}, #{ip})
     </insert>
 
     <!--通过主键修改数据-->
     <update id="update">
-        update tdkjoa.log
+        update log
         <set>
             <if test="operateor != null and operateor != ''">
                 Operateor = #{operateor},
@@ -85,7 +85,7 @@
 
     <!--通过主键删除-->
     <delete id="deleteById">
-        delete from tdkjoa.log where LogId = #{logid}
+        delete from log where LogId = #{logid}
     </delete>
 
 </mapper>

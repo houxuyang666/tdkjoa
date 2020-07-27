@@ -97,7 +97,7 @@
 
 
     <!--查询请假单信息-->
-    <select id="queryAllLeavebill" resultMap="LeavebillMap">
+    <select id="queryAllLeaveBill" resultMap="LeavebillMap">
         select
         id, title, content, days, leavetime, state, userid
         from leavebill

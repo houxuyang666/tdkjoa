@@ -48,7 +48,7 @@ public class ActivitiConfig {
     /*  自动部署已有的流程文件
     作用相当于 (据bpmn文件部署流程repositoryService.createDeployment().addClasspathResource("singleAssignee.bpmn").deploy();)*/
 
-        Resource[] resources = new PathMatchingResourcePatternResolver().getResources(ResourceLoader.CLASSPATH_URL_PREFIX + "*.bpmn");
+        //Resource[] resources = new PathMatchingResourcePatternResolver().getResources(ResourceLoader.CLASSPATH_URL_PREFIX + "*.bpmn");
         configuration.setTransactionManager(transactionManager);
         //设置数据源
         configuration.setDataSource(dataSource);
@@ -56,7 +56,7 @@ public class ActivitiConfig {
         //configuration.setDatabaseSchemaUpdate(databaseSchemaUpdate);
         configuration.setDatabaseSchemaUpdate(ProcessEngineConfiguration.DB_SCHEMA_UPDATE_FALSE);
         //configuration.setAsyncExecutorActivate(false);
-        configuration.setDeploymentResources(resources);
+        //configuration.setDeploymentResources(resources);
         //设置是否使用activti自带的用户体系
         configuration.setDbIdentityUsed(dbIdentityUsed);
         return configuration.buildProcessEngine();
@@ -155,6 +155,19 @@ public class ActivitiConfig {
     @Bean
     public IdentityService identityService(ProcessEngine processEngine) {
         return processEngine.getIdentityService();
+    }
+
+
+    /**
+     * 表单操作流
+     *
+     * @param processEngine
+     * @return
+     */
+
+    @Bean
+    public FormService formService(ProcessEngine processEngine) {
+        return processEngine.getFormService();
     }
 }
 

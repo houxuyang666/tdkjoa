@@ -6,10 +6,9 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * (Leavebill)实体类
- *
- * @author makejava
- * @since 2020-07-23 21:08:47
+ * @author hxy
+ * @version 1.0
+ * @date 2020/7/27 10:04
  */
 @Data
 public class Leavebill implements Serializable {
@@ -51,6 +50,4 @@ public class Leavebill implements Serializable {
         this.state = state;
         this.userid = userid;
     }
-
-
 }

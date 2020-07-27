@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>代办任务</title>
+    <link rel="stylesheet" href="/statics/lib/layui-v2.5.5/css/layui.css" media="all">
+    <link rel="stylesheet" href="/css/public.css" media="all">
+    <link rel="stylesheet" href="/css/themes/default.css" media="all">
+    <link rel="stylesheet" href="/statics/lib/font-awesome-4.7.0/css/font-awesome.min.css" media="all">
+    <script src="/statics/lib/jquery-3.4.1/jquery-3.4.1.min.js"></script>
+</head>
+<body>
+<div class="layuimini-container">
+    <div class="layuimini-main">
+        <blockquote class="layui-elem-quote">
+            流程部署<br>
+        </blockquote>
+        <div>
+            <div class="layui-form-item" style="text-align: right;">
+                <a class="layui-btn search_btn" >刷新</a>
+            </div>
+            <table id="taskList" lay-filter="taskList" class="layui-hide"></table>
+
+            <!--表格工具条-->
+
+            <script type="text/html" id="taskListBar">
+                    <a class="layui-btn layui-btn-xs" lay-event="toDoTask">办理任务</a>
+                    <a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="viewProcessByTaskId">查看流程图</a>
+            </script>
+        </div>
+    </div>
+</div>
+
+<script src="/statics/lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
+<script type="text/javascript" th:inline="none">
+    var tableDeploymentIns;
+
+    layui.use(['form', 'table'], function () {
+        var $ = layui.jquery,
+            form = layui.form,
+            table = layui.table;
+
+        //实例化表格
+        tableDeploymentIns=table.render({
+            elem: '#taskList',
+            url: '/workflow/loadCurrentUserTask',
+            toolbar: '#toolbar',
+            defaultToolbar: ['filter', 'exports', 'print'],
+            parseData: function (res) { //res 即为原始返回的数据
+                return {
+                    "code": res.code, //解析接口状态
+                    "msg": res.message, //解析提示文本
+                    "count": res.data.total, //解析数据长度
+                    "data": res.data.list //解析数据列表
+                };
+            },
+            cols: [[
+                {field: "checkbox", type: 'checkbox'},
+                {field: "id", title: "任务ID", sort: true,},
+                {field: "name", title: "代办任务名称"},
+                {field: "assigness", title: "办理人",},
+                {field: "createTime", title: "创建时间",},
+                {title: '操作', toolbar: '#taskListBar', align: "center", fixed: 'right'}
+            ]],
+            limits: [10, 15, 20, 25, 50, 100],
+            limit: 10,
+            page: true
+            //skin: 'line'
+        });
+
+        //刷新
+        $(".search_btn").on("click",function(){
+            tableDeploymentIns.reload();
+        });
+        //列表操作
+        table.on('tool(taskList)', function(obj){
+            var layEvent = obj.event,
+                data = obj.data;
+            if(layEvent === 'toDoTask'){ //办理任务
+                openDoTask(data);//data主当前点击的行
+            }else if(layEvent==="viewProcessByTaskId"){
+                viewProcessByTaskId(data);
+            }
+        });
+
+        //修改待办任务
+        function openDoTask(data){
+            var index = layui.layer.open({
+                title : "修改待办任务",
+                type : 2,
+                area:["800px","500px"],
+                content : "workflow/toDoTask?taskId="+data.id, //传入任务ID
+                success : function(layero, index){
+                    setTimeout(function(){
+                        layui.layer.tips('点击此处返回待办任务列表', '.layui-layer-setwin .layui-layer-close', {
+                            tips: 3
+                        });
+                    },500)
+                }
+            })
+            //layui.layer.full(index);
+            //改变窗口大小时，重置弹窗的宽高，防止超出可视区域（如F12调出debug的操作）
+            $(window).on("resize",function(){
+                layui.layer.full(index);
+            })
+        }
+        //查看流程图
+        function viewProcessByTaskId(data){
+            var index = layui.layer.open({
+                title : "修改待办任务",
+                type : 2,
+                area:["800px","500px"],
+                content : "${ctx }/workFlow/toUpdateNotice.action?id="+data.id,
+                success : function(layero, index){
+                    setTimeout(function(){
+                        layui.layer.tips('点击此处返回待办任务列表', '.layui-layer-setwin .layui-layer-close', {
+                            tips: 3
+                        });
+                    },500)
+                }
+            })
+            //layui.layer.full(index);
+            //改变窗口大小时，重置弹窗的宽高，防止超出可视区域（如F12调出debug的操作）
+            $(window).on("resize",function(){
+                layui.layer.full(index);
+            })
+        }
+
+
+    });
+
+
+
+
+</script>
+</body>
+</html>

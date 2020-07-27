@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>查看所有流程部署</title>
+    <link rel="stylesheet" href="/statics/lib/layui-v2.5.5/css/layui.css" media="all">
+    <link rel="stylesheet" href="/css/public.css" media="all">
+    <link rel="stylesheet" href="/css/themes/default.css" media="all">
+    <link rel="stylesheet" href="/statics/lib/font-awesome-4.7.0/css/font-awesome.min.css" media="all">
+    <script src="/statics/lib/jquery-3.4.1/jquery-3.4.1.min.js"></script>
+</head>
+<body>
+<div class="layuimini-container">
+    <div class="layuimini-main">
+        <blockquote class="layui-elem-quote">
+            流程部署<br>
+        </blockquote>
+        <div>
+
+            <table id="deploymentList" lay-filter="deploymentList" class="layui-hide"></table>
+            <table id="processDefinitionList" lay-filter="processDefinitionList"></table>
+
+            <!--表格工具条-->
+            <script type="text/html" id="toolbar">
+                <button  class="layui-btn layui-btn-normal layui-btn-sm " lay-event="add"><i class="layui-icon">&#xe654;</i>
+                    添加
+                </button>
+                <button class="layui-btn layui-btn-sm " lay-event="refresh"><i class="layui-icon">&#xe669;</i>刷新
+                </button>
+            </script>
+
+            <script type="text/html" id="currentTableBar">
+                <a  class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="delete"><i class="layui-icon">&#xe640;</i>删除</a>
+                <a class="layui-btn layui-btn-xs" lay-event="viewProcessImage">查看流程图</a>
+            </script>
+        </div>
+    </div>
+</div>
+
+<script src="/statics/lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
+<script type="text/javascript" th:inline="none">
+    var tableDeploymentIns;
+    var tableprocessDefinitionIns;
+    layui.use(['form', 'table'], function () {
+        var $ = layui.jquery,
+            form = layui.form,
+            table = layui.table;
+
+        //实例化表格
+        tableDeploymentIns=table.render({
+            elem: '#deploymentList',
+            url: '/workflow/selectworkflow',
+            toolbar: '#toolbar',
+            defaultToolbar: ['filter', 'exports', 'print'],
+            parseData: function (res) { //res 即为原始返回的数据
+                return {
+                    "code": res.code, //解析接口状态
+                    "msg": res.message, //解析提示文本
+                    "count": res.data.total, //解析数据长度
+                    "data": res.data.list //解析数据列表
+                };
+            },
+            cols: [[
+                {field: "checkbox", type: 'checkbox'},
+                {field: "id", title: "部署ID", sort: true,},
+                {field: "name", title: "部署名称"},
+                {field: "DeploymentTime", title: "部署时间",},
+                {title: '操作', toolbar: '#currentTableBar', align: "center", fixed: 'right'}
+            ]],
+            limits: [10, 15, 20, 25, 50, 100],
+            limit: 10,
+            page: true
+            //skin: 'line'
+        });
+
+
+        tableprocessDefinitionIns=table.render({
+            elem: '#processDefinitionList',
+            url: '/workflow/selectworkflow',
+            toolbar: '#toolbar',
+            defaultToolbar: ['filter', 'exports', 'print'],
+            parseData: function (res) { //res 即为原始返回的数据
+                return {
+                    "code": res.code, //解析接口状态
+                    "msg": res.message, //解析提示文本
+                    "count": res.data1.total, //解析数据长度
+                    "data": res.data1.list //解析数据列表
+                };
+            },
+            cols: [[
+                {field: "checkbox", type: 'checkbox'},
+                {field: 'id', title: '流程定义ID', minWidth:100, align:"center"},
+                {field: 'name', title: '流程定义名称', minWidth:100, align:"center"},
+                {field: 'key', title: '流程定义KEY', minWidth:100, align:"center"},
+                {field: 'version', title: '流程定义版本', minWidth:100, align:"center"},
+                {field: 'deploymentId', title: '部署ID', minWidth:100, align:"center"},
+                {field: 'resourceName', title: '资源文件名[bpmn]', minWidth:100, align:"center"},
+                {field: 'diagramResourceName', title: '资源文件名[png]', minWidth:100, align:"center"}
+            ]],
+            limits: [10, 15, 20, 25, 50, 100],
+            limit: 10,
+            page: true
+            //skin: 'line'
+        });
+
+
+        //监听头工具栏事件
+        table.on('toolbar(deploymentList)', function(obj){
+            switch(obj.event){
+                case 'add':
+                    toAddWorkFlow();
+                    break;
+                case 'batchDel':
+                    batchDelete();
+                    break;
+            };
+        });
+
+
+        //打开 部署流程的弹出层
+        function toAddWorkFlow(){
+            var index = layui.layer.open({
+                title : "添加流程",
+                type : 2,//ifream层
+                area:["600px","300px"],
+                content : "/workflow/goadd",
+                success : function(layero, index){
+                    setTimeout(function(){
+                        layui.layer.tips('点击此处返回流程列表', '.layui-layer-setwin .layui-layer-close', {
+                            tips: 3
+                        });
+                    },500)
+                }
+            })
+            //layui.layer.full(index);
+            //改变窗口大小时，重置弹窗的宽高，防止超出可视区域（如F12调出debug的操作）
+            $(window).on("resize",function(){
+                layui.layer.full(index);
+            })
+        }
+        //表格删除操作事件 deldeployment
+        table.on("tool(deploymentList)", function (obj) {
+            var data = obj.data;
+            if (obj.event === "delete") {
+                //alert(data.id);
+                layer.msg(data.id);
+                layer.confirm("确定删除此用户吗?",function (index) {
+                    //删除操作
+                    $.ajax({
+                        url:"/workflow/delete",
+                        datatype:"json",
+                        type:"post",
+                        data:{deploymentid:data.id},
+                        success:function (res) {
+                            if(res.responseCode==200){
+                                layer.msg(res.message);
+                                layui.table.reload("deploymentList");
+                                layui.table.reload("processDefinitionList");
+                            }else {
+                                layer.msg(res.message);
+                            }
+                        },
+                        error:function () {
+                            layer.msg("请求失败，请检查网络或联系管理员", {
+                                icon: 2,
+                                shade: this.shade,
+                                scrollbar: false,
+                                time: 3000,
+                                shadeClose: true
+                            });
+                        }
+                    })
+                    layer.close(index);
+                })
+            }else if(obj.event === "viewProcessImage"){
+                    viewProcessImage(data);
+            }
+        });
+
+        //查看流程图
+        function viewProcessImage(data){
+            var index = layui.layer.open({
+                title : "查看["+data.name+"]流程图",
+                type : 2,//ifream层
+                area:["500px","600px"],
+                content : "/workflow/goviewProcessImage?deploymentId="+data.id,
+                success : function(layero, index){
+                    setTimeout(function(){
+                        layui.layer.tips('点击此处返回流程列表', '.layui-layer-setwin .layui-layer-close', {
+                            tips: 3
+                        });
+                    },500)
+                }
+            })
+            //layui.layer.full(index);
+            //改变窗口大小时，重置弹窗的宽高，防止超出可视区域（如F12调出debug的操作）
+            $(window).on("resize",function(){
+                layui.layer.full(index);
+            })
+        }
+
+
+        //添加修改刷新操作
+        table.on("toolbar(workflowList)", function (obj) {
+            var checkStatus = table.checkStatus(obj.config.id);
+            switch (obj.event) {
+                case "add":
+                    Add();
+                    break;
+                /* case "deleteRows":
+                     DelRows(checkStatus);
+                     break;*/
+                case "update":
+                    UpdateRow(checkStatus.data);
+                    break;
+                case "refresh":
+                    table.reload("workflowList");
+                    break;
+            }
+        });
+    });
+
+
+
+
+</script>
+</body>
+</html>

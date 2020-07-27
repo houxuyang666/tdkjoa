@@ -19,15 +19,87 @@
 </head>
 <body>
 <div id="contain">
-    <form action="/leavebill/add" method="post"  enctype="multipart/form-data">
-        标题：<input type="text" name="title"><br>
-        内容：<input type="text" name="content"><br>
-        天数：<input type="text" name="days"><br>
-        申请时间：<input type="date" name="leavetime"><br>
-        <input type="submit" value="提交">
+    <form class="layui-form layui-form-pane" action="" >
+        <div class="layui-form-item">
+            <label class="layui-form-label">标题</label>
+            <div class="layui-input-block">
+                <input type="text" name="title" autocomplete="off"  class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">内容</label>
+            <div class="layui-input-block">
+                <input type="text" name="content" autocomplete="off"  class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">天数</label>
+            <div class="layui-input-block">
+                <input type="text" name="days" autocomplete="off"  class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">申请时间</label>
+            <div class="layui-input-block">
+                <input type="text" name="leavetime" id="date" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+            <button class="layui-btn" lay-submit="" lay-filter="SureAdd"><i class="layui-icon">&#xe605;</i>确定添加</button>
+        </div>
     </form>
-
 </div>
+<script src="/statics/lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
+<script>
+    layui.use(['form', 'laydate'], function () {
+        var form = layui.form,
+            layer = layui.layer,
+            $ = layui.$,
+            laydate = layui.laydate;
 
+        var obj=new Date();
+        //日期
+        laydate.render({
+            elem: '#date',
+            format:"yyyy-MM-dd HH:mm:ss",
+            value:obj,
+            isInitValue:true,
+            trigger:"click"
+        });
+
+        //监听提交
+        form.on('submit(SureAdd)', function (data) {
+            $.ajax({
+                url:"/leavebill/add",
+                dataType:"json",
+                type:"POST",
+                data:data.field,
+                success:function (res) {
+                    if(res.responseCode==200){
+                        var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                        parent.layer.close(index); //再执行关闭
+                    }else {
+                        layer.msg(res.message)
+                    }
+                },
+                error:function () {
+                    layer.msg("请求失败，请检查网络或联系管理员", {
+                        icon: 2,
+                        shade: this.shade,
+                        scrollbar: false,
+                        time: 3000,
+                        shadeClose: true
+                    });
+                }
+            })
+
+            return false;
+        });
+
+    });
+</script>
 </body>
 </html>

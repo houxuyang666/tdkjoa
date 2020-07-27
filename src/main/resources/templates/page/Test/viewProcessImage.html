@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+<style type="text/css">
+    div{
+        border:2px solid red;
+        padding: 4px;
+    }
+</style>
+</head>
+
+<body>
+<input id="deptid" type="hidden" th:value="${deploymentId}">
+<img id="lct" alt="流程图" src="">
+
+<!--<div style="position: absolute;left: ${c.x}px;top: ${c.y }px;width: ${c.width }px;height: ${c.height }px"></div>-->
+</body>
+<script>
+    var a=document.getElementById("deptid").value;
+    document.getElementById("lct").src="/workflow/viewProcessImage?deploymentId="+a;
+</script>
+</html>

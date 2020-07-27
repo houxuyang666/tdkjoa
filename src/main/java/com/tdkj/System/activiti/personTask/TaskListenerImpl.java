@@ -2,12 +2,14 @@ package com.tdkj.System.activiti.personTask;
 
 import org.activiti.engine.delegate.DelegateTask;
 import org.activiti.engine.delegate.TaskListener;
+import org.springframework.stereotype.Component;
 
 /**
  * @author hxy
  * @version 1.0
  * @date 2020/7/23 15:26
  */
+@Component
 public class TaskListenerImpl implements TaskListener {
 
     /*监听器*/

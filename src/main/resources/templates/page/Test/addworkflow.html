@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form action="/workflow/add" method="post" enctype="multipart/form-data">
+    流程名称：<input type="text" name="deploymentName"><br>
+    流程文件：<input type="file" name="file"><br>
+    <p style="color: red">*只允许添加ZIP文件</p><br>
+    <input type="submit" value="提交">
+</form>
+</body>
+</html>

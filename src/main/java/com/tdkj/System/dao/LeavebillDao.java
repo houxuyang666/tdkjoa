@@ -65,6 +65,5 @@ public interface LeavebillDao {
     int deleteById(Integer id);
 
 
-    List<Leavebill> queryAllLeavebill(Leavebill leavebill);
-
+    List<Leavebill> queryAllLeaveBill(Leavebill leavebill);
 }
