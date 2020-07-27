@@ -12,6 +12,9 @@ import com.tdkj.System.service.WorkFlowService;
 import com.tdkj.System.utils.ShiroUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.activiti.engine.*;
+import org.activiti.engine.impl.persistence.entity.ProcessDefinitionEntity;
+import org.activiti.engine.impl.pvm.PvmTransition;
+import org.activiti.engine.impl.pvm.process.ActivityImpl;
 import org.activiti.engine.repository.Deployment;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.ProcessInstance;
@@ -193,6 +196,30 @@ public class WorkFlowServiceImpl implements WorkFlowService {
 
     @Override
     public List<String> queryOutComeByTaskId(String taskId) {
-        return null;
+        List<String> names= new ArrayList<>();
+        //1.根据任务ID查询任务实例
+        Task task = this.taskService.createTaskQuery().taskId(taskId).singleResult();
+        //2.取出流程定义ID
+        String processDefinitionId = task.getProcessDefinitionId();
+        //3.取出流程实例ID
+        String processInstanceId = task.getProcessInstanceId();
+        //4.根据流程实例ID查询流程实例
+        ProcessInstance processInstance = this.runtimeService.createProcessInstanceQuery().processInstanceId(processInstanceId).singleResult();
+        //5.根据流程定义ID查询流程定义的xml信息
+        ProcessDefinitionEntity processDefinition = (ProcessDefinitionEntity)this.repositoryService.getProcessDefinition(processDefinitionId);
+        //6.从流程实例对象中取出当前活动节点ID
+        String activityId = processInstance.getActivityId();// usertask1
+        // 7,使用活动ID取出xml和当前活动ID相关节点数据
+        ActivityImpl activityImpl = processDefinition.findActivity(activityId);
+        // 8,从activityImpl取出连线信息
+        List<PvmTransition> transitions = activityImpl.getOutgoingTransitions();
+        if (null != transitions && transitions.size() > 0) {
+            // PvmTransition就是连接对象
+            for (PvmTransition pvmTransition : transitions) {
+                String name = pvmTransition.getProperty("name").toString();
+                names.add(name);
+            }
+        }
+        return names;
     }
 }
