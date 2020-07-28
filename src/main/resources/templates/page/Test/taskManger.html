@@ -58,7 +58,7 @@
                 {field: "checkbox", type: 'checkbox'},
                 {field: "id", title: "任务ID", sort: true,},
                 {field: "name", title: "代办任务名称"},
-                {field: "assigness", title: "办理人",},
+                {field: "assignee", title: "办理人",},
                 {field: "createTime", title: "创建时间",},
                 {title: '操作', toolbar: '#taskListBar', align: "center", fixed: 'right'}
             ]],
@@ -88,8 +88,8 @@
             var index = layui.layer.open({
                 title : "修改待办任务",
                 type : 2,
-                area:["800px","500px"],
-                content : "workflow/toDoTask?taskId="+data.id, //传入任务ID
+                area:["800px","620px"],
+                content : "/workflow/goDoTask?taskId="+data.id, //传入任务ID
                 success : function(layero, index){
                     setTimeout(function(){
                         layui.layer.tips('点击此处返回待办任务列表', '.layui-layer-setwin .layui-layer-close', {
@@ -125,8 +125,6 @@
                 layui.layer.full(index);
             })
         }
-
-
     });
 
 

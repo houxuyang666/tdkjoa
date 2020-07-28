@@ -208,6 +208,7 @@ public class WorkFlowController {
     /*跳转到办理任务页面*/
     @RequestMapping("/goDoTask")
     public ModelAndView goDoTask(String taskId) {
+        log.info("goDoTask");
         log.info(taskId);
         //1.根据任务ID查询请假单信息
         Leavebill leavebill =this.workFlowService.queryLeaveBillByTaskId(taskId);

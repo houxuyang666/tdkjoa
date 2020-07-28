@@ -18,7 +18,7 @@ public class Tableinit {
          * create-drop 先删除表再创建表
          * true 自动创建和更新表
          */
-        pec.setDatabaseSchemaUpdate("drop-create");
+        pec.setDatabaseSchemaUpdate("true");
         // 获取流程引擎对象
         ProcessEngine processEngine=pec.buildProcessEngine();
     }

@@ -15,7 +15,7 @@ public class ActTaskEntity {
 
     private String id;
     private String name;
-    private String assigness;
+    private String assignee;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date createTime;
 

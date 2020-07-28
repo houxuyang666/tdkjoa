@@ -13,7 +13,7 @@ public class ActProcessDefinitionEntity {
     private String id;
     private String name;
     private String key;
-    private Integer ersion;
+    private Integer version;
     private String deploymentId;
     private String resourceName;
     private String diagramResourceName;
