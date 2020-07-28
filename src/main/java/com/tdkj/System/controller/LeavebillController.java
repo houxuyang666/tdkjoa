@@ -2,6 +2,7 @@ package com.tdkj.System.controller;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.tdkj.System.Enum.AuditStatusEnmu;
 import com.tdkj.System.common.OAResponse;
 import com.tdkj.System.common.OAResponseList;
 import com.tdkj.System.entity.Leavebill;
@@ -86,8 +87,8 @@ public class LeavebillController {
     public OAResponse add(String title, String content,String days,String leavetime)throws Exception {
         log.info("addleavebill");
         /*请假流程单 生成时状态为未申请*/
-        String state="0";
-        Leavebill leavebill =new Leavebill(title,content,days, DateUtil.formatDate(leavetime),state,ShiroUtils.getPrincipal().getUserid());
+
+        Leavebill leavebill =new Leavebill(title,content,days, DateUtil.formatDate(leavetime), AuditStatusEnmu.To_audit.getCode(),ShiroUtils.getPrincipal().getUserid());
         leavebillService.insert(leavebill);
         return OAResponse.setResult(0,ADD_SUCCESS);
     }
@@ -102,8 +103,7 @@ public class LeavebillController {
     public OAResponse update(Integer id,String title, String content,String days,String leavetime)throws Exception {
         log.info("updateleavebill");
         /*修改请假单内容*/
-        String state="0";
-        Leavebill leavebill =new Leavebill(title,content,days, DateUtil.formatDate(leavetime),state,ShiroUtils.getPrincipal().getUserid());
+        Leavebill leavebill =new Leavebill(title,content,days, DateUtil.formatDate(leavetime),AuditStatusEnmu.To_audit.getCode(),ShiroUtils.getPrincipal().getUserid());
         leavebill.setId(id);
         leavebillService.update(leavebill);
         return OAResponse.setResult(0,UPDATE_SUCCESS);

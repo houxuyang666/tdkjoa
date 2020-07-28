@@ -26,4 +26,8 @@ public interface WorkFlowService {
     Leavebill queryLeaveBillByTaskId(String taskId);
     /*根据任务ID 查询连线信息*/
     List<String> queryOutComeByTaskId(String taskId);
+    /*根据任务ID 查询批注信息*/
+    PageInfo queryCommentByTaskId(String taskId);
+    /*完成任务*/
+    void completeTask(Integer leavebillId,String taskId,String comments, String outcome);
 }

@@ -183,14 +183,12 @@ public class WorkFlowController {
         }
     }
 
-
     /*跳转到我的待办任务页面*/
     @RequestMapping("/goTaskManger")
     public String goTaskManger() {
         log.info("goTaskManger");
         return "page/Test/taskManger";
     }
-
 
     /*查询我的代办任务*/
     @ResponseBody
@@ -203,13 +201,11 @@ public class WorkFlowController {
         return OAResponseList.setResult(0, FIND_SUCCESS,this.workFlowService.qureyCurrentUserTask(page,limit));
     }
 
-
-
     /*跳转到办理任务页面*/
     @RequestMapping("/goDoTask")
     public ModelAndView goDoTask(String taskId) {
-        log.info("goDoTask");
-        log.info(taskId);
+        /*log.info("goDoTask");
+        log.info(taskId);*/
         //1.根据任务ID查询请假单信息
         Leavebill leavebill =this.workFlowService.queryLeaveBillByTaskId(taskId);
         //2.根据任务ID查询连线信息
@@ -218,8 +214,35 @@ public class WorkFlowController {
         modelAndView.setViewName("page/Test/dotaskManger");
         modelAndView.addObject("leavebill",leavebill);
         modelAndView.addObject("outcomes",outcomeName);
+        modelAndView.addObject("taskId",taskId);
         return modelAndView;
     }
+
+    /*查询批注信息*/
+    @ResponseBody
+    @RequestMapping("/loadAllCommentByTaskId")
+    public OAResponseList loadAllCommentByTaskId(String taskId) {
+        log.info("loadAllCommentByTaskId");
+        log.info(taskId);
+        return OAResponseList.setResult(0,FIND_SUCCESS,this.workFlowService.queryCommentByTaskId(taskId));
+    }
+
+    /*完成任务*/
+    @Transactional
+    @ResponseBody
+    @RequestMapping("/doTask")
+    public OAResponse doTask(Integer leavebillId,String taskId,String comments,String outcome) {
+        try{
+            this.workFlowService.completeTask(leavebillId,taskId,comments,outcome);
+            return OAResponse.setResult(200,"任务完成成功");
+        }catch (Exception e){
+            e.printStackTrace();
+            return OAResponse.setResult(500,"任务完成失败");
+        }
+
+
+    }
+
 
 
 

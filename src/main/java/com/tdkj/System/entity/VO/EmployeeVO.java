@@ -36,6 +36,10 @@ public class EmployeeVO implements Serializable {
      */
     private String deptname;
     /**
+     * 上级领导ID
+     */
+    private Integer superid;
+    /**
      * 员工姓名
      */
     private String name;

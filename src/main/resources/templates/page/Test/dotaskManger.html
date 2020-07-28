@@ -34,13 +34,13 @@
     <div class="layui-form-item">
         <label class="layui-form-label">请假原因</label>
         <div class="layui-input-block">
-            <textarea placeholder="请输入请假单内容" disabled="disabled" name="content" th:text="${leavebill.content}"  id="content" class="layui-textarea"></textarea>
+            <textarea  disabled="disabled" name="content" th:text="${leavebill.content}"  id="content" class="layui-textarea"></textarea>
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label">批注</label>
         <div class="layui-input-block">
-            <textarea placeholder="请输入批注内容"  name="comment" id="comment" class="layui-textarea"></textarea>
+            <textarea placeholder="请输入批注内容"  name="comment" lay-verily="required" required  id="comment" class="layui-textarea"></textarea>
         </div>
     </div>
     <div class="layui-form-item" style="text-align: center;">
@@ -49,20 +49,23 @@
         </tr>
     </div>
 </form>
+<input id="leavebill" type="hidden"  th:value="${leavebill.id}">
+<input id="taskid" type="hidden"  th:value="${taskId}">
 <table id="commentList" lay-filter="commentList"></table>
 </body>
 <script src="/statics/lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
 <script type="text/javascript" th:inline="none">
-    var tableDeploymentIns;
+    var tableIns;
     layui.use(['form', 'table'], function () {
         var $ = layui.jquery,
             form = layui.form,
             table = layui.table;
-
+        var taskid=document.getElementById("taskid").value;
         //实例化表格
-        tableDeploymentIns=table.render({
+        tableIns=table.render({
             elem: '#commentList',
-            url: '/workflow/loadCurrentUserTask',
+            url: '/workflow/loadAllCommentByTaskId?taskId='+taskid,
+            toolbar: '#toolbar',
             defaultToolbar: ['filter', 'exports', 'print'],
             parseData: function (res) { //res 即为原始返回的数据
                 return {
@@ -72,19 +75,34 @@
                     "data": res.data.list //解析数据列表
                 };
             },
-            cols: [[
-                {field: "id", title: "任务ID", sort: true,},
-                {field: "name", title: "代办任务名称"},
-                {field: "assignee", title: "办理人",},
-
+            cols : [[
+                {field: 'time', title: '批注时间', minWidth:100, align:"center"},
+                {field: 'userId', title: '批注人', minWidth:100, align:"center"},
+                {field: 'message', title: '批注内容', minWidth:100, align:"center"}
             ]],
+            page:false
         });
+        //监控按钮事件
+        $(".dotask").click(function(obj){
+            var outcome=this.value;
+            var comment=document.getElementById("comment").value;
+            var leavebillid=document.getElementById("leavebill").value;
+            $.post("/workflow/doTask",{
+                leavebillId:leavebillid,
+                taskId:taskid,
+                comments:comment,
+                outcome:outcome
+            },function(data){
+                layer.msg(data.msg);
+                //关闭部署的弹出层
+                var index = parent.layer.getFrameIndex(window.name);
+                window.parent.layer.close(index);
+                //刷新父页面的table
+                window.parent.tableIns.reload();
+            })
 
-        //刷新
-        $(".search_btn").on("click",function(){
-            tableDeploymentIns.reload();
-        });
-
+        })
     });
+
 </script>
 </html>

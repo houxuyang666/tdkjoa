@@ -28,6 +28,10 @@ public class Employee implements Serializable {
      */
     private Integer departmentid;
     /**
+     * 上级领导id
+     */
+    private Integer superid;
+    /**
      * 员工姓名
      */
     private String name;

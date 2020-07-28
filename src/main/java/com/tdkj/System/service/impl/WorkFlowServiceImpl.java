@@ -1,23 +1,29 @@
 package com.tdkj.System.service.impl;
 
 import com.github.pagehelper.PageInfo;
+import com.tdkj.System.Enum.AuditStatusEnmu;
 import com.tdkj.System.common.OAResponseList;
+import com.tdkj.System.entity.Employee;
 import com.tdkj.System.entity.Leavebill;
 import com.tdkj.System.entity.VO.WorkFlowVO;
+import com.tdkj.System.entity.ect.ActCommentEntity;
 import com.tdkj.System.entity.ect.ActProcessDefinitionEntity;
 import com.tdkj.System.entity.ect.ActTaskEntity;
 import com.tdkj.System.entity.ect.ActdeploymentEntity;
+import com.tdkj.System.service.EmployeeService;
 import com.tdkj.System.service.LeavebillService;
 import com.tdkj.System.service.WorkFlowService;
 import com.tdkj.System.utils.ShiroUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.activiti.engine.*;
+import org.activiti.engine.impl.identity.Authentication;
 import org.activiti.engine.impl.persistence.entity.ProcessDefinitionEntity;
 import org.activiti.engine.impl.pvm.PvmTransition;
 import org.activiti.engine.impl.pvm.process.ActivityImpl;
 import org.activiti.engine.repository.Deployment;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.ProcessInstance;
+import org.activiti.engine.task.Comment;
 import org.activiti.engine.task.Task;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,6 +62,9 @@ public class WorkFlowServiceImpl implements WorkFlowService {
 
     @Autowired
     private LeavebillService leavebillService;
+
+    @Autowired
+    private EmployeeService employeeService;
 
 
     public OAResponseList querProcessDeploy(WorkFlowVO workFlowVO) {
@@ -150,19 +159,21 @@ public class WorkFlowServiceImpl implements WorkFlowService {
         String businessKey =processDefinitionKey+":"+leavbillid; //"Leavbill:1"
         Map<String, Object> variables =new HashMap<>();
         /*设置流程变量获取当前用户 也就是谁提交的请假单（设置下个流程的办理人）*/
-        variables.put("username", ShiroUtils.getPrincipal().getUsername());
+        Employee employee =employeeService.queryById(ShiroUtils.getPrincipal().getEmployeeid());
+        variables.put("username", employee.getName());
         this.runtimeService.startProcessInstanceByKey(processDefinitionKey,businessKey,variables);
         //更新请假单状态
         Leavebill leavebill =new Leavebill();
         leavebill.setId(leavbillid);
-        leavebill.setState("1");
+        leavebill.setStatus(AuditStatusEnmu.Under_review.getCode());
         leavebillService.update(leavebill);
     }
 
     @Override
     public PageInfo qureyCurrentUserTask(Integer page, Integer limit) {
+        Employee employee =employeeService.queryById(ShiroUtils.getPrincipal().getEmployeeid());
         //1.得到办理人信息
-        String assignee =ShiroUtils.getPrincipal().getUsername();
+        String assignee =employee.getName();
         //2.查询总数
         long count = this.taskService.createTaskQuery().taskAssignee(assignee).count();
         //3.查询集合
@@ -221,5 +232,69 @@ public class WorkFlowServiceImpl implements WorkFlowService {
             }
         }
         return names;
+    }
+
+    @Override
+    public PageInfo queryCommentByTaskId(String taskId) {
+        //1.根据任务ID 查询任务实例
+        Task task = this.taskService.createTaskQuery().taskId(taskId).singleResult();
+        //2.从任务里面取出流程实例ID
+        String processInstanceID =task.getProcessInstanceId();
+        List<Comment> comments = taskService.getProcessInstanceComments(processInstanceID);
+        List<ActCommentEntity> data =new ArrayList<>();
+        if (null!=comments&&comments.size()>0) {
+            for (Comment comment : comments) {
+                ActCommentEntity entity =new ActCommentEntity();
+                BeanUtils.copyProperties(comment,entity);
+                data.add(entity);
+            }
+        }
+        PageInfo pageInfo =new PageInfo();
+        pageInfo.setList(data);
+        pageInfo.setTotal(data.size());
+        return pageInfo;
+    }
+
+    @Override
+    public void completeTask(Integer leavebillId,String taskId,String comments, String outcome) {
+        log.info("completeTask");
+        log.info("任务ID："+taskId);
+        log.info("批注信息："+comments);
+        log.info("操作："+outcome);
+        log.info("请假单ID："+leavebillId.toString());
+        //1.根据任务ID 查询任务实例
+        Task task = this.taskService.createTaskQuery().taskId(taskId).singleResult();
+        //2.从任务里面取出流程实例ID
+        String processInstanceID =task.getProcessInstanceId();
+        log.info("userid："+ShiroUtils.getPrincipal().getUserid());
+        //设置批注人
+        String name = this.employeeService.getName(ShiroUtils.getPrincipal().getEmployeeid());
+        //使用了ThreadLocal的线程局部变量
+
+        Authentication.setAuthenticatedUserId(name);
+        //3.添加批注信息
+        taskService.addComment(taskId,processInstanceID,"["+outcome+"]"+comments);
+        Map<String, Object> map =new HashMap<>();
+        map.put("outcome",outcome);
+        this.taskService.complete(taskId, map);
+        //判断流程是否结束
+        /*act_ru_task*/
+        //已知流程实例ID
+        ProcessInstance processInstance = this.runtimeService.createProcessInstanceQuery()
+                .processInstanceId(processInstanceID).singleResult();
+        if(null==processInstance){
+            Leavebill leavebill =new Leavebill();
+            leavebill.setId(leavebillId);
+            /*说明流程结束*/
+            log.info("流程已结束");
+            if(outcome.equals("放弃")){
+                leavebill.setStatus(AuditStatusEnmu.give_up.getCode());
+            }else if (outcome.equals("驳回")){
+                leavebill.setStatus(AuditStatusEnmu.rejected.getCode());
+            }else{
+                leavebill.setStatus(AuditStatusEnmu.Review_completed.getCode());
+            }
+            this.leavebillService.update(leavebill);
+        }
     }
 }

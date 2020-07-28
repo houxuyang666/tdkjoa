@@ -8,14 +8,14 @@
         <result property="content" column="content" jdbcType="VARCHAR"/>
         <result property="days" column="days" jdbcType="VARCHAR"/>
         <result property="leavetime" column="leavetime" jdbcType="TIMESTAMP"/>
-        <result property="state" column="state" jdbcType="VARCHAR"/>
+        <result property="status" column="status" jdbcType="VARCHAR"/>
         <result property="userid" column="userid" jdbcType="INTEGER"/>
     </resultMap>
 
     <!--查询单个-->
     <select id="queryById" resultMap="LeavebillMap">
         select
-          id, title, content, days, leavetime, state, userid
+          id, title, content, days, leavetime, status, userid
         from leavebill
         where id = #{id}
     </select>
@@ -23,7 +23,7 @@
     <!--查询指定行数据-->
     <select id="queryAllByLimit" resultMap="LeavebillMap">
         select
-          id, title, content, days, leavetime, state, userid
+          id, title, content, days, leavetime, status, userid
         from leavebill
         limit #{offset}, #{limit}
     </select>
@@ -31,7 +31,7 @@
     <!--通过实体作为筛选条件查询-->
     <select id="queryAll" resultMap="LeavebillMap">
         select
-        id, title, content, days, leavetime, state, userid
+        id, title, content, days, leavetime, status, userid
         from leavebill
         <where>
             <if test="id != null">
@@ -49,8 +49,8 @@
             <if test="leavetime != null">
                 and leavetime = #{leavetime}
             </if>
-            <if test="state != null and state != ''">
-                and state = #{state}
+            <if test="status != null and status != ''">
+                and status = #{status}
             </if>
             <if test="userid != null">
                 and userid = #{userid}
@@ -60,8 +60,8 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into leavebill(title, content, days, leavetime, state, userid)
-        values (#{title}, #{content}, #{days}, #{leavetime}, #{state}, #{userid})
+        insert into leavebill(title, content, days, leavetime, status, userid)
+        values (#{title}, #{content}, #{days}, #{leavetime}, #{status}, #{userid})
     </insert>
 
     <!--通过主键修改数据-->
@@ -80,8 +80,8 @@
             <if test="leavetime != null">
                 leavetime = #{leavetime},
             </if>
-            <if test="state != null and state != ''">
-                state = #{state},
+            <if test="status != null and status != ''">
+                status = #{status},
             </if>
             <if test="userid != null">
                 userid = #{userid},
@@ -99,7 +99,7 @@
     <!--查询请假单信息-->
     <select id="queryAllLeaveBill" resultMap="LeavebillMap">
         select
-        id, title, content, days, leavetime, state, userid
+        id, title, content, days, leavetime, status, userid
         from leavebill
         <where>
             <if test="id != null">
@@ -117,8 +117,8 @@
             <if test="leavetime != null">
                 and leavetime = #{leavetime}
             </if>
-            <if test="state != null and state != ''">
-                and state = #{state}
+            <if test="status != null and status != ''">
+                and status = #{status}
             </if>
             <if test="userid != null">
                 and userid = #{userid}

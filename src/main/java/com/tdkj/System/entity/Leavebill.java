@@ -34,7 +34,7 @@ public class Leavebill implements Serializable {
     /**
      * 0 未提交 1审批中 2审批完成 3 已放弃
      */
-    private String state;
+    private Integer status;
 
     private Integer userid;
 
@@ -42,12 +42,12 @@ public class Leavebill implements Serializable {
 
     }
 
-    public Leavebill(String title, String content, String days, Date leavetime, String state, Integer userid) {
+    public Leavebill(String title, String content, String days, Date leavetime, Integer status, Integer userid) {
         this.title = title;
         this.content = content;
         this.days = days;
         this.leavetime = leavetime;
-        this.state = state;
+        this.status = status;
         this.userid = userid;
     }
 }

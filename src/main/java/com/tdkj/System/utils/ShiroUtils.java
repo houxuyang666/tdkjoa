@@ -2,11 +2,10 @@ package com.tdkj.System.utils;
 
 import com.tdkj.System.entity.User;
 import org.apache.shiro.SecurityUtils;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
-import java.io.File;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author hxy
@@ -25,5 +24,15 @@ public class ShiroUtils {
     public static User getPrincipal(){
         User user = (User) SecurityUtils.getSubject().getPrincipal();
         return user;
+    }
+
+    /**
+     * 得到request
+     */
+    public static HttpServletRequest getCurrentServletRequest() {
+        ServletRequestAttributes requestAttributes = (ServletRequestAttributes)
+                RequestContextHolder.getRequestAttributes();
+        HttpServletRequest request = requestAttributes.getRequest();
+        return request;
     }
 }

@@ -32,7 +32,7 @@ public class ApplicationRunnerImpl implements ApplicationRunner {
         }
         for (Resource r : resources) {
             String addr = "processes/" + r.getFilename();
-            repositoryService.createDeployment().addClasspathResource(addr).name("请假流程7.27测试").deploy();
+            repositoryService.createDeployment().addClasspathResource(addr).name("请假流程").deploy();
         }
     }
 }
