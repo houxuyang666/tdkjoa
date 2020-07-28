@@ -8,7 +8,7 @@ import java.util.List;
  * (Department)表服务接口
  *
  * @author makejava
- * @since 2020-07-17 14:51:06
+ * @since 2020-07-28 13:00:31
  */
 public interface DepartmentService {
 

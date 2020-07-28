@@ -9,7 +9,7 @@ import java.util.List;
  * (Department)表数据库访问层
  *
  * @author makejava
- * @since 2020-07-17 14:51:06
+ * @since 2020-07-28 13:00:30
  */
 public interface DepartmentDao {
 

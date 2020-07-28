@@ -5,7 +5,7 @@
     <resultMap type="com.tdkj.System.entity.Department" id="DepartmentMap">
         <result property="deptid" column="DeptId" jdbcType="INTEGER"/>
         <result property="deptname" column="DeptName" jdbcType="VARCHAR"/>
-        <result property="depthead" column="DeptHead" jdbcType="VARCHAR"/>
+        <result property="deptheadid" column="DeptHeadID" jdbcType="INTEGER"/>
         <result property="deptdesc" column="DeptDesc" jdbcType="VARCHAR"/>
         <result property="corpid" column="CorpId" jdbcType="INTEGER"/>
         <result property="createdate" column="CreateDate" jdbcType="TIMESTAMP"/>
@@ -15,24 +15,24 @@
     <!--查询单个-->
     <select id="queryById" resultMap="DepartmentMap">
         select
-          DeptId, DeptName, DeptHead, DeptDesc, CorpId, CreateDate, ModifyDate
-        from tdkjoa.department
+          DeptId, DeptName, DeptHeadID, DeptDesc, CorpId, CreateDate, ModifyDate
+        from department
         where DeptId = #{deptid}
     </select>
 
     <!--查询指定行数据-->
     <select id="queryAllByLimit" resultMap="DepartmentMap">
         select
-          DeptId, DeptName, DeptHead, DeptDesc, CorpId, CreateDate, ModifyDate
-        from tdkjoa.department
+          DeptId, DeptName, DeptHeadID, DeptDesc, CorpId, CreateDate, ModifyDate
+        from department
         limit #{offset}, #{limit}
     </select>
 
     <!--通过实体作为筛选条件查询-->
     <select id="queryAll" resultMap="DepartmentMap">
         select
-        DeptId, DeptName, DeptHead, DeptDesc, CorpId, CreateDate, ModifyDate
-        from tdkjoa.department
+        DeptId, DeptName, DeptHeadID, DeptDesc, CorpId, CreateDate, ModifyDate
+        from department
         <where>
             <if test="deptid != null">
                 and DeptId = #{deptid}
@@ -40,8 +40,8 @@
             <if test="deptname != null and deptname != ''">
                 and DeptName = #{deptname}
             </if>
-            <if test="depthead != null and depthead != ''">
-                and DeptHead = #{depthead}
+            <if test="deptheadid != null">
+                and DeptHeadID = #{deptheadid}
             </if>
             <if test="deptdesc != null and deptdesc != ''">
                 and DeptDesc = #{deptdesc}
@@ -60,19 +60,19 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="deptid" useGeneratedKeys="true">
-        insert into tdkjoa.department(DeptName, DeptHead, DeptDesc, CorpId, CreateDate, ModifyDate)
-        values (#{deptname}, #{depthead}, #{deptdesc}, #{corpid}, #{createdate}, #{modifydate})
+        insert into department(DeptName, DeptHeadID, DeptDesc, CorpId, CreateDate, ModifyDate)
+        values (#{deptname}, #{deptheadid}, #{deptdesc}, #{corpid}, #{createdate}, #{modifydate})
     </insert>
 
     <!--通过主键修改数据-->
     <update id="update">
-        update tdkjoa.department
+        update department
         <set>
             <if test="deptname != null and deptname != ''">
                 DeptName = #{deptname},
             </if>
-            <if test="depthead != null and depthead != ''">
-                DeptHead = #{depthead},
+            <if test="deptheadid != null">
+                DeptHeadID = #{deptheadid},
             </if>
             <if test="deptdesc != null and deptdesc != ''">
                 DeptDesc = #{deptdesc},
@@ -92,7 +92,7 @@
 
     <!--通过主键删除-->
     <delete id="deleteById">
-        delete from tdkjoa.department where DeptId = #{deptid}
+        delete from department where DeptId = #{deptid}
     </delete>
 
 </mapper>

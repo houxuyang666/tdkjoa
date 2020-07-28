@@ -9,11 +9,11 @@ import java.util.Date;
  * (Department)实体类
  *
  * @author makejava
- * @since 2020-07-17 14:51:06
+ * @since 2020-07-28 13:00:27
  */
 @Data
 public class Department implements Serializable {
-    private static final long serialVersionUID = 326760780405617341L;
+    private static final long serialVersionUID = 242287330482270261L;
     /**
      * 部门编号 自增ID
      */
@@ -25,7 +25,7 @@ public class Department implements Serializable {
     /**
      * 部门负责人
      */
-    private String depthead;
+    private Integer deptheadid;
     /**
      * 部门职责
      */

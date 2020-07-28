@@ -16,9 +16,15 @@ public class WorkFlowVO {
     private Integer page;
     private Integer limit;
 
+    /*流程部署名称*/
     private String deploymentName;
+    /*流程部署ID*/
     private String deploymentid;
+    /*请假单ID*/
     private Integer id;
+    /*任务ID*/
     private String taskId;
+    /*连接名称*/
+    private String outcome;
 
 }
