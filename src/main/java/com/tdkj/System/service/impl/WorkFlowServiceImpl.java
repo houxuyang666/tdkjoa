@@ -297,4 +297,44 @@ public class WorkFlowServiceImpl implements WorkFlowService {
             this.leavebillService.update(leavebill);
         }
     }
+
+    @Override
+    public ProcessDefinition queryPrcessDefinitionByTaskID(String taskId) {
+        //1.根据任务ID查询任务实例
+        Task task = this.taskService.createTaskQuery().taskId(taskId).singleResult();
+        //2.取出流程实例对象
+        String processInstanceId = task.getProcessInstanceId();
+        //3.根据流程实例ID查询流程实例对象
+        ProcessInstance processInstance = this.runtimeService.createProcessInstanceQuery().processInstanceId(processInstanceId).singleResult();
+        //4.取出流程部署对象
+        String processDefinitionId = processInstance.getProcessDefinitionId();
+        //查询流程定义对象
+        ProcessDefinition processDefinition = this.repositoryService.createProcessDefinitionQuery().processDefinitionId(processDefinitionId).singleResult();
+        return processDefinition;
+    }
+
+    @Override
+    public Map<String, Object> queryTaskCoordinateByTaskId(String taskId) {
+        Map<String,Object> coordinate =new HashMap<>();
+        //1.根据任务ID查询任务实例
+        Task task =this.taskService.createTaskQuery().taskId(taskId).singleResult();
+        //2.取出流程定义ID
+        String processDefinitionId =task.getProcessDefinitionId();
+        //3.取出实例ID
+        String processInstanceId = task.getProcessInstanceId();
+        //4.根据流程实例ID查询流程实例
+        ProcessInstance processInstance = this.runtimeService.createProcessInstanceQuery().processInstanceId(processInstanceId).singleResult();
+        //5.根据流程定义ID查询流程定义的xml信息
+        ProcessDefinitionEntity processDefinition = (ProcessDefinitionEntity)this.repositoryService.getProcessDefinition(processDefinitionId);
+        //6.从流程实例对象里面取出当前活动节点ID
+        String activityId = processInstance.getActivityId();
+        //7.使用活动id取出xml和当前活动相关的节点数据
+        ActivityImpl activity = processDefinition.findActivity(activityId);
+        //8.才能够activity取出坐标信息
+        coordinate.put("x", activity.getX());
+        coordinate.put("y", activity.getY());
+        coordinate.put("width", activity.getWidth());
+        coordinate.put("height", activity.getHeight());
+        return coordinate;
+    }
 }

@@ -27,10 +27,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static com.tdkj.System.common.OAResultType.*;
 
@@ -239,9 +236,29 @@ public class WorkFlowController {
             e.printStackTrace();
             return OAResponse.setResult(500,"任务完成失败");
         }
+    }
 
+
+    /*根据任务ID查看流程进度图*/
+    @ResponseBody
+    @RequestMapping("/toViewProcessByTaskID")
+    public ModelAndView doTask(String taskId) {
+        ModelAndView modelAndView = new ModelAndView();
+        //取出流程部署id
+        ProcessDefinition processDefinition=this.workFlowService.queryPrcessDefinitionByTaskID(taskId);
+        String deploymentId = processDefinition.getDeploymentId();
+        //根据任务ID查询节点坐标
+        Map<String,Object> coordinate =this.workFlowService.queryTaskCoordinateByTaskId(taskId);
+
+        modelAndView.setViewName("page/Test/viewProcessImage");
+        /*这里只是将部署ID传到页面 页面上会请求viewProcessImage 这个方法来获取图片流并显示*/
+        modelAndView.addObject("deploymentId",deploymentId);
+        modelAndView.addObject("c",coordinate);
+        return modelAndView;
 
     }
+
+
 
 
 

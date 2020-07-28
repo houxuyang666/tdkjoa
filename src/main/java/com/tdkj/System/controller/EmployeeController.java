@@ -139,6 +139,8 @@ public class EmployeeController {
         }
         employee.setCorpid(corpbasicinfo.getCorpid());
         employee.setDepartmentid(departmentid);
+        /*上级领导的employee的ID*/
+        employee.setSuperid(1);
         employee.setName(name);
         employee.setJobtitle(jobtitle);
         employee.setIdcardtype(idcardtype);
@@ -211,4 +213,4 @@ public class EmployeeController {
         }while(1!=value);
         return OAResponse.setResult(HTTP_RNS_CODE_200,ADD_SUCCESS);
     }
-    }
+}

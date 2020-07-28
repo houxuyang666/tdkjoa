@@ -88,4 +88,12 @@ public interface EmployeeDao {
      * @return int
      **/
     int queryByUserIdGetDeptID(Integer employeeid);
+    /**
+     * @Author houxuyang
+     * @Description //根据用户id获取上级领导信息
+     * @Date 16:10 2020/7/20
+     * @Param [userid]
+     * @return int
+     **/
+    Employee querySuperById(Integer employeeid);
 }

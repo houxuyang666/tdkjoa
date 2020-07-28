@@ -309,4 +309,12 @@
         select DepartmentId from employee where EmployeeId = #{employeeid}
     </select>
 
+
+    <!--根据用户ID获取上级领导信息-->
+    <select id="querySuperById" resultMap="EmployeeMap">
+        select
+          EmployeeId, CorpId, DepartmentId, SuperID, Name, JobTitle, IdcardType, IdcardNumber, Status, Gender, Age, Nation, EduLevel, Birthday, Address, EntryDate, RegularDate, DepartureDate, HeadimageUrl, PoliticsType, CellPhone, Email, AuthorizationCode, UrgentLinkMan, UrgentLinkManPhone, PositiveIdCardImageurl, NegativeIdCardImageurl, FileinfoId, CreateDate, ModifyDate
+        from employee
+        where EmployeeId =(select SuperID from employee where EmployeeId= #{employeeid})
+    </select>
 </mapper>

@@ -83,4 +83,11 @@ public interface EmployeeService {
      * @return int
      **/
     int queryByUserIdGetDeptID(Integer employeeid);
+
+    /**
+     * 获取当前用户的上级领导
+     * @param employeeid
+     * @return
+     */
+    Employee querySuperById(Integer employeeid);
 }

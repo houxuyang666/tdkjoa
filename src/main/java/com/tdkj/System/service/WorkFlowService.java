@@ -2,9 +2,11 @@ package com.tdkj.System.service;
 
 import com.github.pagehelper.PageInfo;
 import com.tdkj.System.entity.Leavebill;
+import org.activiti.engine.repository.ProcessDefinition;
 
 import java.io.InputStream;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author hxy
@@ -30,4 +32,8 @@ public interface WorkFlowService {
     PageInfo queryCommentByTaskId(String taskId);
     /*完成任务*/
     void completeTask(Integer leavebillId,String taskId,String comments, String outcome);
+    /*根据任务ID查询流程定义对象*/
+    ProcessDefinition queryPrcessDefinitionByTaskID(String taskId);
+    /*根据任务ID查询节点坐标*/
+    Map<String, Object> queryTaskCoordinateByTaskId(String taskId);
 }

@@ -1,11 +1,7 @@
 package com.tdkj.System.activiti.personTask;
 
-import com.tdkj.System.entity.Department;
 import com.tdkj.System.entity.Employee;
-import com.tdkj.System.entity.User;
-import com.tdkj.System.service.DepartmentService;
 import com.tdkj.System.service.EmployeeService;
-import com.tdkj.System.service.UserService;
 import com.tdkj.System.utils.ShiroUtils;
 import org.activiti.engine.delegate.DelegateTask;
 import org.activiti.engine.delegate.TaskListener;
@@ -38,16 +34,10 @@ public class TaskListenerImpl implements TaskListener {
                 .getWebApplicationContext(request.getServletContext());
         //从IOC容器里面取出UserService
         EmployeeService employeeService=applicationContext.getBean(EmployeeService.class);
-        DepartmentService departmentService=applicationContext.getBean(DepartmentService.class);
-        UserService userService=applicationContext.getBean(UserService.class);
 
-        //1.获取当前用户
-        Employee employee =employeeService.queryById(ShiroUtils.getPrincipal().getEmployeeid());
-        //2.取出领导信息
-        Department department =departmentService.queryById(employee.getDepartmentid());
-        User departmentUser =userService.queryById(department.getDeptheadid());
-        Employee departmentemployee =employeeService.queryById(departmentUser.getEmployeeid());
-        //3.指定办理人
-        delegateTask.setAssignee(departmentemployee.getName());
+        //1.根据用户id获取当前用户的上级领导
+        Employee employee =employeeService.querySuperById(ShiroUtils.getPrincipal().getEmployeeid());
+        //2.指定办理人
+        delegateTask.setAssignee(employee.getName());
     }
 }

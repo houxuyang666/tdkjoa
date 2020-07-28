@@ -92,4 +92,9 @@ public class EmployeeServiceImpl implements EmployeeService {
     public int queryByUserIdGetDeptID(Integer employeeid) {
         return this.employeeDao.queryByUserIdGetDeptID(employeeid);
     }
+
+    @Override
+    public Employee querySuperById(Integer employeeid) {
+        return this.employeeDao.querySuperById(employeeid);
+    }
 }
