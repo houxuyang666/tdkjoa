@@ -6,6 +6,7 @@
         <result property="employeeid" column="EmployeeId" jdbcType="INTEGER"/>
         <result property="corpid" column="CorpId" jdbcType="INTEGER"/>
         <result property="departmentid" column="DepartmentId" jdbcType="INTEGER"/>
+        <result property="superid" column="SuperID" jdbcType="INTEGER"/>
         <result property="name" column="Name" jdbcType="VARCHAR"/>
         <result property="jobtitle" column="JobTitle" jdbcType="VARCHAR"/>
         <result property="idcardtype" column="IdcardType" jdbcType="INTEGER"/>
@@ -15,11 +16,11 @@
         <result property="age" column="Age" jdbcType="INTEGER"/>
         <result property="nation" column="Nation" jdbcType="VARCHAR"/>
         <result property="edulevel" column="EduLevel" jdbcType="INTEGER"/>
-        <result property="birthday" column="Birthday" jdbcType="DATE"/>
+        <result property="birthday" column="Birthday" jdbcType="OTHER"/>
         <result property="address" column="Address" jdbcType="VARCHAR"/>
-        <result property="entrydate" column="EntryDate" jdbcType="DATE"/>
-        <result property="regulardate" column="RegularDate" jdbcType="DATE"/>
-        <result property="departuredate" column="DepartureDate" jdbcType="DATE"/>
+        <result property="entrydate" column="EntryDate" jdbcType="OTHER"/>
+        <result property="regulardate" column="RegularDate" jdbcType="OTHER"/>
+        <result property="departuredate" column="DepartureDate" jdbcType="OTHER"/>
         <result property="headimageurl" column="HeadimageUrl" jdbcType="VARCHAR"/>
         <result property="politicstype" column="PoliticsType" jdbcType="INTEGER"/>
         <result property="cellphone" column="CellPhone" jdbcType="VARCHAR"/>
@@ -37,7 +38,7 @@
     <!--查询单个-->
     <select id="queryById" resultMap="EmployeeMap">
         select
-          EmployeeId, CorpId, DepartmentId, Name, JobTitle, IdcardType, IdcardNumber, Status, Gender, age, Nation, EduLevel, Birthday, Address, EntryDate, RegularDate, DepartureDate, HeadimageUrl, PoliticsType, CellPhone, Email, AuthorizationCode,  UrgentLinkMan, UrgentLinkManPhone, PositiveIdCardImageurl, NegativeIdCardImageurl, FileinfoId, CreateDate, ModifyDate
+          EmployeeId, CorpId, DepartmentId, SuperID, Name, JobTitle, IdcardType, IdcardNumber, Status, Gender, Age, Nation, EduLevel, Birthday, Address, EntryDate, RegularDate, DepartureDate, HeadimageUrl, PoliticsType, CellPhone, Email, AuthorizationCode, UrgentLinkMan, UrgentLinkManPhone, PositiveIdCardImageurl, NegativeIdCardImageurl, FileinfoId, CreateDate, ModifyDate
         from employee
         where EmployeeId = #{employeeid}
     </select>
@@ -45,7 +46,7 @@
     <!--查询指定行数据-->
     <select id="queryAllByLimit" resultMap="EmployeeMap">
         select
-          EmployeeId, CorpId, DepartmentId, Name, JobTitle, IdcardType, IdcardNumber, Status, Gender, age, Nation, EduLevel, Birthday, Address, EntryDate, RegularDate, DepartureDate, HeadimageUrl, PoliticsType, CellPhone, Email, AuthorizationCode,  UrgentLinkMan, UrgentLinkManPhone, PositiveIdCardImageurl, NegativeIdCardImageurl, FileinfoId, CreateDate, ModifyDate
+          EmployeeId, CorpId, DepartmentId, SuperID, Name, JobTitle, IdcardType, IdcardNumber, Status, Gender, Age, Nation, EduLevel, Birthday, Address, EntryDate, RegularDate, DepartureDate, HeadimageUrl, PoliticsType, CellPhone, Email, AuthorizationCode, UrgentLinkMan, UrgentLinkManPhone, PositiveIdCardImageurl, NegativeIdCardImageurl, FileinfoId, CreateDate, ModifyDate
         from employee
         limit #{offset}, #{limit}
     </select>
@@ -53,9 +54,9 @@
     <!--通过实体作为筛选条件查询-->
     <select id="queryAll" resultMap="EmployeeMap">
         select
-        EmployeeId, CorpId, DepartmentId, Name, JobTitle, IdcardType, IdcardNumber, Status, Gender, age, Nation,
-        EduLevel, Birthday, Address, EntryDate, RegularDate, DepartureDate, HeadimageUrl, PoliticsType, CellPhone,
-        Email, AuthorizationCode, UrgentLinkMan, UrgentLinkManPhone, PositiveIdCardImageurl,
+        EmployeeId, CorpId, DepartmentId, SuperID, Name, JobTitle, IdcardType, IdcardNumber, Status, Gender, Age,
+        Nation, EduLevel, Birthday, Address, EntryDate, RegularDate, DepartureDate, HeadimageUrl, PoliticsType,
+        CellPhone, Email, AuthorizationCode, UrgentLinkMan, UrgentLinkManPhone, PositiveIdCardImageurl,
         NegativeIdCardImageurl, FileinfoId, CreateDate, ModifyDate
         from employee
         <where>
@@ -67,6 +68,9 @@
             </if>
             <if test="departmentid != null">
                 and DepartmentId = #{departmentid}
+            </if>
+            <if test="superid != null">
+                and SuperID = #{superid}
             </if>
             <if test="name != null and name != ''">
                 and Name = #{name}
@@ -87,12 +91,12 @@
                 and Gender = #{gender}
             </if>
             <if test="age != null">
-                and age = #{age}
+                and Age = #{age}
             </if>
             <if test="nation != null and nation != ''">
                 and Nation = #{nation}
             </if>
-            <if test="edulevel != null and edulevel != ''">
+            <if test="edulevel != null">
                 and EduLevel = #{edulevel}
             </if>
             <if test="birthday != null">
@@ -151,8 +155,8 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="employeeid" useGeneratedKeys="true">
-        insert into employee(CorpId, DepartmentId, Name, JobTitle, IdcardType, IdcardNumber, Status, Gender, age, Nation, EduLevel, Birthday, Address, EntryDate, RegularDate, DepartureDate, HeadimageUrl, PoliticsType, CellPhone, Email, AuthorizationCode,  UrgentLinkMan, UrgentLinkManPhone, PositiveIdCardImageurl, NegativeIdCardImageurl, FileinfoId, CreateDate, ModifyDate)
-        values (#{corpid}, #{departmentid}, #{name}, #{jobtitle}, #{idcardtype}, #{idcardnumber}, #{status}, #{gender}, #{age}, #{nation}, #{edulevel}, #{birthday}, #{address}, #{entrydate}, #{regulardate}, #{departuredate}, #{headimageurl}, #{politicstype}, #{cellphone}, #{email}, #{authorizationcode}, #{urgentlinkman}, #{urgentlinkmanphone}, #{positiveidcardimageurl}, #{negativeidcardimageurl}, #{fileinfoid}, #{createdate}, #{modifydate})
+        insert into employee(CorpId, DepartmentId, SuperID, Name, JobTitle, IdcardType, IdcardNumber, Status, Gender, Age, Nation, EduLevel, Birthday, Address, EntryDate, RegularDate, DepartureDate, HeadimageUrl, PoliticsType, CellPhone, Email, AuthorizationCode, UrgentLinkMan, UrgentLinkManPhone, PositiveIdCardImageurl, NegativeIdCardImageurl, FileinfoId, CreateDate, ModifyDate)
+        values (#{corpid}, #{departmentid}, #{superid}, #{name}, #{jobtitle}, #{idcardtype}, #{idcardnumber}, #{status}, #{gender}, #{age}, #{nation}, #{edulevel}, #{birthday}, #{address}, #{entrydate}, #{regulardate}, #{departuredate}, #{headimageurl}, #{politicstype}, #{cellphone}, #{email}, #{authorizationcode}, #{urgentlinkman}, #{urgentlinkmanphone}, #{positiveidcardimageurl}, #{negativeidcardimageurl}, #{fileinfoid}, #{createdate}, #{modifydate})
     </insert>
 
     <!--通过主键修改数据-->
@@ -164,6 +168,9 @@
             </if>
             <if test="departmentid != null">
                 DepartmentId = #{departmentid},
+            </if>
+            <if test="superid != null">
+                SuperID = #{superid},
             </if>
             <if test="name != null and name != ''">
                 Name = #{name},
@@ -184,12 +191,12 @@
                 Gender = #{gender},
             </if>
             <if test="age != null">
-                age = #{age},
+                Age = #{age},
             </if>
             <if test="nation != null and nation != ''">
                 Nation = #{nation},
             </if>
-            <if test="edulevel != null and edulevel != ''">
+            <if test="edulevel != null">
                 EduLevel = #{edulevel},
             </if>
             <if test="birthday != null">
@@ -254,7 +261,7 @@
 
     <!--查询单个-->
     <select id="getName" resultType="java.lang.String">
-        select name from employee
+        select Name from employee
         where EmployeeId = #{employeeid}
     </select>
 
@@ -265,6 +272,7 @@
 				c.CorpName as  corpname,
 				e.DepartmentId as  departmentid,
 				d.DeptName as deptname,
+				e.SuperID as superid,
 				e.Name as name,
 				e.JobTitle as jobtitle,
 				e.IdcardType as idcardtype,
@@ -300,7 +308,5 @@
     <select id="queryByUserIdGetDeptID" resultType="java.lang.Integer">
         select DepartmentId from employee where EmployeeId = #{employeeid}
     </select>
-
-
 
 </mapper>
