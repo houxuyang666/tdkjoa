@@ -124,6 +124,14 @@
         </where>
     </select>
 
+    <select id="queryAlls" resultMap="CorpbasicinfoMap">
+     select
+    CorpId, CorpCode, CorpName, CorpType, LicenseNum, Address, ZipCode, LegalMan, LegalManDuty, LegalManIdCardType,
+    LegalManIdCardNumber, RegisterDate, EstablishDate, OfficPhone, FaxNumber, LinkMan, LinkPhone, SignName, SignUrl,
+    Email, Website, CreateDate, ModifyDate
+    from corpbasicinfo
+    </select>
+
     <!--新增所有列-->
     <insert id="insert" keyProperty="corpid" useGeneratedKeys="true">
         insert into corpbasicinfo(CorpCode, CorpName, CorpType, LicenseNum, Address, ZipCode, LegalMan, LegalManDuty, LegalManIdCardType, LegalManIdCardNumber, RegisterDate, EstablishDate, OfficPhone, FaxNumber, LinkMan, LinkPhone, SignName, SignUrl, Email, Website, CreateDate, ModifyDate)

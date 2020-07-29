@@ -1,5 +1,7 @@
 package com.tdkj.System.controller;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.tdkj.System.common.OAResponse;
 import com.tdkj.System.entity.Corpbasicinfo;
 import com.tdkj.System.entity.Log;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 
 import java.util.Date;
+import java.util.List;
 
 import static com.tdkj.System.common.OAResultCode.HTTP_RNS_CODE_200;
 import static com.tdkj.System.common.OAResultCode.HTTP_RNS_CODE_500;
@@ -45,6 +48,11 @@ public class CorpbasicinfoController {
     @RequestMapping("goadd")
     public String goadd() {
         return "page/table/addcorpbasicinfo";
+    }
+
+    @RequestMapping("showcompany")
+    public String showcompany() {
+        return "page/companylist";
     }
 
     @Transactional
@@ -85,6 +93,15 @@ public class CorpbasicinfoController {
             Log log = LogUtils.setLog("添加公司"+corpname);
             logService.insert(log);
         return OAResponse.setResult(HTTP_RNS_CODE_200,ADD_SUCCESS);
+    }
+
+
+    @RequestMapping("getcompanylist")
+    @ResponseBody
+    public PageInfo<Corpbasicinfo> getcompanylist(Integer page, Integer limit){
+        PageHelper.startPage(page,limit);
+        PageInfo<Corpbasicinfo> pageInfo = new PageInfo<>(corpbasicinfoService.queryAlls());
+        return pageInfo;
     }
 
 }

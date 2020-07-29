@@ -70,4 +70,7 @@ public interface CorpbasicinfoService {
      * @return com.tdkj.System.entity.Corpbasicinfo
      **/
     Corpbasicinfo queryByemployeeId(Integer employeeid);
+
+
+    List<Corpbasicinfo> queryAlls();
 }

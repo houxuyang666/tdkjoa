@@ -64,20 +64,28 @@ public interface CorpbasicinfoDao {
     int deleteById(Integer corpid);
 
     /**
+     * @return com.tdkj.System.entity.Corpbasicinfo
      * @Author houxuyang
      * @Description //企业编号查询企业是否存在
      * @Date 9:29 2020/7/20
      * @Param [corpcode]
-     * @return com.tdkj.System.entity.Corpbasicinfo
      **/
     Corpbasicinfo queryByCode(String corpcode);
 
     /**
+     * @return com.tdkj.System.entity.Corpbasicinfo
      * @Author houxuyang
      * @Description //根据用户id查询用户所属公司信息
      * @Date 9:49 2020/7/21
      * @Param [employeeid]
-     * @return com.tdkj.System.entity.Corpbasicinfo
      **/
     Corpbasicinfo queryByemployeeId(Integer employeeid);
+
+    /**
+     * @return java.util.List<com.tdkj.System.entity.Corpbasicinfo>
+     * @author Chang
+     * @description
+     * @date 2020/7/28 15:43
+     */
+    List<Corpbasicinfo> queryAlls();
 }

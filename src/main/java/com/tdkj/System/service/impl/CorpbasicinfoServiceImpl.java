@@ -87,4 +87,9 @@ public class CorpbasicinfoServiceImpl implements CorpbasicinfoService {
         System.out.println("进入这里了吗");
         return this.corpbasicinfoDao.queryByemployeeId(employeeid);
     }
+
+    @Override
+    public List<Corpbasicinfo> queryAlls() {
+        return this.corpbasicinfoDao.queryAlls();
+    }
 }

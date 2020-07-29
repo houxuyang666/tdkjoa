@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:shiro="http://www.w3.org/1999/xhtml">
+<html xmlns:shiro="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>公司列表</title>
@@ -49,21 +49,22 @@
 
             <script type="text/html" id="toolbar">
                 <div class="layui-btn-container">
-                    <button shiro:hasPermission="company:add" class="layui-btn layui-btn-normal layui-btn-sm " lay-event="add"><i class="layui-icon">&#xe654;</i>
+                    <button class="layui-btn layui-btn-normal layui-btn-sm " lay-event="add"><i class="layui-icon">&#xe654;</i>
                         添加
                     </button>
-                    <button shiro:hasPermission="company:update" class="layui-btn layui-btn-sm layui-btn-warm " lay-event="update"><i class="layui-icon">&#xe642;</i>修改
+                    <button class="layui-btn layui-btn-sm layui-btn-warm " lay-event="update"><i class="layui-icon">&#xe642;</i>修改
                     </button>
-                   <!-- <button class="layui-btn layui-btn-sm layui-btn-danger" lay-event="deleteRows"><i
-                            class="layui-icon">&#xe640;</i>多行删除
-                    </button>-->
+                    <!-- <button class="layui-btn layui-btn-sm layui-btn-danger" lay-event="deleteRows"><i
+                             class="layui-icon">&#xe640;</i>多行删除
+                     </button>-->
                     <button class="layui-btn layui-btn-sm " lay-event="refresh"><i class="layui-icon">&#xe669;</i>刷新
                     </button>
                 </div>
             </script>
 
             <script type="text/html" id="currentTableBar">
-                <a  shiro:hasPermission="company:delete" class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="delete"><i class="layui-icon">&#xe640;</i>删除</a>
+                <a class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="delete"><i
+                        class="layui-icon">&#xe640;</i>删除</a>
             </script>
 
         </div>
@@ -71,7 +72,7 @@
 </div>
 
 <script src="/statics/lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
-<script type="text/javascript" th:inline="none">
+<script type="text/javascript">
     layui.use(['form', 'table'], function () {
         var $ = layui.jquery,
             form = layui.form,
@@ -80,31 +81,49 @@
         //实例化表格
         table.render({
             elem: '#companyList',
-            url: '/company/selectcompany',
+            url: '/corpbasicinfo/getcompanylist',
             toolbar: '#toolbar',
             defaultToolbar: ['filter', 'exports', 'print'],
             parseData: function (res) { //res 即为原始返回的数据
                 return {
-                    "code": res.code, //解析接口状态
-                    "msg": res.message, //解析提示文本
-                    "count": res.data.total, //解析数据长度
-                    "data": res.data.list //解析数据列表
+                    "code": 0, //解析接口状态
+                    "msg": "网络异常,刷新一下再试", //解析提示文本
+                    "count": res.total, //解析数据长度
+                    "data": res.list //解析数据列表
                 };
             },
-            cols: [[
-                {field: "checkbox", type: 'checkbox'},
-                {field: "companyId", title: "公司编号", sort: true,},
-                {field: "companyName", title: "公司名称"},
-                {field: "vehicleOfficerName", title: "车辆负责人",},
-                {field: "vehicleOfficerTel", title: "车辆负责人电话"},
-                {field: "companyAddress", title: "公司地址",},
-                {
-                    field: "createTime", title: "录入时间", sort: true, templet: function (d) {
-                        return layui.util.toDateString(d.createTime, 'yyyy-MM-dd HH:mm:ss');
-                    }
-                },
-                {title: '操作', toolbar: '#currentTableBar', align: "center", fixed: 'right'}
-            ]],
+            cols: [
+                [
+                    {field: "checkbox", type: 'checkbox',fixed: 'left'},
+                    {field: "corpid", title: "公司编号", sort: true,fixed: 'left'},
+                    {field: "corpcode", title: "统一社会信用代码"},
+                    {field: "corpname", title: "公司名称"},
+                    {field: "corptype", title: "企业登记注册类型"},
+                    {field: "licensenum", title: "工商营业执照注册号"},
+                    {field: "address", title: "公司地址"},
+                    {field: "zipcode", title: "邮政编码"},
+                    {field: "legalman", title: "法定代表人姓名"},
+                    {field: "legalmanduty", title: "法定代表人职务"},
+                    {field: "legalmanidcardtype", title: "法定代表人证件类型"},
+                    {field: "legalmanidcardnumber", title: "法定代表人证件号码"},
+                    {field: "registerdate", title: "注册日期"},
+                    {field: "establishdate", title: "成立日期"},
+                    {field: "officphone", title: "办公电话"},
+                    {field: "faxnumber", title: "传真号码"},
+                    {field: "linkman", title: "联系人姓名"},
+                    {field: "linkphone", title: "联系人电话"},
+                    {field: "signname", title: "电子签名名称"},
+                    {field: "signurl", title: "电子签名URL"},
+                    {field: "email", title: "企业邮箱"},
+                    {field: "website", title: "企业网址"},
+                    {
+                        field: "createTime", title: "录入时间", sort: true, templet: function (d) {
+                            return layui.util.toDateString(d.createTime, 'yyyy-MM-dd HH:mm:ss');
+                        }
+                    },
+                    {title: '操作', toolbar: '#currentTableBar', align: "center", fixed: 'right'}
+                ]
+            ],
             limits: [10, 15, 20, 25, 50, 100],
             limit: 10,
             page: true
@@ -121,8 +140,8 @@
                     curr: 1
                 },
                 where: {
-                    companyName:formData.companyName,
-                    vehicleOfficerName:formData.vehicleOfficerName
+                    companyName: formData.companyName,
+                    vehicleOfficerName: formData.vehicleOfficerName
                 }
             }, "data");
             return false;
@@ -133,22 +152,22 @@
             var data = obj.data;
             if (obj.event === "delete") {
                 layer.msg(data.companyId);
-                layer.confirm("确定删除此用户吗?",function (index) {
+                layer.confirm("确定删除此用户吗?", function (index) {
                     //删除操作
                     $.ajax({
-                        url:"/company/delcompany",
-                        datatype:"json",
-                        type:"post",
-                        data:{companyId:data.companyId},
-                        success:function (res) {
-                            if(res.responseCode==200){
+                        url: "/company/delcompany",
+                        datatype: "json",
+                        type: "post",
+                        data: {companyId: data.companyId},
+                        success: function (res) {
+                            if (res.responseCode == 200) {
                                 layer.msg(res.message);
                                 layui.table.reload("companyList");
-                            }else {
+                            } else {
                                 layer.msg(res.message);
                             }
                         },
-                        error:function () {
+                        error: function () {
                             layer.msg("请求失败，请检查网络或联系管理员", {
                                 icon: 2,
                                 shade: this.shade,
@@ -170,9 +189,9 @@
                 case "add":
                     Add();
                     break;
-               /* case "deleteRows":
-                    DelRows(checkStatus);
-                    break;*/
+                /* case "deleteRows":
+                     DelRows(checkStatus);
+                     break;*/
                 case "update":
                     UpdateRow(checkStatus.data);
                     break;
@@ -193,7 +212,7 @@
             shadeClose: true,
             area: ['50%', '60%'],
             content: '/table/goaddcompany',
-            end:function () {
+            end: function () {
                 layui.table.reload("companyList");//添加成功后刷新表格
             }
         });
@@ -234,10 +253,10 @@
                 shadeClose: true,
                 area: ['50%', '60%'],
                 content: '/table/goupdatecompany',
-                success:function (layero,index) {
-                    var body=layer.getChildFrame('body',index);
+                success: function (layero, index) {
+                    var body = layer.getChildFrame('body', index);
                     //位子窗口元素赋值
-                    chkData.forEach(function (n,i) {
+                    chkData.forEach(function (n, i) {
                         body.contents().find('input[name="companyId"]').val(n.companyId);
                         body.contents().find('input[name="companyName"]').val(n.companyName);
                         body.contents().find('input[name="companyAddress"]').val(n.companyAddress);
@@ -245,7 +264,7 @@
                         body.contents().find('input[name="vehicleOfficerTel"]').val(n.vehicleOfficerTel);
                     });
                 },
-                end:function () {
+                end: function () {
                     layui.table.reload("companyList");//关闭弹窗后刷新页面
                 }
             });
