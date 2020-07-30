@@ -36,4 +36,8 @@ public interface WorkFlowService {
     ProcessDefinition queryPrcessDefinitionByTaskID(String taskId);
     /*根据任务ID查询节点坐标*/
     Map<String, Object> queryTaskCoordinateByTaskId(String taskId);
+    /*查询历史批注信息*/
+    PageInfo queryCommentByLeavebillid(Integer id);
+    /*根据当前用户名称查询用户审批记录*/
+    PageInfo queryCurrentUserHistoryTask(String name);
 }

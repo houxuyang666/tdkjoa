@@ -27,7 +27,7 @@
 
             </script>
                 <script type="text/html" id="leaveBillListBar">
-                    {{#  if(d.status==0||d.status==4){ }}
+                    {{#  if(d.status==0){ }}
                     <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="startProcess">提交申请</a>
                     <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
                     <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">删除</a>
@@ -37,6 +37,8 @@
                     <a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="viewSpProcess">审批查询</a>
                     {{#  } else if(d.status==3){ }}
                     <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">删除</a>
+                    <a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="viewSpProcess">审批查询</a>
+                    {{#  } else if(d.status==4){ }}
                     <a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="viewSpProcess">审批查询</a>
                     {{#  } }}
 
@@ -121,10 +123,10 @@
                     $.post("/leavebill/delete",{
                         id : data.id  //将需要删除的id作为参数传入
                     },function(data){
-                        //刷新table
-                        tableIns.reload();
                         //关闭提示框
                         layer.close(index);
+                        //刷新table
+                        table.reload();
                     })
                 });
             }else if(layEvent==="startProcess"){
@@ -182,12 +184,12 @@
         function startProcess(data){
             layer.confirm('确定要提交【'+data.title+'】请假单吗？',{icon:3, title:'提示信息'},function(index){
                 $.post("/workflow/startProcess",{
-                    leavbillid : data.id  //将需要删除的id作为参数传入
+                    leavbillid : data.id
                 },function(data){
-                    //刷新table
-                    tableIns.reload();
                     //关闭提示框
                     layer.close(index);
+                    //刷新table
+                    table.reload();
                 })
             });
         }
@@ -197,7 +199,7 @@
                 title : data.title+"的审批进度",
                 type : 2,
                 area:["800px","500px"],
-                content : "/workflow/viewSpProcess.action?id="+data.id,
+                content : "/workflow/viewSpProcess?id="+data.id,
                 success : function(layero, index){
                     setTimeout(function(){
                         layui.layer.tips('点击此处返回请假单列表', '.layui-layer-setwin .layui-layer-close', {
@@ -212,8 +214,6 @@
                 layui.layer.full(index);
             })
         }
-
-
     });
 </script>
 </body>

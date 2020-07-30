@@ -3,10 +3,14 @@ package com.tdkj.System.controller;
 import com.github.pagehelper.PageInfo;
 import com.tdkj.System.common.OAResponse;
 import com.tdkj.System.common.OAResponseList;
+import com.tdkj.System.entity.Employee;
 import com.tdkj.System.entity.Leavebill;
 import com.tdkj.System.entity.ect.ActProcessDefinitionEntity;
 import com.tdkj.System.entity.ect.ActdeploymentEntity;
+import com.tdkj.System.service.EmployeeService;
+import com.tdkj.System.service.LeavebillService;
 import com.tdkj.System.service.WorkFlowService;
+import com.tdkj.System.utils.ShiroUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.repository.Deployment;
@@ -45,6 +49,10 @@ public class WorkFlowController {
     private WorkFlowService workFlowService;
     @Autowired
     private RepositoryService repositoryService;
+    @Autowired
+    private LeavebillService leavebillService;
+    @Autowired
+    private EmployeeService employeeService;
 
 
     @RequestMapping("/goworkflow")
@@ -98,7 +106,7 @@ public class WorkFlowController {
 
     @RequestMapping("/goadd")
     public String goadd() {
-        return "page/Test/addworkflow";
+        return "page/workflow/addworkflow";
     }
 
 
@@ -141,7 +149,7 @@ public class WorkFlowController {
     public ModelAndView goviewProcessImage(String deploymentId) {
         log.info(deploymentId);
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("page/Test/viewProcessImage");
+        modelAndView.setViewName("page/workflow/viewProcessImage");
         modelAndView.addObject("deploymentId",deploymentId);
         return modelAndView;
     }
@@ -184,7 +192,7 @@ public class WorkFlowController {
     @RequestMapping("/goTaskManger")
     public String goTaskManger() {
         log.info("goTaskManger");
-        return "page/Test/taskManger";
+        return "page/workflow/taskManger";
     }
 
     /*查询我的代办任务*/
@@ -208,7 +216,7 @@ public class WorkFlowController {
         //2.根据任务ID查询连线信息
         List<String> outcomeName=this.workFlowService.queryOutComeByTaskId(taskId);
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("page/Test/dotaskManger");
+        modelAndView.setViewName("page/workflow/dotaskManger");
         modelAndView.addObject("leavebill",leavebill);
         modelAndView.addObject("outcomes",outcomeName);
         modelAndView.addObject("taskId",taskId);
@@ -250,18 +258,46 @@ public class WorkFlowController {
         //根据任务ID查询节点坐标
         Map<String,Object> coordinate =this.workFlowService.queryTaskCoordinateByTaskId(taskId);
 
-        modelAndView.setViewName("page/Test/viewProcessImage");
+        modelAndView.setViewName("page/workflow/viewProcessImage");
         /*这里只是将部署ID传到页面 页面上会请求viewProcessImage 这个方法来获取图片流并显示*/
         modelAndView.addObject("deploymentId",deploymentId);
         modelAndView.addObject("c",coordinate);
         return modelAndView;
-
     }
 
 
 
+    /*根据请假单ID查询审批批注信息和请假单信息*/
+    @RequestMapping("/viewSpProcess")
+    public ModelAndView viewSpProcess (Integer id){
+        ModelAndView modelAndView = new ModelAndView();
+        /*查询请假单信息*/
+        Leavebill leavebill = leavebillService.queryById(id);
+        modelAndView.setViewName("page/workflow/viewProcessView");
+        modelAndView.addObject("leavebill",leavebill);
+        return modelAndView;
+    }
+
+    /*根据请假单的ID 查询批注信息*/
+    @ResponseBody
+    @RequestMapping("/loadCommentByLeavebillid")
+    public OAResponseList loadCommentByLeavebillid (Integer id){
+        return OAResponseList.setResult(0,FIND_SUCCESS,this.workFlowService.queryCommentByLeavebillid(id));
+    }
+
+    /*查询我的审批记录*/
+    @RequestMapping("/goapprovalrecord")
+    public String goapprovalrecord (){
+        return "page/workflow/viewapprovalrecord";
+    }
 
 
+    @ResponseBody
+    @RequestMapping("/queryCurrentUserHistoryTask")
+    public OAResponseList queryCurrentUserHistoryTask (){
+        Employee employee = employeeService.queryById(ShiroUtils.getPrincipal().getEmployeeid());
 
-
+        PageInfo pageInfo =this.workFlowService.queryCurrentUserHistoryTask(employee.getName());
+        return OAResponseList.setResult(0,FIND_SUCCESS,pageInfo);
+    }
 }

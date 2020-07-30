@@ -16,6 +16,8 @@ import com.tdkj.System.service.WorkFlowService;
 import com.tdkj.System.utils.ShiroUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.activiti.engine.*;
+import org.activiti.engine.history.HistoricProcessInstance;
+import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.impl.identity.Authentication;
 import org.activiti.engine.impl.persistence.entity.ProcessDefinitionEntity;
 import org.activiti.engine.impl.pvm.PvmTransition;
@@ -155,7 +157,8 @@ public class WorkFlowServiceImpl implements WorkFlowService {
     @Override
     public void startProcess(Integer leavbillid) {
         //找到流程的KEY
-        String processDefinitionKey = Leavebill.class.getSimpleName(); //获取对象名称
+        //String processDefinitionKey = Leavebill.class.getSimpleName(); //获取对象名称
+        String processDefinitionKey = "LeavebillOr"; //获取对象名称
         String businessKey =processDefinitionKey+":"+leavbillid; //"Leavbill:1"
         Map<String, Object> variables =new HashMap<>();
         /*设置流程变量获取当前用户 也就是谁提交的请假单（设置下个流程的办理人）*/
@@ -262,6 +265,9 @@ public class WorkFlowServiceImpl implements WorkFlowService {
         log.info("批注信息："+comments);
         log.info("操作："+outcome);
         log.info("请假单ID："+leavebillId.toString());
+        Leavebill leavebill =new Leavebill();
+        leavebill.setId(leavebillId);
+
         //1.根据任务ID 查询任务实例
         Task task = this.taskService.createTaskQuery().taskId(taskId).singleResult();
         //2.从任务里面取出流程实例ID
@@ -274,22 +280,26 @@ public class WorkFlowServiceImpl implements WorkFlowService {
         Authentication.setAuthenticatedUserId(name);
         //3.添加批注信息
         taskService.addComment(taskId,processInstanceID,"["+outcome+"]"+comments);
-        Map<String, Object> map =new HashMap<>();
-        map.put("outcome",outcome);
-        this.taskService.complete(taskId, map);
+
+        Map<String, Object> variables = new HashMap<>();
+        variables.put("outcome", outcome);
+        this.taskService.complete(taskId, variables);
+        if("驳回".equals(outcome)){
+            this.runtimeService.deleteProcessInstance(task.getProcessInstanceId(),"驳回");
+        }else if ("放弃".equals(outcome)){
+            this.runtimeService.deleteProcessInstance(task.getProcessInstanceId(), "放弃");
+        }
         //判断流程是否结束
         /*act_ru_task*/
         //已知流程实例ID
         ProcessInstance processInstance = this.runtimeService.createProcessInstanceQuery()
                 .processInstanceId(processInstanceID).singleResult();
-        if(null==processInstance){
-            Leavebill leavebill =new Leavebill();
-            leavebill.setId(leavebillId);
+        if(null==processInstance) {
             /*说明流程结束*/
             log.info("流程已结束");
-            if(outcome.equals("放弃")){
+            if (outcome.equals("放弃")) {
                 leavebill.setStatus(AuditStatusEnmu.give_up.getCode());
-            }else if (outcome.equals("驳回")){
+            }else if("驳回".equals(outcome)){
                 leavebill.setStatus(AuditStatusEnmu.rejected.getCode());
             }else{
                 leavebill.setStatus(AuditStatusEnmu.Review_completed.getCode());
@@ -336,5 +346,38 @@ public class WorkFlowServiceImpl implements WorkFlowService {
         coordinate.put("width", activity.getWidth());
         coordinate.put("height", activity.getHeight());
         return coordinate;
+    }
+
+    @Override
+    public PageInfo queryCommentByLeavebillid(Integer id) {
+        //组装businessKey
+        //String businessKey =Leavebill.class.getSimpleName()+":"+id;
+        String businessKey ="LeavebillOr"+":"+id;
+
+        HistoricProcessInstance historicProcessInstance = this.historyService.createHistoricProcessInstanceQuery().processInstanceBusinessKey(businessKey).singleResult();
+        /*获取历史流程实例id*/
+        //使用taskservice+流程实例ID查询批注
+        List<Comment> comments = this.taskService.getProcessInstanceComments(historicProcessInstance.getId());
+        List<ActCommentEntity> data= new ArrayList<>();
+                if(null!=comments&& comments.size()>0){
+                    for (Comment comment : comments) {
+                        ActCommentEntity entity =new ActCommentEntity();
+                        BeanUtils.copyProperties(comment,entity);
+                        data.add(entity);
+                    }
+                }
+        PageInfo pageInfo =new PageInfo();
+        pageInfo.setList(data);
+        pageInfo.setTotal(data.size());
+        return pageInfo;
+    }
+
+    @Override
+    public PageInfo queryCurrentUserHistoryTask(String name) {
+        PageInfo pageInfo =new PageInfo();
+        pageInfo.setTotal(this.historyService.createHistoricTaskInstanceQuery().taskAssignee(name).count());
+        List<HistoricTaskInstance> list = this.historyService.createHistoricTaskInstanceQuery().taskAssignee(name).list();
+        pageInfo.setList(list);
+        return pageInfo;
     }
 }

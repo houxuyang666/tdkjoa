@@ -26,13 +26,15 @@ public class ApplicationRunnerImpl implements ApplicationRunner {
     public void run(ApplicationArguments args) throws Exception {
         Resource[] resources = null;
         try {
-            resources = new PathMatchingResourcePatternResolver().getResources("classpath:processes/Leavebill.bpmn");
+            //resources = new PathMatchingResourcePatternResolver().getResources("classpath:processes/Leavebill.bpmn"); LeavebillOr
+            resources = new PathMatchingResourcePatternResolver().getResources("classpath:processes/*.bpmn");
+
         } catch (IOException e) {
             e.printStackTrace();
         }
         for (Resource r : resources) {
             String addr = "processes/" + r.getFilename();
-            repositoryService.createDeployment().addClasspathResource(addr).name("请假流程").deploy();
+            repositoryService.createDeployment().addClasspathResource(addr).name("流程").deploy();
         }
     }
 }

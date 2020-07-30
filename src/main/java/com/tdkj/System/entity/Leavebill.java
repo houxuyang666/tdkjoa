@@ -1,5 +1,6 @@
 package com.tdkj.System.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -30,6 +31,7 @@ public class Leavebill implements Serializable {
     /**
      * 申请时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date leavetime;
     /**
      * 0 未提交 1审批中 2审批完成 3 已放弃

@@ -14,17 +14,16 @@
 <input id="deptid" type="hidden" th:value="${deploymentId}">
 <img id="lct" alt="流程图" src="">
 
-<div id="lctdiv" style="position: absolute;"></div>
-
-
-<input id="divleft" type="hidden" th:value="${c.x}">
-<input id="divtop" type="hidden" th:value="${c.y}">
-<input id="divwidth" type="hidden" th:value="${c.width}">
-<input id="divheight" type="hidden" th:value="${c.height}">
+<div th:if="${c!=null}" id="lctdiv" style="position: absolute;">
+    <input id="divleft" type="hidden" th:value="${c.x}">
+    <input id="divtop" type="hidden" th:value="${c.y}">
+    <input id="divwidth" type="hidden" th:value="${c.width}">
+    <input id="divheight" type="hidden" th:value="${c.height}">
+</div>
 </body>
 <script>
     var a=document.getElementById("deptid").value;
-    document.getElementById("lct").src="/workflow/viewProcessImage?deploymentId="+a;
+            document.getElementById("lct").src="/workflow/viewProcessImage?deploymentId="+a;
     document.getElementById("lctdiv").style.left=document.getElementById("divleft").value+"px";
     document.getElementById("lctdiv").style.top=document.getElementById("divtop").value+"px";
     document.getElementById("lctdiv").style.width=document.getElementById("divwidth").value+"px";

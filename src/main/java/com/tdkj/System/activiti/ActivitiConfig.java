@@ -2,15 +2,11 @@ package com.tdkj.System.activiti;
 
 import lombok.extern.slf4j.Slf4j;
 import org.activiti.engine.*;
-import org.activiti.engine.repository.Deployment;
 import org.activiti.spring.SpringProcessEngineConfiguration;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.ResourceLoader;
-import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 
 import javax.sql.DataSource;
@@ -48,7 +44,7 @@ public class ActivitiConfig {
     /*  自动部署已有的流程文件
     作用相当于 (据bpmn文件部署流程repositoryService.createDeployment().addClasspathResource("singleAssignee.bpmn").deploy();)*/
 
-        //Resource[] resources = new PathMatchingResourcePatternResolver().getResources(ResourceLoader.CLASSPATH_URL_PREFIX + "*.bpmn");
+        //Resource[] resources = new PathMatchingResourcePatternResolver().getResources(ResourceLoader.CLASSPATH_URL_PREFIX + "processes/*.bpmn");
         configuration.setTransactionManager(transactionManager);
         //设置数据源
         configuration.setDataSource(dataSource);
