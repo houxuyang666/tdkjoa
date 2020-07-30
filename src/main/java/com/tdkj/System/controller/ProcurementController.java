@@ -141,7 +141,7 @@ public class ProcurementController {
     }
 
 
-
+    @ResponseBody
     @RequestMapping("/update")
     public OAResponse update(String proid,String prodate, Integer protype, String goodsname, String unit, String type, Integer number,
                              BigDecimal price, BigDecimal totalamount, String prodesc) throws Exception{
@@ -159,15 +159,6 @@ public class ProcurementController {
         this.procurementService.update(procurement);
         return OAResponse.setResult(200,UPDATE_SUCCESS);
     }
-
-
-
-
-
-
-
-
-
 
     @Transactional
     @ResponseBody
