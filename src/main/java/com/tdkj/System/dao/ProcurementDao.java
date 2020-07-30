@@ -1,6 +1,7 @@
 package com.tdkj.System.dao;
 
 import com.tdkj.System.entity.Procurement;
+import com.tdkj.System.entity.VO.ProcurementVO;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -63,4 +64,20 @@ public interface ProcurementDao {
      */
     int deleteById(String proid);
 
+    /**
+     * @Author houxuyang
+     * @Description //根据用户id查询所申请的采购单
+     * @Date 15:06 2020/7/30
+     * @Param [userid]
+     * @return java.util.List<com.tdkj.System.entity.Procurement>
+     **/
+    List<ProcurementVO> queryByApplicantId(Integer userid);
+    /**
+     * @Author houxuyang
+     * @Description //根据采购单ID查询信息，返回到页面
+     * @Date 16:39 2020/7/30
+     * @Param [proid]
+     * @return com.tdkj.System.entity.VO.ProcurementVO
+     **/
+    ProcurementVO queryProVOByProId(String proid);
 }

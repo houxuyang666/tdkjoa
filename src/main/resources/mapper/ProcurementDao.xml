@@ -10,15 +10,12 @@
         <result property="goodsname" column="GoodsName" jdbcType="VARCHAR"/>
         <result property="unit" column="Unit" jdbcType="VARCHAR"/>
         <result property="type" column="Type" jdbcType="VARCHAR"/>
-        <result property="numbe" column="Numbe" jdbcType="INTEGER"/>
+        <result property="number" column="Number" jdbcType="INTEGER"/>
         <result property="price" column="Price" jdbcType="NUMERIC"/>
         <result property="totalamount" column="TotalAmount" jdbcType="NUMERIC"/>
         <result property="applicantid" column="ApplicantId" jdbcType="INTEGER"/>
         <result property="applicationdeptid" column="ApplicationDeptId" jdbcType="INTEGER"/>
         <result property="prodesc" column="ProDesc" jdbcType="VARCHAR"/>
-        <result property="reviewer" column="Reviewer" jdbcType="INTEGER"/>
-        <result property="reviewerdesc" column="ReviewerDesc" jdbcType="VARCHAR"/>
-        <result property="acceptorid" column="AcceptorId" jdbcType="INTEGER"/>
         <result property="fileinfoid" column="FileinfoId" jdbcType="INTEGER"/>
         <result property="status" column="Status" jdbcType="INTEGER"/>
         <result property="createdate" column="CreateDate" jdbcType="TIMESTAMP"/>
@@ -28,25 +25,25 @@
     <!--查询单个-->
     <select id="queryById" resultMap="ProcurementMap">
         select
-          ProId, CorpId, ProDate, ProType, GoodsName, Unit, Type, Numbe, Price, TotalAmount, ApplicantId, ApplicationDeptId, ProDesc, Reviewer, ReviewerDesc, AcceptorId, FileinfoId, Status, CreateDate, ModifyDate
-        from tdkjoa.procurement
+          ProId, CorpId, ProDate, ProType, GoodsName, Unit, Type, Number, Price, TotalAmount, ApplicantId, ApplicationDeptId, ProDesc, FileinfoId, Status, CreateDate, ModifyDate
+        from procurement
         where ProId = #{proid}
     </select>
 
     <!--查询指定行数据-->
     <select id="queryAllByLimit" resultMap="ProcurementMap">
         select
-          ProId, CorpId, ProDate, ProType, GoodsName, Unit, Type, Numbe, Price, TotalAmount, ApplicantId, ApplicationDeptId, ProDesc, Reviewer, ReviewerDesc, AcceptorId, FileinfoId, Status, CreateDate, ModifyDate
-        from tdkjoa.procurement
+          ProId, CorpId, ProDate, ProType, GoodsName, Unit, Type, Number, Price, TotalAmount, ApplicantId, ApplicationDeptId, ProDesc, FileinfoId, Status, CreateDate, ModifyDate
+        from procurement
         limit #{offset}, #{limit}
     </select>
 
     <!--通过实体作为筛选条件查询-->
     <select id="queryAll" resultMap="ProcurementMap">
         select
-        ProId, CorpId, ProDate, ProType, GoodsName, Unit, Type, Numbe, Price, TotalAmount, ApplicantId,
-        ApplicationDeptId, ProDesc, Reviewer, ReviewerDesc, AcceptorId, FileinfoId, Status, CreateDate, ModifyDate
-        from tdkjoa.procurement
+        ProId, CorpId, ProDate, ProType, GoodsName, Unit, Type, Number, Price, TotalAmount, ApplicantId,
+        ApplicationDeptId, ProDesc, FileinfoId, Status, CreateDate, ModifyDate
+        from procurement
         <where>
             <if test="proid != null and proid != ''">
                 and ProId = #{proid}
@@ -69,8 +66,8 @@
             <if test="type != null and type != ''">
                 and Type = #{type}
             </if>
-            <if test="numbe != null">
-                and Numbe = #{numbe}
+            <if test="number != null">
+                and Number = #{number}
             </if>
             <if test="price != null">
                 and Price = #{price}
@@ -86,15 +83,6 @@
             </if>
             <if test="prodesc != null and prodesc != ''">
                 and ProDesc = #{prodesc}
-            </if>
-            <if test="reviewer != null">
-                and Reviewer = #{reviewer}
-            </if>
-            <if test="reviewerdesc != null and reviewerdesc != ''">
-                and ReviewerDesc = #{reviewerdesc}
-            </if>
-            <if test="acceptorid != null">
-                and AcceptorId = #{acceptorid}
             </if>
             <if test="fileinfoid != null">
                 and FileinfoId = #{fileinfoid}
@@ -113,13 +101,13 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="proid" useGeneratedKeys="true">
-        insert into tdkjoa.procurement(CorpId, ProDate, ProType, GoodsName, Unit, Type, Numbe, Price, TotalAmount, ApplicantId, ApplicationDeptId, ProDesc, Reviewer, ReviewerDesc, AcceptorId, FileinfoId, Status, CreateDate, ModifyDate)
-        values (#{corpid}, #{prodate}, #{protype}, #{goodsname}, #{unit}, #{type}, #{numbe}, #{price}, #{totalamount}, #{applicantid}, #{applicationdeptid}, #{prodesc}, #{reviewer}, #{reviewerdesc}, #{acceptorid}, #{fileinfoid}, #{status}, #{createdate}, #{modifydate})
+        insert into procurement(ProId,CorpId, ProDate, ProType, GoodsName, Unit, Type, Number, Price, TotalAmount, ApplicantId, ApplicationDeptId, ProDesc, FileinfoId, Status, CreateDate, ModifyDate)
+        values (#{proid},#{corpid}, #{prodate}, #{protype}, #{goodsname}, #{unit}, #{type}, #{number}, #{price}, #{totalamount}, #{applicantid}, #{applicationdeptid}, #{prodesc}, #{fileinfoid}, #{status}, #{createdate}, #{modifydate})
     </insert>
 
     <!--通过主键修改数据-->
     <update id="update">
-        update tdkjoa.procurement
+        update procurement
         <set>
             <if test="corpid != null">
                 CorpId = #{corpid},
@@ -139,8 +127,8 @@
             <if test="type != null and type != ''">
                 Type = #{type},
             </if>
-            <if test="numbe != null">
-                Numbe = #{numbe},
+            <if test="number != null">
+                Number = #{number},
             </if>
             <if test="price != null">
                 Price = #{price},
@@ -156,15 +144,6 @@
             </if>
             <if test="prodesc != null and prodesc != ''">
                 ProDesc = #{prodesc},
-            </if>
-            <if test="reviewer != null">
-                Reviewer = #{reviewer},
-            </if>
-            <if test="reviewerdesc != null and reviewerdesc != ''">
-                ReviewerDesc = #{reviewerdesc},
-            </if>
-            <if test="acceptorid != null">
-                AcceptorId = #{acceptorid},
             </if>
             <if test="fileinfoid != null">
                 FileinfoId = #{fileinfoid},
@@ -184,7 +163,71 @@
 
     <!--通过主键删除-->
     <delete id="deleteById">
-        delete from tdkjoa.procurement where ProId = #{proid}
+        delete from procurement where ProId = #{proid}
     </delete>
 
+    <!--根据用户ID查询用户所提交的采购信息-->
+    <select id="queryByApplicantId" resultType="com.tdkj.System.entity.VO.ProcurementVO">
+        select
+            ProId as proid,
+            p.CorpId as corpid,
+            c.CorpName as corpname,
+            ProDate as prodate,
+            ProType as protype,
+            GoodsName as goodsname,
+            Unit as unit,
+            Type as type,
+            Number as number,
+            Price  as price,
+            TotalAmount as totalamount,
+            ApplicantId as applicantid,
+            e.name as applicantname,
+            ApplicationDeptId as applicationdeptid,
+            d.DeptName as applicationdeptname,
+            ProDesc as prodesc,
+            p.FileinfoId as fileinfoid,
+            f.Name  as filename,
+            f.URL  as fileurl,
+            p.Status as status,
+            p.CreateDate as createdate,
+            p.ModifyDate as modifydate
+        from procurement p LEFT JOIN corpbasicinfo c on p.CorpId =c.CorpId
+                         LEFT JOIN department d on p.ApplicationDeptId =d.DeptId
+                         LEFT JOIN employee  e on p.ApplicantId =e.EmployeeId
+				         LEFT JOIN fileinfo f  on p.FileinfoId=f.FileInfoID
+        where p.ApplicantId =#{userid}
+    </select>
+
+
+    <!--根据采购单ID查询采购单信息-->
+    <select id="queryProVOByProId" resultType="com.tdkj.System.entity.VO.ProcurementVO">
+        select
+            ProId as proid,
+            p.CorpId as corpid,
+            c.CorpName as corpname,
+            ProDate as prodate,
+            ProType as protype,
+            GoodsName as goodsname,
+            Unit as unit,
+            Type as type,
+            Number as number,
+            Price  as price,
+            TotalAmount as totalamount,
+            ApplicantId as applicantid,
+            e.name as applicantname,
+            ApplicationDeptId as applicationdeptid,
+            d.DeptName as applicationdeptname,
+            ProDesc as prodesc,
+            p.FileinfoId as fileinfoid,
+            f.Name  as filename,
+            f.URL  as fileurl,
+            p.Status as status,
+            p.CreateDate as createdate,
+            p.ModifyDate as modifydate
+        from procurement p LEFT JOIN corpbasicinfo c on p.CorpId =c.CorpId
+                         LEFT JOIN department d on p.ApplicationDeptId =d.DeptId
+                         LEFT JOIN employee  e on p.ApplicantId =e.EmployeeId
+				         LEFT JOIN fileinfo f  on p.FileinfoId=f.FileInfoID
+        where p.ProId =#{proid}
+    </select>
 </mapper>

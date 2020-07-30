@@ -20,7 +20,9 @@ public enum ProcurementTypeEnmu {
 
     Transportation_equipment(5,"交通运输设备"),
 
-    Other(6,"其他");
+    Office_Supplies(6,"办公用品"),
+
+    Other(7,"其他");
 
     private String desc;//文字描述
 

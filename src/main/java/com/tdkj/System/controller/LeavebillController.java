@@ -66,11 +66,11 @@ public class LeavebillController {
         List<Leavebill> leavebillList=leavebillService.queryAllLeavebill(leavebill);
         PageInfo<Leavebill> pageInfo=new PageInfo<>(leavebillList);
 
-        if (null != leavebillList && leavebillList.size() > 0) {
+      /*  if (null != leavebillList && leavebillList.size() > 0) {
             for (Leavebill Leavebill : leavebillList) {
                 log.info(Leavebill.toString());
             }
-        }
+        }*/
         return OAResponseList.setResult(0,FIND_SUCCESS,pageInfo);
     }
 

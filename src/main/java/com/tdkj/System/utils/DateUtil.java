@@ -49,6 +49,8 @@ public class DateUtil {
         return localDateTime.format(DateTimeFormatter.ofPattern(format));
     }
 
+
+    /*传入String类型的日期，转成yyyy-MM-dd HH:mm:ss 的时间返回*/
     public static Date formatDate(String date) throws ParseException {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(FULL_TIME_SPLIT_PATTERN, Locale.CHINESE);
         Date usDate = simpleDateFormat.parse(date);
@@ -59,6 +61,10 @@ public class DateUtil {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(FORMAT_LONOGRAM);
         Date usDate = simpleDateFormat.parse(date);
         return usDate;
+    }
+
+    public static String getformatDate(Date date) throws ParseException {
+       return  new SimpleDateFormat(FULL_TIME_PATTERN).format(new Date());
     }
 
     public static String getToday(){

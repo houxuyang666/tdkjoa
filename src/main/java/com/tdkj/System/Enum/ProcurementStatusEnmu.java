@@ -14,11 +14,11 @@ public enum ProcurementStatusEnmu {
 
     rejected(2,"驳回"),
 
-    Procurement_complete(3,"采购完成"),
+    Procurement_complete(3,"采购完成");
 
-    Acceptance_completed(4,"验收完成"),
+ /*   Acceptance_completed(4,"验收完成"),
 
-    Acceptance_failure(5,"验收失败");
+    Acceptance_failure(5,"验收失败");*/
 
 
     private String desc;//文字描述

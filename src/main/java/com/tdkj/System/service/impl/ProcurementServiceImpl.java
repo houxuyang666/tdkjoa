@@ -2,6 +2,7 @@ package com.tdkj.System.service.impl;
 
 import com.tdkj.System.dao.ProcurementDao;
 import com.tdkj.System.entity.Procurement;
+import com.tdkj.System.entity.VO.ProcurementVO;
 import com.tdkj.System.service.ProcurementService;
 import org.springframework.stereotype.Service;
 
@@ -75,5 +76,29 @@ public class ProcurementServiceImpl implements ProcurementService {
     @Override
     public boolean deleteById(String proid) {
         return this.procurementDao.deleteById(proid) > 0;
+    }
+
+    /**
+     * @Author houxuyang
+     * @Description //根据用户id查询所申请的采购单
+     * @Date 15:06 2020/7/30
+     * @Param [userid]
+     * @return java.util.List<com.tdkj.System.entity.Procurement>
+     **/
+    @Override
+    public List<ProcurementVO> queryByApplicantId(Integer userid) {
+        return this.procurementDao.queryByApplicantId(userid);
+    }
+
+    /**
+     * @Author houxuyang
+     * @Description //根据采购单ID查询信息，返回到页面
+     * @Date 16:38 2020/7/30
+     * @Param [proid]
+     * @return com.tdkj.System.entity.VO.ProcurementVO
+     **/
+    @Override
+    public ProcurementVO queryProVOByProId(String proid) {
+        return this.procurementDao.queryProVOByProId(proid);
     }
 }

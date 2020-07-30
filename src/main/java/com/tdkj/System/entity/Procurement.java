@@ -1,19 +1,21 @@
 package com.tdkj.System.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
  * (Procurement)实体类
  *
  * @author makejava
- * @since 2020-07-17 14:50:53
+ * @since 2020-07-30 09:57:27
  */
 @Data
 public class Procurement implements Serializable {
-    private static final long serialVersionUID = 154293786465229061L;
+    private static final long serialVersionUID = -62301755074903965L;
     /**
      * 采购单编号
      */
@@ -23,8 +25,9 @@ public class Procurement implements Serializable {
      */
     private Integer corpid;
     /**
-     * 采购日期 部门名称
+     * 采购日期
      */
+    @JsonFormat(pattern ="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date prodate;
     /**
      * 采购类型 关联采购类型字典表
@@ -45,15 +48,15 @@ public class Procurement implements Serializable {
     /**
      * 数量
      */
-    private Integer numbe;
+    private Integer number;
     /**
      * 单价
      */
-    private Double price;
+    private BigDecimal price;
     /**
      * 总金额
      */
-    private Double totalamount;
+    private BigDecimal totalamount;
     /**
      * 申请人 申请人ID
      */
@@ -67,18 +70,6 @@ public class Procurement implements Serializable {
      */
     private String prodesc;
     /**
-     * 审核人
-     */
-    private Integer reviewer;
-    /**
-     * 审核意见
-     */
-    private String reviewerdesc;
-    /**
-     * 验收人 验收人ID
-     */
-    private Integer acceptorid;
-    /**
      * 关联附件表 合同附件
      */
     private Integer fileinfoid;
@@ -89,10 +80,12 @@ public class Procurement implements Serializable {
     /**
      * 创建时间
      */
+    @JsonFormat(pattern ="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date createdate;
     /**
      * 编辑时间
      */
+    @JsonFormat(pattern ="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date modifydate;
 
 }
