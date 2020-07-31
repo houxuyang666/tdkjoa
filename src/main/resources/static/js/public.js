@@ -97,7 +97,6 @@ var PublicFun = {
             url:url,
             dataType:"json",
             type:"POST",
-            processData:false,
             data:data,
             success:success,
             error:function () {

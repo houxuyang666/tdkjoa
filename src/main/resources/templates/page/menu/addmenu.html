@@ -116,11 +116,11 @@
                     limit: 100,
                     // 点击回调
                     click: function (data) {
-                        console.log(data);
+                        //console.log(data);
                     },
                     // 渲染成功后的回调
                     success: function (d) {
-                        console.log(d);
+                        //console.log(d);
                     }
                 });
 
@@ -148,16 +148,16 @@
 
                 //监听提交
                 form.on('submit(SureAdd)', function (data) {
-                    var FormData={
-                        "href": data.field.href,
-                        "icon": "fa "+data.field.icon,
-                        "menuType":data.field.menuType,
-                        "parentId": data.field.parentId,
-                        "perms": data.field.perms,
-                        "target": data.field.target,
-                        "title": data.field.title
-                    }
-                    PublicFun.FunPostAjax("/menu/addmenu",FormData,function (res) {
+                    PublicFun.FunPostAjax("/menu/addmenu",
+                        {
+                            "href": data.field.href,
+                            "icon": "fa "+data.field.icon,
+                            "menuType":data.field.menuType,
+                            "parentId": data.field.parentId,
+                            "perms": data.field.perms,
+                            "target": data.field.target,
+                            "title": data.field.title
+                        },function (res) {
                         if(res.responseCode==200){
                             var index = layer.alert(res.message, {
                                 title: '提交信息'

@@ -18,7 +18,7 @@ layui.define(['layer', 'table'], function (exports) {
                 $.getJSON(param.url, param.where, function (res) {
                     //格式化数据库读取的数据
                     var data = res.data;
-                    console.log(res);
+                    //console.log(res);
                     var obj = new Object();
                     obj.modifydate = null,
                         obj.createdate = null,
