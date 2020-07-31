@@ -127,10 +127,10 @@
 
             switch (layEvent) {
                 case "del":
-                    FunDelMenu(data.menuId)
+                    FunDelMenu(data.menuid)
                     break;
                 case "edit":
-                    FunUpdateMenu(data.menuId)
+                    FunUpdateMenu(data.menuid)
                     break;
             }
 
@@ -138,13 +138,13 @@
     });
 
     //删除菜单操作
-    function FunDelMenu(munuId) {
-        layer.msg('删除' + munuId);
+    function FunDelMenu(menuid) {
+        layer.msg('删除' + menuid);
     }
 
     //修改菜单操作
-    function FunUpdateMenu(munuId) {
-        layer.msg('修改' + munuId);
+    function FunUpdateMenu(menuid) {
+        layer.msg('修改' + menuid);
     }
 
     //添加菜单操作
@@ -162,7 +162,7 @@
                 success: function (layero, index) {
                     //赋值
                     var body = layer.getChildFrame("body", index);
-                    body.contents().find("#parentId").val(checkStatusData[0].menuId);
+                    body.contents().find("#parentId").val(checkStatusData[0].menuid);
                     var Href = checkStatusData[0].href;
                     if (Href == "#") {
                         body.contents().find('input[value="菜单"]').attr("disabled", "disabled");
