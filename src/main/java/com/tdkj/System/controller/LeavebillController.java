@@ -7,10 +7,13 @@ import com.tdkj.System.common.OAResponse;
 import com.tdkj.System.common.OAResponseList;
 import com.tdkj.System.entity.Leavebill;
 import com.tdkj.System.service.LeavebillService;
+import com.tdkj.System.service.WorkFlowService;
 import com.tdkj.System.utils.DateUtil;
 import com.tdkj.System.utils.ShiroUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -35,6 +38,8 @@ public class LeavebillController {
      */
     @Resource
     private LeavebillService leavebillService;
+    @Autowired
+    private WorkFlowService workFlowService;
 
     /**
      * 通过主键查询单条数据
@@ -81,7 +86,7 @@ public class LeavebillController {
     }
 
 
-
+    @Transactional
     @ResponseBody
     @RequestMapping("/add")
     public OAResponse add(String title, String content,String days,String leavetime)throws Exception {
@@ -89,7 +94,8 @@ public class LeavebillController {
         /*请假流程单 生成时状态为未申请*/
 
         Leavebill leavebill =new Leavebill(title,content,days, DateUtil.formatDate(leavetime), AuditStatusEnmu.To_audit.getCode(),ShiroUtils.getPrincipal().getUserid());
-        leavebillService.insert(leavebill);
+        Leavebill insert = leavebillService.insert(leavebill);
+        this.workFlowService.startProcess(insert.getId());
         return OAResponse.setResult(0,ADD_SUCCESS);
     }
 
