@@ -12,6 +12,7 @@ import com.tdkj.System.entity.ect.ActTaskEntity;
 import com.tdkj.System.entity.ect.ActdeploymentEntity;
 import com.tdkj.System.service.EmployeeService;
 import com.tdkj.System.service.LeavebillService;
+import com.tdkj.System.service.ProcurementService;
 import com.tdkj.System.service.WorkFlowService;
 import com.tdkj.System.utils.ShiroUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -61,12 +62,12 @@ public class WorkFlowServiceImpl implements WorkFlowService {
     private FormService formService;
     @Autowired
     private ManagementService managementService;
-
     @Autowired
     private LeavebillService leavebillService;
-
     @Autowired
     private EmployeeService employeeService;
+    @Autowired
+    private ProcurementService procurementService;
 
 
     public OAResponseList querProcessDeploy(WorkFlowVO workFlowVO) {
@@ -178,18 +179,36 @@ public class WorkFlowServiceImpl implements WorkFlowService {
         //1.得到办理人信息
         String assignee =employee.getName();
         //2.查询总数
-        long count = this.taskService.createTaskQuery().taskAssignee(assignee).count();
+        //long count = this.taskService.createTaskQuery().taskAssignee(assignee).count();
         //3.查询集合
         List<Task> taskList = this.taskService.createTaskQuery().taskAssignee(assignee).listPage(page, limit);
 
+        /*添加判断*/
+
         List<ActTaskEntity> actTaskEntities = new ArrayList<>();
+        for (Task task : taskList) {
+            ProcessInstance processInstance = this.runtimeService.createProcessInstanceQuery().processInstanceId(task.getProcessInstanceId()).singleResult();
+            String businessKey = processInstance.getBusinessKey();
+            String businessid =businessKey.split(":")[1];
+            if (ShiroUtils.judgeContainsStr(businessid)){
+                taskList.remove(this);
+            }else{
+                ActTaskEntity entity = new ActTaskEntity();
+                BeanUtils.copyProperties(task,entity);
+                actTaskEntities.add(entity);
+            }
+            log.info(processInstance.toString());
+        }
+
+        /*添加判断结束*/
+       /* List<ActTaskEntity> actTaskEntities = new ArrayList<>();
         for (Task task : taskList) {
             ActTaskEntity entity = new ActTaskEntity();
             BeanUtils.copyProperties(task,entity);
             actTaskEntities.add(entity);
-        }
+        }*/
         PageInfo pageInfo =new PageInfo();
-        pageInfo.setTotal(count);
+        pageInfo.setTotal(actTaskEntities.size());
         pageInfo.setList(actTaskEntities);
         return pageInfo;
     }

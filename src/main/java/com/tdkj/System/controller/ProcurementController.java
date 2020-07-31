@@ -106,7 +106,7 @@ public class ProcurementController {
         }*/
         Procurement procurement =new Procurement();
         //生成4为随机数 第二个参数为是否要字母 第三个参数是否要数字
-        String code= RandomStringUtils.random(4, false, true);
+        String code= RandomStringUtils.random(4, true, true);
         procurement.setProid(DateUtil.getformatDate(new Date())+code);
         procurement.setCorpid(employee.getCorpid());
         procurement.setProdate(DateUtil.formatDate(prodate));

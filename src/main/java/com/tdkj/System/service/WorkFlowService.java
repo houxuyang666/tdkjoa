@@ -22,7 +22,7 @@ public interface WorkFlowService {
     InputStream qureyProcessDeploymentImage(String deploymentid);
     /*根据请假单ID启动流程*/
     void startProcess(Integer leavbillid);
-    /*查询当前登陆用的待办任务*/
+    /*查询当前登陆用户的待办任务*/
     PageInfo qureyCurrentUserTask(Integer page, Integer limit);
     //根据任务ID查询请假单信息
     Leavebill queryLeaveBillByTaskId(String taskId);

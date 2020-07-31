@@ -10,15 +10,13 @@ public enum ProcurementStatusEnmu {
 
     To_audit(0,"待审核"),
 
-    Review_completed(1,"审核通过"),
+    Under_review(1,"审核中"),
 
-    rejected(2,"驳回"),
+    Review_completed(2,"审核通过"),
 
-    Procurement_complete(3,"采购完成");
+    give_up(3,"放弃"),
 
- /*   Acceptance_completed(4,"验收完成"),
-
-    Acceptance_failure(5,"验收失败");*/
+    rejected(4,"驳回");
 
 
     private String desc;//文字描述
