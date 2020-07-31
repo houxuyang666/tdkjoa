@@ -103,7 +103,7 @@ layui.define(["jquery", "miniMenu", "element","miniTab", "miniTheme"], function 
                             miniAdmin.error("暂无信息菜单");
                         } else {
                            // layer.alert(JSON.stringify(data.data));
-                            console.log(data.data)
+                            //console.log(data.data)
                             var objData = data.data.childs;
                             var obj = [];
                             //alert(objData.length);
@@ -163,7 +163,7 @@ layui.define(["jquery", "miniMenu", "element","miniTab", "miniTheme"], function 
                                 "target":"_self",
                                 "child":obj
                             }];
-                            console.log(jsonArr);
+                            //console.log(jsonArr);
                             //layer.alert(JSON.stringify(jsonArr));
 
                             miniAdmin.renderLogo(jsonArr.logoInfo);
@@ -224,7 +224,7 @@ layui.define(["jquery", "miniMenu", "element","miniTab", "miniTheme"], function 
             sessionStorage.setItem('layuiminiHomeHref', data.href);
             $('#layuiminiHomeTabId').html('<span class="layuimini-tab-active"></span><span class="disable-close">' + data.title + '</span><i class="layui-icon layui-unselect layui-tab-close">ဆ</i>');
             $('#layuiminiHomeTabId').attr('lay-id', data.href);
-            $('#layuiminiHomeTabIframe').html('<iframe width="100%" height="100%" frameborder="no" border="0" marginwidth="0" marginheight="0"  src="' + data.href + '"></iframe>');
+            $('#layuiminiHomeTabIframe').html('<iframe width="100%" height="95%" frameborder="no" border="0" marginwidth="0" marginheight="0"  src="' + data.href + '"></iframe>');
         },
 
         /**

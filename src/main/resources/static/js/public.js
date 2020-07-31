@@ -122,6 +122,59 @@ var PublicFun = {
         })
     },
 
+    //格式日期控件 传入Id名 和 你想要的字符串
+    layerDate:function ($id,formats) {
+        var obj = new Date();
+        layui.laydate.render({
+            elem: $id,
+            format: formats,
+            value: obj,
+            isInitValue: true,
+            trigger: "click"
+        });
+    },
+    //接收参数
+    queryString:function (key) {
+        var regex_str = "^.+\\?.*?\\b" + key + "=(.*?)(?:(?=&)|$|#)"
+        var regex = new RegExp(regex_str, "i");
+        var url = window.location.toString();
+        if (regex.test(url)) return RegExp.$1;
+        return undefined;
+    },
+    //格式化时间
+    FormatDate:function (datetime,fmt) {
+        if(parseInt(datetime)==datetime){
+            if(datetime.length==10){
+                datetime=parseInt(datetime)*1000;
+            }else if(datetime.length==13){
+                datetime=parseInt(datetime);
+            }
+        }
+        datetime=new Date(datetime);
+        var o={
+            "M+" : datetime.getMonth()+1,                 //月份
+            "d+" : datetime.getDate(),                    //日
+            "h+" : datetime.getHours(),                   //小时
+            "m+" : datetime.getMinutes(),                 //分
+            "s+" : datetime.getSeconds(),                 //秒
+            "q+" : Math.floor((datetime.getMonth()+3)/3), //季度
+            "S"  : datetime.getMilliseconds()             //毫秒
+        };
+        if(/(y+)/.test(fmt))
+            fmt=fmt.replace(RegExp.$1, (datetime.getFullYear()+"").substr(4 - RegExp.$1.length));
+        for(var k in o)
+            if(new RegExp("("+ k +")").test(fmt))
+                fmt = fmt.replace(RegExp.$1, (RegExp.$1.length==1) ? (o[k]) : (("00"+ o[k]).substr((""+ o[k]).length)));
+        return fmt;
+    },
+    //重新渲染表单函数
+    RenderForm:function () {
+        layui.use('form',function () {
+            var form=layui.form;
+            form.render();
+        })
+    }
+
 
 
 }

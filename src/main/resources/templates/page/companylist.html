@@ -10,12 +10,14 @@
     <script src="/statics/lib/jquery-3.4.1/jquery-3.4.1.min.js"></script>
 </head>
 <body>
+<input type="hidden" id="corptype">
+<input type="hidden" id="legalmanidcardtype">
+<input type="hidden" id="corpid">
 <div class="layuimini-container">
     <div class="layuimini-main">
         <blockquote class="layui-elem-quote">
             公司列表<br>
         </blockquote>
-        <div>
 
             <fieldset class="table-search-fieldset">
                 <legend>搜索信息</legend>
@@ -25,13 +27,13 @@
                             <div class="layui-inline">
                                 <label class="layui-form-label">公司名称</label>
                                 <div class="layui-input-inline">
-                                    <input type="text" name="companyName" autocomplete="off" class="layui-input">
+                                    <input type="text" name="corpname" autocomplete="off" class="layui-input">
                                 </div>
                             </div>
                             <div class="layui-inline">
-                                <label class="layui-form-label">车辆负责人</label>
+                                <label class="layui-form-label" style="width: 150px;">社会统一信用代码</label>
                                 <div class="layui-input-inline">
-                                    <input type="text" name="vehicleOfficerName" autocomplete="off" class="layui-input">
+                                    <input type="text" name="corpcode" autocomplete="off" class="layui-input">
                                 </div>
                             </div>
                             <div class="layui-inline">
@@ -49,14 +51,8 @@
 
             <script type="text/html" id="toolbar">
                 <div class="layui-btn-container">
-                    <button class="layui-btn layui-btn-normal layui-btn-sm " lay-event="add"><i class="layui-icon">&#xe654;</i>
-                        添加
-                    </button>
                     <button class="layui-btn layui-btn-sm layui-btn-warm " lay-event="update"><i class="layui-icon">&#xe642;</i>修改
                     </button>
-                    <!-- <button class="layui-btn layui-btn-sm layui-btn-danger" lay-event="deleteRows"><i
-                             class="layui-icon">&#xe640;</i>多行删除
-                     </button>-->
                     <button class="layui-btn layui-btn-sm " lay-event="refresh"><i class="layui-icon">&#xe669;</i>刷新
                     </button>
                 </div>
@@ -67,13 +63,13 @@
                         class="layui-icon">&#xe640;</i>删除</a>
             </script>
 
-        </div>
     </div>
 </div>
 
 <script src="/statics/lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
+<script src="/js/public.js" charset="utf-8"></script>
 <script type="text/javascript">
-    layui.use(['form', 'table'], function () {
+    layui.use(['form', 'table','util'], function () {
         var $ = layui.jquery,
             form = layui.form,
             table = layui.table;
@@ -94,34 +90,38 @@
             },
             cols: [
                 [
-                    {field: "checkbox", type: 'checkbox',fixed: 'left'},
-                    {field: "corpid", title: "公司编号", sort: true,fixed: 'left'},
-                    {field: "corpcode", title: "统一社会信用代码"},
-                    {field: "corpname", title: "公司名称"},
-                    {field: "corptype", title: "企业登记注册类型"},
-                    {field: "licensenum", title: "工商营业执照注册号"},
-                    {field: "address", title: "公司地址"},
-                    {field: "zipcode", title: "邮政编码"},
-                    {field: "legalman", title: "法定代表人姓名"},
-                    {field: "legalmanduty", title: "法定代表人职务"},
-                    {field: "legalmanidcardtype", title: "法定代表人证件类型"},
-                    {field: "legalmanidcardnumber", title: "法定代表人证件号码"},
-                    {field: "registerdate", title: "注册日期"},
-                    {field: "establishdate", title: "成立日期"},
-                    {field: "officphone", title: "办公电话"},
-                    {field: "faxnumber", title: "传真号码"},
-                    {field: "linkman", title: "联系人姓名"},
-                    {field: "linkphone", title: "联系人电话"},
-                    {field: "signname", title: "电子签名名称"},
-                    {field: "signurl", title: "电子签名URL"},
-                    {field: "email", title: "企业邮箱"},
-                    {field: "website", title: "企业网址"},
+                    {field: "checkbox", type: 'checkbox'},
+                    {field: "corpid", title: "公司编号", sort: true,width:100},
+                    {field: "corpcode", title: "统一社会信用代码",width:180},
+                    {field: "corpname", title: "公司名称",width:150},
+                    {field: "corptype", title: "企业登记注册类型",width:180},
+                    {field: "licensenum", title: "工商营业执照注册号",width:180},
+                    {field: "address", title: "公司地址",width:150},
+                    {field: "zipcode", title: "邮政编码",width:100},
+                    {field: "legalman", title: "法定代表人姓名",width:180},
+                    {field: "legalmanduty", title: "法定代表人职务",width:180},
+                    {field: "legalmanidcardtype", title: "法定代表人证件类型",width:180},
+                    {field: "legalmanidcardnumber", title: "法定代表人证件号码",width:180},
+                    {field: "registerdate", title: "注册日期",width:170,templet: function (d) {
+                           return layui.util.toDateString(d.registerdate, 'yyyy-MM-dd HH:mm:ss');
+                        }},
+                    {field: "establishdate", title: "成立日期",width:170,templet: function (d) {
+                            return layui.util.toDateString(d.establishdate, 'yyyy-MM-dd HH:mm:ss');
+                        }},
+                    {field: "officphone", title: "办公电话",width:150},
+                    {field: "faxnumber", title: "传真号码",width:150},
+                    {field: "linkman", title: "联系人姓名",width:150},
+                    {field: "linkphone", title: "联系人电话",width:150},
+                    {field: "signname", title: "电子签名名称",width:150},
+                    {field: "signurl", title: "电子签名URL",width:150},
+                    {field: "email", title: "企业邮箱",width:150},
+                    {field: "website", title: "企业网址",width:150},
                     {
-                        field: "createTime", title: "录入时间", sort: true, templet: function (d) {
-                            return layui.util.toDateString(d.createTime, 'yyyy-MM-dd HH:mm:ss');
+                        field: "createdate", title: "录入时间", sort: true,width:170, templet: function (d) {
+                            return layui.util.toDateString(d.createdate, 'yyyy-MM-dd HH:mm:ss');
                         }
                     },
-                    {title: '操作', toolbar: '#currentTableBar', align: "center", fixed: 'right'}
+                    {title: '操作', toolbar: '#currentTableBar', align: "center",  fixed: 'right',width:100}
                 ]
             ],
             limits: [10, 15, 20, 25, 50, 100],
@@ -139,10 +139,12 @@
                 page: {
                     curr: 1
                 },
-                where: {
-                    companyName: formData.companyName,
-                    vehicleOfficerName: formData.vehicleOfficerName
-                }
+                where: {//这里传参
+                    corpcode: formData.corpcode,
+                    corpname: formData.corpname
+                },
+                url:"",//后台模糊查询的接口路径
+                method:"post"
             }, "data");
             return false;
         });
@@ -158,7 +160,7 @@
                         url: "/company/delcompany",
                         datatype: "json",
                         type: "post",
-                        data: {companyId: data.companyId},
+                        data: {corpid: data.corpid},
                         success: function (res) {
                             if (res.responseCode == 200) {
                                 layer.msg(res.message);
@@ -182,16 +184,10 @@
             }
         });
 
-        //添加修改刷新操作
+        //修改刷新操作
         table.on("toolbar(companyList)", function (obj) {
             var checkStatus = table.checkStatus(obj.config.id);
             switch (obj.event) {
-                case "add":
-                    Add();
-                    break;
-                /* case "deleteRows":
-                     DelRows(checkStatus);
-                     break;*/
                 case "update":
                     UpdateRow(checkStatus.data);
                     break;
@@ -202,66 +198,53 @@
         });
     });
 
-    //添加操作
-    function Add() {
-        var index = layer.open({
-            title: '添加用户',
-            type: 2,
-            shade: 0.2,
-            maxmin: true,
-            shadeClose: true,
-            area: ['50%', '60%'],
-            content: '/table/goaddcompany',
-            end: function () {
-                layui.table.reload("companyList");//添加成功后刷新表格
-            }
-        });
-        $(window).on("resize", function () {
-            layer.full(index);
-        });
-    }
-
-    //多行删除操作  未用
-    function DelRows(checkStatus) {
-        var chkData = checkStatus.data;
-        var delList = [];
-        chkData.forEach(function (n, i) {
-            delList.push(n.companyId);
-        });
-        if (delList != "" && delList != null) {
-            alert(delList);
-            /* layer.confirm("确定要删除所选项吗？",{btn:["确定","取消"]},function () {
-                 //执行删除操作
-
-             });*/
-        } else {
-            layer.msg("请选择你要删除的行！！！")
-        }
-    }
-
     //修改操作
     function UpdateRow(checkStatus) {
         var chkData = checkStatus;
+        chkData.forEach(function (n,i) {
+            $('#corpid').val(n.corpid);
+            $('#corptype').val(n.corptype);
+            $('#legalmanidcardtype').val(n.legalmanidcardtype);;
+        });
         if (chkData.length == 1) {
             //获取选中行的数量 判断  修改时一次只能选择一行
-            //若为一行是 执行修改操作
+            //若为一行是 跳转页面执行修改操作
+            //window.open("//corpbasicinfo/goadd?corpid="+chkData[0].corpid);
             layer.open({
                 title: '修改用户',
                 type: 2,
                 shade: 0.2,
                 maxmin: true,
                 shadeClose: true,
-                area: ['50%', '60%'],
-                content: '/table/goupdatecompany',
+                area: ['100%', '100%'],
+                content: '/corpbasicinfo/goadd?corpid='+chkData[0].corpid,
                 success: function (layero, index) {
                     var body = layer.getChildFrame('body', index);
-                    //位子窗口元素赋值
+                    //为子窗口元素赋值
                     chkData.forEach(function (n, i) {
-                        body.contents().find('input[name="companyId"]').val(n.companyId);
-                        body.contents().find('input[name="companyName"]').val(n.companyName);
-                        body.contents().find('input[name="companyAddress"]').val(n.companyAddress);
-                        body.contents().find('input[name="vehicleOfficerName"]').val(n.vehicleOfficerName);
-                        body.contents().find('input[name="vehicleOfficerTel"]').val(n.vehicleOfficerTel);
+
+                        body.contents().find('input[name="corpcode"]').val(n.corpcode);
+                        body.contents().find('input[name="corpname"]').val(n.corpname);
+                        body.contents().find('input[name="companyAddress"]').val(n.address);
+
+                        body.contents().find('input[name="licensenum"]').val(n.licensenum);
+                        body.contents().find('input[name="address"]').val(n.address);
+                        body.contents().find('input[name="zipcode"]').val(n.zipcode);
+                        body.contents().find('input[name="legalman"]').val(n.legalman);
+                        body.contents().find('input[name="legalmanduty"]').val(n.legalmanduty);
+
+                        body.contents().find('input[name="legalmanidcardnumber"]').val(n.legalmanidcardnumber);
+                        body.contents().find('input[name="registerdate"]').val(PublicFun.FormatDate( n.registerdate,"yyyy-MM-dd hh:mm:ss"));
+                        body.contents().find('input[name="establishdate"]').val(PublicFun.FormatDate(n.establishdate,"yyyy-MM-dd hh:mm:ss"));
+                        body.contents().find('input[name="officphone"]').val(n.officphone);
+                        body.contents().find('input[name="faxnumber"]').val(n.faxnumber);
+                        body.contents().find('input[name="linkman"]').val(n.linkman);
+                        body.contents().find('input[name="linkphone"]').val(n.linkphone);
+                        body.contents().find('input[name="email"]').val(n.email);
+                        body.contents().find('input[name="website"]').val(n.website);
+                        body.contents().find('input[name="signname"]').val(n.signname);
+                        body.contents().find('#signurl').attr("src",n.signurl);
+                        PublicFun.RenderForm();
                     });
                 },
                 end: function () {
@@ -273,6 +256,7 @@
         } else {
             layer.msg("你没有选中任何行！！！")
         }
+
     }
 
 </script>
