@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>菜单管理</title>
@@ -14,91 +14,184 @@
     </style>
 </head>
 <body>
+<input type="hidden" id="Href">
 <div class="layuimini-container">
     <div class="layuimini-main">
         <blockquote class="layui-elem-quote">
             支持操作菜单信息哦<br>
         </blockquote>
         <div>
-            <div class="layui-btn-group">
-                <button class="layui-btn" id="btn-expand">全部展开</button>
-                <button class="layui-btn layui-btn-normal" id="btn-fold">全部折叠</button>
-                <button class="layui-btn layui-btn-warm" id="btn-AddMenu">添加菜单</button>
-            </div>
+            <!-- <div class="layui-btn-group">
+                 <button class="layui-btn" id="btn-expand"><i class="layui-icon">&#xe61a;</i>全部展开</button>
+                 <button class="layui-btn layui-btn-normal" id="btn-fold"><i class="layui-icon">&#xe619;</i>全部折叠</button>
+                 <button class="layui-btn layui-btn-warm" id="btn-AddMenu"><i class="layui-icon">&#xe654;</i>添加菜单</button>
+             </div>-->
             <table id="munu-table" class="layui-table" lay-filter="munu-table"></table>
         </div>
     </div>
 </div>
+
+<script type="text/html" id="toolbar">
+    <div class="layui-btn-container">
+        <button class="layui-btn" id="btn-expand" lay-event="btn-expand"><i class="layui-icon">&#xe61a;</i>全部展开</button>
+        <button class="layui-btn layui-btn-normal" id="btn-fold" lay-event="btn-fold"><i class="layui-icon">&#xe619;</i>全部折叠
+        </button>
+        <button class="layui-btn layui-btn-warm" id="btn-AddMenu" lay-event="btn-AddMenu"><i
+                class="layui-icon">&#xe654;</i>添加菜单
+        </button>
+        <button class="layui-btn layui-btn " lay-event="refresh"><i class="layui-icon">&#xe669;</i>刷新</button>
+    </div>
+</script>
+
+
 <!-- 操作列 -->
 <script type="text/html" id="auth-state">
-    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="edit">修改</a>
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="edit"><i class="layui-icon">&#xe642;</i>修改</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i class="layui-icon">&#xe640;</i>删除</a>
 </script>
 
 <script src="/statics/lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
 <script src="/js/lay-config.js?v=1.0.4" charset="utf-8"></script>
+<script src="/js/public.js" charset="utf-8"></script>
 <script type="text/javascript" th:inline="none">
+    PublicFun.ImportJs("/statics/lib/jquery-3.4.1/jquery-3.4.1.min.js");
     layui.use(['table', 'treetable'], function () {
         var $ = layui.jquery;
         var table = layui.table;
         var treetable = layui.treetable;
-
         // 渲染表格
         layer.load(2);
         treetable.render({
             treeColIndex: 1,
             treeSpid: -1,
-            treeIdName: 'menuId',
-            treePidName: 'parentId',
+            treeIdName: 'menuid',
+            treePidName: 'parentid',
             elem: '#munu-table',
+            toolbar: '#toolbar',
             url: '/menu/getmenu',//../api/menus.json
             page: false,
             cols: [[
-                {type: 'numbers'},
+                {field: "checkbox", type: 'checkbox'},
+                /*{type: 'numbers'},*/
                 {field: 'title', minWidth: 200, title: '权限名称'},
                 {field: 'perms', title: '权限标识'},
                 {field: 'href', title: '菜单url'},
                 {field: 'icon', title: '菜单icon'},
-                {field: 'menuId', width: 80, align: 'center', title: '排序号'},
+                {field: 'menuid', width: 80, align: 'center', title: '排序号'},
                 {
                     field: 'href', width: 80, align: 'center', templet: function (d) {
                         if (d.href == "#") {
-                            return '<span class="layui-badge layui-bg-gray">按钮</span>';
+                            return '<span class="layui-badge layui-bg-orange">按钮</span>';
                         }
-                        if (d.href == " ") {
+                        if (d.href == "") {
                             return '<span class="layui-badge layui-bg-blue">目录</span>';
                         } else {
                             return '<span class="layui-badge-rim">菜单</span>';
                         }
                     }, title: '类型'
                 },
-                {templet: '#auth-state', width: 120, align: 'center', title: '操作'}
+                {templet: '#auth-state', width: 150, align: 'center', title: '操作'}
             ]],
             done: function () {
                 layer.closeAll('loading');
             }
         });
 
-        $('#btn-expand').click(function () {
-            treetable.expandAll('#munu-table');
+        //折叠 展开 添加 刷新操作
+        table.on('toolbar(munu-table)', function (obj) {
+            var data = obj.data;
+            var layEvent = obj.event;
+            var checkStatus = table.checkStatus(obj.config.id);
+            switch (layEvent) {
+                case "btn-expand":
+                    treetable.expandAll('#munu-table');
+                    break;
+                case "btn-fold":
+                    treetable.foldAll('#munu-table');
+                    break;
+                case "btn-AddMenu":
+                    FunAddMenu(checkStatus.data)
+                    break;
+                case "refresh":
+                    window.location.reload();
+                    break;
+            }
+
         });
 
-        $('#btn-fold').click(function () {
-            treetable.foldAll('#munu-table');
-        });
 
         //监听工具条
         table.on('tool(munu-table)', function (obj) {
             var data = obj.data;
             var layEvent = obj.event;
 
-            if (layEvent === 'del') {
-                layer.msg('删除' + data.id);
-            } else if (layEvent === 'edit') {
-                layer.msg('修改' + data.id);
+            switch (layEvent) {
+                case "del":
+                    FunDelMenu(data.menuId)
+                    break;
+                case "edit":
+                    FunUpdateMenu(data.menuId)
+                    break;
             }
+
         });
     });
+
+    //删除菜单操作
+    function FunDelMenu(munuId) {
+        layer.msg('删除' + munuId);
+    }
+
+    //修改菜单操作
+    function FunUpdateMenu(munuId) {
+        layer.msg('修改' + munuId);
+    }
+
+    //添加菜单操作
+    function FunAddMenu(checkStatusData) {
+        //alert(JSON.stringify(checkStatusData));
+        if (checkStatusData.length == 1) {
+            var index = layer.open({
+                title: '添加菜单',
+                type: 2,
+                shade: 0.2,
+                maxmin: true,
+                shadeClose: true,
+                area: ['50%', '75%'],
+                content: '/table/goaddmenu',
+                success: function (layero, index) {
+                    //赋值
+                    var body = layer.getChildFrame("body", index);
+                    body.contents().find("#parentId").val(checkStatusData[0].menuId);
+                    var Href = checkStatusData[0].href;
+                    if (Href == "#") {
+                        body.contents().find('input[value="菜单"]').attr("disabled", "disabled");
+                        body.contents().find('input[value="菜单"]').next().addClass("layui-radio-disbaled layui-disabled");
+                        body.contents().find('input[value="目录"]').attr("disabled", "disabled");
+                        body.contents().find('input[value="目录"]').next().addClass("'layui-radio-disbaled layui-disabled");
+                        body.contents().find('input[value="按钮"]').attr("disabled", "disabled");
+                        body.contents().find('input[value="按钮"]').next().addClass("'layui-radio-disbaled layui-disabled");
+                        body.contents().find("input[name='href']").attr("placeholder","你选择的上级菜单是按钮,即不能添加");
+                        body.contents().find("input[name='href']").attr("class","layui-input layui-disabled");
+                        body.contents().find("input[name='href']").attr("readonly",true);
+                    } else if (Href != "#" && Href != "") {
+                        body.contents().find('input[value="目录"]').attr("disabled", "disabled");
+                        body.contents().find('input[value="目录"]').next().addClass("'layui-radio-disbaled layui-disabled");
+                    }
+
+                },
+                end: function () {
+                    //刷新此网页
+                    window.location.reload();
+                }
+            });
+        } else if (checkStatusData.length > 1) {
+            layer.msg("不能对多个菜单进行添加操作！！！");
+        } else {
+            layer.msg("请选择要对那个菜单进行添加！！！");
+        }
+    }
+
 
 </script>
 </body>

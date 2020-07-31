@@ -18,7 +18,7 @@
     <select id="queryById" resultMap="MenuMap">
         select
           MenuId, ParentId, Title, Href, Perms, Icon, Target, CreateDate, ModifyDate
-        from tdkjoa.menu
+        from menu
         where MenuId = #{menuid}
     </select>
 
@@ -26,7 +26,7 @@
     <select id="queryAllByLimit" resultMap="MenuMap">
         select
           MenuId, ParentId, Title, Href, Perms, Icon, Target, CreateDate, ModifyDate
-        from tdkjoa.menu
+        from menu
         limit #{offset}, #{limit}
     </select>
 
@@ -34,7 +34,7 @@
     <select id="queryAll" resultMap="MenuMap">
         select
         MenuId, ParentId, Title, Href, Perms, Icon, Target, CreateDate, ModifyDate
-        from tdkjoa.menu
+        from menu
         <where>
             <if test="menuid != null">
                 and MenuId = #{menuid}
@@ -68,13 +68,13 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="menuid" useGeneratedKeys="true">
-        insert into tdkjoa.menu(ParentId, Title, Href, Perms, Icon, Target, CreateDate, ModifyDate)
+        insert into menu(ParentId, Title, Href, Perms, Icon, Target, CreateDate, ModifyDate)
         values (#{parentid}, #{title}, #{href}, #{perms}, #{icon}, #{target}, #{createdate}, #{modifydate})
     </insert>
 
     <!--通过主键修改数据-->
     <update id="update">
-        update tdkjoa.menu
+        update menu
         <set>
             <if test="parentid != null">
                 ParentId = #{parentid},
@@ -106,7 +106,7 @@
 
     <!--通过主键删除-->
     <delete id="deleteById">
-        delete from tdkjoa.menu where MenuId = #{menuid}
+        delete from menu where MenuId = #{menuid}
     </delete>
 
     <!--根据用户id查询用户具有的权限-->
@@ -128,5 +128,18 @@
         from user u JOIN role_menu rm on u.RoleId =rm.RoleId
         JOIN menu m on rm.MenuId =m.MenuId where u.UserName =#{username} and m.Href !='#'
     </select>
+
+
+    <select id="findMenusAllMenu" resultMap="MenuMap">
+        select
+         MenuId, ParentId, Title, Href, Perms, Icon, Target, CreateDate, ModifyDate
+        from menu
+    </select>
+
+    <!--添加时直接设置在权限管理表中插入关联-->
+    <insert id="insertroleAndmenu">
+        insert into role_menu(RoleId,MenuId)
+        values (#{roleid}, #{menuid})
+    </insert>
 
 </mapper>

@@ -73,4 +73,10 @@ public interface MenuDao {
     List<Menu> findByIdGetPerms(Integer userid);
 
     List<Menu> findByUsernameGetMenu(String username);
+
+    /*获取所有菜单*/
+    List<Menu> findMenusAllMenu();
+
+    /*添加时直接设置在权限管理表中插入关联*/
+    int insertroleAndmenu(@Param("roleid")Integer roleid, @Param("menuid")Integer menuid);
 }
