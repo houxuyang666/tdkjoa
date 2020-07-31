@@ -11,24 +11,20 @@
 <body class="childrenBody">
 <form class="layui-form" method="post" id="frm">
     <div class="layui-form-item">
-        <label class="layui-form-label">采购日期</label>
-        <div class="layui-input-block">
-            <input type="text" name="prodate" th:value="${#dates.format(procurement.prodate, 'yyyy-MM-dd HH:mm:ss')}" disabled="disabled" class="layui-input">
+        <label class="layui-form-label">采购时间</label>
+        <div class="layui-input-inline">
+            <input type="text" name="prodate" th:value="${#dates.format(procurement.prodate, 'yyyy-MM-dd HH:mm:ss')}"  disabled="disabled" autocomplete="off" class="layui-input">
         </div>
-    </div>
-    <div class="layui-form-item">
-            <label class="layui-form-label">采购类型</label>
-            <div class="layui-input-inline">
-                <input type="tel" name="protype" th:value="${procurement.protype}"  disabled="disabled" autocomplete="off" class="layui-input">
-            </div>
+        <label class="layui-form-label">采购类型</label>
+        <div class="layui-input-inline">
+            <input type="tel" name="protype" th:value="${procurement.protype}"  disabled="disabled" autocomplete="off" class="layui-input">
+        </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label">货物名称</label>
         <div class="layui-input-inline">
             <input type="tel" name="goodsname" th:value="${procurement.goodsname}"  disabled="disabled" autocomplete="off" class="layui-input">
         </div>
-    </div>
-    <div class="layui-form-item">
         <label class="layui-form-label">单位</label>
         <div class="layui-input-inline">
             <input type="tel" name="unit" th:value="${procurement.unit}"  disabled="disabled" autocomplete="off" class="layui-input">
@@ -39,8 +35,6 @@
         <div class="layui-input-inline">
             <input type="tel" name="type" th:value="${procurement.type}"  disabled="disabled" autocomplete="off" class="layui-input">
         </div>
-    </div>
-    <div class="layui-form-item">
         <label class="layui-form-label">数量</label>
         <div class="layui-input-inline">
             <input type="tel" name="number" th:value="${procurement.number}"  disabled="disabled" autocomplete="off" class="layui-input">
@@ -51,8 +45,6 @@
         <div class="layui-input-inline">
             <input type="tel" name="price" th:value="${procurement.price}"  disabled="disabled" autocomplete="off" class="layui-input">
         </div>
-    </div>
-    <div class="layui-form-item">
         <label class="layui-form-label">总金额</label>
         <div class="layui-input-inline">
             <input type="tel" name="totalamount" th:value="${procurement.totalamount}"  disabled="disabled" autocomplete="off" class="layui-input">
@@ -63,8 +55,6 @@
         <div class="layui-input-inline">
             <input type="tel" name="applicantname" th:value="${procurement.applicantname}"  disabled="disabled" autocomplete="off" class="layui-input">
         </div>
-    </div>
-    <div class="layui-form-item">
         <label class="layui-form-label">申请部门</label>
         <div class="layui-input-inline">
             <input type="tel" name="applicationdeptname" th:value="${procurement.applicationdeptname}"  disabled="disabled" autocomplete="off" class="layui-input">
@@ -75,16 +65,11 @@
         <div class="layui-input-inline">
             <input type="tel" name="filename" th:value="${procurement.filename}"  disabled="disabled" autocomplete="off" class="layui-input">
         </div>
-    </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">附件路径</label>
-            <div class="layui-input-inline">
-                <input type="tel" name="fileurl" th:value="${procurement.fileurl}"  disabled="disabled" autocomplete="off" class="layui-input">
-            </div>
+        <label class="layui-form-label">附件路径</label>
+        <div class="layui-input-inline">
+            <input type="tel" name="fileurl" th:value="${procurement.fileurl}"  disabled="disabled" autocomplete="off" class="layui-input">
         </div>
     </div>
-
-
     <div class="layui-form-item">
         <label class="layui-form-label">批注</label>
         <div class="layui-input-block">
@@ -95,6 +80,7 @@
         <tr  th:each="out,userStat : ${outcomes}">
             <input type="button" th:value="${out}"  class="layui-btn dotask" />
         </tr>
+    </div>
     </div>
 </form>
 <input id="proid" type="hidden"  th:value="${procurement.proid}">

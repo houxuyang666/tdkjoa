@@ -70,7 +70,7 @@ public class AttendanceController {
             int deptID = employeeService.queryByUserIdGetDeptID(ShiroUtils.getPrincipal().getEmployeeid());
             log.info(ShiroUtils.getPrincipal().getUserid().toString());
             Attendance attendance =new Attendance();
-            attendance.setUserid(ShiroUtils.getPrincipal().getEmployeeid());
+            attendance.setUserid(ShiroUtils.getPrincipal().getUserid());
             attendance.setDeptid(deptID);
             attendance.setWorkdate(new Date());
             attendance.setCreatedate(new Date());

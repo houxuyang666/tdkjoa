@@ -46,6 +46,14 @@ public class MenuController {
         return OAResponse.setResult(HTTP_RNS_CODE_200,FIND_SUCCESS, OAJson.toJson(menuList));
     }
 
+
+
+    @RequestMapping("/goaddmenu")
+    public String goaddmenu() {
+        log.info("menu");
+        return "page/menu/addmenu";
+    }
+
     @Transactional
     @ResponseBody
     @RequestMapping("/addmenu")
