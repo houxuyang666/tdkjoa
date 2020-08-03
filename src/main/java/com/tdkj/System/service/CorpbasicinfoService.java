@@ -73,4 +73,13 @@ public interface CorpbasicinfoService {
 
 
     List<Corpbasicinfo> queryAlls();
+
+    /**
+     * @Author houxuyang
+     * @Description //特定条件 查询所有公司
+     * @Date 14:47 2020/8/3
+     * @Param [corpbasicinfo]
+     * @return java.util.List<com.tdkj.System.entity.Corpbasicinfo>
+     **/
+    List<Corpbasicinfo> queryAll(Corpbasicinfo corpbasicinfo);
 }

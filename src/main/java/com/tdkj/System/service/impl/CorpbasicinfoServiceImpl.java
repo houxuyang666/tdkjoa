@@ -92,4 +92,9 @@ public class CorpbasicinfoServiceImpl implements CorpbasicinfoService {
     public List<Corpbasicinfo> queryAlls() {
         return this.corpbasicinfoDao.queryAlls();
     }
+
+    @Override
+    public List<Corpbasicinfo> queryAll(Corpbasicinfo corpbasicinfo) {
+        return this.corpbasicinfoDao.queryAll(corpbasicinfo);
+    }
 }

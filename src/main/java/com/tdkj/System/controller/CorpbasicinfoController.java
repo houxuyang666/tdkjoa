@@ -3,6 +3,7 @@ package com.tdkj.System.controller;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.tdkj.System.common.OAResponse;
+import com.tdkj.System.common.OAResponseList;
 import com.tdkj.System.entity.Corpbasicinfo;
 import com.tdkj.System.entity.Log;
 import com.tdkj.System.service.CorpbasicinfoService;
@@ -21,12 +22,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.annotation.Resource;
 import java.util.Date;
+import java.util.List;
 
 import static com.tdkj.System.common.OAResultCode.HTTP_RNS_CODE_200;
 import static com.tdkj.System.common.OAResultCode.HTTP_RNS_CODE_500;
 import static com.tdkj.System.common.OAResultType.ADD_SUCCESS;
+import static com.tdkj.System.common.OAResultType.FIND_SUCCESS;
 
 /**
  * (Corpbasicinfo)表控制层
@@ -42,7 +44,7 @@ public class CorpbasicinfoController {
     /**
      * 服务对象
      */
-    @Resource
+    @Autowired
     private CorpbasicinfoService corpbasicinfoService;
     @Autowired
     private LogService logService;
@@ -56,10 +58,34 @@ public class CorpbasicinfoController {
         return "page/corpbasicinfo/addcorpbasicinfo";
     }
 
-    @RequestMapping("selectcompany")
-    public String selectcompany() {
-        return "page/companylist";
+    @RequestMapping("goselectcorpbasicinfo")
+    public String goselectcorpbasicinfo() {
+        return "page/corpbasicinfolist";
     }
+
+
+    /**
+     * @Author houxuyang
+     * @Description //查询公司列表
+     * @Date 14:40 2020/8/3
+     * @Param [page, limit, corpname, corpcode]
+     * @return com.github.pagehelper.PageInfo<com.tdkj.System.entity.Corpbasicinfo>
+     **/
+    @ResponseBody
+    @RequestMapping("/selectcorpbasicinfo")
+    public OAResponseList selectemployee(Integer page, Integer limit, String corpname, String corpcode){
+        PageHelper.startPage(page,limit,true);
+        Corpbasicinfo corpbasicinfo =new Corpbasicinfo();
+        corpbasicinfo.setCorpname(corpname);
+        corpbasicinfo.setCorpcode(corpcode);
+        List<Corpbasicinfo> corpbasicinfoList = corpbasicinfoService.queryAll(corpbasicinfo);
+        PageInfo<Corpbasicinfo> pageInfo=new PageInfo<>(corpbasicinfoList);
+        return OAResponseList.setResult(0,FIND_SUCCESS,pageInfo);
+    }
+
+
+
+
 
     @Transactional
     @ResponseBody
@@ -90,8 +116,6 @@ public class CorpbasicinfoController {
             corpbasicinfo.setLinkman(linkman);
             corpbasicinfo.setLinkphone(linkphone);
             corpbasicinfo.setSignname(signname);
-
-
             FileuploadUtils fileuploadUtils =new FileuploadUtils();
             if(0!=signurl.getSize()){
                 //上传头像照 并返回url
@@ -99,11 +123,9 @@ public class CorpbasicinfoController {
                 corpbasicinfo.setSignurl(sign);
                 log.info("电子签名");
             }
-
             corpbasicinfo.setEmail(email);
             corpbasicinfo.setWebsite(website);
             corpbasicinfo.setCreatedate(new Date());
-
             corpbasicinfoService.insert(corpbasicinfo);
             Log log = LogUtils.setLog("添加公司"+corpname);
             logService.insert(log);
@@ -111,12 +133,6 @@ public class CorpbasicinfoController {
     }
 
 
-    @RequestMapping("getcompanylist")
-    @ResponseBody
-    public PageInfo<Corpbasicinfo> getcompanylist(Integer page, Integer limit){
-        PageHelper.startPage(page,limit);
-        PageInfo<Corpbasicinfo> pageInfo = new PageInfo<>(corpbasicinfoService.queryAlls());
-        return pageInfo;
-    }
+
 
 }
