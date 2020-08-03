@@ -51,7 +51,7 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label">菜单名称:</label>
                     <div class="layui-input-block">
-                        <input type="text" name="title" autocomplete="off" placeholder="请输入菜单名称"
+                        <input type="text" name="title" autocomplete="off" lay-verify="required" placeholder="请输入菜单名称"
                                class="layui-input">
                     </div>
                 </div>
@@ -75,13 +75,13 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label required">权限标识:</label>
                     <div class="layui-input-block">
-                        <input type="text" name="perms" placeholder="请输入权限标识" value="" class="layui-input">
+                        <input type="text" name="perms" placeholder="请输入权限标识" value="" lay-verify="required" class="layui-input">
                         <tip style="font-size:12px;color: #c0c4cc ">控制器中定义的权限标识，如：company:add（一定是英文符号）</tip>
                     </div>
                 </div>
 
                 <div class="layui-form-item" style="text-align: right;">
-                    <button class="layui-btn" lay-submit="" lay-filter="SureAdd"><i class="layui-icon">&#xe605;</i>确定添加</button>
+                    <button class="layui-btn" id="SureAdd" lay-submit="" lay-filter="SureAdd"><i class="layui-icon">&#xe605;</i>确定添加</button>
                 </div>
             </form>
         </div>

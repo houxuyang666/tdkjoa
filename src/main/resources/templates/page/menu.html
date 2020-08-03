@@ -140,6 +140,7 @@
     //删除菜单操作
     function FunDelMenu(menuid) {
         layer.msg('删除' + menuid);
+
     }
 
     //修改菜单操作
@@ -174,6 +175,7 @@
                         body.contents().find("input[name='href']").attr("placeholder","你选择的上级菜单是按钮,即不能添加");
                         body.contents().find("input[name='href']").attr("class","layui-input layui-disabled");
                         body.contents().find("input[name='href']").attr("readonly",true);
+                        body.contents().find("#SureAdd").addClass("layui-btn-disabled").attr("disabled",true);
                     } else if (Href != "#" && Href != "") {
                         body.contents().find('input[value="目录"]').attr("disabled", "disabled");
                         body.contents().find('input[value="目录"]').next().addClass("'layui-radio-disbaled layui-disabled");
@@ -188,7 +190,7 @@
         } else if (checkStatusData.length > 1) {
             layer.msg("不能对多个菜单进行添加操作！！！");
         } else {
-            layer.msg("请选择要对那个菜单进行添加！！！");
+            layer.msg("请选择要对那个级别进行添加！！！");
         }
     }
 
