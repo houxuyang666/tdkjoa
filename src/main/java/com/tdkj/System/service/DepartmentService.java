@@ -1,6 +1,7 @@
 package com.tdkj.System.service;
 
 import com.tdkj.System.entity.Department;
+import com.tdkj.System.entity.VO.DepartmentVO;
 
 import java.util.List;
 
@@ -53,4 +54,12 @@ public interface DepartmentService {
      */
     boolean deleteById(Integer deptid);
 
+    /**
+     * @Author houxuyang
+     * @Description //查询VO
+     * @Date 15:55 2020/8/3
+     * @Param []
+     * @return java.util.List<com.tdkj.System.entity.VO.DepartmentVO>
+     **/
+    List<DepartmentVO> queryAlldept();
 }

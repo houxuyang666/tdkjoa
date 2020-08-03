@@ -97,4 +97,10 @@ public class EmployeeServiceImpl implements EmployeeService {
     public Employee querySuperById(Integer employeeid) {
         return this.employeeDao.querySuperById(employeeid);
     }
+
+    @Override
+    public List<Employee> queryemployeeByRoleid(Integer roleid) {
+        return this.employeeDao.queryemployeeByRoleid(roleid);
+    }
+
 }

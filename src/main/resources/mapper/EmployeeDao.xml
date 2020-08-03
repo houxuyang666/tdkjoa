@@ -317,4 +317,9 @@
         from employee
         where EmployeeId =(select SuperID from employee where EmployeeId= #{employeeid})
     </select>
+
+    <select id="queryemployeeByRoleid" resultMap="EmployeeMap">
+         select * from employee e LEFT JOIN user u  on u.EmployeeId =e.EmployeeId where u.RoleId = #{roleid})
+    </select>
+
 </mapper>

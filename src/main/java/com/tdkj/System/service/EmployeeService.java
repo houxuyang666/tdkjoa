@@ -90,4 +90,13 @@ public interface EmployeeService {
      * @return
      */
     Employee querySuperById(Integer employeeid);
+
+    /**
+     * @Author houxuyang
+     * @Description //查询角色为领导的员工
+     * @Date 16:51 2020/8/3
+     * @Param [roleid]
+     * @return java.util.List<com.tdkj.System.entity.Employee>
+     **/
+    List<Employee> queryemployeeByRoleid(Integer roleid);
 }

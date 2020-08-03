@@ -1,6 +1,7 @@
 package com.tdkj.System.dao;
 
 import com.tdkj.System.entity.Department;
+import com.tdkj.System.entity.VO.DepartmentVO;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -63,4 +64,12 @@ public interface DepartmentDao {
      */
     int deleteById(Integer deptid);
 
+    /**
+     * @Author houxuyang
+     * @Description //查询VO
+     * @Date 15:56 2020/8/3
+     * @Param []
+     * @return java.util.List<com.tdkj.System.entity.VO.DepartmentVO>
+     **/
+    List<DepartmentVO> queryAlldept();
 }

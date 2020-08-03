@@ -27,7 +27,7 @@ public class Leavebill implements Serializable {
     /**
      * 天数
      */
-    private String days;
+    private Double days;
     /**
      * 申请时间
      */
@@ -44,7 +44,7 @@ public class Leavebill implements Serializable {
 
     }
 
-    public Leavebill(String title, String content, String days, Date leavetime, Integer status, Integer userid) {
+    public Leavebill(String title, String content, Double days, Date leavetime, Integer status, Integer userid) {
         this.title = title;
         this.content = content;
         this.days = days;

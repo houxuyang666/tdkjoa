@@ -2,6 +2,7 @@ package com.tdkj.System.service.impl;
 
 import com.tdkj.System.dao.DepartmentDao;
 import com.tdkj.System.entity.Department;
+import com.tdkj.System.entity.VO.DepartmentVO;
 import com.tdkj.System.service.DepartmentService;
 import org.springframework.stereotype.Service;
 
@@ -75,5 +76,10 @@ public class DepartmentServiceImpl implements DepartmentService {
     @Override
     public boolean deleteById(Integer deptid) {
         return this.departmentDao.deleteById(deptid) > 0;
+    }
+
+    @Override
+    public List<DepartmentVO> queryAlldept() {
+        return this.departmentDao.queryAlldept();
     }
 }

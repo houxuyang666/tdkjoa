@@ -6,7 +6,7 @@
         <result property="id" column="id" jdbcType="INTEGER"/>
         <result property="title" column="title" jdbcType="VARCHAR"/>
         <result property="content" column="content" jdbcType="VARCHAR"/>
-        <result property="days" column="days" jdbcType="VARCHAR"/>
+        <result property="days" column="days" jdbcType="DOUBLE"/>
         <result property="leavetime" column="leavetime" jdbcType="TIMESTAMP"/>
         <result property="status" column="status" jdbcType="VARCHAR"/>
         <result property="userid" column="userid" jdbcType="INTEGER"/>

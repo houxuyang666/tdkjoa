@@ -20,49 +20,31 @@
 <body>
 <div id="contain">
     <form class="layui-form layui-form-pane" action="" >
+
         <div class="layui-form-item">
-            <label class="layui-form-label">标题</label>
+            <label class="layui-form-label">部门名称</label>
             <div class="layui-input-block">
-                <select name="title" id="" lay-filter="mySelect">
-                    <option value="加班">加班</option>
-                    <option value="外派">外派</option>
-                    <option value="出差">出差</option>
-                    <option value="事假">事假</option>
-                    <option value="病假">病假</option>
-                    <option value="婚假">婚假</option>
-                    <option value="产假">产假</option>
-                    <option value="丧假">丧假</option>
-                    <option value="年假">年假</option>
-                    <option value="调休">调休</option>
-                    <option value="陪产假">陪产假</option>
-                    <option value="其他">其他</option>
+                <input type="text" name="deptname" autocomplete="off"  class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">部门负责人</label>
+            <div class="layui-input-block">
+                <select name="deptheadid" id="" lay-filter="mySelect">
+                    <option value="1">/department/selectdeptemployee 获取角色为领导的人</option>
+                    <option value="2">应查询出角色为领导的列表 进行选择</option>
+                    <option value="18">常浩然</option>
                 </select>
             </div>
         </div>
-
         <div class="layui-form-item">
-            <label class="layui-form-label">内容</label>
-            <div class="layui-input-block">
-                <input type="text" name="content" autocomplete="off"  class="layui-input">
+            <label class="layui-form-label">部门简介</label>
+            <div class="layui-input-inline">
+                <textarea placeholder="请输入部门简介"  name="deptdesc" lay-verily="required" required class="layui-textarea"></textarea>
             </div>
         </div>
-
-        <div class="layui-form-item">
-            <label class="layui-form-label">天数</label>
-            <div class="layui-input-block">
-                <input type="text" name="days" autocomplete="off"  class="layui-input">
-            </div>
-        </div>
-
-        <div class="layui-form-item">
-            <label class="layui-form-label">申请时间</label>
-            <div class="layui-input-block">
-                <input type="text" name="leavetime" id="date" autocomplete="off" class="layui-input">
-            </div>
-        </div>
-
-            <button class="layui-btn" lay-submit="" lay-filter="SureAdd"><i class="layui-icon">&#xe605;</i>确定添加</button>
-    </form>
+        <button class="layui-btn" lay-submit="" lay-filter="SureAdd"><i class="layui-icon">&#xe605;</i>确定添加</button>
+</form>
 </div>
 <script src="/statics/lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
 <script>
@@ -72,20 +54,10 @@
             $ = layui.$,
             laydate = layui.laydate;
 
-        var obj=new Date();
-        //日期
-        laydate.render({
-            elem: '#date',
-            format:"yyyy-MM-dd HH:mm:ss",
-            value:obj,
-            isInitValue:true,
-            trigger:"click"
-        });
-
         //监听提交
         form.on('submit(SureAdd)', function (data) {
             $.ajax({
-                url:"/leavebill/add",
+                url:"/department/add",
                 dataType:"json",
                 type:"POST",
                 data:data.field,

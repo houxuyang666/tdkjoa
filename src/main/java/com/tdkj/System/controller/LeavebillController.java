@@ -94,7 +94,7 @@ public class LeavebillController {
     @Transactional
     @ResponseBody
     @RequestMapping("/add")
-    public OAResponse add(String title, String content, String days, String leavetime) throws Exception {
+    public OAResponse add(String title, String content, Double days, String leavetime) throws Exception {
         log.info("addleavebill");
         /*请假流程单 生成时状态为未申请*/
 
@@ -118,7 +118,7 @@ public class LeavebillController {
 
     @ResponseBody
     @RequestMapping("/update")
-    public OAResponse update(Integer id, String title, String content, String days, String leavetime) throws Exception {
+    public OAResponse update(Integer id, String title, String content, Double days, String leavetime) throws Exception {
         log.info("updateleavebill");
         /*修改请假单内容*/
         Leavebill leavebill = new Leavebill(title, content, days, DateUtil.formatDate(leavetime), AuditStatusEnmu.To_audit.getCode(), ShiroUtils.getPrincipal().getUserid());

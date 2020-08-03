@@ -76,17 +76,23 @@ public class CorpbasicinfoController {
     public OAResponseList selectemployee(Integer page, Integer limit, String corpname, String corpcode){
         PageHelper.startPage(page,limit,true);
         Corpbasicinfo corpbasicinfo =new Corpbasicinfo();
-        corpbasicinfo.setCorpname(corpname);
-        corpbasicinfo.setCorpcode(corpcode);
+        if(null!=corpname){
+            corpbasicinfo.setCorpname(corpname);
+        }else if(null!=corpcode){
+            corpbasicinfo.setCorpcode(corpcode);
+        }
         List<Corpbasicinfo> corpbasicinfoList = corpbasicinfoService.queryAll(corpbasicinfo);
         PageInfo<Corpbasicinfo> pageInfo=new PageInfo<>(corpbasicinfoList);
         return OAResponseList.setResult(0,FIND_SUCCESS,pageInfo);
     }
 
-
-
-
-
+    /**
+     * @Author houxuyang
+     * @Description //添加公司
+     * @Date 15:08 2020/8/3
+     * @Param [corpcode, corpname, corptype, licensenum, address, zipcode, legalman, legalmanduty, legalmanidcardtype, legalmanidcardnumber, registerdate, establishdate, officphone, faxnumber, linkman, linkphone, signname, signurl, email, website]
+     * @return com.tdkj.System.common.OAResponse
+     **/
     @Transactional
     @ResponseBody
     @RequestMapping("/add")
@@ -131,8 +137,5 @@ public class CorpbasicinfoController {
             logService.insert(log);
         return OAResponse.setResult(HTTP_RNS_CODE_200,ADD_SUCCESS);
     }
-
-
-
 
 }
