@@ -97,6 +97,7 @@ var PublicFun = {
             url:url,
             dataType:"json",
             type:"POST",
+            async:false,
             data:data,
             success:success,
             error:function () {
@@ -172,6 +173,56 @@ var PublicFun = {
             var form=layui.form;
             form.render();
         })
+    },
+
+    //获取菜单数据/menu/getmenu
+    GetMenuInfo:function () {
+        var jsonMenu;
+        PublicFun.FunPostAjax("/menu/getmenu","",function(res){
+            if(res.responseCode==200){
+                //console.log(res.data);
+                jsonMenu=res.data;
+            }
+        },"菜单接口请求失败！！！");
+
+        var jsonData=eval(jsonMenu);
+        //绑定的字段
+        var jsonDataTree=[];
+        //将json串转换成树形结构
+        for (var i in jsonData){  //parentId为0时表示为根节点
+            if(jsonData[i].parentid=="0"){
+                var tempObject={};
+                tempObject.title=jsonData[i].title;
+                tempObject.menuid=jsonData[i].menuid;
+                tempObject.children=getChildren(tempObject.menuid);
+                jsonDataTree.push(tempObject);
+            }
+        }
+        //递归体  即对每条jsonData逐条递归找childs
+        function getChildren(id){
+            var  tempArray=[];
+            for(var i in jsonData){
+                if(jsonData[i].parentid==id){
+                    var tempChild={};
+                    tempChild.title=jsonData[i].title;
+                    tempChild.menuid=jsonData[i].menuid;
+                    if(selectChildren(jsonData[i].menuid)){   //若存在子节点，继续递归；否则为叶节点，停止递归
+                        tempChild.children=getChildren(jsonData[i].menuid);
+                    }
+                    tempArray.push(tempChild);
+                }
+            }
+            return tempArray;
+        }
+        function selectChildren(id){   // 是否存在子节点
+            for(var i in jsonData){
+                if(jsonData[i].parentid==id){
+                    return true;
+                }
+            }
+            return false;
+        }
+        return jsonDataTree;
     }
 
 

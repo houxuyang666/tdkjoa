@@ -15,6 +15,8 @@
 </head>
 <body>
 <input type="hidden" id="Href">
+<input type="hidden" id="menuTypes">
+<input type="hidden" id="menuid">
 <div class="layuimini-container">
     <div class="layuimini-main">
         <blockquote class="layui-elem-quote">
@@ -119,7 +121,6 @@
 
         });
 
-
         //监听工具条
         table.on('tool(munu-table)', function (obj) {
             var data = obj.data;
@@ -130,7 +131,7 @@
                     FunDelMenu(data.menuid)
                     break;
                 case "edit":
-                    FunUpdateMenu(data.menuid)
+                    FunUpdateMenu(data)
                     break;
             }
 
@@ -139,13 +140,53 @@
 
     //删除菜单操作
     function FunDelMenu(menuid) {
-        layer.msg('删除' + menuid);
-
+        //layer.msg('删除' + menuid);
+        layer.confirm("确定要删除此菜单吗？",function () {
+            //删除操作
+            PublicFun.FunPostAjax("/menu/delemenu",{menuId:menuid},function (res) {
+                if(res.responseCode==200){
+                    layer.msg(res.message);
+                    window.location.reload();//刷新
+                }else {
+                    layer.msg(res.message);
+                }
+            },"请求失败，请检查网络或联系管理员！！！")
+        })
     }
 
     //修改菜单操作
-    function FunUpdateMenu(menuid) {
-        layer.msg('修改' + menuid);
+    function FunUpdateMenu(data) {
+        //layer.msg('修改' + menuid);
+        //console.log(data);
+        $("#menuTypes").val(data.href);
+        $("#menuid").val(data.menu);
+        var index = layer.open({
+            title: '修改菜单',
+            type: 2,
+            shade: 0.2,
+            maxmin: true,
+            shadeClose: true,
+            area: ['50%', '75%'],
+            content: '/menu/goupdatemenu',
+            success: function (layero, index) {
+                //赋值
+                var body = layer.getChildFrame("body", index);
+                body.contents().find("#parentId").val(data.parentid);
+                if(data.icon==null|| data.icon==""){
+                    body.contents().find("#iconPicker").val(data.icon);
+                }else {
+                    body.contents().find("#iconPicker").val(data.icon.replace("fa fa","fa"));
+                }
+                body.contents().find("input[name=\"title\"]").val(data.title);
+                body.contents().find("input[name=\"href\"]").val(data.href);
+                body.contents().find("input[name=\"target\"]").val(data.target);
+                body.contents().find("input[name=\"perms\"]").val(data.perms);
+            },
+            end: function () {
+                //刷新此网页
+                window.location.reload();
+            }
+        });
     }
 
     //添加菜单操作

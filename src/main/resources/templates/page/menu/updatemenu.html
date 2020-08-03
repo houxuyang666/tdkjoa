@@ -1,11 +1,249 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-修改菜单
-table/goupdatemenu
-</body>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title></title>
+        <meta name="renderer" content="webkit">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+        <link rel="stylesheet" href="/statics/lib/layui-v2.5.5/css/layui.css" media="all">
+        <link rel="stylesheet" href="/statics/lib/font-awesome-4.7.0/css/font-awesome.min.css" media="all">
+        <link rel="stylesheet" href="/css/public.css" media="all">
+        <style>
+            body {
+                background-color: #ffffff;
+            }
+
+            #contain {
+                padding: 25px;
+            }
+
+        </style>
+    </head>
+    <body>
+
+        <div id="contain">
+            <form class="layui-form " action="">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">上级菜单:</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="parentId" id="parentId" autocomplete="off" class="layui-input layui-disabled" readonly
+                               style="background-color: #eeeeee">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">菜单类型:</label>
+                    <div class="layui-input-block">
+                        <input type="radio" name="menuType"  lay-filter="menuType" value="目录" title="目录" >
+                        <input type="radio" name="menuType"  lay-filter="menuType" value="菜单" title="菜单">
+                        <input type="radio" name="menuType"  lay-filter="menuType" value="按钮" title="按钮" ><!--disabled=""-->
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label for="" class="layui-form-label">图标:</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="icon" id="iconPicker" style="width: 500px;" value="fa-angellist" lay-filter="iconPicker" class="hide">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">菜单名称:</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="title" autocomplete="off" lay-verify="required" placeholder="请输入菜单名称"
+                               class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">请求地址:</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="href" autocomplete="off" placeholder="请输入请求地址" class="layui-input">
+                        <tip style="font-size:12px;color: #c0c4cc ">如：/user/gouser    这里的地址如果是#的话，菜单的类型为按钮，为空" "的话为目录</tip>
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">打开方式:</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="target" autocomplete="off" value="_self" class="layui-input">
+                        <tip style="font-size:12px;color: #c0c4cc ">一般都在本系统标签中打开，即_self</tip>
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label required">权限标识:</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="perms" placeholder="请输入权限标识" value="" class="layui-input">
+                        <tip style="font-size:12px;color: #c0c4cc ">控制器中定义的权限标识，如：company:add（一定是英文符号）</tip>
+                    </div>
+                </div>
+
+                <div class="layui-form-item" style="text-align: right;">
+                    <button class="layui-btn" id="SureAdd" lay-submit="" lay-filter="SureAdd"><i class="layui-icon">&#xe605;</i>确定修改</button>
+                </div>
+            </form>
+        </div>
+
+        <div id="menuTree" style="display: none;padding-left: 80px;padding-top: 10px;">
+            <div id="test4" class="demo-tree"></div>
+        </div>
+
+        <div id="treediv" style="display: none;padding-left: 10px;padding-right: 10px;">
+            <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+                <legend>请选择菜单项</legend>
+            </fieldset>
+            <div style="margin-left: 50px;">
+            <div id="test2" class="demo-tree"></div>
+            </div>
+        </div>
+
+        <script src="/statics/lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
+        <script src="/js/lay-config.js?v=2.0.0" charset="utf-8"></script>
+        <script src="/js/public.js" charset="utf-8"></script>
+        <script type="text/javascript">
+            PublicFun.ImportJs("/statics/lib/jquery-3.4.1/jquery-3.4.1.min.js");
+            layui.use(['form','iconPickerFa','tree'], function () {
+                var form = layui.form,
+                    layer = layui.layer,
+                    iconPickerFa = layui.iconPickerFa,
+                    tree=layui.tree,
+                    $ = layui.$;
+
+                //图标选择
+                iconPickerFa.render({
+                    // 选择器，推荐使用input
+                    elem: '#iconPicker',
+                    // fa 图标接口
+                    url: "/statics/lib/font-awesome-4.7.0/less/variables.less",
+                    // 是否开启搜索：true/false
+                    search: false,
+                    // 是否开启分页
+                    page: false,
+                    // 每页显示数量，默认12
+                    limit: 100,
+                    // 点击回调
+                    click: function (data) {
+                        //console.log(data);
+                    },
+                    // 渲染成功后的回调
+                    success: function (d) {
+                        //console.log(d);
+                    }
+                });
+
+                //获取父窗体的href值
+                var href=parent.$("#menuTypes").val();
+                //单s选按钮赋值
+                if(href==""){
+                    $('input[value="目录"]').prop("checked","true");
+                    $("input[name='href']").attr("placeholder",'你选择是目录单选,所以此空不用填写');
+                    $("input[name='href']").attr("class","layui-input layui-disabled");
+                    $("input[name='href']").attr("readonly",true);
+                }else if(href=="#"){
+                    $('input[value="按钮"]').prop("checked","true");
+                    $("input[name='href']").val("#");
+                    $("input[name='href']").attr("class","layui-input layui-disabled");
+                    $("input[name='href']").attr("readonly",true);
+                }else {
+                    $('input[value="菜单"]').prop("checked","true");
+                }
+                PublicFun.RenderForm();
+
+
+                //监听redio单选按钮
+                form.on('radio(menuType)',function (data) {
+                    //console.log(data.value);
+                    if(data.value=="目录"){
+                        $("input[name='href']").val("");
+                        $("input[name='href']").attr("placeholder",'你选择是目录单选,所以此空不用填写');
+                        $("input[name='href']").attr("class","layui-input layui-disabled");
+                        $("input[name='href']").attr("readonly",true);
+                    }else if(data.value=="按钮"){
+                        $("input[name='href']").val("#");
+                        $("input[name='href']").attr("class","layui-input layui-disabled");
+                        $("input[name='href']").attr("readonly",true);
+                    }else if(data.value=="菜单"){
+                        $("input[name='href']").val("");
+                        $("input[name='href']").attr("placeholder",'请输入请求地址');
+                        $("input[name='href']").attr("class","layui-input");
+                        $("input[name='href']").attr("readonly",false);
+                    }
+                })
+
+                //监听提交
+                form.on('submit(SureAdd)', function (data) {
+                    PublicFun.FunPostAjax("/menu/updatemenu",
+                        {
+                            "menuId":parent.$("#menuId").val(),
+                            "href": data.field.href,
+                            "icon": "fa "+data.field.icon,
+                            "menuType":data.field.menuType,
+                            "parentId": data.field.parentId,
+                            "perms": data.field.perms,
+                            "target": data.field.target,
+                            "title": data.field.title
+                        },function (res) {
+                            if(res.responseCode==200){
+                                var index = layer.alert(res.message, {
+                                    title: '提交信息'
+                                }, function () {
+                                    // 关闭弹出层
+                                    layer.close(index);
+                                    var iframeIndex = parent.layer.getFrameIndex(window.name);
+                                    parent.layer.close(iframeIndex);
+                                });
+                            }else {
+                                layer.msg(res.message)
+                            }
+                        },"请求接口时出错,请重新加载或联系管理员");
+                    return false;
+                });
+
+                //获取菜单树的数据
+                var jsonMenu=PublicFun.GetMenuInfo();
+
+                //树形菜单渲染
+                tree.render({
+                    elem: '#test2'
+                    ,data: jsonMenu
+                    ,onlyIconControl: true  //是否仅允许节点左侧图标控制展开收缩
+                    ,click: function(obj){
+                        //layer.msg(JSON.stringify(obj.data.menuid));
+                        $("#parentId").val(obj.data.menuid);
+                        //var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                        //parent.layer.close(index);
+                        layer.close(layer.index);
+                    }
+                });
+                //input文本框 点击事件
+                $("#parentId").bind("click",function () {
+                    layer.open({
+                        title: '选择菜单',
+                        type: 1,
+                        shade: 0.2,
+                        shift: 2,
+                        maxmin: true,
+                        shadeClose: true,
+                        area: ['50%', '75%'],
+                        content: $("#treediv")
+                    })
+                });
+
+
+
+
+
+
+            });
+
+
+
+
+
+
+
+        </script>
+    </body>
 </html>
