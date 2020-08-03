@@ -4,11 +4,7 @@ import org.activiti.engine.RepositoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.stereotype.Component;
-
-import java.io.IOException;
 
 /**
  * @author hxy
@@ -24,7 +20,7 @@ public class ApplicationRunnerImpl implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        Resource[] resources = null;
+        /*Resource[] resources = null;
         try {
             //resources = new PathMatchingResourcePatternResolver().getResources("classpath:processes/Leavebill.bpmn"); LeavebillOr
             resources = new PathMatchingResourcePatternResolver().getResources("classpath:processes/*.bpmn");
@@ -35,6 +31,6 @@ public class ApplicationRunnerImpl implements ApplicationRunner {
         for (Resource r : resources) {
             String addr = "processes/" + r.getFilename();
             repositoryService.createDeployment().addClasspathResource(addr).name("流程").deploy();
-        }
+        }*/
     }
 }
