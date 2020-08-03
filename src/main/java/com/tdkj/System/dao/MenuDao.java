@@ -1,7 +1,6 @@
 package com.tdkj.System.dao;
 
 import com.tdkj.System.entity.Menu;
-import com.tdkj.System.entity.RoleMenu;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -81,6 +80,6 @@ public interface MenuDao {
     /*添加时直接设置在权限管理表中插入关联*/
     int insertroleAndmenu(@Param("roleid")Integer roleid, @Param("menuid")Integer menuid);
 
-    /*查询该目录所对应的所有角色*/
-    List<RoleMenu> queryroleAndmenuById(Integer menuId);
+    /*删除菜单及关联关系*/
+    void deleteroleAndmenuById(Integer menuId);
 }

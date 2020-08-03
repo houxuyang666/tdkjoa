@@ -2,7 +2,6 @@ package com.tdkj.System.service;
 
 import com.tdkj.System.entity.Menu;
 import com.tdkj.System.entity.MenuTree;
-import com.tdkj.System.entity.RoleMenu;
 
 import java.util.List;
 
@@ -70,6 +69,6 @@ public interface MenuService {
     List<Menu> findMenusAllMenu();
     /*添加时直接设置在权限管理表中插入关联*/
     int insertroleAndmenu(Integer roleid, Integer menuid);
-    /*查询该目录所对应的所有角色*/
-    List<RoleMenu> queryroleAndmenuById(Integer menuId);
+    /*删除菜单及关联关系*/
+    void deleteroleAndmenuById(Integer menuId);
 }

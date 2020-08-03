@@ -142,11 +142,9 @@
         values (#{roleid}, #{menuid})
     </insert>
 
-
-    <select id="queryroleAndmenuById" resultMap="MenuMap">
-        select
-         MenuId, ParentId, Title, Href, Perms, Icon, Target, CreateDate, ModifyDate
-        from menu
-    </select>
+    <!--通过主键删除-->
+    <delete id="deleteroleAndmenuById">
+        delete from role_menu where MenuId =#{menuId}
+    </delete>
 
 </mapper>
