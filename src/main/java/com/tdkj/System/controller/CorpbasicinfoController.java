@@ -8,19 +8,21 @@ import com.tdkj.System.entity.Log;
 import com.tdkj.System.service.CorpbasicinfoService;
 import com.tdkj.System.service.LogService;
 import com.tdkj.System.utils.DateUtil;
+import com.tdkj.System.utils.FileuploadUtils;
 import com.tdkj.System.utils.LogUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
-
 import java.util.Date;
-import java.util.List;
 
 import static com.tdkj.System.common.OAResultCode.HTTP_RNS_CODE_200;
 import static com.tdkj.System.common.OAResultCode.HTTP_RNS_CODE_500;
@@ -32,8 +34,10 @@ import static com.tdkj.System.common.OAResultType.ADD_SUCCESS;
  * @author makejava
  * @since 2020-07-17 14:51:05
  */
+@Slf4j
 @Controller
 @RequestMapping("corpbasicinfo")
+@PropertySource("classpath:application-dev.properties")//此处路径需要按需修改
 public class CorpbasicinfoController {
     /**
      * 服务对象
@@ -43,15 +47,17 @@ public class CorpbasicinfoController {
     @Autowired
     private LogService logService;
 
+    @Value("${file.uploadImageFolder}")
+    private String uploadImageFolder;
 
 
     @RequestMapping("goadd")
     public String goadd() {
-        return "page/table/addcorpbasicinfo";
+        return "page/corpbasicinfo/addcorpbasicinfo";
     }
 
-    @RequestMapping("showcompany")
-    public String showcompany() {
+    @RequestMapping("selectcompany")
+    public String selectcompany() {
         return "page/companylist";
     }
 
@@ -61,9 +67,9 @@ public class CorpbasicinfoController {
     public OAResponse add(String corpcode, String corpname, Integer corptype, String licensenum, String address, String zipcode,
                           String legalman, String legalmanduty, Integer legalmanidcardtype, String legalmanidcardnumber,
                           String registerdate, String establishdate, String officphone, String faxnumber, String linkman,
-                          String linkphone, String signname, String signurl, String email, String website) throws Exception{
+                          String linkphone, String signname, @RequestParam("signurl") MultipartFile signurl, String email, String website) throws Exception{
             Corpbasicinfo oldcorpbasicinfo =corpbasicinfoService.queryByCode(corpcode);
-            if (oldcorpbasicinfo != null) {
+            if (null!=oldcorpbasicinfo) {
                 return OAResponse.setResult(HTTP_RNS_CODE_500,"公司已存在");
             }
             Corpbasicinfo corpbasicinfo=new Corpbasicinfo();
@@ -84,7 +90,16 @@ public class CorpbasicinfoController {
             corpbasicinfo.setLinkman(linkman);
             corpbasicinfo.setLinkphone(linkphone);
             corpbasicinfo.setSignname(signname);
-            corpbasicinfo.setSignurl(signurl);
+
+
+            FileuploadUtils fileuploadUtils =new FileuploadUtils();
+            if(0!=signurl.getSize()){
+                //上传头像照 并返回url
+                String sign = fileuploadUtils.Fileuploadimage(signurl,uploadImageFolder,"电子签名",legalman);
+                corpbasicinfo.setSignurl(sign);
+                log.info("电子签名");
+            }
+
             corpbasicinfo.setEmail(email);
             corpbasicinfo.setWebsite(website);
             corpbasicinfo.setCreatedate(new Date());

@@ -41,8 +41,8 @@ public class ProFlowController {
     private ProcurementService procurementService;
 
 
-    /*根据请假单ID启动流程定义*/
-    @Transactional
+    /*根据采购ID启动流程定义*/
+    /*@Transactional
     @ResponseBody
     @RequestMapping("/startProcess")
     public OAResponse startProcess(String proid) {
@@ -53,7 +53,7 @@ public class ProFlowController {
             e.printStackTrace();
             return OAResponse.setResult(500, "启动失败");
         }
-    }
+    }*/
 
     /*跳转到我的待办任务页面*/
     @RequestMapping("/goProTaskManger")

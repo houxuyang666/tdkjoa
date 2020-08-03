@@ -2,6 +2,7 @@ package com.tdkj.System.controller;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.tdkj.System.Enum.FileTypeEnmu;
 import com.tdkj.System.Enum.ProcurementStatusEnmu;
 import com.tdkj.System.common.OAResponse;
 import com.tdkj.System.common.OAResponseList;
@@ -11,18 +12,25 @@ import com.tdkj.System.entity.Procurement;
 import com.tdkj.System.entity.VO.ProcurementVO;
 import com.tdkj.System.service.EmployeeService;
 import com.tdkj.System.service.FileinfoService;
+import com.tdkj.System.service.ProFlowService;
 import com.tdkj.System.service.ProcurementService;
 import com.tdkj.System.utils.DateUtil;
 import com.tdkj.System.utils.FileuploadUtils;
 import com.tdkj.System.utils.ShiroUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.activiti.engine.RuntimeService;
+import org.activiti.engine.TaskService;
+import org.activiti.engine.runtime.Execution;
+import org.activiti.engine.task.Task;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
@@ -51,6 +59,12 @@ public class ProcurementController {
     private EmployeeService employeeService;
     @Autowired
     private FileinfoService fileinfoService;
+    @Autowired
+    private RuntimeService runtimeService;
+    @Autowired
+    private TaskService taskService;
+    @Autowired
+    private ProFlowService proflowService;
 
     @Value("${file.uploadFile}")
     private String uploadFile;
@@ -87,12 +101,12 @@ public class ProcurementController {
     @ResponseBody
     @RequestMapping("/add")
     public OAResponse add(String prodate, Integer protype, String goodsname, String unit, String type, Integer number, BigDecimal price,
-                          BigDecimal totalamount, String prodesc ) throws  Exception { /*@RequestParam("file") MultipartFile file*/
+                          BigDecimal totalamount, String prodesc,@RequestParam("file") MultipartFile file ) throws  Exception { /*@RequestParam("file") MultipartFile file*/
         Employee employee =this.employeeService.queryById(ShiroUtils.getPrincipal().getEmployeeid());
         String desc ="采购订单";
         Fileinfo fileinfo =new Fileinfo();
         FileuploadUtils fileuploadUtils =new FileuploadUtils();
-       /* if(0!=file.getSize()){
+       if(0!=file.getSize()){
             //合同
             String fileUrl = fileuploadUtils.Fileupload(file,uploadFile,"采购订单",goodsname);
             log.info("附件上传成功");
@@ -103,7 +117,7 @@ public class ProcurementController {
             fileinfo.setCreatdate(new Date());
             fileinfo= fileinfoService.insert(fileinfo);
             log.info("附件插入成功");
-        }*/
+        }
         Procurement procurement =new Procurement();
         //生成4为随机数 第二个参数为是否要字母 第三个参数是否要数字
         String code= RandomStringUtils.random(4, true, true);
@@ -120,11 +134,22 @@ public class ProcurementController {
         procurement.setProdesc(prodesc);
         procurement.setApplicantid(ShiroUtils.getPrincipal().getUserid());
         procurement.setApplicationdeptid(employee.getDepartmentid());
-        procurement.setStatus(ProcurementStatusEnmu.To_audit.getCode());
+        procurement.setStatus(ProcurementStatusEnmu.Under_review.getCode());
         procurement.setFileinfoid(fileinfo.getFileinfoid());
         procurement.setCreatedate(new Date());
+        /*插入采购订单表*/
+        Procurement insert = this.procurementService.insert(procurement);
+        /*直接启动流程实例*/
+        this.proflowService.startProcess(insert.getProid());
+        /*启动后通过查询流程实例的business_key 找到流程定义实例 再通过流程实例*/
+        //拼接流程定义Key
+        String processDefinitionKey = "LeavebillOr";
+        String businessKey =processDefinitionKey+":"+insert.getProid();
+        Execution execution = this.runtimeService.createExecutionQuery().processInstanceBusinessKey(businessKey).singleResult();
+        Task task = this.taskService.createTaskQuery().executionId(execution.getProcessInstanceId()).singleResult();
+        /*直接跳过自己提交申请的步骤 提交到上级领导*/
+        this.proflowService.completeTask(insert.getProid(),task.getId(),"提交申请","提交");
 
-        this.procurementService.insert(procurement);
         return OAResponse.setResult(200,ADD_SUCCESS);
     }
 

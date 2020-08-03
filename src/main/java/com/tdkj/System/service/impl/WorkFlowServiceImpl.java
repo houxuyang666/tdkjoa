@@ -167,10 +167,11 @@ public class WorkFlowServiceImpl implements WorkFlowService {
         variables.put("username", employee.getName());
         this.runtimeService.startProcessInstanceByKey(processDefinitionKey,businessKey,variables);
         //更新请假单状态
-        Leavebill leavebill =new Leavebill();
+        //添加请假单后直接启动流程 所以这里可以省略更新业务的状态
+        /*Leavebill leavebill =new Leavebill();
         leavebill.setId(leavbillid);
         leavebill.setStatus(AuditStatusEnmu.Under_review.getCode());
-        leavebillService.update(leavebill);
+        leavebillService.update(leavebill);*/
     }
 
     @Override

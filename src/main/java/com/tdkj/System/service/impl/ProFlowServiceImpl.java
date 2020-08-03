@@ -2,7 +2,6 @@ package com.tdkj.System.service.impl;
 
 import com.github.pagehelper.PageInfo;
 import com.tdkj.System.Enum.AuditStatusEnmu;
-import com.tdkj.System.Enum.ProcurementStatusEnmu;
 import com.tdkj.System.entity.Employee;
 import com.tdkj.System.entity.Procurement;
 import com.tdkj.System.entity.VO.ProcurementVO;
@@ -67,10 +66,10 @@ public class ProFlowServiceImpl implements ProFlowService {
         variables.put("username", employee.getName());
         this.runtimeService.startProcessInstanceByKey(processDefinitionKey,businessKey,variables);
         //更新采购单状态
-        Procurement procurement =new Procurement();
+        /*Procurement procurement =new Procurement();
         procurement.setProid(proid);
         procurement.setStatus(ProcurementStatusEnmu.Review_completed.getCode());
-        procurementService.update(procurement);
+        procurementService.update(procurement);*/
     }
 
 
@@ -170,9 +169,11 @@ public class ProFlowServiceImpl implements ProFlowService {
         this.taskService.complete(taskId, variables);
         if("驳回".equals(outcome)){
             this.runtimeService.deleteProcessInstance(task.getProcessInstanceId(),"驳回");
-        }else if ("放弃".equals(outcome)){
-            this.runtimeService.deleteProcessInstance(task.getProcessInstanceId(), "放弃");
         }
+        //创建时就直接提交到经理 所以没有放弃选项
+        /*else if ("放弃".equals(outcome)){
+            this.runtimeService.deleteProcessInstance(task.getProcessInstanceId(), "放弃");
+        }*/
         //判断流程是否结束
         /*act_ru_task*/
         //已知流程实例ID
@@ -181,9 +182,14 @@ public class ProFlowServiceImpl implements ProFlowService {
         if(null==processInstance) {
             /*说明流程结束*/
             log.info("流程已结束");
-            if (outcome.equals("放弃")) {
+            /*if (outcome.equals("放弃")) {
                 procurement.setStatus(AuditStatusEnmu.give_up.getCode());
             }else if("驳回".equals(outcome)){
+                procurement.setStatus(AuditStatusEnmu.rejected.getCode());
+            }else{
+                procurement.setStatus(AuditStatusEnmu.Review_completed.getCode());
+            }*/
+            if("驳回".equals(outcome)){
                 procurement.setStatus(AuditStatusEnmu.rejected.getCode());
             }else{
                 procurement.setStatus(AuditStatusEnmu.Review_completed.getCode());
