@@ -3,6 +3,7 @@ package com.tdkj.System.service.impl;
 import com.tdkj.System.dao.MenuDao;
 import com.tdkj.System.entity.Menu;
 import com.tdkj.System.entity.MenuTree;
+import com.tdkj.System.entity.RoleMenu;
 import com.tdkj.System.service.MenuService;
 import com.tdkj.System.utils.TreeUtil;
 import org.springframework.stereotype.Service;
@@ -100,6 +101,11 @@ public class MenuServiceImpl implements MenuService {
     @Override
     public int insertroleAndmenu(Integer roleid, Integer menuid) {
         return this.menuDao.insertroleAndmenu(roleid,menuid);
+    }
+
+    @Override
+    public List<RoleMenu> queryroleAndmenuById(Integer menuId) {
+        return this.menuDao.queryroleAndmenuById(menuId);
     }
 
 

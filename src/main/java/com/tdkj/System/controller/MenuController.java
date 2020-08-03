@@ -3,6 +3,7 @@ package com.tdkj.System.controller;
 import com.tdkj.System.common.OAJson;
 import com.tdkj.System.common.OAResponse;
 import com.tdkj.System.entity.Menu;
+import com.tdkj.System.entity.RoleMenu;
 import com.tdkj.System.service.MenuService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -73,6 +74,12 @@ public class MenuController {
         return OAResponse.setResult(HTTP_RNS_CODE_200,ADD_SUCCESS);
     }
 
+    @RequestMapping("/goupdatemenu")
+    public String goupdatemenu() {
+        log.info("menu");
+        return "page/menu/updatemenu";
+    }
+
     @ResponseBody
     @RequestMapping("/updatemenu")
     public OAResponse updatemenu(Integer menuId,Integer parentId,String title, String href, String perms,String icon,String target) {
@@ -93,6 +100,9 @@ public class MenuController {
     @RequestMapping("/delemenu")
     public OAResponse delemenu(Integer menuId) {
         menuService.deleteById(menuId);
+        /*查询该目录所对应的所有角色*/
+        List<RoleMenu> roleMenus = menuService.queryroleAndmenuById(menuId);
+
         return OAResponse.setResult(HTTP_RNS_CODE_200,REMOVE_SUCCESS);
     }
 
