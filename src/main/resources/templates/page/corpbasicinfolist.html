@@ -84,8 +84,8 @@
                 return {
                     "code": 0, //解析接口状态
                     "msg": "网络异常,刷新一下再试", //解析提示文本
-                    "count": res.total, //解析数据长度
-                    "data": res.list //解析数据列表
+                    "count": res.data.total, //解析数据长度
+                    "data": res.data.list //解析数据列表
                 };
             },
             cols: [
@@ -144,7 +144,7 @@
                     corpcode: formData.corpcode,
                     corpname: formData.corpname
                 },
-                url:"",//后台模糊查询的接口路径
+                url:"/corpbasicinfo/selectcorpbasicinfo",//后台模糊查询的接口路径
                 method:"post"
             }, "data");
             return false;
