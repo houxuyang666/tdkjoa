@@ -317,9 +317,60 @@
         from employee
         where EmployeeId =(select SuperID from employee where EmployeeId= #{employeeid})
     </select>
-
+    <!--根据用户ID获取角色信息-->
     <select id="queryemployeeByRoleid" resultMap="EmployeeMap">
          select * from employee e LEFT JOIN user u  on u.EmployeeId =e.EmployeeId where u.RoleId = #{roleid})
     </select>
+    <!--根据公司ID获取该公司内的用户信息-->
+    <select id="queryMyMail" resultType="com.tdkj.System.entity.VO.EmployeeVO">
+            select
+                e.name as name,
+                d.DeptName as deptname,
+                e.CellPhone as cellphone,
+                e.Email as email,
+                e.Address as address,
+                e.JobTitle as jobtitle
+            from employee e
+             left join department d on d.DeptId = e.DepartmentId
+        <where>
+            <if test="name != null and name != ''">
+                and Name like concat('%',#{name},'%')
+            </if>
+            <if test="cellphone != null and cellphone != ''">
+                and cellphone like concat('%',#{cellphone},'%')
+            </if>
+            <if test="corpid != null and corpid != ''">
+                and e.corpid = #{corpid}
+            </if>
+        </where>
+    </select>
 
+
+    <select id="queryAllMail" resultType="com.tdkj.System.entity.VO.EmployeeVO">
+        select
+        e.name as name,
+        d.DeptName as deptname,
+        e.CellPhone as cellphone,
+        e.Email as email,
+        e.Address as address,
+        e.JobTitle as jobtitle,
+        e.CorpID as corpid,
+        c.CorpName as corpname
+        from employee e
+        left join department d on d.DeptId = e.DepartmentId
+        left join corpbasicinfo c on c.CorpId = e.CorpId
+        <where>
+            <if test="name != null and name != ''">
+                and Name like concat('%',#{name},'%')
+            </if>
+            <if test="cellphone != null and cellphone != ''">
+                and cellphone like concat('%',#{cellphone},'%')
+            </if>
+
+
+        </where>
+
+
+
+    </select>
 </mapper>

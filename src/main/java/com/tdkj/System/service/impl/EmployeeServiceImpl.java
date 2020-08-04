@@ -103,4 +103,14 @@ public class EmployeeServiceImpl implements EmployeeService {
         return this.employeeDao.queryemployeeByRoleid(roleid);
     }
 
+    @Override
+    public List<EmployeeVO> queryMyMail(Integer corpid,String name,String cellphone) {
+        return this.employeeDao.queryMyMail(corpid,name,cellphone);
+    }
+
+    @Override
+    public List<EmployeeVO> queryAllMail(Integer corpid, String name, String cellphone) {
+        return this.employeeDao.queryAllMail(corpid,name,cellphone);
+    }
+
 }
