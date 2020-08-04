@@ -56,10 +56,10 @@
                 and CorpId = #{corpid}
             </if>
             <if test="corpcode != null and corpcode != ''">
-                and CorpCode like %#{corpcode}%
+                and CorpCode like concat('%',#{corpcode},'%')
             </if>
             <if test="corpname != null and corpname != ''">
-                and CorpName like %#{corpname}%
+                and CorpName like concat('%',#{corpname},'%')
             </if>
             <if test="corptype != null">
                 and CorpType = #{corptype}
