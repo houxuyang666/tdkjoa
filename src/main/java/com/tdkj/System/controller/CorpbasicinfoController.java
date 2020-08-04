@@ -75,10 +75,13 @@ public class CorpbasicinfoController {
     @RequestMapping("/selectcorpbasicinfo")
     public OAResponseList selectemployee(Integer page, Integer limit, String corpname, String corpcode){
         PageHelper.startPage(page,limit,true);
+        log.info(corpname);
+        log.info(corpcode);
         Corpbasicinfo corpbasicinfo =new Corpbasicinfo();
         if(null!=corpname){
             corpbasicinfo.setCorpname(corpname);
-        }else if(null!=corpcode){
+        }
+        if(null!=corpcode){
             corpbasicinfo.setCorpcode(corpcode);
         }
         List<Corpbasicinfo> corpbasicinfoList = corpbasicinfoService.queryAll(corpbasicinfo);
