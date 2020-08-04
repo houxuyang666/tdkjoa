@@ -21,6 +21,7 @@
         </style>
     </head>
     <body>
+        <input type="hidden" id="menuid">
 
         <div id="contain">
             <form class="layui-form " action="">
@@ -170,35 +171,6 @@
                         $("input[name='href']").attr("class","layui-input");
                         $("input[name='href']").attr("readonly",false);
                     }
-                })
-
-                //监听提交
-                form.on('submit(SureAdd)', function (data) {
-                    PublicFun.FunPostAjax("/menu/updatemenu",
-                        {
-                            "menuId":parent.$("#menuId").val(),
-                            "href": data.field.href,
-                            "icon": "fa "+data.field.icon,
-                            "menuType":data.field.menuType,
-                            "parentId": data.field.parentId,
-                            "perms": data.field.perms,
-                            "target": data.field.target,
-                            "title": data.field.title
-                        },function (res) {
-                            if(res.responseCode==200){
-                                var index = layer.alert(res.message, {
-                                    title: '提交信息'
-                                }, function () {
-                                    // 关闭弹出层
-                                    layer.close(index);
-                                    var iframeIndex = parent.layer.getFrameIndex(window.name);
-                                    parent.layer.close(iframeIndex);
-                                });
-                            }else {
-                                layer.msg(res.message)
-                            }
-                        },"请求接口时出错,请重新加载或联系管理员");
-                    return false;
                 });
 
                 //获取菜单树的数据
@@ -230,6 +202,37 @@
                         content: $("#treediv")
                     })
                 });
+
+                //监听提交
+                form.on('submit(SureAdd)', function (data) {
+                    PublicFun.FunPostAjax("/menu/updatemenu",
+                        {
+                            "menuId":parent.$("#menuid").val(),
+                            "href": data.field.href,
+                            "icon": "fa "+data.field.icon,
+                            "menuType":data.field.menuType,
+                            "parentId": data.field.parentId,
+                            "perms": data.field.perms,
+                            "target": data.field.target,
+                            "title": data.field.title
+                        },function (res) {
+                            if(res.responseCode==200){
+                                var index = layer.alert(res.message, {
+                                    title: '提交信息'
+                                }, function () {
+                                    // 关闭弹出层
+                                    layer.close(index);
+                                    var iframeIndex = parent.layer.getFrameIndex(window.name);
+                                    parent.layer.close(iframeIndex);
+                                });
+                            }else {
+                                layer.msg(res.message)
+                            }
+                        },"请求接口时出错,请重新加载或联系管理员");
+                    return false;
+                });
+
+
 
 
 

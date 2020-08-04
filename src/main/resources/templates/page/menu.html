@@ -157,9 +157,10 @@
     //修改菜单操作
     function FunUpdateMenu(data) {
         //layer.msg('修改' + menuid);
-        //console.log(data);
+        //console.log(data.menuid);
         $("#menuTypes").val(data.href);
-        $("#menuid").val(data.menu);
+        $("#menuid").val(data.menuid);
+
         var index = layer.open({
             title: '修改菜单',
             type: 2,
