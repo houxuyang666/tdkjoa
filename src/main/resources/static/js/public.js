@@ -124,11 +124,11 @@ var PublicFun = {
 
     //格式日期控件 传入Id名 和 你想要的字符串
     layerDate:function ($id,formats) {
-        var obj = new Date();
+        //var obj = new Date();
         layui.laydate.render({
             elem: $id,
             format: formats,
-            value: obj,
+            //value: obj,
             isInitValue: true,
             trigger: "click"
         });
