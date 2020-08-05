@@ -67,7 +67,7 @@ public class LeavebillController {
 
     @RequestMapping("goselectleavebill")
     public String goselectleavebill() {
-        return "page/leavebilllist";
+        return "page/leavebill/leavebilllist";
     }
 
     @ResponseBody
@@ -87,7 +87,7 @@ public class LeavebillController {
 
     @RequestMapping("goadd")
     public String goadd() {
-        return "page/workflow/addleavebill";
+        return "page/leavebill/addleavebill";
     }
 
 
@@ -113,7 +113,7 @@ public class LeavebillController {
 
     @RequestMapping("goupdate")
     public String goupdate() {
-        return "page/workflow/updateleavebill";
+        return "page/leavebill/updateleavebill";
     }
 
     @ResponseBody

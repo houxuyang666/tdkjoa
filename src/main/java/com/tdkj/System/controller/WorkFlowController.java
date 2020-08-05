@@ -57,7 +57,7 @@ public class WorkFlowController {
 
     @RequestMapping("/goworkflow")
     public String goworkflow() {
-        return "page/workflowlist";
+        return "page/workflow/workflowlist";
     }
 
 
@@ -192,7 +192,7 @@ public class WorkFlowController {
     @RequestMapping("/goTaskManger")
     public String goTaskManger() {
         log.info("goTaskManger");
-        return "page/workflow/taskManger";
+        return "page/leavebill/taskManger";
     }
 
     /*查询我的代办任务*/
@@ -216,7 +216,7 @@ public class WorkFlowController {
         //2.根据任务ID查询连线信息
         List<String> outcomeName=this.workFlowService.queryOutComeByTaskId(taskId);
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("page/workflow/dotaskManger");
+        modelAndView.setViewName("page/leavebill/dotaskManger");
         modelAndView.addObject("leavebill",leavebill);
         modelAndView.addObject("outcomes",outcomeName);
         modelAndView.addObject("taskId",taskId);
