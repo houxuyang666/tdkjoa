@@ -258,6 +258,11 @@
                     layui.table.reload("companyList");//关闭弹窗后刷新页面
                 }
             });
+
+            //改变窗口大小时，重置弹窗的宽高，防止超出可视区域（如F12调出debug的操作）
+            $(window).on("resize",function(){
+                layui.layer.full(index);
+            })
         } else if (chkData.length > 1) {
             layer.msg("一次只能修改一行数据！！！");
         } else {
@@ -283,6 +288,10 @@
                     layui.table.reload("companyList");//关闭弹窗后刷新页面
                 }
             });
+        //改变窗口大小时，重置弹窗的宽高，防止超出可视区域（如F12调出debug的操作）
+        $(window).on("resize",function(){
+            layui.layer.full(index);
+        })
     }
 
 </script>

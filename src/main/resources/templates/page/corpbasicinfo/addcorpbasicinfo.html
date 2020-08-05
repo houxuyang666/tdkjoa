@@ -345,7 +345,11 @@
                 PublicFun.FunPostAjaxProcessData("", formdata,
                     function (res) {
                         if (res.responseCode) {
-                            layer.msg(res.message);
+                            var index=layer.alert(res.message,{title:"提示信息"},function () {
+                                layer.close(index);
+                                var ifremindex=parent.layer.getFrameIndex(window.name);
+                                parent.layer.close(ifremindex);
+                            });
                         } else {
                             layer.msg(res.message);
                         }
@@ -366,7 +370,11 @@
                 PublicFun.FunPostAjaxProcessData("/corpbasicinfo/add", formdata,
                     function (res) {
                         if (res.responseCode) {
-                            layer.msg(res.message);
+                          var index=layer.alert(res.message,{title:"提示信息"},function () {
+                                layer.close(index);
+                                var ifremindex=parent.layer.getFrameIndex(window.name);
+                                parent.layer.close(ifremindex);
+                            });
                         } else {
                             layer.msg(res.message);
                         }
