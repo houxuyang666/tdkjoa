@@ -70,7 +70,7 @@
             </div>
             <label class="layui-form-label">总金额</label>
             <div class="layui-input-inline">
-                <input type="number" name="totalamount" id="totalamount" autocomplete="off"
+                <input type="text" name="totalamount" id="totalamount" autocomplete="off" readonly
                        class="layui-input layui-disabled">
             </div>
         </div>
@@ -110,16 +110,15 @@
             $ = layui.$,
             upload = layui.upload,
             laydate = layui.laydate;
-        //var obj=new Date();
+        var obj=new Date();
         //日期
-        /*laydate.render({
-            elem: '#date',
+        laydate.render({
+            elem: '#date1',
             format:"yyyy-MM-dd HH:mm:ss",
             value:obj,
             isInitValue:true,
             trigger:"click"
-        });*/
-        PublicFun.layerDate("#date1", "yyyy-MM-dd HH:mm:ss");
+        });
 
 
         //附件
@@ -134,9 +133,9 @@
         //监听提交
         form.on('submit(SureAdd)', function (data) {
             var formdata = new FormData($("#proform")[0]);
-            console.log(formdata);
-            console.log(JSON.stringify(formdata));
-            console.log(data.field);
+            //console.log(formdata);
+            //console.log(JSON.stringify(formdata));
+            //console.log(data.field);
             PublicFun.FunPostAjaxProcessData("/procurement/add", formdata, function (res) {
                 if (res.responseCode == 200) {
                     var index =layer.alert(res.message,{title:"提示信息"},function () {

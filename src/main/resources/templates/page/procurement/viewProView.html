@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="/css/public.css" media="all">
 </head>
 <body class="childrenBody">
+<div class="layuimini-container">
+    <div class="layuimini-main">
 <form class="layui-form" method="post" id="frm">
     <div class="layui-form-item">
         <label class="layui-form-label">采购时间</label>
@@ -76,6 +78,8 @@
 </form>
 <input id="proid" type="hidden"  th:value="${procurement.proid}">
 <table id="commentList" lay-filter="commentList"></table>
+        </div>
+</div>
 </body>
 <script src="/statics/lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
 <script type="text/javascript" th:inline="none">
