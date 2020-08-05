@@ -104,7 +104,7 @@ public interface EmployeeDao {
      * @Param [roleid]
      * @return java.util.List<com.tdkj.System.entity.Employee>
      **/
-    List<Employee> queryemployeeByRoleid(Integer roleid);
+    List<Employee> queryemployeeByRoleid(Integer roleid, Integer corpid);
 //创建的查询公司通讯录的方法
     List<EmployeeVO> queryMyMail(Integer corpid,String name,String cellphone);
 

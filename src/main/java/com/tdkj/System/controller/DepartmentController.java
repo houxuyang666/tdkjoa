@@ -40,6 +40,9 @@ public class DepartmentController {
     @Autowired
     private EmployeeService employeeService;
 
+    private static final Integer  RoleID =2;
+    private static final Integer  Code =0;
+
     /*跳转部门列表*/
     @RequestMapping("goselectdepartment")
     public String goselectdepartment() {
@@ -61,7 +64,7 @@ public class DepartmentController {
         PageHelper.startPage(page, limit, true);
         List<DepartmentVO> departmentVOList = departmentService.queryDeptByCorpId(employee.getCorpid());
         PageInfo<DepartmentVO> pageInfo = new PageInfo<>(departmentVOList);
-        return OAResponseList.setResult(0, FIND_SUCCESS, pageInfo);
+        return OAResponseList.setResult(Code, FIND_SUCCESS, pageInfo);
     }
 
     /*跳转添加部门*/
@@ -100,13 +103,25 @@ public class DepartmentController {
         return "page/department/updatedepartment";
     }
 
-
+    /**
+     * @Author houxuyang
+     * @Description //查询本公司权限为领导的人员
+     * @Date 11:33 2020/8/5
+     * @Param [page, limit]
+     * @return com.tdkj.System.common.OAResponseList
+     **/
     @ResponseBody
     @RequestMapping("/selectdeptemployee")
-    public OAResponseList selectdeptemployee() {
-        Integer roleid =2;
-        List<Employee> employeeList = employeeService.queryemployeeByRoleid(roleid);
-        return OAResponseList.setResult(0, FIND_SUCCESS, employeeList);
+    public OAResponseList selectdeptemployee(Integer page, Integer limit) {
+        /*获取当前登陆人员的公司ID*/
+        Employee employee = employeeService.queryById(ShiroUtils.getPrincipal().getEmployeeid());
+        //PageHelper.startPage(page, limit, true);
+        List<Employee> employeeList = employeeService.queryemployeeByRoleid(RoleID,employee.getCorpid());
+        //PageInfo<Employee> pageInfo = new PageInfo<>(employeeList);
+        PageInfo pageInfo =new PageInfo();
+        pageInfo.setList(employeeList);
+        pageInfo.setTotal(employeeList.size());
+        return OAResponseList.setResult(Code, FIND_SUCCESS, pageInfo);
     }
 
 

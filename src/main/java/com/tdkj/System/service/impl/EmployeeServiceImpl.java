@@ -99,8 +99,8 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public List<Employee> queryemployeeByRoleid(Integer roleid) {
-        return this.employeeDao.queryemployeeByRoleid(roleid);
+    public List<Employee> queryemployeeByRoleid(Integer roleid, Integer corpid) {
+        return this.employeeDao.queryemployeeByRoleid(roleid,corpid);
     }
 
     @Override

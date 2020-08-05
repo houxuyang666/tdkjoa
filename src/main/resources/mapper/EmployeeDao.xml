@@ -329,7 +329,9 @@
     </select>
     <!--根据用户ID获取角色信息-->
     <select id="queryemployeeByRoleid" resultMap="EmployeeMap">
-         select * from employee e LEFT JOIN user u  on u.EmployeeId =e.EmployeeId where u.RoleId = #{roleid})
+         select * from employee e
+         LEFT JOIN user u  on u.EmployeeId =e.EmployeeId
+         where u.RoleId = #{roleid} and e.CorpID =#{corpid}
     </select>
     <!--根据公司ID获取该公司内的用户信息-->
     <select id="queryMyMail" resultType="com.tdkj.System.entity.VO.EmployeeVO">
