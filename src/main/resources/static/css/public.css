@@ -68,3 +68,11 @@ body {
     -moz-border-radius: 2em;
     border-radius: 2em
 }
+
+.layui-form-label.layui-required:after {
+    content: "*";
+    color: red;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+}

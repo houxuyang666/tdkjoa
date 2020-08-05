@@ -42,9 +42,9 @@
             </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label">货物名称</label>
+            <label class="layui-form-label layui-required">货物名称</label>
             <div class="layui-input-inline">
-                <input type="text" name="goodsname" autocomplete="off" class="layui-input">
+                <input type="text" name="goodsname" autocomplete="off" lay-verify="required" class="layui-input">
             </div>
             <label class="layui-form-label">单位(个)</label>
             <div class="layui-input-inline">
@@ -56,16 +56,16 @@
             <div class="layui-input-inline">
                 <input type="text" name="type" autocomplete="off" class="layui-input">
             </div>
-            <label class="layui-form-label">数量</label>
+            <label class="layui-form-label layui-required">数量</label>
             <div class="layui-input-inline">
-                <input type="number" name="number" id="number" autocomplete="off"
+                <input type="number" name="number" id="number" lay-verify="required" autocomplete="off" oninput="calculation()"
                        class="layui-input">
             </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label">单价</label>
+            <label class="layui-form-label layui-required">单价</label>
             <div class="layui-input-inline">
-                <input type="number" name="price" id="price" autocomplete="off" oninput="calculation()"
+                <input type="number" name="price" id="price" lay-verify="required" autocomplete="off" oninput="calculation()"
                        class="layui-input">
             </div>
             <label class="layui-form-label">总金额</label>
