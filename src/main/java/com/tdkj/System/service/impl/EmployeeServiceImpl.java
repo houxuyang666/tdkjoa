@@ -84,8 +84,8 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public List<EmployeeVO> queryAllEmployee(int corpid) {
-        return this.employeeDao.queryAllEmployee(corpid);
+    public List<EmployeeVO> queryAllEmployee(int corpid, String name, String cellphone) {
+        return this.employeeDao.queryAllEmployee(corpid,name,cellphone);
     }
 
     @Override

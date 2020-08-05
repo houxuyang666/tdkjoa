@@ -6,19 +6,16 @@ import com.tdkj.System.Enum.EmployeeStatusEnmu;
 import com.tdkj.System.Enum.EmployeeTypeEnmu;
 import com.tdkj.System.Enum.FileTypeEnmu;
 import com.tdkj.System.Enum.UserStatusEnmu;
-import com.tdkj.System.activiti.TestParallelGateWay;
 import com.tdkj.System.common.OAResponse;
 import com.tdkj.System.common.OAResponseList;
-import com.tdkj.System.entity.*;
+import com.tdkj.System.entity.Corpbasicinfo;
+import com.tdkj.System.entity.Employee;
+import com.tdkj.System.entity.Fileinfo;
+import com.tdkj.System.entity.User;
 import com.tdkj.System.entity.VO.EmployeeVO;
 import com.tdkj.System.service.*;
 import com.tdkj.System.utils.*;
 import lombok.extern.slf4j.Slf4j;
-import org.activiti.engine.ProcessEngine;
-import org.activiti.engine.ProcessEngines;
-import org.activiti.engine.RepositoryService;
-import org.activiti.engine.repository.Deployment;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -79,15 +76,13 @@ public class EmployeeController {
 
     @ResponseBody
     @RequestMapping("/selectemployee")
-    public OAResponseList selectemployee(Integer page, Integer limit) {
+    public OAResponseList selectemployee(Integer page, Integer limit,String name,String cellphone) {
         log.info("selectemployee");
         //获取当前用户的所在公司
         Corpbasicinfo corpbasicinfo=corpbasicinfoService.queryByemployeeId(ShiroUtils.getPrincipal().getEmployeeid());
         PageHelper.startPage(page,limit,true);
-        List<EmployeeVO> employeeVOList=employeeService.queryAllEmployee(corpbasicinfo.getCorpid());
+        List<EmployeeVO> employeeVOList=employeeService.queryAllEmployee(corpbasicinfo.getCorpid(),name,cellphone);
         PageInfo<EmployeeVO> pageInfo=new PageInfo<>(employeeVOList);
-        Log log = LogUtils.setLog("查看用户");
-        logService.insert(log);
         return OAResponseList.setResult(0,FIND_SUCCESS,pageInfo);
     }
 

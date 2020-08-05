@@ -61,5 +61,5 @@ public interface DepartmentService {
      * @Param []
      * @return java.util.List<com.tdkj.System.entity.VO.DepartmentVO>
      **/
-    List<DepartmentVO> queryAlldept();
+    List<DepartmentVO> queryDeptByCorpId(Integer corpid);
 }

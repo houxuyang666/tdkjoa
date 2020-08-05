@@ -27,18 +27,18 @@
                                     <input type="text" name="name" autocomplete="off" class="layui-input">
                                 </div>
                             </div>
-                            <div class="layui-inline">
+                           <!-- <div class="layui-inline">
                                 <label class="layui-form-label">所属公司</label>
                                 <div class="layui-input-inline">
                                     <select name="companyName" id="companyList"  lay-filter="companyId">
                                         <option value=""></option>
                                     </select>
                                 </div>
-                            </div>
+                            </div>-->
                             <div class="layui-inline">
                                 <label class="layui-form-label">电话号码</label>
                                 <div class="layui-input-inline">
-                                    <input type="text" name="tel" autocomplete="off" class="layui-input">
+                                    <input type="text" name="cellphone" autocomplete="off" class="layui-input">
                                 </div>
                             </div>
                             <div class="layui-inline">
@@ -50,7 +50,7 @@
             </fieldset>
 
 
-            <table id="userList" lay-filter="employeeList" class="layui-hide"></table>
+            <table id="employeeList" lay-filter="employeeList" class="layui-hide"></table>
 
             <script type="text/html" id="currentTableBar">
                 <a   class="layui-btn layui-btn-xs " lay-event="ChongZhiPwd"><i class="layui-icon">&#xe673;</i>重置密码</a>
@@ -90,24 +90,71 @@
             },
               cols:[[
                   {field:"checkbox",type:'checkbox'},
-                  {field:"id",title:"编号",width:80,sort:true,},
-                  {field:"username",title:"账号名称"},
-                  {field:"status",title:"状态",sort:true,templet:function (data) {
+                  {field:"employeeid",title:"员工ID",width:100,sort:true,},
+                  {field:"name",title:"姓名",width:100},
+                  {field:"deptname",title:"所属部门",width:100},
+                  {field:"jobtitle",title:"岗位",width:100},
+                  {field:"idcardnumber",title:"证件号码",width:200},
+                  {field:"status",title:"状态",width:100,sort:true,templet:function (data) {
+                          if(data.status==0) return "离职";
+                          else  return "在职";
+                      }},
+                  /*{field:"status",title:"状态",sort:true,templet:function (data) {
                           if(data.status==0) return "正常";
                           else  return "锁定";
-                      }},
-                  {field:"rid",title:"角色ID",sort:true,},
-                  {field:"rolename",title:"角色名称",},
-                  {field:"userinfoId",title:"用户ID",sort:true,},
-                  {field:"name",title:"用户名称",},
-                  {field:"sex",title:"用户性别",sort:true,templet:function (data) {
-                          if(data.sex==0) return "女"
-                          else if(data.sex==1) return "男"
+                      }},*/
+                  {field:"gender",title:"性别",width:100,sort:true,templet:function (data) {
+                          if(data.gender==0) return "女"
+                          else if(data.gender==1) return "男"
                           else  return "未知"
                       }},
-                  {field:"tel",title:"电话号码",sort:true,},
-                  {field:"age",title:"年龄",sort:true,},
-                  {field:"companyName",width:200,title:"所属公司",},
+                  {field:"age",title:"年龄",width:100,sort:true,},
+
+                  {field:"nation",title:"民族",width:100,sort:true,},
+                  {field:"edulevel",title:"学历",width:100,sort:true,templet:function (data) {
+                          if(data.edulevel==1) return "博士后"
+                          else if(data.edulevel==2) return "博士"
+                          else if(data.edulevel==3) return "研究生"
+                          else if(data.edulevel==4) return "硕士"
+                          else if(data.edulevel==5) return "本科"
+                          else if(data.edulevel==6) return "大专"
+                          else if(data.edulevel==7) return "中专"
+                          else if(data.edulevel==8) return "高中"
+                          else if(data.edulevel==9) return "其他"
+                          else  return "未知"
+                      }},
+                  {field: "birthday", title: "出生日期",width:120,templet: function (d) {
+                          return layui.util.toDateString(d.birthday, 'yyyy-MM-dd');
+                      }},
+                  {field:"address",title:"住址",width:100,},
+                  {field: "entrydate", title: "入职时间",width:120,templet: function (d) {
+                          return layui.util.toDateString(d.entrydate, 'yyyy-MM-dd');
+                      }},
+                  {field: "regulardate", title: "转正时间",width:120,templet: function (d) {
+                          return layui.util.toDateString(d.regulardate, 'yyyy-MM-dd');
+                      }},
+                  {field: "departuredate", title: "离职时间",width:170,templet: function (d) {
+                          if(d.departuredate==null) return ""
+                          else return layui.util.toDateString(d.departuredate, 'yyyy-MM-dd HH:mm:ss');
+                      }},
+                  {field:"politicstype",title:"政治面貌",width:100,sort:true,templet:function (data) {
+                          if(data.politicstype==1) return "中共党员"
+                          else if(data.politicstype==2) return "中共预备党员"
+                          else if(data.politicstype==3) return "共青团员"
+                          else if(data.politicstype==4) return "群众"
+                          else  return "未知"
+                      }},
+                  {field:"cellphone",title:"手机号码",width:150,},
+                  {field:"email",title:"邮箱",width:170,},
+                  {field:"urgentlinkman",title:"紧急联系人姓名",width:170,},
+                  {field:"urgentlinkmanphone",title:"紧急联系电话",width:170,},
+                  {field: "createdate", title: "创建时间",width:170,templet: function (d) {
+                          return layui.util.toDateString(d.createdate, 'yyyy-MM-dd HH:mm:ss');
+                      }},
+                  {field: "modifydate", title: "编辑时间",width:170,templet: function (d) {
+                          if(d.modifydate==null) return ""
+                          else return layui.util.toDateString(d.modifydate, 'yyyy-MM-dd HH:mm:ss');
+                      }},
                   {title: '操作', toolbar: '#currentTableBar', width:200, align: "center",fixed: 'right'}
               ]],
               limits: [10, 15, 20, 25, 50, 100],
@@ -119,16 +166,16 @@
         //搜索事件操作
         form.on("submit(searchBtn)",function (data) {
             var formData=data.field;//获取搜索新信息
-            var selectText=$("#companyList").find("option:selected").text();
+            //var selectText=$("#companyList").find("option:selected").text();
             //layer.msg(selectText);
             var canshu={
                 "name":formData.name,
-                "tel":formData.tel,
-                "companyName":selectText,
+                "cellphone":formData.cellphone,
+                //"companyName":selectText,
             }
             //搜索重载
-            table.reload("userList",{
-                url:"/user/selectuserbycondition",
+            table.reload("employeeList",{
+                url:"/employee/selectemployee",
                 page:{
                     curr:1
                 },
@@ -213,7 +260,7 @@
     }
 
     //监听公司下拉框绑定
-    function BindCompany() {
+   /* function BindCompany() {
         $.ajax({
             url:"/company/selectallcompany",
             dataType:"json",
@@ -242,7 +289,7 @@
                 });
             }
         })
-    }
+    }*/
 
 
 </script>

@@ -70,9 +70,10 @@ public interface EmployeeService {
      * @Date 14:30 2020/7/20
      * @Param []
      * @return java.util.List<com.tdkj.System.entity.VO.EmployeeVO>
-     *
-     * @param corpid*/
-    List<EmployeeVO> queryAllEmployee(int corpid);
+     *@param corpid
+     * @param name
+     * @param cellphone */
+    List<EmployeeVO> queryAllEmployee(int corpid, String name, String cellphone);
 
 
     /**

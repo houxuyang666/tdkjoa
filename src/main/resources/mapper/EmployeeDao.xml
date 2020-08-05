@@ -301,7 +301,17 @@
             from employee e LEFT join corpbasicinfo c on e.CorpId =c.CorpId
                             LEFT JOIN  department d on e.DepartmentId =d.DeptId
                             LEFT JOIN fileinfo f on e.FileinfoId =f.FileInfoID
-            where e.CorpId = #{corpid}
+        <where>
+            <if test="name != null and name != ''">
+                and e.Name like concat('%',#{name},'%')
+            </if>
+            <if test="cellphone != null and cellphone != ''">
+                and CellPhone like concat('%',#{cellphone},'%')
+            </if>
+            <if test="corpid != null and corpid != ''">
+                and e.CorpId = #{corpid}
+            </if>
+        </where>
     </select>
 
     <!--查询当前用户的部门ID-->
@@ -366,11 +376,6 @@
             <if test="cellphone != null and cellphone != ''">
                 and cellphone like concat('%',#{cellphone},'%')
             </if>
-
-
         </where>
-
-
-
     </select>
 </mapper>

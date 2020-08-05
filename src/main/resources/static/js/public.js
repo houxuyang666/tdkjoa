@@ -65,7 +65,7 @@ var PublicFun = {
     },
 
     //绑定公司下拉框
-    BindCompanyList: function () {
+  /*  BindCompanyList: function () {
         $.ajax({
             url: "/company/selectallcompany",
             dataType: "json",
@@ -88,7 +88,7 @@ var PublicFun = {
                 PublicFun.LayerMsgError("公司下拉框请求失败")
             }
         })
-    },
+    },*/
 
 
     //ajax请求异步通用函数

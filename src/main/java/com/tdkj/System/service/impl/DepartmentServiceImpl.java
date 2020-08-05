@@ -79,7 +79,8 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
-    public List<DepartmentVO> queryAlldept() {
-        return this.departmentDao.queryAlldept();
+    public List<DepartmentVO> queryDeptByCorpId(Integer corpid) {
+        return this.departmentDao.queryDeptByCorpId(corpid);
     }
+
 }

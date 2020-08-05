@@ -56,8 +56,10 @@ public class DepartmentController {
     @ResponseBody
     @RequestMapping("/selectdepartment")
     public OAResponseList selectdepartment(Integer page, Integer limit) {
+
+        Employee employee = employeeService.queryById(ShiroUtils.getPrincipal().getEmployeeid());
         PageHelper.startPage(page, limit, true);
-        List<DepartmentVO> departmentVOList = departmentService.queryAlldept();
+        List<DepartmentVO> departmentVOList = departmentService.queryDeptByCorpId(employee.getCorpid());
         PageInfo<DepartmentVO> pageInfo = new PageInfo<>(departmentVOList);
         return OAResponseList.setResult(0, FIND_SUCCESS, pageInfo);
     }
