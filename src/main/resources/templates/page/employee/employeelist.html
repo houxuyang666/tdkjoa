@@ -52,6 +52,19 @@
 
             <table id="employeeList" lay-filter="employeeList" class="layui-hide"></table>
 
+
+            <script type="text/html" id="toolbar">
+                <div class="layui-btn-container">
+                    <button  class="layui-btn layui-btn-normal layui-btn-sm " lay-event="add"><i class="layui-icon">&#xe654;</i>
+                        添加
+                    </button>
+                    <button class="layui-btn layui-btn-sm layui-btn-warm " lay-event="update"><i class="layui-icon">&#xe642;</i>修改
+                    </button>
+                    <button class="layui-btn layui-btn-sm " lay-event="refresh"><i class="layui-icon">&#xe669;</i>刷新
+                    </button>
+                </div>
+            </script>
+
             <script type="text/html" id="currentTableBar">
                 <a   class="layui-btn layui-btn-xs " lay-event="ChongZhiPwd"><i class="layui-icon">&#xe673;</i>重置密码</a>
                 {{# if(d.status==0){ }}
@@ -78,7 +91,7 @@
         table.render({
               elem: '#employeeList',
               url: '/employee/selectemployee',
-              toolbar: '#toolbarDemo',
+              toolbar: '#toolbar',
               defaultToolbar: ['filter', 'exports', 'print'],
             parseData: function (res) { //res 即为原始返回的数据
                 return {
@@ -92,7 +105,7 @@
                   {field:"checkbox",type:'checkbox'},
                   {field:"employeeid",title:"员工ID",width:100,sort:true,},
                   {field:"name",title:"姓名",width:100},
-                  {field:"deptname",title:"所属部门",width:100},
+                  {field:"deptname",title:"所属员工",width:100},
                   {field:"jobtitle",title:"岗位",width:100},
                   {field:"idcardnumber",title:"证件号码",width:200},
                   {field:"status",title:"状态",width:100,sort:true,templet:function (data) {
@@ -183,6 +196,42 @@
             },"data");
             return false;
         });
+
+        //监听头工具栏事件
+        table.on('toolbar(employeeList)', function(obj){
+            switch(obj.event){
+                case 'add':
+                    toAddEmployee();
+                    break;
+                // case 'batchDel':
+                //     batchDelete();
+                //     break;
+            };
+        });
+
+        //打开  添加员工的弹出层
+        function toAddEmployee(){
+            var index = layui.layer.open({
+                title : "添加员工",
+                type : 2,//ifream层
+                area:["800px","500px"],
+                content : "/employee/goadd",
+                success : function(layero, index){
+                    setTimeout(function(){
+                        layui.layer.tips('点击此处返回员工列表', '.layui-layer-setwin .layui-layer-close', {
+                            tips: 3
+                        });
+                    },500)
+                }
+            })
+            //layui.layer.full(index);
+            //改变窗口大小时，重置弹窗的宽高，防止超出可视区域（如F12调出debug的操作）
+            $(window).on("resize",function(){
+                layui.layer.full(index);
+            })
+        }
+
+
 
         //表格操作事件
         table.on("tool(userList)",function (obj) {

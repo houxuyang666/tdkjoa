@@ -68,10 +68,9 @@ public class EmployeeController {
     private String uploadFile;
 
 
-
     @RequestMapping("/goemployee")
     public String goemployee() {
-        return "page/employeelist";
+        return "page/employee/employeelist";
     }
 
     @ResponseBody
@@ -88,7 +87,7 @@ public class EmployeeController {
 
     @RequestMapping("goadd")
     public String goadd() {
-        return "page/table/addemployee";
+        return "page/employee/addemployee";
     }
 
     /**

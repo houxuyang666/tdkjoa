@@ -60,7 +60,7 @@ public class CorpbasicinfoController {
 
     @RequestMapping("goselectcorpbasicinfo")
     public String goselectcorpbasicinfo() {
-        return "page/corpbasicinfolist";
+        return "page/corpbasicinfo/corpbasicinfolist";
     }
 
 
