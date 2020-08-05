@@ -76,4 +76,9 @@ public class FileinfoServiceImpl implements FileinfoService {
     public boolean deleteById(Integer fileinfoid) {
         return this.fileinfoDao.deleteById(fileinfoid) > 0;
     }
+
+    @Override
+    public List<Fileinfo> queryAll(Fileinfo fileinfo) {
+        return this.fileinfoDao.queryAll(fileinfo);
+    }
 }

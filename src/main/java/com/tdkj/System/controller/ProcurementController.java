@@ -69,18 +69,17 @@ public class ProcurementController {
     @Value("${file.uploadFile}")
     private String uploadFile;
 
-
+    private static final String desc ="采购订单";
 
 
     @RequestMapping("/goselectpro")
     public String goselectpro() {
-        return "page/prolist";
+        return "page/procurement/prolist";
     }
 
     @ResponseBody
     @RequestMapping("/selectpro")
     public OAResponseList selectpro(Integer page, Integer limit) {
-        log.info("selectleavebill");
         //如果是超级管理员那么可以查询所有 ，但是公司需要区分
         PageHelper.startPage(0,10,true);
         /*根据用户id查询所申请的采购单*/
@@ -101,14 +100,13 @@ public class ProcurementController {
     @ResponseBody
     @RequestMapping("/add")
     public OAResponse add(String prodate, Integer protype, String goodsname, String unit, String type, Integer number, BigDecimal price,
-                          BigDecimal totalamount, String prodesc,@RequestParam("file") MultipartFile file ) throws  Exception { /*@RequestParam("file") MultipartFile file*/
+                          BigDecimal totalamount, String prodesc,@RequestParam("file") MultipartFile file ) throws  Exception {
         Employee employee =this.employeeService.queryById(ShiroUtils.getPrincipal().getEmployeeid());
-        String desc ="采购订单";
         Fileinfo fileinfo =new Fileinfo();
         FileuploadUtils fileuploadUtils =new FileuploadUtils();
-       if(0!=file.getSize()){
+       if(null!=file&&file.getSize()>0){
             //合同
-            String fileUrl = fileuploadUtils.Fileupload(file,uploadFile,"采购订单",goodsname);
+            String fileUrl = fileuploadUtils.Fileupload(file,uploadFile,desc,goodsname);
             log.info("附件上传成功");
             fileinfo.setCorpid(employee.getCorpid());
             fileinfo.setFileinfotype(FileTypeEnmu.Procurement_contract.getCode());

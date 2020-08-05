@@ -53,4 +53,12 @@ public interface FileinfoService {
      */
     boolean deleteById(Integer fileinfoid);
 
+    /**
+     * @Author houxuyang
+     * @Description 根据公司id查询公司所有合同
+     * @Date 16:05 2020/8/5
+     * @Param [fileinfo]
+     * @return java.util.List<com.tdkj.System.entity.Fileinfo>
+     **/
+    List<Fileinfo> queryAll(Fileinfo fileinfo);
 }
