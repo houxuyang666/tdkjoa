@@ -5,12 +5,10 @@ import com.github.pagehelper.PageInfo;
 import com.tdkj.System.common.OAResponse;
 import com.tdkj.System.common.OAResponseList;
 import com.tdkj.System.entity.Corpbasicinfo;
-import com.tdkj.System.entity.Log;
 import com.tdkj.System.service.CorpbasicinfoService;
 import com.tdkj.System.service.LogService;
 import com.tdkj.System.utils.DateUtil;
 import com.tdkj.System.utils.FileuploadUtils;
-import com.tdkj.System.utils.LogUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,8 +25,7 @@ import java.util.List;
 
 import static com.tdkj.System.common.OAResultCode.HTTP_RNS_CODE_200;
 import static com.tdkj.System.common.OAResultCode.HTTP_RNS_CODE_500;
-import static com.tdkj.System.common.OAResultType.ADD_SUCCESS;
-import static com.tdkj.System.common.OAResultType.FIND_SUCCESS;
+import static com.tdkj.System.common.OAResultType.*;
 
 /**
  * (Corpbasicinfo)表控制层
@@ -126,9 +123,9 @@ public class CorpbasicinfoController {
             corpbasicinfo.setLinkphone(linkphone);
             corpbasicinfo.setSignname(signname);
             FileuploadUtils fileuploadUtils =new FileuploadUtils();
-            if(0!=signurl.getSize()){
+            if(null!=signurl&&signurl.getSize()>0){
                 //上传头像照 并返回url
-                String sign = fileuploadUtils.Fileuploadimage(signurl,uploadImageFolder,"电子签名",legalman);
+                String sign = fileuploadUtils.Fileuploadimage(signurl,uploadImageFolder,"signurl",legalman);
                 corpbasicinfo.setSignurl(sign);
                 log.info("电子签名");
             }
@@ -136,9 +133,70 @@ public class CorpbasicinfoController {
             corpbasicinfo.setWebsite(website);
             corpbasicinfo.setCreatedate(new Date());
             corpbasicinfoService.insert(corpbasicinfo);
-            Log log = LogUtils.setLog("添加公司"+corpname);
-            logService.insert(log);
+            //Log log = LogUtils.setLog("添加公司"+corpname);
+            //logService.insert(log);
         return OAResponse.setResult(HTTP_RNS_CODE_200,ADD_SUCCESS);
     }
+
+
+    /**
+     * @Author houxuyang
+     * @Description //修改公司
+     * @Date 15:08 2020/8/3
+     * @Param [corpcode, corpname, corptype, licensenum, address, zipcode, legalman, legalmanduty, legalmanidcardtype, legalmanidcardnumber, registerdate, establishdate, officphone, faxnumber, linkman, linkphone, signname, signurl, email, website]
+     * @return com.tdkj.System.common.OAResponse
+     **/
+    @Transactional
+    @ResponseBody
+    @RequestMapping("/update")
+    public OAResponse update(Integer corpid,String corpcode, String corpname, Integer corptype, String licensenum, String address, String zipcode,
+                          String legalman, String legalmanduty, Integer legalmanidcardtype, String legalmanidcardnumber,
+                          String registerdate, String establishdate, String officphone, String faxnumber, String linkman,
+                          String linkphone, String signname, @RequestParam("signurl") MultipartFile signurl, String email, String website) throws Exception{
+
+        Corpbasicinfo corpbasicinfo=new Corpbasicinfo();
+        corpbasicinfo.setCorpid(corpid);
+        corpbasicinfo.setCorpcode(corpcode);
+        corpbasicinfo.setCorpname(corpname);
+        corpbasicinfo.setCorptype(corptype);
+        corpbasicinfo.setLicensenum(licensenum);
+        corpbasicinfo.setAddress(address);
+        corpbasicinfo.setZipcode(zipcode);
+        corpbasicinfo.setLegalman(legalman);
+        corpbasicinfo.setLegalmanduty(legalmanduty);
+        corpbasicinfo.setLegalmanidcardtype(legalmanidcardtype);
+        corpbasicinfo.setLegalmanidcardnumber(legalmanidcardnumber);
+        corpbasicinfo.setRegisterdate(DateUtil.getformatDate(registerdate));
+        corpbasicinfo.setEstablishdate(DateUtil.getformatDate(establishdate));
+        corpbasicinfo.setOfficphone(officphone);
+        corpbasicinfo.setFaxnumber(faxnumber);
+        corpbasicinfo.setLinkman(linkman);
+        corpbasicinfo.setLinkphone(linkphone);
+        corpbasicinfo.setSignname(signname);
+        FileuploadUtils fileuploadUtils =new FileuploadUtils();
+        if(null!=signurl&&signurl.getSize()>0){
+            //上传头像照 并返回url
+            String sign = fileuploadUtils.Fileuploadimage(signurl,uploadImageFolder,"signurl",legalman);
+            corpbasicinfo.setSignurl(sign);
+            log.info("电子签名");
+        }
+        corpbasicinfo.setEmail(email);
+        corpbasicinfo.setWebsite(website);
+        corpbasicinfo.setModifydate(new Date());
+        corpbasicinfoService.update(corpbasicinfo);
+        //Log log = LogUtils.setLog("添加公司"+corpname);
+        //logService.insert(log);
+        return OAResponse.setResult(HTTP_RNS_CODE_200,UPDATE_SUCCESS);
+    }
+
+
+    @ResponseBody
+    @RequestMapping("/delete")
+    public OAResponse delete(Integer corpid) {
+        this.corpbasicinfoService.deleteById(corpid);
+        return OAResponse.setResult(HTTP_RNS_CODE_200, REMOVE_SUCCESS);
+    }
+
+
 
 }

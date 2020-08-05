@@ -97,18 +97,31 @@
                     {field: "corpid", title: "公司编号", sort: true,width:100},
                     {field: "corpcode", title: "统一社会信用代码",width:180},
                     {field: "corpname", title: "公司名称",width:150},
-                    {field: "corptype", title: "企业登记注册类型",width:180},
+                    {field:"corptype",title:"企业登记注册类型",width:180,templet:function (data) {
+                            if(data.corptype==0) return "国有企业"
+                            else if(data.corptype==1) return "集体企业"
+                            else if(data.corptype==2) return "股份合作企业"
+                            else if(data.corptype==3) return "联营企业"
+                            else if(data.corptype==4) return "有限责任公司"
+                            else if(data.corptype==5) return "股份有限公司"
+                            else if(data.corptype==6) return "私营企业"
+                            else if(data.corptype==7) return "其他企业"
+                            else  return "未知"
+                        }},
                     {field: "licensenum", title: "工商营业执照注册号",width:180},
                     {field: "address", title: "公司地址",width:150},
                     {field: "zipcode", title: "邮政编码",width:100},
                     {field: "legalman", title: "法定代表人姓名",width:180},
                     {field: "legalmanduty", title: "法定代表人职务",width:180},
-                    {field: "legalmanidcardtype", title: "法定代表人证件类型",width:180},
+                    {field:"legalmanidcardtype",title:"法定代表人证件类型",width:150,sort:true,templet:function (data) {
+                            if(data.legalmanidcardtype==1) return "身份证"
+                            else  return "未知"
+                        }},
                     {field: "legalmanidcardnumber", title: "法定代表人证件号码",width:180},
-                    {field: "registerdate", title: "注册日期",width:170,templet: function (d) {
+                    {field: "registerdate", title: "注册日期",width:120,templet: function (d) {
                            return layui.util.toDateString(d.registerdate, 'yyyy-MM-dd');
                         }},
-                    {field: "establishdate", title: "成立日期",width:170,templet: function (d) {
+                    {field: "establishdate", title: "成立日期",width:120,templet: function (d) {
                             return layui.util.toDateString(d.establishdate, 'yyyy-MM-dd');
                         }},
                     {field: "officphone", title: "办公电话",width:150},
@@ -122,6 +135,11 @@
                     {
                         field: "createdate", title: "录入时间", sort: true,width:170, templet: function (d) {
                             return layui.util.toDateString(d.createdate, 'yyyy-MM-dd HH:mm:ss');
+                        }
+                    },
+                    {
+                        field: "modifydate", title: "修改时间", sort: true,width:170, templet: function (d) {
+                            return layui.util.toDateString(d.modifydate, 'yyyy-MM-dd HH:mm:ss');
                         }
                     },
                     {title: '操作', toolbar: '#currentTableBar', align: "center",  fixed: 'right',width:100}
@@ -158,10 +176,10 @@
             var data = obj.data;
             if (obj.event === "delete") {
                 layer.msg(data.companyId);
-                layer.confirm("确定删除此用户吗?", function (index) {
+                layer.confirm("确定删除此公司吗?", function (index) {
                     //删除操作
                     $.ajax({
-                        url: "/company/delcompany",
+                        url: "/corpbasicinfo/delete",
                         datatype: "json",
                         type: "post",
                         data: {corpid: data.corpid},

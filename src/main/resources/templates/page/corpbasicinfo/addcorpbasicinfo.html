@@ -342,7 +342,7 @@
                 console.log(formdata);
                 console.log(data.field);
                 //ajax请求异步交互
-                PublicFun.FunPostAjaxProcessData("", formdata,
+                PublicFun.FunPostAjaxProcessData("/corpbasicinfo/update", formdata,
                     function (res) {
                         if (res.responseCode) {
                             var index=layer.alert(res.message,{title:"提示信息"},function () {
