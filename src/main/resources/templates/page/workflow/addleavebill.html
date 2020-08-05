@@ -12,14 +12,15 @@
         body {
             background-color: #ffffff;
         }
-        #contain{
+
+        #contain {
             padding: 25px;
         }
     </style>
 </head>
 <body>
 <div id="contain">
-    <form class="layui-form layui-form-pane" action="" >
+    <form class="layui-form layui-form-pane" action="">
         <div class="layui-form-item">
             <label class="layui-form-label">标题</label>
             <div class="layui-input-block">
@@ -43,14 +44,14 @@
         <div class="layui-form-item">
             <label class="layui-form-label">内容</label>
             <div class="layui-input-block">
-                <input type="text" name="content" autocomplete="off"  class="layui-input">
+                <input type="text" name="content" autocomplete="off" class="layui-input">
             </div>
         </div>
 
         <div class="layui-form-item">
             <label class="layui-form-label">天数</label>
             <div class="layui-input-block">
-                <input type="text" name="days" autocomplete="off"  class="layui-input">
+                <input type="text" name="days" autocomplete="off" class="layui-input">
             </div>
         </div>
 
@@ -61,7 +62,7 @@
             </div>
         </div>
 
-            <button class="layui-btn" lay-submit="" lay-filter="SureAdd"><i class="layui-icon">&#xe605;</i>确定添加</button>
+        <button class="layui-btn" lay-submit="" id="SureAdd" lay-filter="SureAdd"><i class="layui-icon">&#xe605;</i>确定添加</button>
     </form>
 </div>
 <script src="/statics/lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
@@ -72,32 +73,41 @@
             $ = layui.$,
             laydate = layui.laydate;
 
-        var obj=new Date();
+        var obj = new Date();
         //日期
         laydate.render({
             elem: '#date',
-            format:"yyyy-MM-dd HH:mm:ss",
-            value:obj,
-            isInitValue:true,
-            trigger:"click"
+            format: "yyyy-MM-dd HH:mm:ss",
+            value: obj,
+            isInitValue: true,
+            trigger: "click"
         });
 
         //监听提交
         form.on('submit(SureAdd)', function (data) {
+            // 单击之后提交按钮不可选,防止重复提交
+            var DISABLED = 'layui-btn-disabled';
+            // 增加样式
+            $('#SureAdd').addClass(DISABLED);
+            // 增加属性
+            $('#SureAdd').attr('disabled', 'disabled');
+
             $.ajax({
-                url:"/leavebill/add",
-                dataType:"json",
-                type:"POST",
-                data:data.field,
-                success:function (res) {
-                    if(res.responseCode==200){
-                        var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
-                        parent.layer.close(index); //再执行关闭
-                    }else {
-                        layer.msg(res.message)
+                url: "/leavebill/add",
+                dataType: "json",
+                type: "POST",
+                data: data.field,
+                success: function (res) {
+                    if (res.responseCode == 200) {
+                        layer.alert(res.message,function () {
+                            var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                            parent.layer.close(index); //再执行关闭
+                        });
+                    } else {
+                        layer.alert(res.message)
                     }
                 },
-                error:function () {
+                error: function () {
                     layer.msg("请求失败，请检查网络或联系管理员", {
                         icon: 2,
                         shade: this.shade,
@@ -105,6 +115,9 @@
                         time: 3000,
                         shadeClose: true
                     });
+                    $('#SureAdd').removeClass(DISABLED);
+                    $('#SureAdd').removeAttr('disabled');
+
                 }
             })
 

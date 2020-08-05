@@ -51,6 +51,9 @@
 
             <script type="text/html" id="toolbar">
                 <div class="layui-btn-container">
+                    <button  class="layui-btn layui-btn-normal layui-btn-sm " lay-event="add"><i class="layui-icon">&#xe654;</i>
+                        添加
+                    </button>
                     <button class="layui-btn layui-btn-sm layui-btn-warm " lay-event="update"><i class="layui-icon">&#xe642;</i>修改
                     </button>
                     <button class="layui-btn layui-btn-sm " lay-event="refresh"><i class="layui-icon">&#xe669;</i>刷新
@@ -192,6 +195,9 @@
                 case "update":
                     UpdateRow(checkStatus.data);
                     break;
+                case "add":
+                    AddRow();
+                    break;
                 case "refresh":
                     table.reload("companyList");
                     break;
@@ -212,7 +218,7 @@
             //若为一行是 跳转页面执行修改操作
             //window.open("//corpbasicinfo/goadd?corpid="+chkData[0].corpid);
             layer.open({
-                title: '修改用户',
+                title: '修改公司',
                 type: 2,
                 shade: 0.2,
                 maxmin: true,
@@ -258,6 +264,25 @@
             layer.msg("你没有选中任何行！！！")
         }
 
+    }
+
+    //修改操作
+    function AddRow() {
+            //跳转页面执行添加操作
+            layer.open({
+                title: '添加公司',
+                type: 2,
+                shade: 0.2,
+                maxmin: true,
+                shadeClose: true,
+                area: ['100%', '100%'],
+                content: '/corpbasicinfo/goadd ',
+                success: function (layero, index) {
+                },
+                end: function () {
+                    layui.table.reload("companyList");//关闭弹窗后刷新页面
+                }
+            });
     }
 
 </script>
