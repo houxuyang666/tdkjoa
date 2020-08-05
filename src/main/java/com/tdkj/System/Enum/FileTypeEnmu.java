@@ -12,7 +12,9 @@ public enum FileTypeEnmu {
 
     Procurement_contract(2,"采购合同"),
 
-    Other_contracts(3,"其他合同");
+    Other_contracts(3,"公司合同"),
+
+    Contract_template(4,"合同模板");
 
 
     private String desc;//文字描述
