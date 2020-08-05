@@ -12,6 +12,9 @@
 <body>
 <div class="layuimini-container">
     <div class="layuimini-main">
+        <blockquote class="layui-elem-quote">
+            部门列表
+        </blockquote>
         <div>
             <table id="departmentList" lay-filter="departmentList" class="layui-hide"></table>
             <!--表格工具条-->
@@ -74,9 +77,9 @@
                 case 'add':
                     toAddDepartment();
                     break;
-                // case 'batchDel':
-                //     batchDelete();
-                //     break;
+                 case 'refresh':
+                    layui.table.reload("departmentList");
+                    break;
             };
         });
         //列表操作
@@ -93,13 +96,9 @@
                         //关闭提示框
                         layer.close(index);
                         //刷新table
-                        table.reload();
+                        layui.table.reload("departmentList");
                     })
                 });
-            }else if(layEvent==="startProcess"){
-                startProcess(data);//部门的对象
-            }else if(layEvent==='viewSpProcess'){
-                viewSpProcess(data);
             }
         });
 
@@ -116,9 +115,12 @@
                             tips: 3
                         });
                     },500)
+                },
+                end:function () {
+                    //刷新表格
+                    layui.table.reload("departmentList");
                 }
             })
-            //layui.layer.full(index);
             //改变窗口大小时，重置弹窗的宽高，防止超出可视区域（如F12调出debug的操作）
             $(window).on("resize",function(){
                 layui.layer.full(index);
@@ -140,7 +142,6 @@
                     },500)
                 }
             })
-            //layui.layer.full(index);
             //改变窗口大小时，重置弹窗的宽高，防止超出可视区域（如F12调出debug的操作）
             $(window).on("resize",function(){
                 layui.layer.full(index);

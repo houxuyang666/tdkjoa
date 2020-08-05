@@ -113,7 +113,7 @@
                         if(d.status==0){
                             html="<font color=red>未提交</font>"
                         }else if(d.status==1){
-                            html="<font color=yellow>审批中</font>"
+                            html="<font color=orange>审批中</font>"
                         }else if(d.status==2){
                             html="<font color=blue>审批完成</font>"
                         }else if(d.status==3){
@@ -139,8 +139,8 @@
                 case 'add':
                     toAddPro();
                     break;
-                case 'batchDel':
-                    batchDelete();
+                case 'refresh':
+                    layui.table.reload("proList");
                     break;
             };
         });
@@ -158,7 +158,7 @@
                         //关闭提示框
                         layer.close(index);
                         //刷新table
-                        table.reload();
+                        layui.table.reload("proList");
                     })
                 });
             }else if(layEvent==="startProcess"){
@@ -173,7 +173,7 @@
             var index = layui.layer.open({
                 title : "添加采购单",
                 type : 2,//ifream层
-                area:["700px","500px"],
+                area:["800px","500px"],
                 content : "/procurement/goadd",
                 success : function(layero, index){
                     setTimeout(function(){
@@ -181,6 +181,9 @@
                             tips: 3
                         });
                     },500)
+                },
+                end:function () {
+                    layui.table.reload("proList");
                 }
             })
             //layui.layer.full(index);

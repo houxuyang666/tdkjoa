@@ -12,39 +12,44 @@
         body {
             background-color: #ffffff;
         }
-        #contain{
+
+        #contain {
             padding: 25px;
         }
     </style>
 </head>
 <body>
 <div id="contain">
-    <form class="layui-form layui-form-pane" action="" >
+    <form class="layui-form layui-form-pane" action="">
 
         <div class="layui-form-item">
             <label class="layui-form-label">部门名称</label>
             <div class="layui-input-block">
-                <input type="text" name="deptname" autocomplete="off"  class="layui-input">
+                <input type="text" name="deptname" lay-verify="required" autocomplete="off" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">部门负责人</label>
             <div class="layui-input-block">
-                <select name="deptheadid" id="" lay-filter="mySelect">
+                <select name="deptheadid" id="" lay-filter="mySelect" lay-verify="required">
+                    <option value="0"></option>
                     <option value="1">/department/selectdeptemployee 获取角色为领导的人</option>
                     <option value="2">应查询出角色为领导的列表 进行选择</option>
                     <option value="18">常浩然</option>
                 </select>
             </div>
         </div>
-        <div class="layui-form-item">
+
+        <div class="layui-form-item layui-form-text">
             <label class="layui-form-label">部门简介</label>
-            <div class="layui-input-inline">
-                <textarea placeholder="请输入部门简介"  name="deptdesc" lay-verily="required" required class="layui-textarea"></textarea>
+            <div class="layui-input-block">
+                <textarea placeholder="请输入部门简介" name="deptdesc" lay-verify="required"  class="layui-textarea"></textarea>
             </div>
         </div>
+        <div class="layui-form-item">
         <button class="layui-btn" lay-submit="" lay-filter="SureAdd"><i class="layui-icon">&#xe605;</i>确定添加</button>
-</form>
+        </div>
+    </form>
 </div>
 <script src="/statics/lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
 <script>
@@ -57,19 +62,19 @@
         //监听提交
         form.on('submit(SureAdd)', function (data) {
             $.ajax({
-                url:"/department/add",
-                dataType:"json",
-                type:"POST",
-                data:data.field,
-                success:function (res) {
-                    if(res.responseCode==200){
+                url: "/department/add",
+                dataType: "json",
+                type: "POST",
+                data: data.field,
+                success: function (res) {
+                    if (res.responseCode == 200) {
                         var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
                         parent.layer.close(index); //再执行关闭
-                    }else {
+                    } else {
                         layer.msg(res.message)
                     }
                 },
-                error:function () {
+                error: function () {
                     layer.msg("请求失败，请检查网络或联系管理员", {
                         icon: 2,
                         shade: this.shade,

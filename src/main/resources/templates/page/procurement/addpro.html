@@ -13,21 +13,20 @@
         body {
             background-color: #ffffff;
         }
-        #contain{
+
+        #contain {
             padding: 25px;
         }
     </style>
 </head>
 <body>
 <div id="contain">
-    <form class="layui-form layui-form-pane" enctype="multipart/form-data" method="post">
+    <form class="layui-form layui-form-pane" id="proform" method="post">
         <div class="layui-form-item">
             <label class="layui-form-label">采购日期</label>
             <div class="layui-input-inline">
-                <input type="text" name="prodate" id="date" disabled="disabled" autocomplete="off" class="layui-input">
+                <input type="text" name="prodate" id="date1" autocomplete="off" class="layui-input">
             </div>
-       <!-- </div>
-        <div class="layui-form-item">-->
             <label class="layui-form-label">采购类型</label>
             <div class="layui-input-inline">
                 <select name="protype" id="" lay-filter="mySelect">
@@ -45,75 +44,82 @@
         <div class="layui-form-item">
             <label class="layui-form-label">货物名称</label>
             <div class="layui-input-inline">
-                <input type="text" name="goodsname" autocomplete="off"  class="layui-input">
+                <input type="text" name="goodsname" autocomplete="off" class="layui-input">
             </div>
             <label class="layui-form-label">单位(个)</label>
             <div class="layui-input-inline">
-                <input type="text" name="unit" autocomplete="off"  class="layui-input">
+                <input type="text" name="unit" autocomplete="off" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">型号</label>
             <div class="layui-input-inline">
-                <input type="text" name="type" autocomplete="off"  class="layui-input">
+                <input type="text" name="type" autocomplete="off" class="layui-input">
             </div>
             <label class="layui-form-label">数量</label>
             <div class="layui-input-inline">
-                <input type="text" name="number" id="number" autocomplete="off" onblur="calculation()"  class="layui-input">
+                <input type="number" name="number" id="number" autocomplete="off"
+                       class="layui-input">
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">单价</label>
             <div class="layui-input-inline">
-                <input type="text" name="price" id="price" autocomplete="off" onblur="calculation()"   class="layui-input">
+                <input type="number" name="price" id="price" autocomplete="off" oninput="calculation()"
+                       class="layui-input">
             </div>
             <label class="layui-form-label">总金额</label>
             <div class="layui-input-inline">
-                <input type="text" name="totalamount"  id="totalamount"  autocomplete="off"  disabled="disabled"  class="layui-input">
+                <input type="number" name="totalamount" id="totalamount" autocomplete="off"
+                       class="layui-input layui-disabled">
             </div>
         </div>
-        <div class="layui-form-item">
+        <div class="layui-form-item layui-form-text">
             <label class="layui-form-label">备注</label>
             <div class="layui-input-block">
-                <textarea placeholder="请输入备注内容"  name="prodesc"  class="layui-textarea"></textarea>
+                <textarea placeholder="请输入备注内容" name="prodesc" class="layui-textarea"></textarea>
             </div>
         </div>
-      <!--  <div class="layui-inline">
+        <div class="layui-form-item ">
             <div class="layui-upload">
                 <button style="margin-top: 15px; margin-left: 30px;" type="button"
                         class="layui-btn layui-btn-normal" name="file"
                         id="filebut"><i class="layui-icon">&#xe67c;</i>采购附件
                 </button>
             </div>
-        </div>-->
-        <button class="layui-btn" lay-submit="" lay-filter="SureAdd"><i class="layui-icon">&#xe605;</i>确定添加</button>
-</form>
+        </div>
+        <div class="layui-form-item ">
+            <button class="layui-btn" lay-submit="" lay-filter="SureAdd"><i class="layui-icon">&#xe605;</i>确定添加</button>
+        </div>
+    </form>
 </div>
 <script src="/statics/lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
+<script src="/js/public.js" charset="utf-8"></script>
 <script type="text/javascript">
-    function calculation(){
-        var number = $('input[name="number"]').val();
-        var price = $('input[name="price"]').val();
-        $('#totalamount').val(number*price);
+    function calculation() {
+        var number = $('input[name="number"]').val();
+        var price = $('input[name="price"]').val();
+        $('#totalamount').val(number * price);
     }
 </script>
 
 <script>
-    layui.use(['form', 'laydate',"upload"], function () {
+    layui.use(['form', 'laydate', "upload"], function () {
         var form = layui.form,
             layer = layui.layer,
             $ = layui.$,
             upload = layui.upload,
             laydate = layui.laydate;
-        var obj=new Date();
+        //var obj=new Date();
         //日期
-        laydate.render({
+        /*laydate.render({
             elem: '#date',
             format:"yyyy-MM-dd HH:mm:ss",
             value:obj,
             isInitValue:true,
             trigger:"click"
-        });
+        });*/
+        PublicFun.layerDate("#date1", "yyyy-MM-dd HH:mm:ss");
 
 
         //附件
@@ -121,36 +127,28 @@
             elem: '#filebut'
             , url: '' //改成您自己的上传接口
             , auto: false
-            ,accept: 'file' //普通文件
+            , accept: 'file' //普通文件
         });
 
 
         //监听提交
         form.on('submit(SureAdd)', function (data) {
-            $.ajax({
-                url:"/procurement/add",
-                dataType:"json",
-                type:"POST",
-                multiple: false,
-                data:data,
-                success:function (res) {
-                    if(res.responseCode==200){
-                        var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+            var formdata = new FormData($("#proform")[0]);
+            console.log(formdata);
+            console.log(JSON.stringify(formdata));
+            console.log(data.field);
+            PublicFun.FunPostAjaxProcessData("/procurement/add", formdata, function (res) {
+                if (res.responseCode == 200) {
+                    var index =layer.alert(res.message,{title:"提示信息"},function () {
+                        layer.close(index);
+                        parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
                         parent.layer.close(index); //再执行关闭
-                    }else {
-                        layer.msg(res.message)
-                    }
-                },
-                error:function () {
-                    layer.msg("请求失败，请检查网络或联系管理员", {
-                        icon: 2,
-                        shade: this.shade,
-                        scrollbar: false,
-                        time: 3000,
-                        shadeClose: true
-                    });
+                    })
+
+                } else {
+                    layer.msg(res.message)
                 }
-            })
+            }, "请求失败，请检查网络或联系管理员")
 
             return false;
         });
