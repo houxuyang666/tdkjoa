@@ -41,6 +41,7 @@ public class DepartmentController {
     private EmployeeService employeeService;
 
     private static final Integer  RoleID =2;
+
     private static final Integer  Code =0;
 
     /*跳转部门列表*/
@@ -115,9 +116,7 @@ public class DepartmentController {
     public OAResponseList selectdeptemployee(Integer page, Integer limit) {
         /*获取当前登陆人员的公司ID*/
         Employee employee = employeeService.queryById(ShiroUtils.getPrincipal().getEmployeeid());
-        //PageHelper.startPage(page, limit, true);
         List<Employee> employeeList = employeeService.queryemployeeByRoleid(RoleID,employee.getCorpid());
-        //PageInfo<Employee> pageInfo = new PageInfo<>(employeeList);
         PageInfo pageInfo =new PageInfo();
         pageInfo.setList(employeeList);
         pageInfo.setTotal(employeeList.size());

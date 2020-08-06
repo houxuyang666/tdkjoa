@@ -123,7 +123,7 @@ public class EmployeeController {
             fileinfo.setFileinfotype(FileTypeEnmu.Labor_contract.getCode());
             fileinfo.setName(name+"劳动合同");
             fileinfo.setUrl(laborcontractUrl);
-            fileinfo.setCreatdate(new Date());
+            fileinfo.setCreatedate(new Date());
             fileinfo= fileinfoService.insert(fileinfo);
             log.info("附件插入成功");
         }

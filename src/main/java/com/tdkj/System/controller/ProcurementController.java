@@ -112,7 +112,7 @@ public class ProcurementController {
             fileinfo.setFileinfotype(FileTypeEnmu.Procurement_contract.getCode());
             fileinfo.setName(goodsname+desc);
             fileinfo.setUrl(fileUrl);
-            fileinfo.setCreatdate(new Date());
+            fileinfo.setCreatedate(new Date());
             fileinfo= fileinfoService.insert(fileinfo);
             log.info("附件插入成功");
         }
@@ -142,11 +142,16 @@ public class ProcurementController {
         /*启动后通过查询流程实例的business_key 找到流程定义实例 再通过流程实例*/
         //拼接流程定义Key
         String processDefinitionKey = "LeavebillOr";
-        String businessKey =processDefinitionKey+":"+insert.getProid();
-        Execution execution = this.runtimeService.createExecutionQuery().processInstanceBusinessKey(businessKey).singleResult();
-        Task task = this.taskService.createTaskQuery().executionId(execution.getProcessInstanceId()).singleResult();
-        /*直接跳过自己提交申请的步骤 提交到上级领导*/
-        this.proflowService.completeTask(insert.getProid(),task.getId(),"提交申请","提交");
+
+        try{
+            String businessKey =processDefinitionKey+":"+insert.getProid();
+            Execution execution = this.runtimeService.createExecutionQuery().processInstanceBusinessKey(businessKey).singleResult();
+            Task task = this.taskService.createTaskQuery().executionId(execution.getProcessInstanceId()).singleResult();
+            /*直接跳过自己提交申请的步骤 提交到上级领导*/
+            this.proflowService.completeTask(insert.getProid(),task.getId(),"提交申请","提交");
+        }catch (Exception e){
+            return OAResponse.setResult(500,"您没有上级，无法添加采购订单");
+        }
 
         return OAResponse.setResult(200,ADD_SUCCESS);
     }
@@ -186,7 +191,7 @@ public class ProcurementController {
     @Transactional
     @ResponseBody
     @RequestMapping("/delete")
-    public OAResponse add(String proid){
+    public OAResponse delete(String proid){
         Procurement procurement = procurementService.queryById(proid);
         /*判断是否有附件 如果有也一起删除附件 如果没有只删除订单*/
         if (null!=procurement.getFileinfoid()){
@@ -195,7 +200,7 @@ public class ProcurementController {
         }else{
             this.procurementService.deleteById(proid);
         }
-        return OAResponse.setResult(200,ADD_SUCCESS);
+        return OAResponse.setResult(200,REMOVE_SUCCESS);
     }
 
 

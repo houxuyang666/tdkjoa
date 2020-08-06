@@ -1,5 +1,6 @@
 package com.tdkj.System.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -41,9 +42,11 @@ public class Fileinfo implements Serializable {
     /**
      * 创建时间
      */
-    private Date creatdate;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    private Date createdate;
     /**
      * 编辑时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date modifydate;
 }
