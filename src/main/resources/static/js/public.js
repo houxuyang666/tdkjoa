@@ -64,33 +64,6 @@ var PublicFun = {
         });
     },
 
-    //绑定公司下拉框
-  /*  BindCompanyList: function () {
-        $.ajax({
-            url: "/company/selectallcompany",
-            dataType: "json",
-            type: "post",
-            success: function (res) {
-                var data = res.data;
-                //layer.alert(JSON.stringify(data));
-                var html = '';
-                if (data != null && data != "") {
-                    for (var i = 0; i < data.length; i++) {
-                        html += '<option value="' + data[i].companyId + '">' + data[i].companyName + '</option>';
-                    }
-                } else {
-                    html += "";
-                }
-                $('#companyList').append(html);
-                layui.form.render("select");
-            },
-            error: function () {
-                PublicFun.LayerMsgError("公司下拉框请求失败")
-            }
-        })
-    },*/
-
-
     //ajax请求异步通用函数
     FunPostAjax:function (url,data,success,msgerror) {
         $.ajax({
@@ -223,6 +196,53 @@ var PublicFun = {
             return false;
         }
         return jsonDataTree;
+    },
+
+    //绑定公司下拉框
+      BindCompanyList: function () {
+          $.ajax({
+              url: "/company/selectallcompany",
+              dataType: "json",
+              type: "post",
+              success: function (res) {
+                  var data = res.data;
+                  //layer.alert(JSON.stringify(data));
+                  var html = '';
+                  if (data != null && data != "") {
+                      for (var i = 0; i < data.length; i++) {
+                          html += '<option value="' + data[i].companyId + '">' + data[i].companyName + '</option>';
+                      }
+                  } else {
+                      html += "";
+                  }
+                  $('#companyList').append(html);
+                  layui.form.render("select");
+              },
+              error: function () {
+                  PublicFun.LayerMsgError("公司下拉框请求失败")
+              }
+          })
+      },
+
+    //绑定 获取角色为领导的人 下拉框
+    BindDepthead:function () {
+        PublicFun.FunPostAjax("/department/selectdeptemployee","",function (res) {
+            if(res.code==0){
+                var data = res.data.list;
+                //layer.alert(JSON.stringify(data));
+                var html = '';
+                if (data != null && data != "") {
+                    for (var i = 0; i < data.length; i++) {
+                        html += '<option value="' + data[i].employeeid + '">' + data[i].name + '</option>';
+                    }
+                } else {
+                    html += "";
+                }
+                $('#deptheadid').append(html);
+                layui.form.render("select");
+            }
+
+        },"角色为领导的人下拉框接口请求失败！！！")
     }
 
 
