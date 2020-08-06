@@ -63,4 +63,25 @@ public class FileuploadUtils {
     }
 
 
+    public String FileContractTemplateupload(MultipartFile multipartFile,String uploadFile,String desc,String UniqueIdentification){
+        String url=null;
+        //创建附件文件夹 存放合同模板
+        File path = new File(uploadFile);
+        if(!path.exists()){
+            path.mkdirs();
+        }
+        //获取文件后缀名
+        String filesuffix = getfilesuffix(multipartFile);
+        try{
+            multipartFile.transferTo(new File(path+"/"+UniqueIdentification+desc+"."+filesuffix));
+            url =UniqueIdentification+desc+"."+filesuffix;
+        }catch (IOException e){
+            return "上传失败";
+        }
+        return url;
+    }
+
+
+
+
 }
