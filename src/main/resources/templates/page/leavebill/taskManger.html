@@ -12,11 +12,17 @@
 <body>
 <div class="layuimini-container">
     <div class="layuimini-main">
+        <blockquote class="layui-elem-quote">
+            考勤代办任务<br>
+        </blockquote>
         <div>
-            <div class="layui-form-item" style="text-align: right;">
-                <a class="layui-btn search_btn" >刷新</a>
-            </div>
+
             <table id="taskList" lay-filter="taskList" class="layui-hide"></table>
+
+            <!--表格工具条-->
+            <script type="text/html" id="toolbar">
+                <button class="layui-btn layui-btn-sm " lay-event="refresh"><i class="layui-icon">&#xe669;</i>刷新</button>
+            </script>
 
             <!--表格工具条-->
 
@@ -62,13 +68,18 @@
             limits: [10, 15, 20, 25, 50, 100],
             limit: 10,
             page: true
-            //skin: 'line'
         });
 
-        //刷新
-        $(".search_btn").on("click",function(){
-            tableDeploymentIns.reload();
-        });
+        //监听工具栏
+        table.on('toolbar(taskList)',function (obj) {
+            switch (obj.event) {
+                case "refresh":
+                    layui.table.reload("taskList");
+                    break;
+            }
+        })
+
+
         //列表操作
         table.on('tool(taskList)', function(obj){
             var layEvent = obj.event,
@@ -93,6 +104,9 @@
                             tips: 3
                         });
                     },500)
+                },
+                end:function () {
+                    layui.table.reload("taskList");
                 }
             })
             //layui.layer.full(index);
