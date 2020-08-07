@@ -198,11 +198,9 @@ public class WorkFlowController {
     /*查询我的代办任务*/
     @ResponseBody
     @RequestMapping("/loadCurrentUserTask")
-    public OAResponseList queryCurrentUserTask() {
+    public OAResponseList queryCurrentUserTask(Integer page,Integer limit) {
         log.info("loadCurrentUserTask");
         /*分页值需要页面传*/
-        Integer page =0;
-        Integer limit =10;
         return OAResponseList.setResult(0, FIND_SUCCESS,this.workFlowService.qureyCurrentUserTask(page,limit));
     }
 
