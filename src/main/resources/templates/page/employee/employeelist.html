@@ -2,7 +2,7 @@
 <html lang="en" xmlns:shiro="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>用户管理</title>
+    <title>员工列表</title>
     <link rel="stylesheet" href="/statics/lib/layui-v2.5.5/css/layui.css" media="all">
     <link rel="stylesheet" href="/css/public.css" media="all">
     <link rel="stylesheet" href="/css/themes/default.css" media="all">
@@ -209,7 +209,7 @@
             var index = layui.layer.open({
                 title : "添加员工",
                 type : 2,//ifream层
-                area:["800px","500px"],
+                area:["100%","100%"],
                 content : "/employee/goadd",
                 success : function(layero, index){
                     setTimeout(function(){
@@ -219,15 +219,12 @@
                     },500)
                 }
             })
-            //改变窗口大小时，重置弹窗的宽高，防止超出可视区域（如F12调出debug的操作）
-            $(window).on("resize",function(){
-                layui.layer.full(index);
-            })
         }
 
         //打开 修改员工的弹出层
         function ToUpdateEmployee(checkStatus){
-            if(checkStatus.length==1){
+            //alert(checkStatus.length);
+            if(checkStatus.data.length==1){
                 //执行修改操作
                 var index = layer.open({
                     title: '修改车辆信息',
@@ -250,7 +247,7 @@
                         layui.table.reload("employeeList");
                     }
                 });
-            }else  if (checkStatus.length>1){
+            }else if (checkStatus.data.length>1){
                 layer.msg("只能修改一行数据")
             }else {
                 layer.msg("你没有选中任何行！！！")

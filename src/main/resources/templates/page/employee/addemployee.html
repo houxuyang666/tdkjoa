@@ -2,11 +2,384 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>添加员工</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="/statics/lib/layui-v2.5.5/css/layui.css" media="all">
+    <link rel="stylesheet" href="/css/themes/default.css" media="all">
+    <link rel="stylesheet" href="/statics/lib/font-awesome-4.7.0/css/font-awesome.min.css" media="all">
+    <link rel="stylesheet" href="/css/public.css" media="all">
+    <style type="text/css">
+        .layui-input-inline {
+            width: 350px !important;
+        }
+
+        .layui-form-label {
+            width: 150px !important;
+        }
+    </style>
 </head>
 <body>
+<div class="layuimini-container">
+    <div class="layuimini-main">
+<!--        <blockquote class="layui-elem-quote">
+            信息填写
+        </blockquote>-->
+        <form class="layui-form" id="employeeForm">
+            <div class="layui-form-item">
 
-<form action="/employee/add" method="post"  enctype="multipart/form-data">
+                <div class="layui-inline">
+                    <label class="layui-form-label layui-required">设置登录名</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="username" autocomplete="off" lay-verify="required"
+                               placeholder="请输入登录名"
+                               class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-inline">
+                    <label class="layui-form-label layui-required">员工姓名</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="name" autocomplete="off" lay-verify="required"
+                               placeholder="请输入姓名" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-inline">
+                    <label class="layui-form-label layui-required">员工职位</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="jobtitle" autocomplete="off" lay-verify="required"
+                               placeholder="请输入职位"
+                               class="layui-input">
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label layui-required">部门</label>
+                    <div class="layui-input-inline">
+                        <select name="departmentid" id="departmentid" lay-filter="departmentid" lay-verify="required">
+                            <option value="" selected=""></option>
+                            <option value="1">测试部门1</option>
+                            <option value="2">测试部门2</option>
+                            <option value="3">测试部门3</option>
+                            <option value="4">测试部门4</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="layui-inline">
+                    <label class="layui-form-label">证件类型</label>
+                    <div class="layui-input-inline">
+                        <select name="idcardtype" id="idcardtype" lay-filter="idcardtype">
+                            <option value=""></option>
+                            <option value="1">身份证</option>
+                            <option value="2">其他</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="layui-inline">
+                    <label class="layui-form-label layui-required">证件号码</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="idcardnumber" lay-verify="required|identity" autocomplete="off"
+                               placeholder="请输入证件号码"
+                               class="layui-input">
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">性别</label>
+                    <div class="layui-input-inline">
+                        <select name="gender" id="gender" lay-filter="gender">
+                            <option value=""></option>
+                            <option value="0">女</option>
+                            <option value="1">男</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="layui-inline">
+                    <label class="layui-form-label">年龄</label>
+                    <div class="layui-input-inline">
+                        <input type="number" name="age" autocomplete="off" placeholder="请输入员工年龄" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-inline">
+                    <label class="layui-form-label">学历</label>
+
+                    <div class="layui-input-inline">
+                        <select name="edulevel" id="edulevel" lay-filter="edulevel">
+                            <option value=""></option>
+                            <option value="1">博士后</option>
+                            <option value="2">博士</option>
+                            <option value="3">研究生</option>
+                            <option value="4">硕士</option>
+                            <option value="5">本科</option>
+                            <option value="6">大专</option>
+                            <option value="7">中专</option>
+                            <option value="8">高中</option>
+                            <option value="9">其他</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">民族</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="nation" autocomplete="off" placeholder="请输入民族" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-inline">
+                    <label class="layui-form-label">详细地址</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="address" autocomplete="off" placeholder="请输入详细地址" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-inline">
+                    <label class="layui-form-label">出生日期</label>
+
+                    <div class="layui-input-inline">
+                        <input type="text" class="layui-input" autocomplete="off" name="birthday" id="birthday"
+                               placeholder="请输入出生日期">
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">入职时间</label>
+
+                    <div class="layui-input-inline">
+                        <input type="text" class="layui-input" autocomplete="off" name="entrydate" id="entrydate"
+                               placeholder="请输入入职时间">
+                    </div>
+                </div>
+
+                <div class="layui-inline">
+                    <label class="layui-form-label">转正时间</label>
+
+                    <div class="layui-input-inline">
+                        <input type="text" class="layui-input" autocomplete="off" name="regulardate" id="regulardate"
+                               placeholder="请输入转正时间">
+                    </div>
+                </div>
+
+                <div class="layui-inline">
+                    <label class="layui-form-label">政治面貌</label>
+                    <div class="layui-input-inline">
+                    <select name="politicstype" id="politicstype" lay-filter="politicstype">
+                        <option value=""></option>
+                        <option value="1">中共党员</option>
+                        <option value="2">中共预备党员</option>
+                        <option value="3">共青团员</option>
+                        <option value="4">群众</option>
+                    </select>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">联系电话</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="cellphone" autocomplete="off" placeholder="请输入联系电话" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-inline">
+                    <label class="layui-form-label layui-required">邮箱</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="email" lay-verify="required|email" lay- autocomplete="off" placeholder="请输入邮箱" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-inline">
+                    <label class="layui-form-label">邮箱授权码</label>
+                    <div class="layui-input-inline">
+                        <input type="text" class="layui-input"  name="authorizationcode" placeholder="请输入邮箱授权码">
+                    </div>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">紧急联系人</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="urgentlinkman" autocomplete="off" placeholder="请输入紧急联系人" class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-inline">
+                <label class="layui-form-label">紧急联系人电话</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="urgentlinkmanphone" autocomplete="off" placeholder="请输入紧急联系人电话" class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-inline">
+                <div class="layui-upload">
+                    <label class="layui-form-label" style="margin-top: 10px;">合同</label>
+                    <button style="margin-top: 15px; margin-left: 30px;" type="button"
+                            class="layui-btn layui-btn-normal" name="laborcontract"
+                            id="laborcontract"><i class="layui-icon">&#xe67c;</i>上传合同文件
+                    </button>
+                </div>
+            </div>
+        </div>
+
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <div class="layui-upload">
+                        <label class="layui-form-label"></label>
+                        <button style="margin-top: 15px; margin-left: 30px;" type="button"
+                                class="layui-btn layui-btn-normal" name="headimage"
+                                id="headimagebtn"><i class="layui-icon">&#xe67c;</i>图像
+                        </button>
+                        <div class="layui-upload-list" style="float: right; margin-left: 20px;">
+                            <img class="layui-upload-img" style="width: 200px;height:200px;" id="headimage">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layui-inline">
+                    <div class="layui-upload">
+                        <label class="layui-form-label"></label>
+                        <button style="margin-top: 15px; margin-left: 30px;" type="button"
+                                class="layui-btn layui-btn-normal" name="positiveidcardimage"
+                                id="positiveidcardimagebtn"><i class="layui-icon">&#xe67c;</i>身份证正面照
+                        </button>
+                        <div class="layui-upload-list" style="float: right; margin-left: 20px;">
+                            <img class="layui-upload-img" style="width: 200px;height:200px;" id="positiveidcardimage">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layui-inline">
+                    <div class="layui-upload">
+                        <button style="margin-top: 15px; margin-left: 30px;" type="button"
+                                class="layui-btn layui-btn-normal" name="negativeidcardimage"
+                                id="negativeidcardimagebtn"><i class="layui-icon">&#xe67c;</i>身份证反面照
+                        </button>
+                        <div class="layui-upload-list" style="float: right; margin-left: 20px;">
+                            <img class="layui-upload-img" style="width: 200px;height:200px;" id="negativeidcardimage">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item" style="text-align: center; margin-top:50px;">
+                <button class="layui-btn" id="Surebtn" lay-submit="" lay-filter="SureAdd"><i class="layui-icon">&#xe605;</i>确定添加
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="/statics/lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
+<script src="/js/public.js" charset="utf-8"></script>
+
+<script>
+    PublicFun.ImportJs("/statics/lib/jquery-3.4.1/jquery-3.4.1.min.js")
+    layui.use(['form', 'laydate', "upload"], function () {
+        var form = layui.form,
+            layer = layui.layer,
+            $ = layui.$,
+            upload = layui.upload,
+            laydate = layui.laydate;
+
+        PublicFun.layerDate("#birthday", "yyyy-MM-dd HH:mm:ss");
+        PublicFun.layerDate("#entrydate", "yyyy-MM-dd HH:mm:ss");
+        PublicFun.layerDate("#regulardate", "yyyy-MM-dd HH:mm:ss");
+
+        //附件合同
+        upload.render({
+            elem: '#laborcontract'
+            , url: '' //改成您自己的上传接口
+            , auto: false
+            , accept: 'file' //普通文件
+            ,exts: 'doc|docx'
+        });
+
+        //身份证正面照
+        upload.render({
+            elem: '#positiveidcardimagebtn'
+            , url: '' //改成您自己的上传接口
+            , auto: false
+            , field: "positiveidcardimage"
+            , acceptMime: 'image/*'
+            , choose: function (obj) {//预读本地文件
+                obj.preview(function (index, file, result) {
+                    $('#positiveidcardimage').attr("src", result);
+                })
+            }
+        });
+
+        //身份证反面照
+        upload.render({
+            elem: '#negativeidcardimagebtn'
+            , url: '' //改成您自己的上传接口
+            , auto: false
+            , field: "negativeidcardimage"
+            , acceptMime: 'image/*'
+            , choose: function (obj) {//预读本地文件
+                obj.preview(function (index, file, result) {
+                    $('#negativeidcardimage').attr("src", result);
+                })
+            }
+        });
+
+
+        //图像
+        upload.render({
+            elem: '#headimagebtn'
+            , url: '' //改成您自己的上传接口
+            , auto: false
+            , field: "headimage"
+            , acceptMime: 'image/*'
+            , choose: function (obj) {//预读本地文件
+                obj.preview(function (index, file, result) {
+                    $('#headimage').attr("src", result);
+                })
+            }
+        });
+
+        //监听提交
+        form.on('submit(SureAdd)', function (data) {
+            var formdata = new FormData($("#fileinfoform")[0]);
+            console.log(formdata);
+            console.log(data.field);
+            PublicFun.FunPostAjaxProcessData("/employee/add", formdata, function (res) {
+                if (res.responseCode == 0) {
+                    var index =layer.alert(res.message,{title:"提示信息"},function () {
+                        parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                        parent.layer.close(index); //再执行关闭
+                    });
+
+                } else {
+                    layer.msg(res.message)
+                }
+            }, "请求失败，请检查网络或联系管理员")
+
+            return false;
+        });
+
+    });
+</script>
+
+<!--<form action="/employee/add" method="post" enctype="multipart/form-data">
     登录名：<input type="text" name="username"><br>
     部门ID：<select name="departmentid">
     <option value="1">测试部门1</option>
@@ -58,6 +431,6 @@
     身份证反面照：<input type="file" name="negativeidcardimage"><br>
     合同：<input type="file" name="laborcontract"><br>
     <input type="submit">
-</form>
+</form>-->
 </body>
 </html>
