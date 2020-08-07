@@ -12,7 +12,7 @@
 <div class="layuimini-container">
     <div class="layuimini-main">
         <blockquote class="layui-elem-quote">
-            用户列表<br>
+            员工列表<br>
         </blockquote>
         <div>
 
@@ -27,18 +27,10 @@
                                     <input type="text" name="name" autocomplete="off" class="layui-input">
                                 </div>
                             </div>
-                           <!-- <div class="layui-inline">
-                                <label class="layui-form-label">所属公司</label>
-                                <div class="layui-input-inline">
-                                    <select name="companyName" id="companyList"  lay-filter="companyId">
-                                        <option value=""></option>
-                                    </select>
-                                </div>
-                            </div>-->
                             <div class="layui-inline">
-                                <label class="layui-form-label">电话号码</label>
+                                <label class="layui-form-label">证件号码</label>
                                 <div class="layui-input-inline">
-                                    <input type="text" name="cellphone" autocomplete="off" class="layui-input">
+                                    <input type="text" name="idcardnumber" autocomplete="off" class="layui-input">
                                 </div>
                             </div>
                             <div class="layui-inline">
@@ -68,9 +60,9 @@
             <script type="text/html" id="currentTableBar">
                 <a   class="layui-btn layui-btn-xs " lay-event="ChongZhiPwd"><i class="layui-icon">&#xe673;</i>重置密码</a>
                 {{# if(d.status==0){ }}
-                    <a  class="layui-btn layui-btn-xs layui-btn-danger " lay-event="delete"><i class="layui-icon">&#xe67e;</i>注销</a>
+                <a   class="layui-btn layui-btn-xs layui-btn-normal " lay-event="delete"><i class="layui-icon">&#xe624;</i>启用</a>
                 {{#  } else { }}
-                     <a   class="layui-btn layui-btn-xs layui-btn-normal " lay-event="delete"><i class="layui-icon">&#xe624;</i>启用</a>
+                <a  class="layui-btn layui-btn-xs layui-btn-danger " lay-event="delete"><i class="layui-icon">&#xe67e;</i>注销</a>
                 {{#  } }}
             </script>
 
@@ -173,7 +165,7 @@
               limits: [10, 15, 20, 25, 50, 100],
               limit: 10,
               page: true,
-              skin: 'line'
+              //skin: 'line'
         });
 
         //搜索事件操作
@@ -183,8 +175,7 @@
             //layer.msg(selectText);
             var canshu={
                 "name":formData.name,
-                "cellphone":formData.cellphone,
-                //"companyName":selectText,
+                "idcardnumber":formData.idcardnumber,
             }
             //搜索重载
             table.reload("employeeList",{
@@ -199,13 +190,17 @@
 
         //监听头工具栏事件
         table.on('toolbar(employeeList)', function(obj){
+            var checkStatus=table.checkStatus(obj.config.id);
             switch(obj.event){
                 case 'add':
                     toAddEmployee();
                     break;
-                // case 'batchDel':
-                //     batchDelete();
-                //     break;
+                case "refresh":
+                    layui.table.reload("employeeList");
+                    break;
+                 case 'update':
+                     ToUpdateEmployee(checkStatus);
+                     break;
             };
         });
 
@@ -224,17 +219,47 @@
                     },500)
                 }
             })
-            //layui.layer.full(index);
             //改变窗口大小时，重置弹窗的宽高，防止超出可视区域（如F12调出debug的操作）
             $(window).on("resize",function(){
                 layui.layer.full(index);
             })
         }
 
+        //打开 修改员工的弹出层
+        function ToUpdateEmployee(checkStatus){
+            if(checkStatus.length==1){
+                //执行修改操作
+                var index = layer.open({
+                    title: '修改车辆信息',
+                    type: 2,
+                    shade: 0.2,
+                    maxmin: true,
+                    shadeClose: true,
+                    area: ['40%', '60%'],
+                    content: '',
+                    success: function (layero,index) {
+                        //赋值
+                        var  body=layer.getChildFrame("body",index);
+                           /* body.contents().find('input[name="vehicleinfoId"]').val(n.vehicleinfoId);
+                            body.contents().find('input[name="vehicleType"]').val(n.vehicleType);
+                            body.contents().find('input[name="vehicleSeatsNumber"]').val(n.vehicleSeatsNumber);
+                            body.contents().find('input[name="vehicleNumber"]').val(n.vehicleNumber);*/
+                    },
+                    end: function () {
+                        //刷新表格
+                        layui.table.reload("employeeList");
+                    }
+                });
+            }else  if (checkStatus.length>1){
+                layer.msg("只能修改一行数据")
+            }else {
+                layer.msg("你没有选中任何行！！！")
+            }
+        }
 
 
         //表格操作事件
-        table.on("tool(userList)",function (obj) {
+        table.on("tool(employeeList)",function (obj) {
             var  data=obj.data;
             switch (obj.event) {
                 case "ChongZhiPwd":
@@ -245,9 +270,6 @@
                     break;
             }
         });
-
-        //下拉框绑定
-        PublicFun.BindCompanyList();
 
     });
     //重置密码操作
@@ -307,39 +329,6 @@
             layer.close(index);
         })
     }
-
-    //监听公司下拉框绑定
-   /* function BindCompany() {
-        $.ajax({
-            url:"/company/selectallcompany",
-            dataType:"json",
-            type:"post",
-            success:function (res) {
-                var data=res.data;
-                //layer.alert(JSON.stringify(data));
-                var html = '';
-                if(data!=null && data!=""){
-                    for (var i = 0; i < data.length; i++) {
-                        html += '<option value="' + data[i].companyId + '">' + data[i].companyName + '</option>';
-                    }
-                }else {
-                    html+="";
-                }
-                $('#companyList').append(html);
-                layui.form.render("select");
-            },
-            error:function () {
-                layer.msg("公司下拉框请求失败", {
-                    icon: 2,
-                    shade: this.shade,
-                    scrollbar: false,
-                    time: 3000,
-                    shadeClose: true
-                });
-            }
-        })
-    }*/
-
 
 </script>
 </body>

@@ -9,83 +9,101 @@
     <link rel="stylesheet" href="/css/public.css" media="all">
 </head>
 <body class="childrenBody">
-<form class="layui-form" method="post" id="frm">
-    <div class="layui-form-item">
-        <label class="layui-form-label">采购时间</label>
-        <div class="layui-input-inline">
-            <input type="text" name="prodate" th:value="${#dates.format(procurement.prodate, 'yyyy-MM-dd HH:mm:ss')}"  disabled="disabled" autocomplete="off" class="layui-input">
-        </div>
-        <label class="layui-form-label">采购类型</label>
-        <div class="layui-input-inline">
-            <input type="tel" name="protype" th:value="${procurement.protype}"  disabled="disabled" autocomplete="off" class="layui-input">
-        </div>
+<div class="layuimini-container">
+    <div class="layuimini-main">
+        <form class="layui-form" method="post" id="frm">
+            <div class="layui-form-item">
+                <label class="layui-form-label">采购时间</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="prodate"
+                           th:value="${#dates.format(procurement.prodate, 'yyyy-MM-dd HH:mm:ss')}" disabled="disabled"
+                           autocomplete="off" class="layui-input">
+                </div>
+                <label class="layui-form-label">采购类型</label>
+                <div class="layui-input-inline">
+                    <input type="tel" name="protype" th:value="${procurement.protype}" disabled="disabled"
+                           autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">货物名称</label>
+                <div class="layui-input-inline">
+                    <input type="tel" name="goodsname" th:value="${procurement.goodsname}" disabled="disabled"
+                           autocomplete="off" class="layui-input">
+                </div>
+                <label class="layui-form-label">单位</label>
+                <div class="layui-input-inline">
+                    <input type="tel" name="unit" th:value="${procurement.unit}" disabled="disabled" autocomplete="off"
+                           class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">型号</label>
+                <div class="layui-input-inline">
+                    <input type="tel" name="type" th:value="${procurement.type}" disabled="disabled" autocomplete="off"
+                           class="layui-input">
+                </div>
+                <label class="layui-form-label">数量</label>
+                <div class="layui-input-inline">
+                    <input type="tel" name="number" th:value="${procurement.number}" disabled="disabled"
+                           autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">单价</label>
+                <div class="layui-input-inline">
+                    <input type="tel" name="price" th:value="${procurement.price}" disabled="disabled"
+                           autocomplete="off" class="layui-input">
+                </div>
+                <label class="layui-form-label">总金额</label>
+                <div class="layui-input-inline">
+                    <input type="tel" name="totalamount" th:value="${procurement.totalamount}" disabled="disabled"
+                           autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">申请人</label>
+                <div class="layui-input-inline">
+                    <input type="tel" name="applicantname" th:value="${procurement.applicantname}" disabled="disabled"
+                           autocomplete="off" class="layui-input">
+                </div>
+                <label class="layui-form-label">申请部门</label>
+                <div class="layui-input-inline">
+                    <input type="tel" name="applicationdeptname" th:value="${procurement.applicationdeptname}"
+                           disabled="disabled" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">附件名称</label>
+                <div class="layui-input-inline">
+                    <input type="tel" name="filename" th:value="${procurement.filename}" disabled="disabled"
+                           autocomplete="off" class="layui-input">
+                </div>
+                <label class="layui-form-label">附件路径</label>
+                <div class="layui-input-inline">
+                    <input type="tel" name="fileurl" th:value="${procurement.fileurl}" disabled="disabled"
+                           autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">批注</label>
+                <div class="layui-input-block">
+                    <textarea placeholder="请输入批注内容" name="comment" lay-verily="required" required id="comment"
+                              class="layui-textarea"></textarea>
+                </div>
+            </div>
+            <div class="layui-form-item" style="text-align: center;">
+                <tr th:each="out,userStat : ${outcomes}">
+                    <input type="button" th:value="${out}" class="layui-btn dotask"/>
+                </tr>
+            </div>
+
+        </form>
+        <input id="proid" type="hidden" th:value="${procurement.proid}">
+        <input id="taskid" type="hidden" th:value="${taskId}">
+        <table id="commentList" lay-filter="commentList"></table>
     </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label">货物名称</label>
-        <div class="layui-input-inline">
-            <input type="tel" name="goodsname" th:value="${procurement.goodsname}"  disabled="disabled" autocomplete="off" class="layui-input">
-        </div>
-        <label class="layui-form-label">单位</label>
-        <div class="layui-input-inline">
-            <input type="tel" name="unit" th:value="${procurement.unit}"  disabled="disabled" autocomplete="off" class="layui-input">
-        </div>
-    </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label">型号</label>
-        <div class="layui-input-inline">
-            <input type="tel" name="type" th:value="${procurement.type}"  disabled="disabled" autocomplete="off" class="layui-input">
-        </div>
-        <label class="layui-form-label">数量</label>
-        <div class="layui-input-inline">
-            <input type="tel" name="number" th:value="${procurement.number}"  disabled="disabled" autocomplete="off" class="layui-input">
-        </div>
-    </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label">单价</label>
-        <div class="layui-input-inline">
-            <input type="tel" name="price" th:value="${procurement.price}"  disabled="disabled" autocomplete="off" class="layui-input">
-        </div>
-        <label class="layui-form-label">总金额</label>
-        <div class="layui-input-inline">
-            <input type="tel" name="totalamount" th:value="${procurement.totalamount}"  disabled="disabled" autocomplete="off" class="layui-input">
-        </div>
-    </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label">申请人</label>
-        <div class="layui-input-inline">
-            <input type="tel" name="applicantname" th:value="${procurement.applicantname}"  disabled="disabled" autocomplete="off" class="layui-input">
-        </div>
-        <label class="layui-form-label">申请部门</label>
-        <div class="layui-input-inline">
-            <input type="tel" name="applicationdeptname" th:value="${procurement.applicationdeptname}"  disabled="disabled" autocomplete="off" class="layui-input">
-        </div>
-    </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label">附件名称</label>
-        <div class="layui-input-inline">
-            <input type="tel" name="filename" th:value="${procurement.filename}"  disabled="disabled" autocomplete="off" class="layui-input">
-        </div>
-        <label class="layui-form-label">附件路径</label>
-        <div class="layui-input-inline">
-            <input type="tel" name="fileurl" th:value="${procurement.fileurl}"  disabled="disabled" autocomplete="off" class="layui-input">
-        </div>
-    </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label">批注</label>
-        <div class="layui-input-block">
-            <textarea placeholder="请输入批注内容"  name="comment" lay-verily="required" required  id="comment" class="layui-textarea"></textarea>
-        </div>
-    </div>
-    <div class="layui-form-item" style="text-align: center;">
-        <tr  th:each="out,userStat : ${outcomes}">
-            <input type="button" th:value="${out}"  class="layui-btn dotask" />
-        </tr>
-    </div>
-    </div>
-</form>
-<input id="proid" type="hidden"  th:value="${procurement.proid}">
-<input id="taskid" type="hidden"  th:value="${taskId}">
-<table id="commentList" lay-filter="commentList"></table>
+</div>
 </body>
 <script src="/statics/lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
 <script type="text/javascript" th:inline="none">
@@ -94,11 +112,11 @@
         var $ = layui.jquery,
             form = layui.form,
             table = layui.table;
-        var taskid=document.getElementById("taskid").value;
+        var taskid = document.getElementById("taskid").value;
         //实例化表格
-        tableIns=table.render({
+        tableIns = table.render({
             elem: '#commentList',
-            url: '/proflow/loadAllCommentByTaskId?taskId='+taskid,
+            url: '/proflow/loadAllCommentByTaskId?taskId=' + taskid,
             toolbar: '#toolbar',
             defaultToolbar: ['filter', 'exports', 'print'],
             parseData: function (res) { //res 即为原始返回的数据
@@ -109,24 +127,24 @@
                     "data": res.data.list //解析数据列表
                 };
             },
-            cols : [[
-                {field: 'time', title: '批注时间', minWidth:100, align:"center"},
-                {field: 'userId', title: '批注人', minWidth:100, align:"center"},
-                {field: 'message', title: '批注内容', minWidth:100, align:"center"}
+            cols: [[
+                {field: 'time', title: '批注时间', minWidth: 100, align: "center"},
+                {field: 'userId', title: '批注人', minWidth: 100, align: "center"},
+                {field: 'message', title: '批注内容', minWidth: 100, align: "center"}
             ]],
-            page:false
+            page: false
         });
         //监控按钮事件
-        $(".dotask").click(function(obj){
-            var outcome=this.value;
-            var comment=document.getElementById("comment").value;
-            var proid=document.getElementById("proid").value;
-            $.post("/proflow/doTask",{
-                proid:proid,
-                taskId:taskid,
-                comments:comment,
-                outcome:outcome
-            },function(data){
+        $(".dotask").click(function (obj) {
+            var outcome = this.value;
+            var comment = document.getElementById("comment").value;
+            var proid = document.getElementById("proid").value;
+            $.post("/proflow/doTask", {
+                proid: proid,
+                taskId: taskid,
+                comments: comment,
+                outcome: outcome
+            }, function (data) {
                 layer.msg(data.msg);
                 //关闭部署的弹出层
                 var index = parent.layer.getFrameIndex(window.name);
