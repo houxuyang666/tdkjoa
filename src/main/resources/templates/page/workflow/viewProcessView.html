@@ -8,7 +8,9 @@
     <link rel="stylesheet" href="/statics/lib/layui-v2.5.5/css/layui.css" media="all">
     <link rel="stylesheet" href="/css/public.css" media="all">
 </head>
-<body class="childrenBody">
+<body>
+<div class="layuimini-container">
+    <div class="layuimini-main">
 <form class="layui-form" method="post" id="frm">
     <div class="layui-form-item">
         <label class="layui-form-label">请假标题</label>
@@ -40,6 +42,8 @@
 </form>
 <input id="leavebill" type="hidden"  th:value="${leavebill.id}">
 <table id="commentList" lay-filter="commentList"></table>
+    </div>
+</div>
 </body>
 <script src="/statics/lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
 <script type="text/javascript" th:inline="none">

@@ -12,8 +12,10 @@
 <body>
 <div class="layuimini-container">
     <div class="layuimini-main">
+        <blockquote class="layui-elem-quote">
+            考勤申请<br>
+        </blockquote>
         <div>
-
             <table id="leavebillList" lay-filter="leavebillList" class="layui-hide"></table>
 
             <!--表格工具条-->
@@ -107,8 +109,8 @@
                 case 'add':
                     toAddLeaveBill();
                     break;
-                case 'batchDel':
-                    batchDelete();
+                case 'refresh':
+                    layui.table.reload("leavebillList");
                     break;
             };
         });
