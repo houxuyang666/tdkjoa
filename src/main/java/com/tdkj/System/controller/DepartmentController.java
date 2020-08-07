@@ -20,8 +20,7 @@ import java.util.Date;
 import java.util.List;
 
 import static com.tdkj.System.common.OAResultCode.HTTP_RNS_CODE_200;
-import static com.tdkj.System.common.OAResultType.ADD_SUCCESS;
-import static com.tdkj.System.common.OAResultType.FIND_SUCCESS;
+import static com.tdkj.System.common.OAResultType.*;
 
 /**
  * (Department)表控制层
@@ -134,14 +133,15 @@ public class DepartmentController {
      **/
     @ResponseBody
     @RequestMapping("/update")
-    public OAResponse update(String deptname, Integer deptheadid, String deptdesc) {
+    public OAResponse update( Integer deptid,String deptname, Integer deptheadid, String deptdesc) {
         Department department = new Department();
+        department.setDeptid(deptid);
         department.setDeptname(deptname);
         department.setDeptheadid(deptheadid);
         department.setDeptdesc(deptdesc);
         department.setModifydate(new Date());
         this.departmentService.update(department);
-        return OAResponse.setResult(HTTP_RNS_CODE_200, ADD_SUCCESS);
+        return OAResponse.setResult(HTTP_RNS_CODE_200, UPDATE_SUCCESS);
     }
 
     /**
