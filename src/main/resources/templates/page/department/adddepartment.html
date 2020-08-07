@@ -31,11 +31,11 @@
         <div class="layui-form-item">
             <label class="layui-form-label">部门负责人</label>
             <div class="layui-input-block">
-                <select name="deptheadid" id="" lay-filter="mySelect" lay-verify="required">
-                    <option value="0"></option>
-                    <option value="1">/department/selectdeptemployee 获取角色为领导的人</option>
+                <select name="deptheadid" id="deptheadid" lay-filter="mySelect" lay-verify="required">
+                    <option value=""></option>
+                    <!--<option value="1">/department/selectdeptemployee 获取角色为领导的人</option>
                     <option value="2">应查询出角色为领导的列表 进行选择</option>
-                    <option value="18">常浩然</option>
+                    <option value="18">常浩然</option>-->
                 </select>
             </div>
         </div>
@@ -51,13 +51,18 @@
         </div>
     </form>
 </div>
+<script src="/statics/lib/jquery-3.4.1/jquery-3.4.1.min.js" charset="utf-8"></script>
 <script src="/statics/lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
+<script src="/js/public.js" charset="utf-8"></script>
 <script>
     layui.use(['form', 'laydate'], function () {
         var form = layui.form,
             layer = layui.layer,
             $ = layui.$,
             laydate = layui.laydate;
+
+        //绑定领导人下拉框
+        PublicFun.BindDepthead();
 
         //监听提交
         form.on('submit(SureAdd)', function (data) {
@@ -68,8 +73,10 @@
                 data: data.field,
                 success: function (res) {
                     if (res.responseCode == 200) {
-                        var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
-                        parent.layer.close(index); //再执行关闭
+                        layer.alert(res.message,{title:"提示信息"},function () {
+                            var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                            parent.layer.close(index); //再执行关闭
+                        })
                     } else {
                         layer.msg(res.message)
                     }

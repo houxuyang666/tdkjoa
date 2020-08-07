@@ -2,10 +2,104 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title></title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="/statics/lib/layui-v2.5.5/css/layui.css" media="all">
+    <link rel="stylesheet" href="/css/public.css" media="all">
+    <style>
+        body {
+            background-color: #ffffff;
+        }
+
+        #contain {
+            padding: 25px;
+        }
+    </style>
 </head>
 <body>
-修改部门
- 请求地址  /department/update    参数为 deptname,deptheadid,deptdesc
+<div id="contain">
+    <form class="layui-form layui-form-pane" id="formdep" action="">
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">部门名称</label>
+            <div class="layui-input-block">
+                <input type="text" name="deptname" lay-verify="required" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">部门负责人</label>
+            <div class="layui-input-block">
+                <select name="deptheadid" id="deptheadid" lay-filter="mySelect" lay-verify="required">
+                    <option value=""></option>
+                    <!--<option value="1">/department/selectdeptemployee 获取角色为领导的人</option>
+                    <option value="2">应查询出角色为领导的列表 进行选择</option>
+                    <option value="18">常浩然</option>-->
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">部门简介</label>
+            <div class="layui-input-block">
+                <textarea placeholder="请输入部门简介" name="deptdesc" lay-verify="required"  class="layui-textarea"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <button class="layui-btn" lay-submit="" lay-filter="SureUpdate"><i class="layui-icon">&#xe605;</i>确定修改</button>
+        </div>
+    </form>
+</div>
+<script src="/statics/lib/jquery-3.4.1/jquery-3.4.1.min.js" charset="utf-8"></script>
+<script src="/statics/lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
+<script src="/js/public.js" charset="utf-8"></script>
+<script>
+    layui.use(['form', 'laydate'], function () {
+        var form = layui.form,
+            layer = layui.layer,
+            $ = layui.$,
+            laydate = layui.laydate;
+
+        //绑定领导人下拉框
+        PublicFun.BindDepthead();
+
+        //获取父窗体的领导人 赋值给下拉框
+        var deptheadname=parent.$("#deptheadname").val();
+        //遍历select
+        $("#deptheadid").each(function () {
+            //this代表的是<option></option>，对<opiton>在进行遍历
+            $(this).children("option").each(function () {
+                //判断需要对那个进行回显
+                if(this.text==deptheadname){
+                    $(this).attr("selected","selected");
+                    PublicFun.RenderForm();//重载form表单
+                }
+            })
+        })
+        //监听提交 请求地址  /department/update    参数为 deptname,deptheadid,deptdesc
+        form.on('submit(SureUpdate)', function (data) {
+            //获取部门Id
+            var deptid=parent.$("#deptid").val();
+            var formData={
+                "deptid":deptid,
+                "deptname":data.field.deptname,
+                "deptheadid":data.field.deptheadid,
+                "deptdesc":data.field.deptdesc
+            }
+
+            PublicFun.FunPostAjax("/department/update",formData,function (res) {
+                if(res.responseCode==200){
+                    layer.alert(res.message,{title:"提示信息"},function () {
+                        var  index=parent.layer.getFrameIndex(window.name);
+                        parent.layer.close(index);
+                    })
+                }
+            },"请求失败，请检查网络或联系管理员")
+
+            return false;
+        });
+
+    });
+</script>
 </body>
 </html>
