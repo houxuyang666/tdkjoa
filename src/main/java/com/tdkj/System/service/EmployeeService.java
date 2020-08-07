@@ -72,8 +72,8 @@ public interface EmployeeService {
      * @return java.util.List<com.tdkj.System.entity.VO.EmployeeVO>
      *@param corpid
      * @param name
-     * @param cellphone */
-    List<EmployeeVO> queryAllEmployee(int corpid, String name, String cellphone);
+     * @param  */
+    List<EmployeeVO> queryAllEmployee(int corpid, String name, String idcardnumber);
 
 
     /**

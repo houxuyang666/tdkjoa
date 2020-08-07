@@ -305,8 +305,8 @@
             <if test="name != null and name != ''">
                 and e.Name like concat('%',#{name},'%')
             </if>
-            <if test="cellphone != null and cellphone != ''">
-                and CellPhone like concat('%',#{cellphone},'%')
+            <if test="idcardnumber != null and idcardnumber != ''">
+                and IdcardNumber like concat('%',#{idcardnumber},'%')
             </if>
             <if test="corpid != null and corpid != ''">
                 and e.CorpId = #{corpid}

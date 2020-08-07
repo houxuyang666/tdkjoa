@@ -75,12 +75,12 @@ public class EmployeeController {
 
     @ResponseBody
     @RequestMapping("/selectemployee")
-    public OAResponseList selectemployee(Integer page, Integer limit,String name,String cellphone) {
+    public OAResponseList selectemployee(Integer page, Integer limit,String name,String idcardnumber) {
         log.info("selectemployee");
         //获取当前用户的所在公司
         Corpbasicinfo corpbasicinfo=corpbasicinfoService.queryByemployeeId(ShiroUtils.getPrincipal().getEmployeeid());
         PageHelper.startPage(page,limit,true);
-        List<EmployeeVO> employeeVOList=employeeService.queryAllEmployee(corpbasicinfo.getCorpid(),name,cellphone);
+        List<EmployeeVO> employeeVOList=employeeService.queryAllEmployee(corpbasicinfo.getCorpid(),name,idcardnumber);
         PageInfo<EmployeeVO> pageInfo=new PageInfo<>(employeeVOList);
         return OAResponseList.setResult(0,FIND_SUCCESS,pageInfo);
     }

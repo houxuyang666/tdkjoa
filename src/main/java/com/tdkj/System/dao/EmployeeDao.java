@@ -79,7 +79,7 @@ public interface EmployeeDao {
      * @Param []
      * @return java.util.List<com.tdkj.System.entity.VO.EmployeeVO>
      **/
-    List<EmployeeVO> queryAllEmployee(Integer corpid, String name, String cellphone);
+    List<EmployeeVO> queryAllEmployee(Integer corpid, String name, String idcardnumber);
     /**
      * @Author houxuyang
      * @Description //获取用户的部门ID
