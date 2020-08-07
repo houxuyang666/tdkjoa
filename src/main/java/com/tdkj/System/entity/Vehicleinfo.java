@@ -9,17 +9,17 @@ import java.util.Date;
  * (Vehicleinfo)实体类
  *
  * @author makejava
- * @since 2020-07-17 14:51:07
+ * @since 2020-08-07 17:49:43
  */
 @Data
 public class Vehicleinfo implements Serializable {
-    private static final long serialVersionUID = -54427046028895854L;
+    private static final long serialVersionUID = 786936166220065621L;
     /**
-     * 车辆ID 采购单号
+     * 车辆ID
      */
     private Integer vehicleinfoid;
     /**
-     * 车辆型号 部门名称
+     * 车辆型号
      */
     private String vehicletype;
     /**
@@ -27,9 +27,13 @@ public class Vehicleinfo implements Serializable {
      */
     private Integer vehicleseatsnumber;
     /**
+     * 车牌号
+     */
+    private String vehiclenumber;
+    /**
      * 车辆隶属公司 关联公司ID
      */
-    private Integer vehicleaffiliationcompany;
+    private Integer vehicleaffiliationcorpbasicinfo;
     /**
      * 车辆隶属个人  关联个人ID
      */
@@ -46,5 +50,6 @@ public class Vehicleinfo implements Serializable {
      * 编辑时间
      */
     private Date modifydate;
+
 
 }

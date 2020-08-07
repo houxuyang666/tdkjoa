@@ -1,6 +1,7 @@
 package com.tdkj.System.service.impl;
 
 import com.tdkj.System.dao.VehicleinfoDao;
+import com.tdkj.System.entity.VO.VehicleinfoVO;
 import com.tdkj.System.entity.Vehicleinfo;
 import com.tdkj.System.service.VehicleinfoService;
 import org.springframework.stereotype.Service;
@@ -12,7 +13,7 @@ import java.util.List;
  * (Vehicleinfo)表服务实现类
  *
  * @author makejava
- * @since 2020-07-17 14:51:07
+ * @since 2020-08-07 17:01:43
  */
 @Service("vehicleinfoService")
 public class VehicleinfoServiceImpl implements VehicleinfoService {
@@ -76,4 +77,18 @@ public class VehicleinfoServiceImpl implements VehicleinfoService {
     public boolean deleteById(Integer vehicleinfoid) {
         return this.vehicleinfoDao.deleteById(vehicleinfoid) > 0;
     }
+
+    /**
+     * @Author houxuyang
+     * @Description //查询所有车辆 本公司优先
+     * @Date 17:22 2020/8/7
+     * @Param [vehicleinfo]
+     * @return java.util.List<com.tdkj.System.entity.VO.VehicleinfoVO>
+     **/
+    @Override
+    public List<VehicleinfoVO> queryAllvehicleinfo(Vehicleinfo vehicleinfo) {
+        return this.vehicleinfoDao.queryAllvehicleinfo(vehicleinfo);
+    }
+
+
 }

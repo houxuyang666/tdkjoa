@@ -1,5 +1,6 @@
 package com.tdkj.System.service;
 
+import com.tdkj.System.entity.VO.VehicleinfoVO;
 import com.tdkj.System.entity.Vehicleinfo;
 
 import java.util.List;
@@ -8,7 +9,7 @@ import java.util.List;
  * (Vehicleinfo)表服务接口
  *
  * @author makejava
- * @since 2020-07-17 14:51:07
+ * @since 2020-08-07 17:01:43
  */
 public interface VehicleinfoService {
 
@@ -53,4 +54,12 @@ public interface VehicleinfoService {
      */
     boolean deleteById(Integer vehicleinfoid);
 
+    /**
+     * @Author houxuyang
+     * @Description //查询所有车辆 本公司优先
+     * @Date 17:22 2020/8/7
+     * @Param [vehicleinfo]
+     * @return java.util.List<com.tdkj.System.entity.VO.VehicleinfoVO>
+     **/
+    List<VehicleinfoVO> queryAllvehicleinfo(Vehicleinfo vehicleinfo);
 }

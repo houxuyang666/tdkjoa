@@ -6,7 +6,8 @@
         <result property="vehicleinfoid" column="VehicleinfoID" jdbcType="INTEGER"/>
         <result property="vehicletype" column="VehicleType" jdbcType="VARCHAR"/>
         <result property="vehicleseatsnumber" column="VehicleSeatsNumber" jdbcType="INTEGER"/>
-        <result property="vehicleaffiliationcompany" column="VehicleAffiliationCompany" jdbcType="INTEGER"/>
+        <result property="vehiclenumber" column="VehicleNumber" jdbcType="VARCHAR"/>
+        <result property="vehicleaffiliationcorpbasicinfo" column="VehicleAffiliationCorpbasicinfo" jdbcType="INTEGER"/>
         <result property="vehicleaffiliationpersonal" column="VehicleaffiliationPersonal" jdbcType="INTEGER"/>
         <result property="status" column="Status" jdbcType="INTEGER"/>
         <result property="createdate" column="CreateDate" jdbcType="TIMESTAMP"/>
@@ -16,25 +17,25 @@
     <!--查询单个-->
     <select id="queryById" resultMap="VehicleinfoMap">
         select
-          VehicleinfoID, VehicleType, VehicleSeatsNumber, VehicleAffiliationCompany, VehicleaffiliationPersonal, Status, CreateDate, ModifyDate
-        from tdkjoa.vehicleinfo
+          VehicleinfoID, VehicleType, VehicleSeatsNumber, VehicleNumber, VehicleAffiliationCorpbasicinfo, VehicleaffiliationPersonal, Status, CreateDate, ModifyDate
+        from vehicleinfo
         where VehicleinfoID = #{vehicleinfoid}
     </select>
 
     <!--查询指定行数据-->
     <select id="queryAllByLimit" resultMap="VehicleinfoMap">
         select
-          VehicleinfoID, VehicleType, VehicleSeatsNumber, VehicleAffiliationCompany, VehicleaffiliationPersonal, Status, CreateDate, ModifyDate
-        from tdkjoa.vehicleinfo
+          VehicleinfoID, VehicleType, VehicleSeatsNumber, VehicleNumber, VehicleAffiliationCorpbasicinfo, VehicleaffiliationPersonal, Status, CreateDate, ModifyDate
+        from vehicleinfo
         limit #{offset}, #{limit}
     </select>
 
     <!--通过实体作为筛选条件查询-->
     <select id="queryAll" resultMap="VehicleinfoMap">
         select
-        VehicleinfoID, VehicleType, VehicleSeatsNumber, VehicleAffiliationCompany, VehicleaffiliationPersonal, Status,
-        CreateDate, ModifyDate
-        from tdkjoa.vehicleinfo
+        VehicleinfoID, VehicleType, VehicleSeatsNumber, VehicleNumber, VehicleAffiliationCorpbasicinfo,
+        VehicleaffiliationPersonal, Status, CreateDate, ModifyDate
+        from vehicleinfo
         <where>
             <if test="vehicleinfoid != null">
                 and VehicleinfoID = #{vehicleinfoid}
@@ -45,8 +46,11 @@
             <if test="vehicleseatsnumber != null">
                 and VehicleSeatsNumber = #{vehicleseatsnumber}
             </if>
-            <if test="vehicleaffiliationcompany != null">
-                and VehicleAffiliationCompany = #{vehicleaffiliationcompany}
+            <if test="vehiclenumber != null and vehiclenumber != ''">
+                and VehicleNumber = #{vehiclenumber}
+            </if>
+            <if test="vehicleaffiliationcorpbasicinfo != null">
+                and VehicleAffiliationCorpbasicinfo = #{vehicleaffiliationcorpbasicinfo}
             </if>
             <if test="vehicleaffiliationpersonal != null">
                 and VehicleaffiliationPersonal = #{vehicleaffiliationpersonal}
@@ -65,13 +69,13 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="vehicleinfoid" useGeneratedKeys="true">
-        insert into tdkjoa.vehicleinfo(VehicleType, VehicleSeatsNumber, VehicleAffiliationCompany, VehicleaffiliationPersonal, Status, CreateDate, ModifyDate)
-        values (#{vehicletype}, #{vehicleseatsnumber}, #{vehicleaffiliationcompany}, #{vehicleaffiliationpersonal}, #{status}, #{createdate}, #{modifydate})
+        insert into vehicleinfo(VehicleType, VehicleSeatsNumber, VehicleNumber, VehicleAffiliationCorpbasicinfo, VehicleaffiliationPersonal, Status, CreateDate, ModifyDate)
+        values (#{vehicletype}, #{vehicleseatsnumber}, #{vehiclenumber}, #{vehicleaffiliationcorpbasicinfo}, #{vehicleaffiliationpersonal}, #{status}, #{createdate}, #{modifydate})
     </insert>
 
     <!--通过主键修改数据-->
     <update id="update">
-        update tdkjoa.vehicleinfo
+        update vehicleinfo
         <set>
             <if test="vehicletype != null and vehicletype != ''">
                 VehicleType = #{vehicletype},
@@ -79,8 +83,11 @@
             <if test="vehicleseatsnumber != null">
                 VehicleSeatsNumber = #{vehicleseatsnumber},
             </if>
-            <if test="vehicleaffiliationcompany != null">
-                VehicleAffiliationCompany = #{vehicleaffiliationcompany},
+            <if test="vehiclenumber != null and vehiclenumber != ''">
+                VehicleNumber = #{vehiclenumber},
+            </if>
+            <if test="vehicleaffiliationcorpbasicinfo != null">
+                VehicleAffiliationCorpbasicinfo = #{vehicleaffiliationcorpbasicinfo},
             </if>
             <if test="vehicleaffiliationpersonal != null">
                 VehicleaffiliationPersonal = #{vehicleaffiliationpersonal},
@@ -100,7 +107,39 @@
 
     <!--通过主键删除-->
     <delete id="deleteById">
-        delete from tdkjoa.vehicleinfo where VehicleinfoID = #{vehicleinfoid}
+        delete from vehicleinfo where VehicleinfoID = #{vehicleinfoid}
     </delete>
+
+
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAllvehicleinfo" resultType="com.tdkj.System.entity.VO.VehicleinfoVO">
+        select
+        VehicleinfoID as vehicleinfoid,
+        VehicleType as vehicletype,
+        VehicleSeatsNumber as vehicleseatsnumber,
+        VehicleNumber as vehiclenumber,
+        VehicleAffiliationCorpbasicinfo as vehicleaffiliationcorpbasicinfo,
+        c.CorpName as corpname,
+        VehicleaffiliationPersonal as vehicleaffiliationpersonal,
+        e.name as name,
+        v.Status as status,
+        v.CreateDate as createdate,
+        v.ModifyDate as modifydate
+        from vehicleinfo v LEFT JOIN corpbasicinfo c  on v.VehicleAffiliationCorpbasicinfo =c.CorpId
+                        LEFT JOIN employee	e on v.VehicleaffiliationPersonal =e.EmployeeId
+        <where>
+            <if test="vehicletype != null and vehicletype != ''">
+                and VehicleType like concat('%',#{vehicletype},'%')
+            </if>
+            <if test="vehicleseatsnumber != null">
+                and VehicleSeatsNumber like concat('%',#{vehicleseatsnumber},'%')
+            </if>
+            <if test="vehicleaffiliationcorpbasicinfo != null">
+                and VehicleAffiliationCorpbasicinfo = #{vehicleaffiliationcorpbasicinfo}
+            </if>
+        </where>
+        order by v.Status, v.VehicleAffiliationCorpbasicinfo
+    </select>
 
 </mapper>

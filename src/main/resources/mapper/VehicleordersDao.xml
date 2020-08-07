@@ -5,7 +5,7 @@
     <resultMap type="com.tdkj.System.entity.Vehicleorders" id="VehicleordersMap">
         <result property="orderid" column="OrderID" jdbcType="VARCHAR"/>
         <result property="vehicleid" column="VehicleID" jdbcType="VARCHAR"/>
-        <result property="userid" column="UserID" jdbcType="INTEGER"/>
+        <result property="employeeid" column="EmployeeID" jdbcType="INTEGER"/>
         <result property="vehicledriverid" column="VehicleDriverID" jdbcType="INTEGER"/>
         <result property="beganaddress" column="BeganAddress" jdbcType="INTEGER"/>
         <result property="destinationaddress" column="DestinationAddress" jdbcType="VARCHAR"/>
@@ -24,25 +24,25 @@
     <!--查询单个-->
     <select id="queryById" resultMap="VehicleordersMap">
         select
-          OrderID, VehicleID, UserID, VehicleDriverID, BeganAddress, DestinationAddress, EndAddress, Mileage, MileageBeganUrl, MileageEndUrl, BeganDate, EndDate, Status, OrderDesc, CreateDate, ModifyDate
-        from tdkjoa.vehicleorders
+          OrderID, VehicleID, EmployeeID, VehicleDriverID, BeganAddress, DestinationAddress, EndAddress, Mileage, MileageBeganUrl, MileageEndUrl, BeganDate, EndDate, Status, OrderDesc, CreateDate, ModifyDate
+        from activiti.vehicleorders
         where OrderID = #{orderid}
     </select>
 
     <!--查询指定行数据-->
     <select id="queryAllByLimit" resultMap="VehicleordersMap">
         select
-          OrderID, VehicleID, UserID, VehicleDriverID, BeganAddress, DestinationAddress, EndAddress, Mileage, MileageBeganUrl, MileageEndUrl, BeganDate, EndDate, Status, OrderDesc, CreateDate, ModifyDate
-        from tdkjoa.vehicleorders
+          OrderID, VehicleID, EmployeeID, VehicleDriverID, BeganAddress, DestinationAddress, EndAddress, Mileage, MileageBeganUrl, MileageEndUrl, BeganDate, EndDate, Status, OrderDesc, CreateDate, ModifyDate
+        from activiti.vehicleorders
         limit #{offset}, #{limit}
     </select>
 
     <!--通过实体作为筛选条件查询-->
     <select id="queryAll" resultMap="VehicleordersMap">
         select
-        OrderID, VehicleID, UserID, VehicleDriverID, BeganAddress, DestinationAddress, EndAddress, Mileage,
+        OrderID, VehicleID, EmployeeID, VehicleDriverID, BeganAddress, DestinationAddress, EndAddress, Mileage,
         MileageBeganUrl, MileageEndUrl, BeganDate, EndDate, Status, OrderDesc, CreateDate, ModifyDate
-        from tdkjoa.vehicleorders
+        from activiti.vehicleorders
         <where>
             <if test="orderid != null and orderid != ''">
                 and OrderID = #{orderid}
@@ -50,8 +50,8 @@
             <if test="vehicleid != null and vehicleid != ''">
                 and VehicleID = #{vehicleid}
             </if>
-            <if test="userid != null">
-                and UserID = #{userid}
+            <if test="employeeid != null">
+                and EmployeeID = #{employeeid}
             </if>
             <if test="vehicledriverid != null">
                 and VehicleDriverID = #{vehicledriverid}
@@ -97,19 +97,19 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="orderid" useGeneratedKeys="true">
-        insert into tdkjoa.vehicleorders(VehicleID, UserID, VehicleDriverID, BeganAddress, DestinationAddress, EndAddress, Mileage, MileageBeganUrl, MileageEndUrl, BeganDate, EndDate, Status, OrderDesc, CreateDate, ModifyDate)
-        values (#{vehicleid}, #{userid}, #{vehicledriverid}, #{beganaddress}, #{destinationaddress}, #{endaddress}, #{mileage}, #{mileagebeganurl}, #{mileageendurl}, #{begandate}, #{enddate}, #{status}, #{orderdesc}, #{createdate}, #{modifydate})
+        insert into activiti.vehicleorders(VehicleID, EmployeeID, VehicleDriverID, BeganAddress, DestinationAddress, EndAddress, Mileage, MileageBeganUrl, MileageEndUrl, BeganDate, EndDate, Status, OrderDesc, CreateDate, ModifyDate)
+        values (#{vehicleid}, #{employeeid}, #{vehicledriverid}, #{beganaddress}, #{destinationaddress}, #{endaddress}, #{mileage}, #{mileagebeganurl}, #{mileageendurl}, #{begandate}, #{enddate}, #{status}, #{orderdesc}, #{createdate}, #{modifydate})
     </insert>
 
     <!--通过主键修改数据-->
     <update id="update">
-        update tdkjoa.vehicleorders
+        update activiti.vehicleorders
         <set>
             <if test="vehicleid != null and vehicleid != ''">
                 VehicleID = #{vehicleid},
             </if>
-            <if test="userid != null">
-                UserID = #{userid},
+            <if test="employeeid != null">
+                EmployeeID = #{employeeid},
             </if>
             <if test="vehicledriverid != null">
                 VehicleDriverID = #{vehicledriverid},
@@ -156,7 +156,7 @@
 
     <!--通过主键删除-->
     <delete id="deleteById">
-        delete from tdkjoa.vehicleorders where OrderID = #{orderid}
+        delete from activiti.vehicleorders where OrderID = #{orderid}
     </delete>
 
 </mapper>

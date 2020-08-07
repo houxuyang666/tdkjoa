@@ -11,7 +11,7 @@
  Target Server Version : 80020
  File Encoding         : 65001
 
- Date: 06/08/2020 17:51:26
+ Date: 07/08/2020 18:21:36
 */
 
 SET NAMES utf8mb4;
@@ -75,7 +75,7 @@ CREATE TABLE `act_ge_property`  (
 -- ----------------------------
 -- Records of act_ge_property
 -- ----------------------------
-INSERT INTO `act_ge_property` VALUES ('next.dbid', '37501', 16);
+INSERT INTO `act_ge_property` VALUES ('next.dbid', '52501', 22);
 INSERT INTO `act_ge_property` VALUES ('schema.history', 'create(5.22.0.0)', 1);
 INSERT INTO `act_ge_property` VALUES ('schema.version', '5.22.0.0', 1);
 
@@ -110,7 +110,7 @@ CREATE TABLE `act_hi_actinst`  (
 -- ----------------------------
 INSERT INTO `act_hi_actinst` VALUES ('10023', 'LeavebillOr:1:8', '10021', '10021', '_2', NULL, NULL, 'StartEvent', 'startEvent', NULL, '2020-08-05 17:22:32.334', '2020-08-05 17:22:32.340', 6, '');
 INSERT INTO `act_hi_actinst` VALUES ('10025', 'LeavebillOr:1:8', '10021', '10021', '_7', '10026', NULL, '提交申请', 'userTask', '侯旭阳', '2020-08-05 17:22:32.340', '2020-08-05 17:22:32.683', 343, '');
-INSERT INTO `act_hi_actinst` VALUES ('10030', 'LeavebillOr:1:8', '10021', '10021', '_8', '10031', NULL, '经理审批', 'userTask', '常浩然', '2020-08-05 17:22:32.683', NULL, NULL, '');
+INSERT INTO `act_hi_actinst` VALUES ('10030', 'LeavebillOr:1:8', '10021', '10021', '_8', '10031', NULL, '经理审批', 'userTask', '常浩然', '2020-08-05 17:22:32.683', '2020-08-07 10:29:12.309', 147999626, '');
 INSERT INTO `act_hi_actinst` VALUES ('12502', 'LeavebillOr:1:8', '12501', '12501', '_2', NULL, NULL, 'StartEvent', 'startEvent', NULL, '2020-08-05 17:26:15.118', '2020-08-05 17:26:15.162', 44, '');
 INSERT INTO `act_hi_actinst` VALUES ('12504', 'LeavebillOr:1:8', '12501', '12501', '_7', '12505', NULL, '提交申请', 'userTask', '侯旭阳', '2020-08-05 17:26:15.162', '2020-08-05 17:26:15.577', 415, '');
 INSERT INTO `act_hi_actinst` VALUES ('12509', 'LeavebillOr:1:8', '12501', '12501', '_8', '12510', NULL, '经理审批', 'userTask', '常浩然', '2020-08-05 17:26:15.577', NULL, NULL, '');
@@ -137,9 +137,30 @@ INSERT INTO `act_hi_actinst` VALUES ('32509', 'LeavebillOr:1:8', '32501', '32501
 INSERT INTO `act_hi_actinst` VALUES ('35002', 'LeavebillOr:1:8', '35001', '35001', '_2', NULL, NULL, 'StartEvent', 'startEvent', NULL, '2020-08-06 11:26:01.343', '2020-08-06 11:26:01.364', 21, '');
 INSERT INTO `act_hi_actinst` VALUES ('35004', 'LeavebillOr:1:8', '35001', '35001', '_7', '35005', NULL, '提交申请', 'userTask', '侯旭阳', '2020-08-06 11:26:01.364', '2020-08-06 11:26:01.843', 479, '');
 INSERT INTO `act_hi_actinst` VALUES ('35009', 'LeavebillOr:1:8', '35001', '35001', '_8', '35010', NULL, '经理审批', 'userTask', '常浩然', '2020-08-06 11:26:01.843', NULL, NULL, '');
+INSERT INTO `act_hi_actinst` VALUES ('37502', 'LeavebillOr:1:8', '37501', '37501', '_2', NULL, NULL, 'StartEvent', 'startEvent', NULL, '2020-08-06 19:08:13.331', '2020-08-06 19:08:13.351', 20, '');
+INSERT INTO `act_hi_actinst` VALUES ('37504', 'LeavebillOr:1:8', '37501', '37501', '_7', '37505', NULL, '提交申请', 'userTask', '侯旭阳', '2020-08-06 19:08:13.352', '2020-08-06 19:08:13.669', 317, '');
+INSERT INTO `act_hi_actinst` VALUES ('37509', 'LeavebillOr:1:8', '37501', '37501', '_8', '37510', NULL, '经理审批', 'userTask', '常浩然', '2020-08-06 19:08:13.669', '2020-08-07 10:19:50.707', 54697038, '');
+INSERT INTO `act_hi_actinst` VALUES ('40002', 'LeavebillOr:1:8', '40001', '40001', '_2', NULL, NULL, 'StartEvent', 'startEvent', NULL, '2020-08-07 09:51:28.256', '2020-08-07 09:51:28.274', 18, '');
+INSERT INTO `act_hi_actinst` VALUES ('40004', 'LeavebillOr:1:8', '40001', '40001', '_7', '40005', NULL, '提交申请', 'userTask', '侯旭阳', '2020-08-07 09:51:28.275', '2020-08-07 09:51:28.682', 407, '');
+INSERT INTO `act_hi_actinst` VALUES ('40009', 'LeavebillOr:1:8', '40001', '40001', '_8', '40010', NULL, '经理审批', 'userTask', '常浩然', '2020-08-07 09:51:28.682', '2020-08-07 10:14:00.292', 1351610, '');
+INSERT INTO `act_hi_actinst` VALUES ('42502', 'LeavebillOr:1:8', '42501', '42501', '_2', NULL, NULL, 'StartEvent', 'startEvent', NULL, '2020-08-07 10:00:33.487', '2020-08-07 10:00:33.498', 11, '');
+INSERT INTO `act_hi_actinst` VALUES ('42504', 'LeavebillOr:1:8', '42501', '42501', '_7', '42505', NULL, '提交申请', 'userTask', '侯旭阳', '2020-08-07 10:00:33.499', '2020-08-07 10:00:33.892', 393, '');
+INSERT INTO `act_hi_actinst` VALUES ('42509', 'LeavebillOr:1:8', '42501', '42501', '_8', '42510', NULL, '经理审批', 'userTask', '常浩然', '2020-08-07 10:00:33.892', '2020-08-07 10:16:29.905', 956013, '');
+INSERT INTO `act_hi_actinst` VALUES ('42513', 'LeavebillOr:1:8', '42512', '42512', '_2', NULL, NULL, 'StartEvent', 'startEvent', NULL, '2020-08-07 10:01:43.431', '2020-08-07 10:01:43.442', 11, '');
+INSERT INTO `act_hi_actinst` VALUES ('42515', 'LeavebillOr:1:8', '42512', '42512', '_7', '42516', NULL, '提交申请', 'userTask', '侯旭阳', '2020-08-07 10:01:43.442', '2020-08-07 10:01:43.766', 324, '');
+INSERT INTO `act_hi_actinst` VALUES ('42520', 'LeavebillOr:1:8', '42512', '42512', '_8', '42521', NULL, '经理审批', 'userTask', '常浩然', '2020-08-07 10:01:43.766', '2020-08-07 10:16:53.507', 909741, '');
+INSERT INTO `act_hi_actinst` VALUES ('45002', 'LeavebillOr:1:8', '40001', '40001', '_9', '45003', NULL, '总经理审批', 'userTask', '超级管理员', '2020-08-07 10:14:00.292', NULL, NULL, '');
+INSERT INTO `act_hi_actinst` VALUES ('45006', 'LeavebillOr:1:8', '42501', '42501', '_9', '45007', NULL, '总经理审批', 'userTask', '超级管理员', '2020-08-07 10:16:29.905', NULL, NULL, '');
+INSERT INTO `act_hi_actinst` VALUES ('45010', 'LeavebillOr:1:8', '42512', '42512', '_9', '45011', NULL, '总经理审批', 'userTask', '超级管理员', '2020-08-07 10:16:53.507', NULL, NULL, '');
+INSERT INTO `act_hi_actinst` VALUES ('45014', 'LeavebillOr:1:8', '5001', '5001', '_9', '45015', NULL, '总经理审批', 'userTask', '超级管理员', '2020-08-07 10:17:00.134', NULL, NULL, '');
+INSERT INTO `act_hi_actinst` VALUES ('47502', 'LeavebillOr:1:8', '37501', '37501', '_9', '47503', NULL, '总经理审批', 'userTask', '超级管理员', '2020-08-07 10:19:50.707', NULL, NULL, '');
+INSERT INTO `act_hi_actinst` VALUES ('50002', 'LeavebillOr:1:8', '50001', '50001', '_2', NULL, NULL, 'StartEvent', 'startEvent', NULL, '2020-08-07 10:28:16.543', '2020-08-07 10:28:16.555', 12, '');
+INSERT INTO `act_hi_actinst` VALUES ('50004', 'LeavebillOr:1:8', '50001', '50001', '_7', '50005', NULL, '提交申请', 'userTask', '常浩然', '2020-08-07 10:28:16.555', '2020-08-07 10:28:16.982', 427, '');
+INSERT INTO `act_hi_actinst` VALUES ('50009', 'LeavebillOr:1:8', '50001', '50001', '_8', '50010', NULL, '经理审批', 'userTask', '超级管理员', '2020-08-07 10:28:16.982', NULL, NULL, '');
+INSERT INTO `act_hi_actinst` VALUES ('50013', 'LeavebillOr:1:8', '10021', '10021', '_7', '50014', NULL, '提交申请', 'userTask', '侯旭阳', '2020-08-07 10:29:12.309', '2020-08-07 10:29:12.521', 212, '');
 INSERT INTO `act_hi_actinst` VALUES ('5002', 'LeavebillOr:1:8', '5001', '5001', '_2', NULL, NULL, 'StartEvent', 'startEvent', NULL, '2020-08-05 15:44:00.632', '2020-08-05 15:44:00.653', 21, '');
 INSERT INTO `act_hi_actinst` VALUES ('5004', 'LeavebillOr:1:8', '5001', '5001', '_7', '5005', NULL, '提交申请', 'userTask', '侯旭阳', '2020-08-05 15:44:00.653', '2020-08-05 15:44:01.177', 524, '');
-INSERT INTO `act_hi_actinst` VALUES ('5009', 'LeavebillOr:1:8', '5001', '5001', '_8', '5010', NULL, '经理审批', 'userTask', '常浩然', '2020-08-05 15:44:01.177', NULL, NULL, '');
+INSERT INTO `act_hi_actinst` VALUES ('5009', 'LeavebillOr:1:8', '5001', '5001', '_8', '5010', NULL, '经理审批', 'userTask', '常浩然', '2020-08-05 15:44:01.177', '2020-08-07 10:17:00.134', 153178957, '');
 
 -- ----------------------------
 -- Table structure for act_hi_attachment
@@ -191,6 +212,17 @@ INSERT INTO `act_hi_comment` VALUES ('2516', 'comment', '2020-08-05 10:31:58.869
 INSERT INTO `act_hi_comment` VALUES ('30007', 'comment', '2020-08-05 17:53:14.514', '侯旭阳', '30005', '30001', 'AddComment', '[提交]提交申请', 0x5BE68F90E4BAA45DE68F90E4BAA4E794B3E8AFB7);
 INSERT INTO `act_hi_comment` VALUES ('32507', 'comment', '2020-08-05 18:04:56.653', '侯旭阳', '32505', '32501', 'AddComment', '[提交]提交申请', 0x5BE68F90E4BAA45DE68F90E4BAA4E794B3E8AFB7);
 INSERT INTO `act_hi_comment` VALUES ('35007', 'comment', '2020-08-06 11:26:01.695', '侯旭阳', '35005', '35001', 'AddComment', '[提交]提交申请', 0x5BE68F90E4BAA45DE68F90E4BAA4E794B3E8AFB7);
+INSERT INTO `act_hi_comment` VALUES ('37507', 'comment', '2020-08-06 19:08:13.597', '侯旭阳', '37505', '37501', 'AddComment', '[提交]提交申请', 0x5BE68F90E4BAA45DE68F90E4BAA4E794B3E8AFB7);
+INSERT INTO `act_hi_comment` VALUES ('40007', 'comment', '2020-08-07 09:51:28.593', '侯旭阳', '40005', '40001', 'AddComment', '[提交]提交申请', 0x5BE68F90E4BAA45DE68F90E4BAA4E794B3E8AFB7);
+INSERT INTO `act_hi_comment` VALUES ('42507', 'comment', '2020-08-07 10:00:33.772', '侯旭阳', '42505', '42501', 'AddComment', '[提交]提交申请', 0x5BE68F90E4BAA45DE68F90E4BAA4E794B3E8AFB7);
+INSERT INTO `act_hi_comment` VALUES ('42518', 'comment', '2020-08-07 10:01:43.699', '侯旭阳', '42516', '42512', 'AddComment', '[提交]提交申请', 0x5BE68F90E4BAA45DE68F90E4BAA4E794B3E8AFB7);
+INSERT INTO `act_hi_comment` VALUES ('45001', 'comment', '2020-08-07 10:14:00.116', '常浩然', '40010', '40001', 'AddComment', '[上级复核]', 0x5BE4B88AE7BAA7E5A48DE6A0B85D);
+INSERT INTO `act_hi_comment` VALUES ('45005', 'comment', '2020-08-07 10:16:29.800', '常浩然', '42510', '42501', 'AddComment', '[上级复核]', 0x5BE4B88AE7BAA7E5A48DE6A0B85D);
+INSERT INTO `act_hi_comment` VALUES ('45009', 'comment', '2020-08-07 10:16:53.437', '常浩然', '42521', '42512', 'AddComment', '[上级复核]', 0x5BE4B88AE7BAA7E5A48DE6A0B85D);
+INSERT INTO `act_hi_comment` VALUES ('45013', 'comment', '2020-08-07 10:17:00.026', '常浩然', '5010', '5001', 'AddComment', '[上级复核]', 0x5BE4B88AE7BAA7E5A48DE6A0B85D);
+INSERT INTO `act_hi_comment` VALUES ('47501', 'comment', '2020-08-07 10:19:50.495', '常浩然', '37510', '37501', 'AddComment', '[上级复核]123456479878', 0x5BE4B88AE7BAA7E5A48DE6A0B85D313233343536343739383738);
+INSERT INTO `act_hi_comment` VALUES ('50007', 'comment', '2020-08-07 10:28:16.882', '常浩然', '50005', '50001', 'AddComment', '[提交]提交申请', 0x5BE68F90E4BAA45DE68F90E4BAA4E794B3E8AFB7);
+INSERT INTO `act_hi_comment` VALUES ('50012', 'comment', '2020-08-07 10:29:12.242', '常浩然', '10031', '10021', 'AddComment', '[驳回]', 0x5BE9A9B3E59B9E5D);
 INSERT INTO `act_hi_comment` VALUES ('5007', 'comment', '2020-08-05 15:44:01.006', '侯旭阳', '5005', '5001', 'AddComment', '[提交]提交申请', 0x5BE68F90E4BAA45DE68F90E4BAA4E794B3E8AFB7);
 
 -- ----------------------------
@@ -261,6 +293,21 @@ INSERT INTO `act_hi_identitylink` VALUES ('32506', NULL, 'participant', '侯旭�
 INSERT INTO `act_hi_identitylink` VALUES ('32511', NULL, 'participant', '常浩然', NULL, '32501');
 INSERT INTO `act_hi_identitylink` VALUES ('35006', NULL, 'participant', '侯旭阳', NULL, '35001');
 INSERT INTO `act_hi_identitylink` VALUES ('35011', NULL, 'participant', '常浩然', NULL, '35001');
+INSERT INTO `act_hi_identitylink` VALUES ('37506', NULL, 'participant', '侯旭阳', NULL, '37501');
+INSERT INTO `act_hi_identitylink` VALUES ('37511', NULL, 'participant', '常浩然', NULL, '37501');
+INSERT INTO `act_hi_identitylink` VALUES ('40006', NULL, 'participant', '侯旭阳', NULL, '40001');
+INSERT INTO `act_hi_identitylink` VALUES ('40011', NULL, 'participant', '常浩然', NULL, '40001');
+INSERT INTO `act_hi_identitylink` VALUES ('42506', NULL, 'participant', '侯旭阳', NULL, '42501');
+INSERT INTO `act_hi_identitylink` VALUES ('42511', NULL, 'participant', '常浩然', NULL, '42501');
+INSERT INTO `act_hi_identitylink` VALUES ('42517', NULL, 'participant', '侯旭阳', NULL, '42512');
+INSERT INTO `act_hi_identitylink` VALUES ('42522', NULL, 'participant', '常浩然', NULL, '42512');
+INSERT INTO `act_hi_identitylink` VALUES ('45004', NULL, 'participant', '超级管理员', NULL, '40001');
+INSERT INTO `act_hi_identitylink` VALUES ('45008', NULL, 'participant', '超级管理员', NULL, '42501');
+INSERT INTO `act_hi_identitylink` VALUES ('45012', NULL, 'participant', '超级管理员', NULL, '42512');
+INSERT INTO `act_hi_identitylink` VALUES ('45016', NULL, 'participant', '超级管理员', NULL, '5001');
+INSERT INTO `act_hi_identitylink` VALUES ('47504', NULL, 'participant', '超级管理员', NULL, '37501');
+INSERT INTO `act_hi_identitylink` VALUES ('50006', NULL, 'participant', '常浩然', NULL, '50001');
+INSERT INTO `act_hi_identitylink` VALUES ('50011', NULL, 'participant', '超级管理员', NULL, '50001');
 INSERT INTO `act_hi_identitylink` VALUES ('5006', NULL, 'participant', '侯旭阳', NULL, '5001');
 INSERT INTO `act_hi_identitylink` VALUES ('5011', NULL, 'participant', '常浩然', NULL, '5001');
 
@@ -292,7 +339,7 @@ CREATE TABLE `act_hi_procinst`  (
 -- ----------------------------
 -- Records of act_hi_procinst
 -- ----------------------------
-INSERT INTO `act_hi_procinst` VALUES ('10021', '10021', 'LeavebillOr:20200805172232tuXR', 'LeavebillOr:1:8', '2020-08-05 17:22:32.334', NULL, NULL, '超级管理员', '_2', NULL, NULL, NULL, '', NULL);
+INSERT INTO `act_hi_procinst` VALUES ('10021', '10021', 'LeavebillOr:20200805172232tuXR', 'LeavebillOr:1:8', '2020-08-05 17:22:32.334', '2020-08-07 10:29:12.530', 148000196, '超级管理员', '_2', NULL, NULL, '驳回', '', NULL);
 INSERT INTO `act_hi_procinst` VALUES ('12501', '12501', 'LeavebillOr:20200805172614MMZP', 'LeavebillOr:1:8', '2020-08-05 17:26:15.118', NULL, NULL, NULL, '_2', NULL, NULL, NULL, '', NULL);
 INSERT INTO `act_hi_procinst` VALUES ('15001', '15001', 'LeavebillOr:202008051733493zrw', 'LeavebillOr:1:8', '2020-08-05 17:33:49.525', NULL, NULL, NULL, '_2', NULL, NULL, NULL, '', NULL);
 INSERT INTO `act_hi_procinst` VALUES ('17501', '17501', 'LeavebillOr:20200805173807xoYb', 'LeavebillOr:1:8', '2020-08-05 17:38:07.794', NULL, NULL, NULL, '_2', NULL, NULL, NULL, '', NULL);
@@ -301,6 +348,11 @@ INSERT INTO `act_hi_procinst` VALUES ('2501', '2501', 'LeavebillOr:82', 'Leavebi
 INSERT INTO `act_hi_procinst` VALUES ('30001', '30001', 'LeavebillOr:20200805175314huAr', 'LeavebillOr:1:8', '2020-08-05 17:53:14.198', NULL, NULL, NULL, '_2', NULL, NULL, NULL, '', NULL);
 INSERT INTO `act_hi_procinst` VALUES ('32501', '32501', 'LeavebillOr:20200805180456gyp1', 'LeavebillOr:1:8', '2020-08-05 18:04:56.384', NULL, NULL, NULL, '_2', NULL, NULL, NULL, '', NULL);
 INSERT INTO `act_hi_procinst` VALUES ('35001', '35001', 'LeavebillOr:20200806112601NCPz', 'LeavebillOr:1:8', '2020-08-06 11:26:01.343', NULL, NULL, NULL, '_2', NULL, NULL, NULL, '', NULL);
+INSERT INTO `act_hi_procinst` VALUES ('37501', '37501', 'LeavebillOr:84', 'LeavebillOr:1:8', '2020-08-06 19:08:13.330', NULL, NULL, NULL, '_2', NULL, NULL, NULL, '', NULL);
+INSERT INTO `act_hi_procinst` VALUES ('40001', '40001', 'LeavebillOr:85', 'LeavebillOr:1:8', '2020-08-07 09:51:28.255', NULL, NULL, NULL, '_2', NULL, NULL, NULL, '', NULL);
+INSERT INTO `act_hi_procinst` VALUES ('42501', '42501', 'LeavebillOr:86', 'LeavebillOr:1:8', '2020-08-07 10:00:33.487', NULL, NULL, NULL, '_2', NULL, NULL, NULL, '', NULL);
+INSERT INTO `act_hi_procinst` VALUES ('42512', '42512', 'LeavebillOr:87', 'LeavebillOr:1:8', '2020-08-07 10:01:43.431', NULL, NULL, NULL, '_2', NULL, NULL, NULL, '', NULL);
+INSERT INTO `act_hi_procinst` VALUES ('50001', '50001', 'LeavebillOr:20200807102816CFWS', 'LeavebillOr:1:8', '2020-08-07 10:28:16.542', NULL, NULL, NULL, '_2', NULL, NULL, NULL, '', NULL);
 INSERT INTO `act_hi_procinst` VALUES ('5001', '5001', 'LeavebillOr:83', 'LeavebillOr:1:8', '2020-08-05 15:44:00.632', NULL, NULL, NULL, '_2', NULL, NULL, NULL, '', NULL);
 
 -- ----------------------------
@@ -336,7 +388,7 @@ CREATE TABLE `act_hi_taskinst`  (
 -- Records of act_hi_taskinst
 -- ----------------------------
 INSERT INTO `act_hi_taskinst` VALUES ('10026', 'LeavebillOr:1:8', '_7', '10021', '10021', '提交申请', NULL, NULL, NULL, '侯旭阳', '2020-08-05 17:22:32.347', NULL, '2020-08-05 17:22:32.670', 323, 'completed', 50, NULL, NULL, NULL, '');
-INSERT INTO `act_hi_taskinst` VALUES ('10031', 'LeavebillOr:1:8', '_8', '10021', '10021', '经理审批', NULL, NULL, NULL, '常浩然', '2020-08-05 17:22:32.683', NULL, NULL, NULL, NULL, 50, NULL, NULL, NULL, '');
+INSERT INTO `act_hi_taskinst` VALUES ('10031', 'LeavebillOr:1:8', '_8', '10021', '10021', '经理审批', NULL, NULL, NULL, '常浩然', '2020-08-05 17:22:32.683', NULL, '2020-08-07 10:29:12.299', 147999616, 'completed', 50, NULL, NULL, NULL, '');
 INSERT INTO `act_hi_taskinst` VALUES ('12505', 'LeavebillOr:1:8', '_7', '12501', '12501', '提交申请', NULL, NULL, NULL, '侯旭阳', '2020-08-05 17:26:15.174', NULL, '2020-08-05 17:26:15.557', 383, 'completed', 50, NULL, NULL, NULL, '');
 INSERT INTO `act_hi_taskinst` VALUES ('12510', 'LeavebillOr:1:8', '_8', '12501', '12501', '经理审批', NULL, NULL, NULL, '常浩然', '2020-08-05 17:26:15.577', NULL, NULL, NULL, NULL, 50, NULL, NULL, NULL, '');
 INSERT INTO `act_hi_taskinst` VALUES ('15005', 'LeavebillOr:1:8', '_7', '15001', '15001', '提交申请', NULL, NULL, NULL, '侯旭阳', '2020-08-05 17:33:49.552', NULL, '2020-08-05 17:33:49.916', 364, 'completed', 50, NULL, NULL, NULL, '');
@@ -354,8 +406,24 @@ INSERT INTO `act_hi_taskinst` VALUES ('32505', 'LeavebillOr:1:8', '_7', '32501',
 INSERT INTO `act_hi_taskinst` VALUES ('32510', 'LeavebillOr:1:8', '_8', '32501', '32501', '经理审批', NULL, NULL, NULL, '常浩然', '2020-08-05 18:04:56.749', NULL, NULL, NULL, NULL, 50, NULL, NULL, NULL, '');
 INSERT INTO `act_hi_taskinst` VALUES ('35005', 'LeavebillOr:1:8', '_7', '35001', '35001', '提交申请', NULL, NULL, NULL, '侯旭阳', '2020-08-06 11:26:01.373', NULL, '2020-08-06 11:26:01.824', 451, 'completed', 50, NULL, NULL, NULL, '');
 INSERT INTO `act_hi_taskinst` VALUES ('35010', 'LeavebillOr:1:8', '_8', '35001', '35001', '经理审批', NULL, NULL, NULL, '常浩然', '2020-08-06 11:26:01.843', NULL, NULL, NULL, NULL, 50, NULL, NULL, NULL, '');
+INSERT INTO `act_hi_taskinst` VALUES ('37505', 'LeavebillOr:1:8', '_7', '37501', '37501', '提交申请', NULL, NULL, NULL, '侯旭阳', '2020-08-06 19:08:13.357', NULL, '2020-08-06 19:08:13.652', 295, 'completed', 50, NULL, NULL, NULL, '');
+INSERT INTO `act_hi_taskinst` VALUES ('37510', 'LeavebillOr:1:8', '_8', '37501', '37501', '经理审批', NULL, NULL, NULL, '常浩然', '2020-08-06 19:08:13.669', NULL, '2020-08-07 10:19:50.666', 54696997, 'completed', 50, NULL, NULL, NULL, '');
+INSERT INTO `act_hi_taskinst` VALUES ('40005', 'LeavebillOr:1:8', '_7', '40001', '40001', '提交申请', NULL, NULL, NULL, '侯旭阳', '2020-08-07 09:51:28.285', NULL, '2020-08-07 09:51:28.649', 364, 'completed', 50, NULL, NULL, NULL, '');
+INSERT INTO `act_hi_taskinst` VALUES ('40010', 'LeavebillOr:1:8', '_8', '40001', '40001', '经理审批', NULL, NULL, NULL, '常浩然', '2020-08-07 09:51:28.682', NULL, '2020-08-07 10:14:00.249', 1351567, 'completed', 50, NULL, NULL, NULL, '');
+INSERT INTO `act_hi_taskinst` VALUES ('42505', 'LeavebillOr:1:8', '_7', '42501', '42501', '提交申请', NULL, NULL, NULL, '侯旭阳', '2020-08-07 10:00:33.510', NULL, '2020-08-07 10:00:33.866', 356, 'completed', 50, NULL, NULL, NULL, '');
+INSERT INTO `act_hi_taskinst` VALUES ('42510', 'LeavebillOr:1:8', '_8', '42501', '42501', '经理审批', NULL, NULL, NULL, '常浩然', '2020-08-07 10:00:33.892', NULL, '2020-08-07 10:16:29.895', 956003, 'completed', 50, NULL, NULL, NULL, '');
+INSERT INTO `act_hi_taskinst` VALUES ('42516', 'LeavebillOr:1:8', '_7', '42512', '42512', '提交申请', NULL, NULL, NULL, '侯旭阳', '2020-08-07 10:01:43.462', NULL, '2020-08-07 10:01:43.756', 294, 'completed', 50, NULL, NULL, NULL, '');
+INSERT INTO `act_hi_taskinst` VALUES ('42521', 'LeavebillOr:1:8', '_8', '42512', '42512', '经理审批', NULL, NULL, NULL, '常浩然', '2020-08-07 10:01:43.766', NULL, '2020-08-07 10:16:53.496', 909730, 'completed', 50, NULL, NULL, NULL, '');
+INSERT INTO `act_hi_taskinst` VALUES ('45003', 'LeavebillOr:1:8', '_9', '40001', '40001', '总经理审批', NULL, NULL, NULL, '超级管理员', '2020-08-07 10:14:00.292', NULL, NULL, NULL, NULL, 50, NULL, NULL, NULL, '');
+INSERT INTO `act_hi_taskinst` VALUES ('45007', 'LeavebillOr:1:8', '_9', '42501', '42501', '总经理审批', NULL, NULL, NULL, '超级管理员', '2020-08-07 10:16:29.905', NULL, NULL, NULL, NULL, 50, NULL, NULL, NULL, '');
+INSERT INTO `act_hi_taskinst` VALUES ('45011', 'LeavebillOr:1:8', '_9', '42512', '42512', '总经理审批', NULL, NULL, NULL, '超级管理员', '2020-08-07 10:16:53.507', NULL, NULL, NULL, NULL, 50, NULL, NULL, NULL, '');
+INSERT INTO `act_hi_taskinst` VALUES ('45015', 'LeavebillOr:1:8', '_9', '5001', '5001', '总经理审批', NULL, NULL, NULL, '超级管理员', '2020-08-07 10:17:00.134', NULL, NULL, NULL, NULL, 50, NULL, NULL, NULL, '');
+INSERT INTO `act_hi_taskinst` VALUES ('47503', 'LeavebillOr:1:8', '_9', '37501', '37501', '总经理审批', NULL, NULL, NULL, '超级管理员', '2020-08-07 10:19:50.708', NULL, NULL, NULL, NULL, 50, NULL, NULL, NULL, '');
+INSERT INTO `act_hi_taskinst` VALUES ('50005', 'LeavebillOr:1:8', '_7', '50001', '50001', '提交申请', NULL, NULL, NULL, '常浩然', '2020-08-07 10:28:16.566', NULL, '2020-08-07 10:28:16.966', 400, 'completed', 50, NULL, NULL, NULL, '');
+INSERT INTO `act_hi_taskinst` VALUES ('50010', 'LeavebillOr:1:8', '_8', '50001', '50001', '经理审批', NULL, NULL, NULL, '超级管理员', '2020-08-07 10:28:16.982', NULL, NULL, NULL, NULL, 50, NULL, NULL, NULL, '');
+INSERT INTO `act_hi_taskinst` VALUES ('50014', 'LeavebillOr:1:8', '_7', '10021', '10021', '提交申请', NULL, NULL, NULL, '侯旭阳', '2020-08-07 10:29:12.309', NULL, '2020-08-07 10:29:12.507', 198, '驳回', 50, NULL, NULL, NULL, '');
 INSERT INTO `act_hi_taskinst` VALUES ('5005', 'LeavebillOr:1:8', '_7', '5001', '5001', '提交申请', NULL, NULL, NULL, '侯旭阳', '2020-08-05 15:44:00.661', NULL, '2020-08-05 15:44:01.158', 497, 'completed', 50, NULL, NULL, NULL, '');
-INSERT INTO `act_hi_taskinst` VALUES ('5010', 'LeavebillOr:1:8', '_8', '5001', '5001', '经理审批', NULL, NULL, NULL, '常浩然', '2020-08-05 15:44:01.177', NULL, NULL, NULL, NULL, 50, NULL, NULL, NULL, '');
+INSERT INTO `act_hi_taskinst` VALUES ('5010', 'LeavebillOr:1:8', '_8', '5001', '5001', '经理审批', NULL, NULL, NULL, '常浩然', '2020-08-05 15:44:01.177', NULL, '2020-08-07 10:17:00.124', 153178947, 'completed', 50, NULL, NULL, NULL, '');
 
 -- ----------------------------
 -- Table structure for act_hi_varinst
@@ -385,8 +453,8 @@ CREATE TABLE `act_hi_varinst`  (
 -- ----------------------------
 -- Records of act_hi_varinst
 -- ----------------------------
-INSERT INTO `act_hi_varinst` VALUES ('10024', '10021', '10021', NULL, 'username', 'string', 0, NULL, NULL, NULL, '侯旭阳', NULL, '2020-08-05 17:22:32.334', '2020-08-05 17:22:32.334');
-INSERT INTO `act_hi_varinst` VALUES ('10029', '10021', '10021', NULL, 'outcome', 'string', 0, NULL, NULL, NULL, '提交', NULL, '2020-08-05 17:22:32.638', '2020-08-05 17:22:32.638');
+INSERT INTO `act_hi_varinst` VALUES ('10024', '10021', '10021', NULL, 'username', 'string', 1, NULL, NULL, NULL, '侯旭阳', NULL, '2020-08-05 17:22:32.334', '2020-08-07 10:29:12.560');
+INSERT INTO `act_hi_varinst` VALUES ('10029', '10021', '10021', NULL, 'outcome', 'string', 2, NULL, NULL, NULL, '驳回', NULL, '2020-08-05 17:22:32.638', '2020-08-07 10:29:12.560');
 INSERT INTO `act_hi_varinst` VALUES ('12503', '12501', '12501', NULL, 'username', 'string', 0, NULL, NULL, NULL, '侯旭阳', NULL, '2020-08-05 17:26:15.119', '2020-08-05 17:26:15.119');
 INSERT INTO `act_hi_varinst` VALUES ('12508', '12501', '12501', NULL, 'outcome', 'string', 0, NULL, NULL, NULL, '提交', NULL, '2020-08-05 17:26:15.528', '2020-08-05 17:26:15.528');
 INSERT INTO `act_hi_varinst` VALUES ('15003', '15001', '15001', NULL, 'username', 'string', 0, NULL, NULL, NULL, '侯旭阳', NULL, '2020-08-05 17:33:49.526', '2020-08-05 17:33:49.526');
@@ -403,8 +471,18 @@ INSERT INTO `act_hi_varinst` VALUES ('32503', '32501', '32501', NULL, 'username'
 INSERT INTO `act_hi_varinst` VALUES ('32508', '32501', '32501', NULL, 'outcome', 'string', 0, NULL, NULL, NULL, '提交', NULL, '2020-08-05 18:04:56.691', '2020-08-05 18:04:56.691');
 INSERT INTO `act_hi_varinst` VALUES ('35003', '35001', '35001', NULL, 'username', 'string', 0, NULL, NULL, NULL, '侯旭阳', NULL, '2020-08-06 11:26:01.344', '2020-08-06 11:26:01.344');
 INSERT INTO `act_hi_varinst` VALUES ('35008', '35001', '35001', NULL, 'outcome', 'string', 0, NULL, NULL, NULL, '提交', NULL, '2020-08-06 11:26:01.734', '2020-08-06 11:26:01.734');
+INSERT INTO `act_hi_varinst` VALUES ('37503', '37501', '37501', NULL, 'username', 'string', 0, NULL, NULL, NULL, '侯旭阳', NULL, '2020-08-06 19:08:13.331', '2020-08-06 19:08:13.331');
+INSERT INTO `act_hi_varinst` VALUES ('37508', '37501', '37501', NULL, 'outcome', 'string', 1, NULL, NULL, NULL, '上级复核', NULL, '2020-08-06 19:08:13.622', '2020-08-07 10:19:50.621');
+INSERT INTO `act_hi_varinst` VALUES ('40003', '40001', '40001', NULL, 'username', 'string', 0, NULL, NULL, NULL, '侯旭阳', NULL, '2020-08-07 09:51:28.256', '2020-08-07 09:51:28.256');
+INSERT INTO `act_hi_varinst` VALUES ('40008', '40001', '40001', NULL, 'outcome', 'string', 1, NULL, NULL, NULL, '上级复核', NULL, '2020-08-07 09:51:28.622', '2020-08-07 10:14:00.212');
+INSERT INTO `act_hi_varinst` VALUES ('42503', '42501', '42501', NULL, 'username', 'string', 0, NULL, NULL, NULL, '侯旭阳', NULL, '2020-08-07 10:00:33.487', '2020-08-07 10:00:33.487');
+INSERT INTO `act_hi_varinst` VALUES ('42508', '42501', '42501', NULL, 'outcome', 'string', 1, NULL, NULL, NULL, '上级复核', NULL, '2020-08-07 10:00:33.804', '2020-08-07 10:16:29.848');
+INSERT INTO `act_hi_varinst` VALUES ('42514', '42512', '42512', NULL, 'username', 'string', 0, NULL, NULL, NULL, '侯旭阳', NULL, '2020-08-07 10:01:43.431', '2020-08-07 10:01:43.431');
+INSERT INTO `act_hi_varinst` VALUES ('42519', '42512', '42512', NULL, 'outcome', 'string', 1, NULL, NULL, NULL, '上级复核', NULL, '2020-08-07 10:01:43.727', '2020-08-07 10:16:53.467');
+INSERT INTO `act_hi_varinst` VALUES ('50003', '50001', '50001', NULL, 'username', 'string', 0, NULL, NULL, NULL, '常浩然', NULL, '2020-08-07 10:28:16.543', '2020-08-07 10:28:16.543');
+INSERT INTO `act_hi_varinst` VALUES ('50008', '50001', '50001', NULL, 'outcome', 'string', 0, NULL, NULL, NULL, '提交', NULL, '2020-08-07 10:28:16.915', '2020-08-07 10:28:16.915');
 INSERT INTO `act_hi_varinst` VALUES ('5003', '5001', '5001', NULL, 'username', 'string', 0, NULL, NULL, NULL, '侯旭阳', NULL, '2020-08-05 15:44:00.632', '2020-08-05 15:44:00.632');
-INSERT INTO `act_hi_varinst` VALUES ('5008', '5001', '5001', NULL, 'outcome', 'string', 0, NULL, NULL, NULL, '提交', NULL, '2020-08-05 15:44:01.079', '2020-08-05 15:44:01.079');
+INSERT INTO `act_hi_varinst` VALUES ('5008', '5001', '5001', NULL, 'outcome', 'string', 1, NULL, NULL, NULL, '上级复核', NULL, '2020-08-05 15:44:01.079', '2020-08-07 10:17:00.069');
 
 -- ----------------------------
 -- Table structure for act_id_group
@@ -613,7 +691,6 @@ CREATE TABLE `act_ru_execution`  (
 -- ----------------------------
 -- Records of act_ru_execution
 -- ----------------------------
-INSERT INTO `act_ru_execution` VALUES ('10021', 2, '10021', 'LeavebillOr:20200805172232tuXR', NULL, 'LeavebillOr:1:8', NULL, '_8', 1, 0, 1, 0, 1, 2, '', NULL, NULL);
 INSERT INTO `act_ru_execution` VALUES ('12501', 2, '12501', 'LeavebillOr:20200805172614MMZP', NULL, 'LeavebillOr:1:8', NULL, '_8', 1, 0, 1, 0, 1, 2, '', NULL, NULL);
 INSERT INTO `act_ru_execution` VALUES ('15001', 2, '15001', 'LeavebillOr:202008051733493zrw', NULL, 'LeavebillOr:1:8', NULL, '_8', 1, 0, 1, 0, 1, 2, '', NULL, NULL);
 INSERT INTO `act_ru_execution` VALUES ('17501', 2, '17501', 'LeavebillOr:20200805173807xoYb', NULL, 'LeavebillOr:1:8', NULL, '_8', 1, 0, 1, 0, 1, 2, '', NULL, NULL);
@@ -621,7 +698,12 @@ INSERT INTO `act_ru_execution` VALUES ('20001', 2, '20001', 'LeavebillOr:2020080
 INSERT INTO `act_ru_execution` VALUES ('30001', 2, '30001', 'LeavebillOr:20200805175314huAr', NULL, 'LeavebillOr:1:8', NULL, '_8', 1, 0, 1, 0, 1, 2, '', NULL, NULL);
 INSERT INTO `act_ru_execution` VALUES ('32501', 2, '32501', 'LeavebillOr:20200805180456gyp1', NULL, 'LeavebillOr:1:8', NULL, '_8', 1, 0, 1, 0, 1, 2, '', NULL, NULL);
 INSERT INTO `act_ru_execution` VALUES ('35001', 2, '35001', 'LeavebillOr:20200806112601NCPz', NULL, 'LeavebillOr:1:8', NULL, '_8', 1, 0, 1, 0, 1, 2, '', NULL, NULL);
-INSERT INTO `act_ru_execution` VALUES ('5001', 2, '5001', 'LeavebillOr:83', NULL, 'LeavebillOr:1:8', NULL, '_8', 1, 0, 1, 0, 1, 2, '', NULL, NULL);
+INSERT INTO `act_ru_execution` VALUES ('37501', 3, '37501', 'LeavebillOr:84', NULL, 'LeavebillOr:1:8', NULL, '_9', 1, 0, 1, 0, 1, 2, '', NULL, NULL);
+INSERT INTO `act_ru_execution` VALUES ('40001', 3, '40001', 'LeavebillOr:85', NULL, 'LeavebillOr:1:8', NULL, '_9', 1, 0, 1, 0, 1, 2, '', NULL, NULL);
+INSERT INTO `act_ru_execution` VALUES ('42501', 3, '42501', 'LeavebillOr:86', NULL, 'LeavebillOr:1:8', NULL, '_9', 1, 0, 1, 0, 1, 2, '', NULL, NULL);
+INSERT INTO `act_ru_execution` VALUES ('42512', 3, '42512', 'LeavebillOr:87', NULL, 'LeavebillOr:1:8', NULL, '_9', 1, 0, 1, 0, 1, 2, '', NULL, NULL);
+INSERT INTO `act_ru_execution` VALUES ('50001', 2, '50001', 'LeavebillOr:20200807102816CFWS', NULL, 'LeavebillOr:1:8', NULL, '_8', 1, 0, 1, 0, 1, 2, '', NULL, NULL);
+INSERT INTO `act_ru_execution` VALUES ('5001', 3, '5001', 'LeavebillOr:83', NULL, 'LeavebillOr:1:8', NULL, '_9', 1, 0, 1, 0, 1, 2, '', NULL, NULL);
 
 -- ----------------------------
 -- Table structure for act_ru_identitylink
@@ -650,9 +732,6 @@ CREATE TABLE `act_ru_identitylink`  (
 -- ----------------------------
 -- Records of act_ru_identitylink
 -- ----------------------------
-INSERT INTO `act_ru_identitylink` VALUES ('10022', 1, NULL, 'starter', '超级管理员', NULL, '10021', NULL);
-INSERT INTO `act_ru_identitylink` VALUES ('10027', 1, NULL, 'participant', '侯旭阳', NULL, '10021', NULL);
-INSERT INTO `act_ru_identitylink` VALUES ('10032', 1, NULL, 'participant', '常浩然', NULL, '10021', NULL);
 INSERT INTO `act_ru_identitylink` VALUES ('12506', 1, NULL, 'participant', '侯旭阳', NULL, '12501', NULL);
 INSERT INTO `act_ru_identitylink` VALUES ('12511', 1, NULL, 'participant', '常浩然', NULL, '12501', NULL);
 INSERT INTO `act_ru_identitylink` VALUES ('15006', 1, NULL, 'participant', '侯旭阳', NULL, '15001', NULL);
@@ -667,6 +746,21 @@ INSERT INTO `act_ru_identitylink` VALUES ('32506', 1, NULL, 'participant', '侯�
 INSERT INTO `act_ru_identitylink` VALUES ('32511', 1, NULL, 'participant', '常浩然', NULL, '32501', NULL);
 INSERT INTO `act_ru_identitylink` VALUES ('35006', 1, NULL, 'participant', '侯旭阳', NULL, '35001', NULL);
 INSERT INTO `act_ru_identitylink` VALUES ('35011', 1, NULL, 'participant', '常浩然', NULL, '35001', NULL);
+INSERT INTO `act_ru_identitylink` VALUES ('37506', 1, NULL, 'participant', '侯旭阳', NULL, '37501', NULL);
+INSERT INTO `act_ru_identitylink` VALUES ('37511', 1, NULL, 'participant', '常浩然', NULL, '37501', NULL);
+INSERT INTO `act_ru_identitylink` VALUES ('40006', 1, NULL, 'participant', '侯旭阳', NULL, '40001', NULL);
+INSERT INTO `act_ru_identitylink` VALUES ('40011', 1, NULL, 'participant', '常浩然', NULL, '40001', NULL);
+INSERT INTO `act_ru_identitylink` VALUES ('42506', 1, NULL, 'participant', '侯旭阳', NULL, '42501', NULL);
+INSERT INTO `act_ru_identitylink` VALUES ('42511', 1, NULL, 'participant', '常浩然', NULL, '42501', NULL);
+INSERT INTO `act_ru_identitylink` VALUES ('42517', 1, NULL, 'participant', '侯旭阳', NULL, '42512', NULL);
+INSERT INTO `act_ru_identitylink` VALUES ('42522', 1, NULL, 'participant', '常浩然', NULL, '42512', NULL);
+INSERT INTO `act_ru_identitylink` VALUES ('45004', 1, NULL, 'participant', '超级管理员', NULL, '40001', NULL);
+INSERT INTO `act_ru_identitylink` VALUES ('45008', 1, NULL, 'participant', '超级管理员', NULL, '42501', NULL);
+INSERT INTO `act_ru_identitylink` VALUES ('45012', 1, NULL, 'participant', '超级管理员', NULL, '42512', NULL);
+INSERT INTO `act_ru_identitylink` VALUES ('45016', 1, NULL, 'participant', '超级管理员', NULL, '5001', NULL);
+INSERT INTO `act_ru_identitylink` VALUES ('47504', 1, NULL, 'participant', '超级管理员', NULL, '37501', NULL);
+INSERT INTO `act_ru_identitylink` VALUES ('50006', 1, NULL, 'participant', '常浩然', NULL, '50001', NULL);
+INSERT INTO `act_ru_identitylink` VALUES ('50011', 1, NULL, 'participant', '超级管理员', NULL, '50001', NULL);
 INSERT INTO `act_ru_identitylink` VALUES ('5006', 1, NULL, 'participant', '侯旭阳', NULL, '5001', NULL);
 INSERT INTO `act_ru_identitylink` VALUES ('5011', 1, NULL, 'participant', '常浩然', NULL, '5001', NULL);
 
@@ -734,7 +828,6 @@ CREATE TABLE `act_ru_task`  (
 -- ----------------------------
 -- Records of act_ru_task
 -- ----------------------------
-INSERT INTO `act_ru_task` VALUES ('10031', 1, '10021', '10021', 'LeavebillOr:1:8', '经理审批', NULL, NULL, '_8', NULL, '常浩然', NULL, 50, '2020-08-05 17:22:32.683', NULL, NULL, 1, '', NULL);
 INSERT INTO `act_ru_task` VALUES ('12510', 1, '12501', '12501', 'LeavebillOr:1:8', '经理审批', NULL, NULL, '_8', NULL, '常浩然', NULL, 50, '2020-08-05 17:26:15.577', NULL, NULL, 1, '', NULL);
 INSERT INTO `act_ru_task` VALUES ('15010', 1, '15001', '15001', 'LeavebillOr:1:8', '经理审批', NULL, NULL, '_8', NULL, '常浩然', NULL, 50, '2020-08-05 17:33:49.941', NULL, NULL, 1, '', NULL);
 INSERT INTO `act_ru_task` VALUES ('17510', 1, '17501', '17501', 'LeavebillOr:1:8', '经理审批', NULL, NULL, '_8', NULL, '常浩然', NULL, 50, '2020-08-05 17:38:08.185', NULL, NULL, 1, '', NULL);
@@ -742,7 +835,12 @@ INSERT INTO `act_ru_task` VALUES ('20010', 1, '20001', '20001', 'LeavebillOr:1:8
 INSERT INTO `act_ru_task` VALUES ('30010', 1, '30001', '30001', 'LeavebillOr:1:8', '经理审批', NULL, NULL, '_8', NULL, '常浩然', NULL, 50, '2020-08-05 17:53:14.619', NULL, NULL, 1, '', NULL);
 INSERT INTO `act_ru_task` VALUES ('32510', 1, '32501', '32501', 'LeavebillOr:1:8', '经理审批', NULL, NULL, '_8', NULL, '常浩然', NULL, 50, '2020-08-05 18:04:56.749', NULL, NULL, 1, '', NULL);
 INSERT INTO `act_ru_task` VALUES ('35010', 1, '35001', '35001', 'LeavebillOr:1:8', '经理审批', NULL, NULL, '_8', NULL, '常浩然', NULL, 50, '2020-08-06 11:26:01.843', NULL, NULL, 1, '', NULL);
-INSERT INTO `act_ru_task` VALUES ('5010', 1, '5001', '5001', 'LeavebillOr:1:8', '经理审批', NULL, NULL, '_8', NULL, '常浩然', NULL, 50, '2020-08-05 15:44:01.177', NULL, NULL, 1, '', NULL);
+INSERT INTO `act_ru_task` VALUES ('45003', 1, '40001', '40001', 'LeavebillOr:1:8', '总经理审批', NULL, NULL, '_9', NULL, '超级管理员', NULL, 50, '2020-08-07 10:14:00.292', NULL, NULL, 1, '', NULL);
+INSERT INTO `act_ru_task` VALUES ('45007', 1, '42501', '42501', 'LeavebillOr:1:8', '总经理审批', NULL, NULL, '_9', NULL, '超级管理员', NULL, 50, '2020-08-07 10:16:29.905', NULL, NULL, 1, '', NULL);
+INSERT INTO `act_ru_task` VALUES ('45011', 1, '42512', '42512', 'LeavebillOr:1:8', '总经理审批', NULL, NULL, '_9', NULL, '超级管理员', NULL, 50, '2020-08-07 10:16:53.507', NULL, NULL, 1, '', NULL);
+INSERT INTO `act_ru_task` VALUES ('45015', 1, '5001', '5001', 'LeavebillOr:1:8', '总经理审批', NULL, NULL, '_9', NULL, '超级管理员', NULL, 50, '2020-08-07 10:17:00.134', NULL, NULL, 1, '', NULL);
+INSERT INTO `act_ru_task` VALUES ('47503', 1, '37501', '37501', 'LeavebillOr:1:8', '总经理审批', NULL, NULL, '_9', NULL, '超级管理员', NULL, 50, '2020-08-07 10:19:50.708', NULL, NULL, 1, '', NULL);
+INSERT INTO `act_ru_task` VALUES ('50010', 1, '50001', '50001', 'LeavebillOr:1:8', '经理审批', NULL, NULL, '_8', NULL, '超级管理员', NULL, 50, '2020-08-07 10:28:16.982', NULL, NULL, 1, '', NULL);
 
 -- ----------------------------
 -- Table structure for act_ru_variable
@@ -774,8 +872,6 @@ CREATE TABLE `act_ru_variable`  (
 -- ----------------------------
 -- Records of act_ru_variable
 -- ----------------------------
-INSERT INTO `act_ru_variable` VALUES ('10024', 1, 'string', 'username', '10021', '10021', NULL, NULL, NULL, NULL, '侯旭阳', NULL);
-INSERT INTO `act_ru_variable` VALUES ('10029', 1, 'string', 'outcome', '10021', '10021', NULL, NULL, NULL, NULL, '提交', NULL);
 INSERT INTO `act_ru_variable` VALUES ('12503', 1, 'string', 'username', '12501', '12501', NULL, NULL, NULL, NULL, '侯旭阳', NULL);
 INSERT INTO `act_ru_variable` VALUES ('12508', 1, 'string', 'outcome', '12501', '12501', NULL, NULL, NULL, NULL, '提交', NULL);
 INSERT INTO `act_ru_variable` VALUES ('15003', 1, 'string', 'username', '15001', '15001', NULL, NULL, NULL, NULL, '侯旭阳', NULL);
@@ -790,8 +886,18 @@ INSERT INTO `act_ru_variable` VALUES ('32503', 1, 'string', 'username', '32501',
 INSERT INTO `act_ru_variable` VALUES ('32508', 1, 'string', 'outcome', '32501', '32501', NULL, NULL, NULL, NULL, '提交', NULL);
 INSERT INTO `act_ru_variable` VALUES ('35003', 1, 'string', 'username', '35001', '35001', NULL, NULL, NULL, NULL, '侯旭阳', NULL);
 INSERT INTO `act_ru_variable` VALUES ('35008', 1, 'string', 'outcome', '35001', '35001', NULL, NULL, NULL, NULL, '提交', NULL);
+INSERT INTO `act_ru_variable` VALUES ('37503', 1, 'string', 'username', '37501', '37501', NULL, NULL, NULL, NULL, '侯旭阳', NULL);
+INSERT INTO `act_ru_variable` VALUES ('37508', 2, 'string', 'outcome', '37501', '37501', NULL, NULL, NULL, NULL, '上级复核', NULL);
+INSERT INTO `act_ru_variable` VALUES ('40003', 1, 'string', 'username', '40001', '40001', NULL, NULL, NULL, NULL, '侯旭阳', NULL);
+INSERT INTO `act_ru_variable` VALUES ('40008', 2, 'string', 'outcome', '40001', '40001', NULL, NULL, NULL, NULL, '上级复核', NULL);
+INSERT INTO `act_ru_variable` VALUES ('42503', 1, 'string', 'username', '42501', '42501', NULL, NULL, NULL, NULL, '侯旭阳', NULL);
+INSERT INTO `act_ru_variable` VALUES ('42508', 2, 'string', 'outcome', '42501', '42501', NULL, NULL, NULL, NULL, '上级复核', NULL);
+INSERT INTO `act_ru_variable` VALUES ('42514', 1, 'string', 'username', '42512', '42512', NULL, NULL, NULL, NULL, '侯旭阳', NULL);
+INSERT INTO `act_ru_variable` VALUES ('42519', 2, 'string', 'outcome', '42512', '42512', NULL, NULL, NULL, NULL, '上级复核', NULL);
+INSERT INTO `act_ru_variable` VALUES ('50003', 1, 'string', 'username', '50001', '50001', NULL, NULL, NULL, NULL, '常浩然', NULL);
+INSERT INTO `act_ru_variable` VALUES ('50008', 1, 'string', 'outcome', '50001', '50001', NULL, NULL, NULL, NULL, '提交', NULL);
 INSERT INTO `act_ru_variable` VALUES ('5003', 1, 'string', 'username', '5001', '5001', NULL, NULL, NULL, NULL, '侯旭阳', NULL);
-INSERT INTO `act_ru_variable` VALUES ('5008', 1, 'string', 'outcome', '5001', '5001', NULL, NULL, NULL, NULL, '提交', NULL);
+INSERT INTO `act_ru_variable` VALUES ('5008', 2, 'string', 'outcome', '5001', '5001', NULL, NULL, NULL, NULL, '上级复核', NULL);
 
 -- ----------------------------
 -- Table structure for attendance
@@ -807,7 +913,7 @@ CREATE TABLE `attendance`  (
   `CreateDate` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
   `ModifyDate` datetime(0) NULL DEFAULT NULL COMMENT '编辑时间',
   PRIMARY KEY (`AttendanceID`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 27 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 28 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of attendance
@@ -895,7 +1001,7 @@ CREATE TABLE `corpbasicinfo`  (
 -- ----------------------------
 -- Records of corpbasicinfo
 -- ----------------------------
-INSERT INTO `corpbasicinfo` VALUES (1, '2331438941', '侯旭阳的烧烤摊', 2, '24441412553', '南天门', '471800', '侯旭阳', '看大门', 1, '410323199808015000', '2020-08-05', '2020-08-05', '110', '120', '侯旭阳的儿子', '15290597459', '侯旭阳', 'hxysignurl.png', '2331438941@qq.com', 'www.github.com', '2020-07-20 14:34:30', '2020-08-06 16:34:25');
+INSERT INTO `corpbasicinfo` VALUES (1, '2331438941', '侯旭阳的烧烤摊', 2, '24441412553', '南天门', '471800', '侯旭阳', '看大门', 1, '410323199808015000', '2020-08-05', '2020-08-05', '110', '120', '侯旭阳的儿子', '15290597459', '侯旭阳', '侯旭阳signurl.png', '2331438941@qq.com', 'www.github.com', '2020-07-20 14:34:30', '2020-08-07 14:39:16');
 INSERT INTO `corpbasicinfo` VALUES (2, '2', '唐都科技有限公司', 1, '1', '1', '1', '揣红兵', '1', 1, '1', '2020-07-20', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'www.baidu.com', '2020-07-20 14:56:17', NULL);
 INSERT INTO `corpbasicinfo` VALUES (5, '132456', '中国移动', 1, '123456', '洛阳市洛龙区', '471800', '1', 'ceo', 1, '410323199808015036', '2020-07-20', '2020-07-20', '123456', '123456', '侯旭阳', '15290597459', NULL, NULL, '', '', '2020-07-20 15:54:41', NULL);
 INSERT INTO `corpbasicinfo` VALUES (6, '寡妇年', '电饭煲', 0, '', '地方', '', '地方放肥肉', '', 0, '410325199703056512', '2020-07-30', '2020-07-30', '', '', '', '15225513715', '1231321', '123123132', '123@163.com', '如何石膏板GV而非', '2020-07-30 14:48:13', NULL);
@@ -914,7 +1020,7 @@ CREATE TABLE `department`  (
   `CreateDate` datetime(0) NOT NULL COMMENT '创建时间',
   `ModifyDate` datetime(0) NULL DEFAULT NULL COMMENT '编辑时间',
   PRIMARY KEY (`DeptId`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 15 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of department
@@ -925,6 +1031,7 @@ INSERT INTO `department` VALUES (5, '总经理办公室', 18, '12345648798641165
 INSERT INTO `department` VALUES (8, '456', 18, '12345678912', 1, '2020-08-05 10:36:17', NULL);
 INSERT INTO `department` VALUES (11, '八十多的地方', 19, '富士达撒多多撒大', 1, '2020-08-06 17:18:50', NULL);
 INSERT INTO `department` VALUES (13, 'VG发', 19, '对方是个不', 1, '2020-08-06 17:21:58', NULL);
+INSERT INTO `department` VALUES (14, '好地方关闭', 20, '感受到', 1, '2020-08-06 17:52:39', NULL);
 
 -- ----------------------------
 -- Table structure for employee
@@ -987,14 +1094,31 @@ CREATE TABLE `fileinfo`  (
   `CreateDate` datetime(0) NOT NULL COMMENT '创建时间',
   `ModifyDate` datetime(0) NULL DEFAULT NULL COMMENT '编辑时间',
   PRIMARY KEY (`FileInfoID`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 39 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 114 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of fileinfo
 -- ----------------------------
-INSERT INTO `fileinfo` VALUES (64, 1, 4, NULL, '3442合同模板', '3442合同模板ny9p.docx', '2020-08-06 17:40:36', NULL);
-INSERT INTO `fileinfo` VALUES (65, 1, 4, NULL, '324234合同模板', '324234合同模板ArLw.docx', '2020-08-06 17:41:47', NULL);
-INSERT INTO `fileinfo` VALUES (66, 1, 4, NULL, '2342合同模板', '2342合同模板nS4J.docx', '2020-08-06 17:43:20', NULL);
+INSERT INTO `fileinfo` VALUES (139, 1, 4, NULL, '5148合同模板', '5148合同模板dsXLYteG.docx', '2020-08-07 15:42:59', '2020-08-07 15:42:59');
+INSERT INTO `fileinfo` VALUES (140, 1, 4, NULL, '1245合同模板', '1245合同模板AXrIq6gy.docx', '2020-08-07 15:46:57', '2020-08-07 15:46:58');
+INSERT INTO `fileinfo` VALUES (141, 1, 4, NULL, '7891合同模板', '7891合同模板KxFaSa10.docx', '2020-08-07 15:48:58', '2020-08-07 15:48:59');
+INSERT INTO `fileinfo` VALUES (142, 1, 4, NULL, 'ertgdf3合同模板', 'ertgdf3合同模板VQFRd0A9.docx', '2020-08-07 15:51:32', '2020-08-07 15:51:32');
+
+-- ----------------------------
+-- Table structure for fileinfotemporary
+-- ----------------------------
+DROP TABLE IF EXISTS `fileinfotemporary`;
+CREATE TABLE `fileinfotemporary`  (
+  `FileInfoID` int(0) NOT NULL COMMENT '附件ID 参见数据字典：附件类型字典表',
+  `URL` varchar(300) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '附件路径 相对路径',
+  `CreateDate` datetime(0) NOT NULL COMMENT '创建时间',
+  PRIMARY KEY (`FileInfoID`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 114 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of fileinfotemporary
+-- ----------------------------
+INSERT INTO `fileinfotemporary` VALUES (142, 'ertgdf3合同模板VQFR.docx', '2020-08-07 15:51:32');
 
 -- ----------------------------
 -- Table structure for leavebill
@@ -1009,7 +1133,7 @@ CREATE TABLE `leavebill`  (
   `status` int(0) NULL DEFAULT NULL COMMENT '0 未提交 1审批中 2审批完成 3 已放弃',
   `userid` int(0) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 83 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 88 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of leavebill
@@ -1018,6 +1142,10 @@ INSERT INTO `leavebill` VALUES (80, '加班', '胜多负少', 21.0, '2020-08-04 
 INSERT INTO `leavebill` VALUES (81, '加班', '符号位', 45.0, '2020-08-04 12:00:20', 1, 16);
 INSERT INTO `leavebill` VALUES (82, '事假', '回家办事', 2.0, '2020-08-05 10:29:58', 2, 13);
 INSERT INTO `leavebill` VALUES (83, '加班', '请假', 2.0, '2020-08-05 15:43:52', 1, 13);
+INSERT INTO `leavebill` VALUES (84, '加班', '', NULL, '2020-08-06 19:08:11', 1, 13);
+INSERT INTO `leavebill` VALUES (85, '加班', '上课就能看见啥地方', 12.0, '2020-08-07 09:50:53', 1, 13);
+INSERT INTO `leavebill` VALUES (86, '加班', '市十点半科技部四大皆空', 12.0, '2020-08-07 10:00:14', 1, 13);
+INSERT INTO `leavebill` VALUES (87, '出差', '出差很累的哦', 1.5, '2020-08-07 10:01:15', 1, 13);
 
 -- ----------------------------
 -- Table structure for log
@@ -1031,7 +1159,7 @@ CREATE TABLE `log`  (
   `OperateResult` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '状态',
   `Ip` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'ip',
   PRIMARY KEY (`LogId`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4889 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '日志表' ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 4904 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '日志表' ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of log
@@ -1386,6 +1514,16 @@ INSERT INTO `log` VALUES (4891, 'hxy', '登录', '2020-08-06 11:46:05', '正常'
 INSERT INTO `log` VALUES (4892, 'tn', '登录', '2020-08-06 15:50:08', '正常', '127.0.0.1');
 INSERT INTO `log` VALUES (4893, 'hxy', '登录', '2020-08-06 15:50:42', '正常', '127.0.0.1');
 INSERT INTO `log` VALUES (4894, 'hxy', '登录', '2020-08-06 16:44:48', '正常', '127.0.0.1');
+INSERT INTO `log` VALUES (4895, 'hxy', '登录', '2020-08-07 08:54:11', '正常', '127.0.0.1');
+INSERT INTO `log` VALUES (4896, 'chr', '登录', '2020-08-07 10:03:08', '正常', '127.0.0.1');
+INSERT INTO `log` VALUES (4897, 'hxy', '登录', '2020-08-07 10:32:00', '正常', '127.0.0.1');
+INSERT INTO `log` VALUES (4898, 'chr', '登录', '2020-08-07 10:34:09', '正常', '127.0.0.1');
+INSERT INTO `log` VALUES (4899, 'hxy', '登录', '2020-08-07 11:01:25', '正常', '127.0.0.1');
+INSERT INTO `log` VALUES (4900, 'hxy', '登录', '2020-08-07 11:03:13', '正常', '127.0.0.1');
+INSERT INTO `log` VALUES (4901, 'hxy', '登录', '2020-08-07 11:07:36', '正常', '127.0.0.1');
+INSERT INTO `log` VALUES (4902, 'hxy', '登录', '2020-08-07 11:11:14', '正常', '127.0.0.1');
+INSERT INTO `log` VALUES (4903, 'hxy', '登录', '2020-08-07 11:12:36', '正常', '127.0.0.1');
+INSERT INTO `log` VALUES (4904, 'hxy', '登录', '2020-08-07 11:17:47', '正常', '127.0.0.1');
 
 -- ----------------------------
 -- Table structure for menu
@@ -1402,18 +1540,18 @@ CREATE TABLE `menu`  (
   `CreateDate` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
   `ModifyDate` datetime(0) NULL DEFAULT NULL COMMENT '修改时间',
   PRIMARY KEY (`MenuId`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1028 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 1029 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of menu
 -- ----------------------------
 INSERT INTO `menu` VALUES (90, 0, '信息中心', '', NULL, 'fa fa-bullhorn', NULL, NULL, NULL);
-INSERT INTO `menu` VALUES (91, 90, '通知公告', 'tongzhigonggao', NULL, 'fa fa-edit', '_self', NULL, NULL);
-INSERT INTO `menu` VALUES (92, 90, '信息发布', 'xinxifabu', NULL, 'fa fa-comments-o', NULL, NULL, NULL);
+INSERT INTO `menu` VALUES (91, 90, '通知公告', '/information/goinformation', NULL, 'fa fa-edit', '_self', NULL, NULL);
+INSERT INTO `menu` VALUES (92, 90, '信息发布', '/information/goadd', NULL, 'fa fa-comments-o', NULL, NULL, NULL);
 INSERT INTO `menu` VALUES (100, 0, '学习手册', '', NULL, 'fa fa-book', NULL, NULL, NULL);
-INSERT INTO `menu` VALUES (101, 100, '公司文化', 'gongsiwenhua', NULL, 'fa fa-language', NULL, NULL, NULL);
-INSERT INTO `menu` VALUES (102, 100, '公司制度', 'gongsizhidu', NULL, 'fa fa-legal', NULL, NULL, NULL);
-INSERT INTO `menu` VALUES (103, 100, '公司架构', 'gongsijiagou', NULL, 'fa fa-sitemap', NULL, NULL, NULL);
+INSERT INTO `menu` VALUES (101, 100, '公司文化', '/learningmanual/goculture', NULL, 'fa fa-language', NULL, NULL, NULL);
+INSERT INTO `menu` VALUES (102, 100, '公司制度', '/learningmanual/gosystem', NULL, 'fa fa-legal', NULL, NULL, NULL);
+INSERT INTO `menu` VALUES (103, 100, '公司架构', '/learningmanual/goframework', NULL, 'fa fa-sitemap', NULL, NULL, NULL);
 INSERT INTO `menu` VALUES (200, 0, '公司管理', '', 'company:list', 'fa fa-reorder', '_self', NULL, NULL);
 INSERT INTO `menu` VALUES (201, 200, '公司列表', '/corpbasicinfo/goselectcorpbasicinfo', '', 'fa fa-binoculars', '', '2020-07-21 11:55:47', '2020-07-21 11:55:51');
 INSERT INTO `menu` VALUES (202, 200, '添加公司', '#', 'company:add', 'fa fa-plus-square', '_self', NULL, '2020-08-05 09:26:59');
@@ -1439,9 +1577,9 @@ INSERT INTO `menu` VALUES (600, 0, '资产管理', '', NULL, 'fa fa-recycle', NU
 INSERT INTO `menu` VALUES (601, 600, '采购申请', '/procurement/goselectpro', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `menu` VALUES (602, 600, '采购待办', '/proflow/goProTaskManger', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `menu` VALUES (603, 600, '采购订单', '', NULL, NULL, NULL, NULL, NULL);
-INSERT INTO `menu` VALUES (604, 600, '查看资产', '', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `menu` VALUES (604, 600, '查看资产', '/warehouse/goselectwarehouse', NULL, NULL, NULL, NULL, NULL);
 INSERT INTO `menu` VALUES (700, 0, '车辆管理', '', '', 'fa fa-car', '_self', NULL, NULL);
-INSERT INTO `menu` VALUES (701, 700, '车辆列表', '/vehicleinfo/govehicle', 'vehicleinfo:list', NULL, NULL, NULL, NULL);
+INSERT INTO `menu` VALUES (701, 700, '车辆列表', '/vehicleinfo/goselectvehicleinfo', 'vehicleinfo:list', NULL, NULL, NULL, NULL);
 INSERT INTO `menu` VALUES (702, 700, '查看订单', '/vehicleorders/govehicleorders', 'vehicleorders:list', NULL, NULL, NULL, NULL);
 INSERT INTO `menu` VALUES (703, 700, '订单添加', '#', 'vehicleorders:add', NULL, NULL, NULL, NULL);
 INSERT INTO `menu` VALUES (704, 700, '订单修改', '#', 'vehicleorders:update', NULL, NULL, NULL, NULL);
@@ -1456,8 +1594,6 @@ INSERT INTO `menu` VALUES (1000, 0, '系统管理', '', 'user:view', 'fa fa-gear
 INSERT INTO `menu` VALUES (1001, 1000, '系统设置', '/system/gosetting', NULL, 'fa fa-cog', '_self', NULL, NULL);
 INSERT INTO `menu` VALUES (1002, 1000, '菜单管理', '/menu/gomenu', 'menu:list', 'fa fa-window-maximize', '_self', NULL, NULL);
 INSERT INTO `menu` VALUES (1003, 1000, '图标列表', '/system/goicon', NULL, 'fa fa-circle', '_self', NULL, NULL);
-INSERT INTO `menu` VALUES (1022, 90, '测试菜单', 'test', 'asy', 'fa fa-angellist', '_self', '2020-08-03 10:19:31', '2020-08-04 08:51:27');
-INSERT INTO `menu` VALUES (1025, 0, '我的目录', '', 'VB是大V', 'fa fa-angellist', '_self', '2020-08-04 11:53:08', NULL);
 INSERT INTO `menu` VALUES (1026, 900, '公司通讯', '/mail/gomymaillist', 'test', 'fa fa-angellist', '_self', '2020-08-04 14:44:29', NULL);
 INSERT INTO `menu` VALUES (1027, 900, '员工通讯', '/mail/goallmaillist', 'test', 'fa fa-angellist', '_self', '2020-08-04 14:46:58', NULL);
 
@@ -1489,7 +1625,7 @@ CREATE TABLE `procurement`  (
 -- ----------------------------
 -- Records of procurement
 -- ----------------------------
-INSERT INTO `procurement` VALUES ('20200805172232tuXR', 2, '2020-08-05 00:00:00', 0, '1', '1', '1', 1, 1.00, 1.00, 13, 2, '12', 25, 1, '2020-08-05 17:22:32', NULL);
+INSERT INTO `procurement` VALUES ('20200805172232tuXR', 2, '2020-08-05 00:00:00', 0, '1', '1', '1', 1, 1.00, 1.00, 13, 2, '12', 25, 4, '2020-08-05 17:22:32', NULL);
 INSERT INTO `procurement` VALUES ('20200805172614MMZP', 2, '2020-08-05 17:25:52', 1, '123', '1', '去', 2, 45.00, 90.00, 13, 2, '123456', 26, 1, '2020-08-05 17:26:15', NULL);
 INSERT INTO `procurement` VALUES ('202008051733493zrw', 2, '2020-08-05 17:33:35', 0, '范德萨发的', '范德萨', '都是', 2, 33.00, 66.00, 13, 2, '未发生', 27, 1, '2020-08-05 17:33:49', NULL);
 INSERT INTO `procurement` VALUES ('20200805173807xoYb', 2, '2020-08-05 00:00:00', 0, '2', '2', '2', 2, 2.00, 8.00, 13, 2, '5', 28, 1, '2020-08-05 17:38:08', NULL);
@@ -1497,6 +1633,7 @@ INSERT INTO `procurement` VALUES ('202008051739416pu3', 2, '2020-08-05 00:00:00'
 INSERT INTO `procurement` VALUES ('20200805175314huAr', 2, '2020-08-05 17:52:59', 0, '奥德赛', '富士达', '发的a', 3, 444.00, 1332.00, 13, 2, '4台334台w', 37, 1, '2020-08-05 17:53:14', NULL);
 INSERT INTO `procurement` VALUES ('20200805180456gyp1', 2, '2020-08-05 18:04:12', 0, '12', '12', '45', 3, 9.50, 28.50, 13, 2, '497489848', 38, 1, '2020-08-05 18:04:56', NULL);
 INSERT INTO `procurement` VALUES ('20200806112601NCPz', 2, '2020-08-06 11:25:45', 0, '1', '2', '', 4, 3.00, 12.00, 13, 2, '', NULL, 1, '2020-08-06 11:26:01', NULL);
+INSERT INTO `procurement` VALUES ('20200807102816CFWS', 1, '2020-08-07 10:27:30', 1, '123', '2', '123', 45, 12.00, 540.00, 14, 1, '456781321564689', 83, 1, '2020-08-07 10:28:16', NULL);
 
 -- ----------------------------
 -- Table structure for role
@@ -1587,9 +1724,7 @@ INSERT INTO `role_menu` VALUES (1, 1018);
 INSERT INTO `role_menu` VALUES (1, 1019);
 INSERT INTO `role_menu` VALUES (1, 1020);
 INSERT INTO `role_menu` VALUES (1, 1021);
-INSERT INTO `role_menu` VALUES (1, 1022);
 INSERT INTO `role_menu` VALUES (1, 1023);
-INSERT INTO `role_menu` VALUES (1, 1025);
 INSERT INTO `role_menu` VALUES (1, 1026);
 INSERT INTO `role_menu` VALUES (1, 1027);
 INSERT INTO `role_menu` VALUES (1, 801);
@@ -1625,16 +1760,46 @@ INSERT INTO `user` VALUES (16, 20, 'tn', '7284dd6ea6d2fa92ff188d16b44702fc', 'cb
 -- ----------------------------
 DROP TABLE IF EXISTS `vehicleinfo`;
 CREATE TABLE `vehicleinfo`  (
-  `VehicleinfoID` int(0) NOT NULL AUTO_INCREMENT COMMENT '车辆ID 采购单号',
-  `VehicleType` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '车辆型号 部门名称',
+  `VehicleinfoID` int(0) NOT NULL AUTO_INCREMENT COMMENT '车辆ID',
+  `VehicleType` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '车辆型号',
   `VehicleSeatsNumber` int(0) NOT NULL COMMENT '车辆载人数量',
-  `VehicleAffiliationCompany` int(0) NOT NULL COMMENT '车辆隶属公司 关联公司ID',
+  `VehicleNumber` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '车牌号',
+  `VehicleAffiliationCorpbasicinfo` int(0) NOT NULL COMMENT '车辆隶属公司 关联公司ID',
   `VehicleaffiliationPersonal` int(0) NULL DEFAULT NULL COMMENT '车辆隶属个人  关联个人ID',
-  `Status` int(0) NOT NULL COMMENT '状态  关联车辆状态表',
-  `CreateDate` datetime(0) NOT NULL COMMENT '创建时间',
+  `Status` int(0) NULL DEFAULT NULL COMMENT '状态  关联车辆状态表',
+  `CreateDate` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
   `ModifyDate` datetime(0) NULL DEFAULT NULL COMMENT '编辑时间',
   PRIMARY KEY (`VehicleinfoID`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1002 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of vehicleinfo
+-- ----------------------------
+INSERT INTO `vehicleinfo` VALUES (1001, '爱玛', 2, '予c155ck', 1, 1, 1, NULL, NULL);
+INSERT INTO `vehicleinfo` VALUES (1002, '宝马', 5, '予c88866', 1, 2, 0, NULL, '2020-07-09 17:21:36');
+INSERT INTO `vehicleinfo` VALUES (1003, '奥迪', 5, '予c66666', 1, 3, 1, NULL, '2020-07-09 17:46:26');
+INSERT INTO `vehicleinfo` VALUES (1004, '奔驰', 5, '予c44444', 1, 3, NULL, NULL, NULL);
+INSERT INTO `vehicleinfo` VALUES (1005, '保时捷', 2, '予c22222', 1, 1, 0, NULL, NULL);
+INSERT INTO `vehicleinfo` VALUES (1006, '大众', 5, '予c11111', 1, 1, 3, NULL, '2020-07-09 17:43:18');
+INSERT INTO `vehicleinfo` VALUES (1007, '小刀', 5, '予c33333', 1, 1, 4, NULL, '2020-07-09 17:33:05');
+INSERT INTO `vehicleinfo` VALUES (1008, '森地', 5, '予c77777', 0, 1, 3, NULL, NULL);
+INSERT INTO `vehicleinfo` VALUES (1009, '凯迪拉克', 5, '予c88888', 1, 1, 5, NULL, '2020-07-09 17:43:45');
+INSERT INTO `vehicleinfo` VALUES (1010, '东方红拖拉机', 10, '予c99999', 0, 1, 1, NULL, NULL);
+INSERT INTO `vehicleinfo` VALUES (1011, '雅迪', 2, '予c00000', 1, 1, 1, NULL, NULL);
+INSERT INTO `vehicleinfo` VALUES (1012, '奔马', 2, '予c12345', 1, 1, 1, NULL, NULL);
+INSERT INTO `vehicleinfo` VALUES (1015, '大众帕萨特', 5, '123456', 1, 4, 4, '2020-07-08 14:47:30', NULL);
+INSERT INTO `vehicleinfo` VALUES (1016, '法拉利', 2, '1525252', 1, 3, 4, '2020-07-08 16:32:59', '2020-07-15 01:19:19');
+INSERT INTO `vehicleinfo` VALUES (1017, '大众帕萨特', 15, '123456', 1, 4, 0, '2020-07-08 14:47:30', '2020-07-09 16:40:52');
+INSERT INTO `vehicleinfo` VALUES (1018, '奔马', 2, '予c12345', 1, 1, 5, NULL, '2020-07-09 16:41:29');
+INSERT INTO `vehicleinfo` VALUES (1019, '宝马X6', 5, '予c88888', 1, 2, 0, NULL, '2020-07-09 17:07:23');
+INSERT INTO `vehicleinfo` VALUES (1020, '宝马X8', 5, '予c88888', 0, 1, 0, NULL, '2020-07-09 17:09:28');
+INSERT INTO `vehicleinfo` VALUES (1021, '电动车', 2, '豫c123456', 1, 1, 65, '2020-07-10 10:31:12', '2020-07-15 01:24:26');
+INSERT INTO `vehicleinfo` VALUES (1022, '台铃电动车', 2, '予123456', 1, 1, 6, '2020-07-15 01:16:23', NULL);
+INSERT INTO `vehicleinfo` VALUES (1023, '电动车2', 2, '2', 1, 1, 3, '2020-07-15 01:18:06', NULL);
+INSERT INTO `vehicleinfo` VALUES (1024, '2', 2, '2', 1, 4, 0, '2020-07-15 01:20:08', NULL);
+INSERT INTO `vehicleinfo` VALUES (1025, '123', 1, '123', 1, 1, 2, '2020-07-15 01:23:49', NULL);
+INSERT INTO `vehicleinfo` VALUES (1026, '红旗', 5, '予c123456', 1, 3, 0, '2020-07-15 09:24:16', NULL);
+INSERT INTO `vehicleinfo` VALUES (1027, '波音747', 150, '123123', 1, 1, 0, '2020-07-15 09:28:28', NULL);
 
 -- ----------------------------
 -- Table structure for vehicleorders
@@ -1643,7 +1808,7 @@ DROP TABLE IF EXISTS `vehicleorders`;
 CREATE TABLE `vehicleorders`  (
   `OrderID` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '订单ID',
   `VehicleID` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '部门名称 车辆id',
-  `UserID` int(0) NOT NULL COMMENT '用户id 关联用户ID',
+  `EmployeeID` int(0) NOT NULL COMMENT '用户id 关联用户ID',
   `VehicleDriverID` int(0) NOT NULL COMMENT '车辆司机ID 关联司机ID',
   `BeganAddress` int(0) NULL DEFAULT NULL COMMENT '开始地址',
   `DestinationAddress` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '目的地地址',

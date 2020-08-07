@@ -1,5 +1,6 @@
 package com.tdkj.System.dao;
 
+import com.tdkj.System.entity.VO.VehicleinfoVO;
 import com.tdkj.System.entity.Vehicleinfo;
 import org.apache.ibatis.annotations.Param;
 
@@ -9,7 +10,7 @@ import java.util.List;
  * (Vehicleinfo)表数据库访问层
  *
  * @author makejava
- * @since 2020-07-17 14:51:07
+ * @since 2020-08-07 17:01:42
  */
 public interface VehicleinfoDao {
 
@@ -63,4 +64,12 @@ public interface VehicleinfoDao {
      */
     int deleteById(Integer vehicleinfoid);
 
+    /**
+     * @Author houxuyang
+     * @Description //查询所有车辆 本公司优先
+     * @Date 17:23 2020/8/7
+     * @Param [vehicleinfo]
+     * @return java.util.List<com.tdkj.System.entity.VO.VehicleinfoVO>
+     **/
+    List<VehicleinfoVO> queryAllvehicleinfo(Vehicleinfo vehicleinfo);
 }
