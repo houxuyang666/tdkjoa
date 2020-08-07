@@ -8,9 +8,11 @@ import com.tdkj.System.common.OAResponseList;
 import com.tdkj.System.entity.Corpbasicinfo;
 import com.tdkj.System.entity.Employee;
 import com.tdkj.System.entity.Fileinfo;
+import com.tdkj.System.entity.Fileinfotemporary;
 import com.tdkj.System.service.CorpbasicinfoService;
 import com.tdkj.System.service.EmployeeService;
 import com.tdkj.System.service.FileinfoService;
+import com.tdkj.System.service.FileinfotemporaryService;
 import com.tdkj.System.utils.FileuploadUtils;
 import com.tdkj.System.utils.ShiroUtils;
 import com.tdkj.System.utils.WordUtil;
@@ -71,6 +73,8 @@ public class FileinfoController {
     private EmployeeService employeeService;
     @Autowired
     private CorpbasicinfoService corpbasicinfoService;
+    @Autowired
+    private FileinfotemporaryService fileinfotemporaryService;
 
     @Value("${file.uploadContractTemplateFile}")
     private String uploadContractTemplateFile;
@@ -112,7 +116,6 @@ public class FileinfoController {
     }
 
 
-
     /**
      * @Author houxuyang
      * @Description //上传合同模板
@@ -140,27 +143,40 @@ public class FileinfoController {
             fileinfo.setUrl(fileurl);
             fileinfo.setCreatedate(new Date());
             fileinfo=this.fileinfoService.insert(fileinfo);
-            //向数据表中插入该文件的原始名称
-            this.fileinfoService.insertTemporary(fileinfo.getFileinfoid(),fileinfo.getUrl(),new Date());
+            //向临时数据表中插入该文件的原始名称
+            Fileinfotemporary fileinfotemporary =new Fileinfotemporary();
+            fileinfotemporary.setFileinfoid(fileinfo.getFileinfoid());
+            fileinfotemporary.setUrl(fileinfo.getUrl());
+            fileinfotemporary.setCreatedate(new Date());
+            this.fileinfotemporaryService.insert(fileinfotemporary);
             log.info("合同模板上传成功");
         }
         Corpbasicinfo corpbasicinfo =corpbasicinfoService.queryById(employee.getCorpid());
         String fileUrl =setSign(fileinfo,corpbasicinfo.getSignurl(),uploadContractTemplateFile,uploadImageFolder);
-        //log.info("filename:"+fileUrl);
-
+        //更新表中路径信息
         Fileinfo newfileinfo =new Fileinfo();
         newfileinfo.setFileinfoid(fileinfo.getFileinfoid());
         newfileinfo.setUrl(fileUrl);
-        newfileinfo.setCreatedate(new Date());
+        newfileinfo.setModifydate(new Date());
         this.fileinfoService.update(newfileinfo);
-
         //TimeUnit.MILLISECONDS.sleep(10000);
-        //在添加电子签名图片后删除原文件
-//        FileuploadUtils fileuploadUtils2 =new FileuploadUtils();
-//        fileuploadUtils2.Filedelete(uploadContractTemplateFile,fileinfo.getUrl());
-        return OAResponse.setResult(0,ADD_SUCCESS,fileinfo.getFileinfoid());
-}
+        /*添加文件时删除处此文件之外的其他文件*/
+//      获取除了本次上传的文件外的其他文件url
+        List<Fileinfotemporary> temporaryList =this.fileinfotemporaryService.queryAlltemporaryUrl(fileinfo.getFileinfoid());
+        for (Fileinfotemporary fileinfotemporary : temporaryList) {
+            fileuploadUtils.Filedelete(uploadContractTemplateFile,fileinfotemporary.getUrl());
+            this.fileinfotemporaryService.deleteById(fileinfotemporary.getFileinfoid());
+        }
+        return OAResponse.setResult(0,ADD_SUCCESS);
+    }
 
+    /**
+     * @Author houxuyang
+     * @Description //替换电子签名
+     * @Date 14:38 2020/8/7
+     * @Param [fileinfo, signurl, uploadContractTemplateFile, uploadImageFolder]
+     * @return java.lang.String
+     **/
     public static String setSign(Fileinfo fileinfo,String signurl,String uploadContractTemplateFile,String uploadImageFolder) throws IOException {
         String url = uploadImageFolder+signurl; //图片路径
         String templateurl = uploadContractTemplateFile+fileinfo.getUrl(); //文件路径
@@ -184,23 +200,6 @@ public class FileinfoController {
         fopts.close();
         return fileUrl;
     }
-
-
-
-    @ResponseBody
-    @RequestMapping("/deletetemporary")
-    public void deletetemporary(Integer fileinfoid){
-        /*根据传过来的fileID 查询临时数据表中的url 并删除该数据及临时文件*/
-        String url=this.fileinfoService.querytemporaryById(fileinfoid);
-        if (null!=url){
-            FileuploadUtils fileuploadUtils =new FileuploadUtils();
-            fileuploadUtils.Filedelete(uploadContractTemplateFile,url);
-        }
-        this.fileinfoService.deletetemporaryById(fileinfoid);
-        log.info("删除数据库合同模板数据成功");
-
-    }
-
 
     /**
      * @Author houxuyang
@@ -237,10 +236,6 @@ public class FileinfoController {
         FileuploadUtils fileuploadUtils =new FileuploadUtils();
         fileuploadUtils.Filedownload(uploadContractTemplateFile,fileinfo.getUrl(),response);
     }
-
-
-
-    /*@RequestMapping("/viewfile")*-*/
 
 
     /**
@@ -357,10 +352,6 @@ public class FileinfoController {
         serializer.transform(domSource, streamResult);
         return htmlFile.getAbsolutePath();
     }
-
-
-
-
 
 
 }

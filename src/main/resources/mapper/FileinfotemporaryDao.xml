@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tdkj.System.dao.FileinfotemporaryDao">
+
+    <resultMap type="com.tdkj.System.entity.Fileinfotemporary" id="FileinfotemporaryMap">
+        <result property="fileinfoid" column="FileInfoID" jdbcType="INTEGER"/>
+        <result property="url" column="URL" jdbcType="VARCHAR"/>
+        <result property="createdate" column="CreateDate" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="FileinfotemporaryMap">
+        select
+          FileInfoID, URL, CreateDate
+        from fileinfotemporary
+        where FileInfoID = #{fileinfoid}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="FileinfotemporaryMap">
+        select
+          FileInfoID, URL, CreateDate
+        from fileinfotemporary
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="FileinfotemporaryMap">
+        select
+        FileInfoID, URL, CreateDate
+        from fileinfotemporary
+        <where>
+            <if test="fileinfoid != null">
+                and FileInfoID = #{fileinfoid}
+            </if>
+            <if test="url != null and url != ''">
+                and URL = #{url}
+            </if>
+            <if test="createdate != null">
+                and CreateDate = #{createdate}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="fileinfoid" useGeneratedKeys="true">
+        insert into fileinfotemporary(FileInfoID,URL, CreateDate)
+        values (#{fileinfoid},#{url}, #{createdate})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update fileinfotemporary
+        <set>
+            <if test="url != null and url != ''">
+                URL = #{url},
+            </if>
+            <if test="createdate != null">
+                CreateDate = #{createdate},
+            </if>
+        </set>
+        where FileInfoID = #{fileinfoid}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from fileinfotemporary where FileInfoID = #{fileinfoid}
+    </delete>
+
+
+    <!--查询临时表中url用于删除-->
+    <select id="queryAlltemporaryUrl" resultMap="FileinfotemporaryMap">
+        select
+          FileInfoID,URL
+        from fileinfotemporary
+         where FileInfoID != #{fileinfoid}
+    </select>
+
+</mapper>

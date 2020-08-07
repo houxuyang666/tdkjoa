@@ -6,7 +6,6 @@ import com.tdkj.System.service.FileinfoService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -81,20 +80,5 @@ public class FileinfoServiceImpl implements FileinfoService {
     @Override
     public List<Fileinfo> queryAll(Fileinfo fileinfo) {
         return this.fileinfoDao.queryAll(fileinfo);
-    }
-
-    @Override
-    public void insertTemporary(Integer fileinfoid, String url, Date date) {
-        this.fileinfoDao.insertTemporary(fileinfoid,url,date);
-    }
-
-    @Override
-    public String querytemporaryById(Integer fileinfoid) {
-        return this.fileinfoDao.querytemporaryById(fileinfoid);
-    }
-
-    @Override
-    public void deletetemporaryById(Integer fileinfoid) {
-        this.fileinfoDao.deletetemporaryById(fileinfoid);
     }
 }
