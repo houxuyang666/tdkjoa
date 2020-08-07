@@ -143,11 +143,19 @@ public class FileinfoController {
             log.info("合同模板上传成功");
         }
         Corpbasicinfo corpbasicinfo =corpbasicinfoService.queryById(employee.getCorpid());
-        setSign(fileinfo,corpbasicinfo.getSignurl(),uploadContractTemplateFile,uploadImageFolder);
+        String fileUrl =setSign(fileinfo,corpbasicinfo.getSignurl(),uploadContractTemplateFile,uploadImageFolder);
+        //log.info("filename:"+fileUrl);
+        //在添加电子签名图片后删除原文件
+        fileuploadUtils.Filedelete(uploadContractTemplateFile,fileinfo.getUrl());
+        Fileinfo newfileinfo =new Fileinfo();
+        newfileinfo.setFileinfoid(fileinfo.getFileinfoid());
+        newfileinfo.setUrl(fileUrl);
+        newfileinfo.setCreatedate(new Date());
+        this.fileinfoService.update(newfileinfo);
         return OAResponse.setResult(0,ADD_SUCCESS);
     }
 
-    public static void setSign(Fileinfo fileinfo,String signurl,String uploadContractTemplateFile,String uploadImageFolder) throws IOException {
+    public static String setSign(Fileinfo fileinfo,String signurl,String uploadContractTemplateFile,String uploadImageFolder) throws IOException {
         String url = uploadImageFolder+signurl; //图片路径
         String templateurl = uploadContractTemplateFile+fileinfo.getUrl(); //文件路径
         Map<String, Object> header = new HashMap<String, Object>(); //存图片
@@ -160,14 +168,17 @@ public class FileinfoController {
         //StringBuilder a = new StringBuilder(url);
 
         XWPFDocument doc = WordUtil.generateWord(param, templateurl);
+        String code= RandomStringUtils.random(4, true, true);
 
-        FileuploadUtils fileuploadUtils =new FileuploadUtils();
-        fileuploadUtils.Filedelete(uploadContractTemplateFile,fileinfo.getUrl());
+        String str=fileinfo.getUrl();
+        String prefix=str.substring(0, str.indexOf("."));//截取.之前的字符串
+        String suffix=str.substring(str.lastIndexOf(".")+1);//截取.之前的字符串
 
-        String filename=fileinfo.getUrl();
-        FileOutputStream fopts = new FileOutputStream(uploadContractTemplateFile+filename);
+        String fileUrl=prefix+code+"."+suffix;
+        FileOutputStream fopts = new FileOutputStream(uploadContractTemplateFile+fileUrl);
         doc.write(fopts);
         fopts.close();
+        return fileUrl;
     }
 
 
