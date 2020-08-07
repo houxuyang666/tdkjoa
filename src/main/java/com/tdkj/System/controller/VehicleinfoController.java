@@ -2,9 +2,9 @@ package com.tdkj.System.controller;
 
 import com.tdkj.System.entity.Vehicleinfo;
 import com.tdkj.System.service.VehicleinfoService;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 
@@ -14,7 +14,7 @@ import javax.annotation.Resource;
  * @author makejava
  * @since 2020-07-17 14:51:08
  */
-@RestController
+@Controller
 @RequestMapping("vehicleinfo")
 public class VehicleinfoController {
     /**

@@ -116,6 +116,16 @@ public class FileinfoController {
     }
 
 
+
+   /* @RequestMapping("/goadd")
+    public ModelAndView goadd(){
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("page/file/addfileinfo");
+        modelAndView.addObject("demopicture","D:/upload/demopicture/signdemo.png");
+        return modelAndView;
+    }*/
+
+
     /**
      * @Author houxuyang
      * @Description //上传合同模板
