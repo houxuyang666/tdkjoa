@@ -165,8 +165,8 @@ public class FileinfoController {
         String url = uploadImageFolder+signurl; //图片路径
         String templateurl = uploadContractTemplateFile+fileinfo.getUrl(); //文件路径
         Map<String, Object> header = new HashMap<String, Object>(); //存图片
-        header.put("width", 60);
-        header.put("height", 30);
+        header.put("width", 120);
+        header.put("height", 60);
         header.put("type", "png");
         header.put("content", url);//图片路径
         Map<String, Object> param = new HashMap<String, Object>(); //图片或者文本的
@@ -189,7 +189,7 @@ public class FileinfoController {
 
     @ResponseBody
     @RequestMapping("/deletetemporary")
-    public OAResponse deletetemporary(Integer fileinfoid){
+    public void deletetemporary(Integer fileinfoid){
         /*根据传过来的fileID 查询临时数据表中的url 并删除该数据及临时文件*/
         String url=this.fileinfoService.querytemporaryById(fileinfoid);
         if (null!=url){
@@ -198,7 +198,7 @@ public class FileinfoController {
         }
         this.fileinfoService.deletetemporaryById(fileinfoid);
         log.info("删除数据库合同模板数据成功");
-        return OAResponse.setResult(200,REMOVE_SUCCESS);
+
     }
 
 
