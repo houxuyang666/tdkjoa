@@ -3,6 +3,7 @@ package com.tdkj.System.dao;
 import com.tdkj.System.entity.Fileinfo;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -63,4 +64,29 @@ public interface FileinfoDao {
      */
     int deleteById(Integer fileinfoid);
 
+    /**
+     * @Author houxuyang
+     * @Description //向数据表中插入该文件的原始名称
+     * @Date 11:43 2020/8/7
+     * @Param [fileinfoid, url]
+     * @return void
+     **/
+    void insertTemporary(Integer fileinfoid, String url, Date date);
+    /**
+     * @Author houxuyang
+     * @Description //查询临时数据表中的url
+     * @Date 13:08 2020/8/7
+     * @Param [fileinfoid]
+     * @return java.lang.String
+     **/
+    String querytemporaryById(Integer fileinfoid);
+
+    /**
+     * @Author houxuyang
+     * @Description //同时删除临时表中数据
+     * @Date 13:08 2020/8/7
+     * @Param [fileinfoid]
+     * @return void
+     **/
+    void deletetemporaryById(Integer fileinfoid);
 }

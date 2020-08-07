@@ -60,6 +60,7 @@
                 and ModifyDate = #{modifydate}
             </if>
         </where>
+         Order by CreateDate desc
     </select>
 
     <!--新增所有列-->
@@ -102,4 +103,25 @@
         delete from fileinfo where FileInfoID = #{fileinfoid}
     </delete>
 
+
+    <!--向数据表中插入该文件的原始名称-->
+    <insert id="insertTemporary"  useGeneratedKeys="false">
+        insert into fileinfotemporary(FileInfoID, URL, CreateDate)
+        values (#{fileinfoid}, #{url}, #{date})
+    </insert>
+
+
+    <!--查询临时表中url用于删除-->
+    <select id="querytemporaryById" resultType="java.lang.String">
+        select
+          URL
+        from fileinfotemporary
+         where FileInfoID = #{fileinfoid}
+    </select>
+
+
+    <!--同时删除临时表中数据-->
+    <delete id="deletetemporaryById">
+        delete from fileinfotemporary where FileInfoID = #{fileinfoid}
+    </delete>
 </mapper>

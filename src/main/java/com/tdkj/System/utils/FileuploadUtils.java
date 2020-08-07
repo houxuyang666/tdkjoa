@@ -120,7 +120,7 @@ public class FileuploadUtils {
         } else { // 要删除的文件存在
             if (file.isFile()) { // 如果目标文件是文件，判断是文件
                 file.delete();//删除文件
-                return "删除成功";
+                return "文件" + fileName + "删除成功";
             }
             return "文件" + fileName + "存在，删除失败！";
         }

@@ -2,6 +2,7 @@ package com.tdkj.System.service;
 
 import com.tdkj.System.entity.Fileinfo;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -61,4 +62,32 @@ public interface FileinfoService {
      * @return java.util.List<com.tdkj.System.entity.Fileinfo>
      **/
     List<Fileinfo> queryAll(Fileinfo fileinfo);
+    /**
+     * @Author houxuyang
+     * @Description //向数据表中插入该文件的原始名称
+     * @Date 11:42 2020/8/7
+     * @Param [fileinfoid, url]
+     * @return void
+     **/
+    void insertTemporary(Integer fileinfoid, String url, Date date);
+
+
+    /**
+     * @Author houxuyang
+     * @Description //查询临时数据表中的url
+     * @Date 13:07 2020/8/7
+     * @Param [fileinfoid]
+     * @return java.lang.String
+     **/
+    String querytemporaryById(Integer fileinfoid);
+
+    /**
+     * @Author houxuyang
+     * @Description //同时删除临时表中数据
+     * @Date 13:07 2020/8/7
+     * @Param [fileinfoid]
+     * @return void
+     **/
+    void deletetemporaryById(Integer fileinfoid);
+
 }

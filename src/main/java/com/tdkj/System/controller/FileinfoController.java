@@ -122,7 +122,7 @@ public class FileinfoController {
      **/
     @ResponseBody
     @RequestMapping("/add")
-    public OAResponse add(String name, @RequestParam("file") MultipartFile url)throws IOException {
+    public OAResponse add(String name, @RequestParam("file") MultipartFile url)throws Exception {
         //获取当前员工所在的公司ID
         Employee employee =employeeService.queryById(ShiroUtils.getPrincipal().getEmployeeid());
 
@@ -140,36 +140,40 @@ public class FileinfoController {
             fileinfo.setUrl(fileurl);
             fileinfo.setCreatedate(new Date());
             fileinfo=this.fileinfoService.insert(fileinfo);
+            //向数据表中插入该文件的原始名称
+            this.fileinfoService.insertTemporary(fileinfo.getFileinfoid(),fileinfo.getUrl(),new Date());
             log.info("合同模板上传成功");
         }
         Corpbasicinfo corpbasicinfo =corpbasicinfoService.queryById(employee.getCorpid());
         String fileUrl =setSign(fileinfo,corpbasicinfo.getSignurl(),uploadContractTemplateFile,uploadImageFolder);
         //log.info("filename:"+fileUrl);
-        //在添加电子签名图片后删除原文件
-        fileuploadUtils.Filedelete(uploadContractTemplateFile,fileinfo.getUrl());
+
         Fileinfo newfileinfo =new Fileinfo();
         newfileinfo.setFileinfoid(fileinfo.getFileinfoid());
         newfileinfo.setUrl(fileUrl);
         newfileinfo.setCreatedate(new Date());
         this.fileinfoService.update(newfileinfo);
-        return OAResponse.setResult(0,ADD_SUCCESS);
-    }
+
+        //TimeUnit.MILLISECONDS.sleep(10000);
+        //在添加电子签名图片后删除原文件
+//        FileuploadUtils fileuploadUtils2 =new FileuploadUtils();
+//        fileuploadUtils2.Filedelete(uploadContractTemplateFile,fileinfo.getUrl());
+        return OAResponse.setResult(0,ADD_SUCCESS,fileinfo.getFileinfoid());
+}
 
     public static String setSign(Fileinfo fileinfo,String signurl,String uploadContractTemplateFile,String uploadImageFolder) throws IOException {
         String url = uploadImageFolder+signurl; //图片路径
         String templateurl = uploadContractTemplateFile+fileinfo.getUrl(); //文件路径
         Map<String, Object> header = new HashMap<String, Object>(); //存图片
-        header.put("width", 150);
-        header.put("height", 150);
+        header.put("width", 60);
+        header.put("height", 30);
         header.put("type", "png");
         header.put("content", url);//图片路径
         Map<String, Object> param = new HashMap<String, Object>(); //图片或者文本的
         param.put("imgSign" , header);
         //StringBuilder a = new StringBuilder(url);
-
         XWPFDocument doc = WordUtil.generateWord(param, templateurl);
         String code= RandomStringUtils.random(4, true, true);
-
         String str=fileinfo.getUrl();
         String prefix=str.substring(0, str.indexOf("."));//截取.之前的字符串
         String suffix=str.substring(str.lastIndexOf(".")+1);//截取.之前的字符串
@@ -183,7 +187,19 @@ public class FileinfoController {
 
 
 
-
+    @ResponseBody
+    @RequestMapping("/deletetemporary")
+    public OAResponse deletetemporary(Integer fileinfoid){
+        /*根据传过来的fileID 查询临时数据表中的url 并删除该数据及临时文件*/
+        String url=this.fileinfoService.querytemporaryById(fileinfoid);
+        if (null!=url){
+            FileuploadUtils fileuploadUtils =new FileuploadUtils();
+            fileuploadUtils.Filedelete(uploadContractTemplateFile,url);
+        }
+        this.fileinfoService.deletetemporaryById(fileinfoid);
+        log.info("删除数据库合同模板数据成功");
+        return OAResponse.setResult(200,REMOVE_SUCCESS);
+    }
 
 
     /**
@@ -198,10 +214,8 @@ public class FileinfoController {
     public OAResponse delete(Integer fileinfoid){
         Fileinfo fileinfo = this.fileinfoService.queryById(fileinfoid);
         if (null!=fileinfo.getUrl()){
-            log.info("删除本地文件开始");
             FileuploadUtils fileuploadUtils =new FileuploadUtils();
-            fileuploadUtils.Filedelete(uploadContractTemplateFile,fileinfo.getUrl());
-            log.info("删除本地文件成功");
+            log.info(fileuploadUtils.Filedelete(uploadContractTemplateFile,fileinfo.getUrl()));
         }
         this.fileinfoService.deleteById(fileinfoid);
         log.info("删除数据库合同模板数据成功");
@@ -274,14 +288,14 @@ public class FileinfoController {
         return htmlFile.getAbsolutePath();
     }
 
-    public static void main(String[] args) {
+  /*  public static void main(String[] args) {
         try {
             Word2007ToHtml("D:/upload/templatefile/", "唐都科技测试模板合同模板X8ZO", ".docx", "D:/upload/templatefile/");
            // Word2003ToHtml("D:/upload/templatefile/", "test合同模板jmd7", ".docx", "D:/upload/templatefile/");
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
+    }*/
 
 
 
@@ -291,6 +305,8 @@ public class FileinfoController {
         final String imagePath = htmlPath + "image" + File.separator;
         // 判断html文件是否存在
         File htmlFile = new File(htmlPath + htmlName);
+
+
         if (htmlFile.exists()) {
             return htmlFile.getAbsolutePath();
         }
