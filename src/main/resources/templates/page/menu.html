@@ -146,7 +146,7 @@
             PublicFun.FunPostAjax("/menu/delemenu",{menuId:menuid},function (res) {
                 if(res.responseCode==200){
                     layer.msg(res.message);
-                    window.location.reload();//刷新
+                    parent.location.reload();//刷新
                 }else {
                     layer.msg(res.message);
                 }
