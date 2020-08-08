@@ -90,5 +90,15 @@ public class VehicleinfoServiceImpl implements VehicleinfoService {
         return this.vehicleinfoDao.queryAllvehicleinfo(vehicleinfo);
     }
 
+    /**
+     * 根据车牌号查询该车辆是否存在
+     * @param vehiclenumber
+     * @return
+     */
+    @Override
+    public Vehicleinfo queryByvehicleNumber(String vehiclenumber) {
+        return this.vehicleinfoDao.queryByvehicleNumber(vehiclenumber);
+    }
+
 
 }

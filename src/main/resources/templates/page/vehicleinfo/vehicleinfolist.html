@@ -25,19 +25,25 @@
                     <form class="layui-form layui-form-pane" action="">
                         <div class="layui-form-item">
                             <div class="layui-inline">
-                                <label class="layui-form-label">车牌号</label>
+                                <label class="layui-form-label">车辆型号</label>
                                 <div class="layui-input-inline">
-                                    <input type="text" name="vehicleNumber" autocomplete="off" class="layui-input">
+                                    <input type="text" name="vehicletype" autocomplete="off" class="layui-input">
                                 </div>
                             </div>
                             <div class="layui-inline">
+                                <label class="layui-form-label">车牌号</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="vehiclenumber" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                           <!-- <div class="layui-inline">
                                 <label class="layui-form-label">所属公司</label>
                                 <div class="layui-input-inline">
-                                    <select name="companyName" id="companyList" lay-filter="companyId">
+                                    <select name="companyName" id="companyList" lay-filter="companyId"> &lt;!&ndash;这里给的应该是ID corpid &ndash;&gt;
                                         <option value=""></option>
                                     </select>
                                 </div>
-                            </div>
+                            </div>-->
                             <div class="layui-inline">
                                 <button type="submit" class="layui-btn layui-btn-primary" lay-submit
                                         lay-filter="searchBtn"><i class="layui-icon"></i> 搜 索
@@ -53,18 +59,12 @@
 
             <script type="text/html" id="toolbar">
                 <div class="layui-btn-container">
-                    <!--<button shiro:hasPermission="vehicleinfo:add" class="layui-btn layui-btn-normal layui-btn-sm " lay-event="add"><i class="layui-icon">&#xe654;</i>
+                    <button shiro:hasPermission="vehicleinfo:add" class="layui-btn layui-btn-normal layui-btn-sm " lay-event="add"><i class="layui-icon">&#xe654;</i>
                         添加
                     </button>
                     <button shiro:hasPermission="vehicleinfo:update" class="layui-btn layui-btn-sm layui-btn-warm " lay-event="update"><i class="layui-icon">&#xe642;</i>修改
-                    </button>-->
-
-
-                    <button  class="layui-btn layui-btn-normal layui-btn-sm " lay-event="add"><i class="layui-icon">&#xe654;</i>
-                        添加
                     </button>
-                    <button  class="layui-btn layui-btn-sm layui-btn-warm " lay-event="update"><i class="layui-icon">&#xe642;</i>修改
-                    </button>
+
                     <!--<button class="layui-btn layui-btn-sm layui-btn-danger" lay-event="deleteRows"><i class="layui-icon">&#xe640;</i>多行删除 </button>-->
                     <button class="layui-btn layui-btn-sm " lay-event="refresh"><i class="layui-icon">&#xe669;</i>刷新
                     </button>
@@ -72,13 +72,20 @@
             </script>
 
             <script type="text/html" id="currentTableBar">
-                {{# if(d.vehicleStatus==0){ }}
+
+                {{#  if(d.status==0){ }}
+                <a class="layui-btn layui-btn-xs layui-btn-normal " lay-event="applay"><i class="layui-icon">&#xe6b2;</i>申请用车</a>
+                <a shiro:hasPermission="vehicleinfo:delete" class="layui-btn layui-btn-xs layui-btn-danger " lay-event="delete"><i class="layui-icon">&#xe640;</i>删除</a>
+                {{#  } else if(d.status==1){ }}
+                <a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="viewSpProcess">查看用车情况</a>
+                {{#  } }}
+
+            <!--    {{# if(d.status==0){ }}
                 <a class="layui-btn layui-btn-xs layui-btn-normal layui-disabled" lay-event=""><i class="layui-icon">&#xe6b2;</i>申请用车</a>
                 {{#  } else { }}
                 <a class="layui-btn layui-btn-xs layui-btn-normal " lay-event="applay"><i class="layui-icon">&#xe6b2;</i>申请用车</a>
                 {{# } }}
-                <a  class="layui-btn layui-btn-xs layui-btn-danger " lay-event="delete"><i class="layui-icon">&#xe640;</i>删除</a>
-                <a shiro:hasPermission="vehicleinfo:delete" class="layui-btn layui-btn-xs layui-btn-danger " lay-event="delete"><i class="layui-icon">&#xe640;</i>删除</a>
+-->
             </script>
 
         </div>
@@ -120,7 +127,7 @@
                     field: "status", title: "车辆状态", sort: true, templet: function (row) {
                         if (row.status == 1) return "<span style='color:#FFB800 '>在用</span>";
                         else if (row.status == 0) return "<span style='color: #1E9FFF'>未用</span>";
-                        else return "<span style='color:#5FB878 '>已申请</span>";
+                        else return "<span style='color:#5FB878 '>未知状态</span>";
                     }
                 },
                 {field: "name", title: "隶属个人",},
@@ -133,7 +140,7 @@
         });
 
         //搜索事件操作
-        form.on("submit(searchBtn)", function (data) {
+     /*   form.on("submit(searchBtn)", function (data) {
             var formData = data.field;//获取搜索新信息
             var selectCompanyListText = $("#companyList").find("option:selected").text();
             //搜索重载
@@ -147,19 +154,37 @@
                 }
             }, "data");
             return false;
+        });*/
+
+        //搜索事件操作
+        form.on("submit(searchBtn)", function (data) {
+            var formData = data.field;//获取搜索新信息
+            //搜索重载
+            table.reload("CarList", {
+                page: {
+                    curr: 1
+                },
+                where: {//这里传参
+                    vehicletype: formData.vehicletype,
+                    vehiclenumber: formData.vehiclenumber
+                },
+                url:'/vehicleinfo/selectvehicleinfo',//后台模糊查询的接口路径
+                method:"post"
+            }, "data");
+            return false;
         });
 
-       /* //表格删除申请用车操作事件
+        //表格删除申请用车操作事件
         table.on("tool(CarList)", function (obj) {
             var data = obj.data;
             if (obj.event === "delete") {
-                layer.confirm("确定删除此用户吗?", function (index) {
+                layer.confirm("确定删除该车辆吗?", function (index) {
                     //删除操作
                     $.ajax({
                         url: "/vehicleinfo/delvehicleinfo",
                         dataType: "json",
                         type: "POST",
-                        data: {vehicleinfoId: data.vehicleinfoId},
+                        data: {vehicleinfoid: data.vehicleinfoid},
                         success: function (res) {
                             if (res.responseCode == 200) {
                                 layer.msg(res.message);
@@ -207,18 +232,18 @@
                     layer.full(index);
                 });
             }
-        });*/
+        });
 
-        /*//添加修改操作
+        //添加修改操作
         table.on("toolbar(CarList)", function (obj) {
             var checkStatus = table.checkStatus(obj.config.id);
             switch (obj.event) {
                 case "add":
                     Add();
                     break;
-                /!*case "deleteRows":
+                /*case "deleteRows":
                     DelRows(checkStatus);
-                    break;*!/
+                    break;*/
                 case "update":
                     UpdateRow(checkStatus.data);
                     break;
@@ -226,13 +251,13 @@
                     table.reload("CarList");
                     break;
             }
-        });*/
+        });
 
         //绑定公司下拉框绑定
         //PublicFun.BindCompanyList();
     });
 
-   /* //添加操作
+    //添加操作
     function Add() {
         var index = layer.open({
             title: '添加车辆',
@@ -241,7 +266,7 @@
             maxmin: true,
             shadeClose: true,
             area: ['40%', '60%'],
-            content: '/table/goaddvehicleinfo',
+            content: '/vehicleinfo/goaddvehicleinfo',
             end: function () {
                 //刷新表格
                 layui.table.reload("CarList");
@@ -250,7 +275,7 @@
         $(window).on("resize", function () {
             layer.full(index);
         });
-    }*/
+    }
 
     /*//多行删除操作 未用
     function DelRows(checkStatus) {

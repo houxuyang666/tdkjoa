@@ -132,8 +132,8 @@
             <if test="vehicletype != null and vehicletype != ''">
                 and VehicleType like concat('%',#{vehicletype},'%')
             </if>
-            <if test="vehicleseatsnumber != null">
-                and VehicleSeatsNumber like concat('%',#{vehicleseatsnumber},'%')
+            <if test="vehiclenumber != null">
+                and VehicleNumber like concat('%',#{vehiclenumber},'%')
             </if>
             <if test="vehicleaffiliationcorpbasicinfo != null">
                 and VehicleAffiliationCorpbasicinfo = #{vehicleaffiliationcorpbasicinfo}
@@ -141,5 +141,14 @@
         </where>
         order by v.Status, v.VehicleAffiliationCorpbasicinfo
     </select>
+
+    <!--根据车牌号查询该车辆是否存在-->
+    <select id="queryByvehicleNumber" resultMap="VehicleinfoMap">
+        select
+        VehicleinfoID, VehicleType, VehicleSeatsNumber, VehicleNumber, VehicleAffiliationCorpbasicinfo,
+        VehicleaffiliationPersonal, Status, CreateDate, ModifyDate
+        from vehicleinfo where VehicleNumber = #{vehiclenumber}
+    </select>
+
 
 </mapper>

@@ -2,6 +2,7 @@ package com.tdkj.System.controller;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.tdkj.System.Enum.VehicleStatusEnmu;
 import com.tdkj.System.common.OAResponse;
 import com.tdkj.System.common.OAResponseList;
 import com.tdkj.System.entity.Employee;
@@ -15,11 +16,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 
 import static com.tdkj.System.common.OAResultCode.HTTP_RNS_CODE_200;
-import static com.tdkj.System.common.OAResultType.FIND_SUCCESS;
-import static com.tdkj.System.common.OAResultType.REMOVE_SUCCESS;
+import static com.tdkj.System.common.OAResultCode.HTTP_RNS_CODE_500;
+import static com.tdkj.System.common.OAResultType.*;
 
 /**
  * (Vehicleinfo)表控制层
@@ -39,6 +41,7 @@ public class VehicleinfoController {
     @Resource
     private EmployeeService employeeService;
 
+
     @RequestMapping("/goselectvehicleinfo")
     public String goselectvehicleinfo() {
         return "page/vehicleinfo/vehicleinfolist";
@@ -53,7 +56,7 @@ public class VehicleinfoController {
     @ResponseBody
     @RequestMapping("/selectvehicleinfo")
     public OAResponseList vehicleinfolist(Integer page, Integer limit, String vehiclenumber,String vehicletype,Integer corpid) {
-        Employee employee = employeeService.queryById(ShiroUtils.getPrincipal().getEmployeeid());
+        //Employee employee = employeeService.queryById(ShiroUtils.getPrincipal().getEmployeeid());
         Vehicleinfo vehicleinfo = new Vehicleinfo();
         if (null!=vehiclenumber){
             vehicleinfo.setVehiclenumber(vehiclenumber);
@@ -74,32 +77,36 @@ public class VehicleinfoController {
         return OAResponseList.setResult(0,FIND_SUCCESS,pageInfo);
         //return OAResponseList.setResult(0,FIND_SUCCESS,pageInfo,userinfoVOList);
     }
+
     /**
-     * @Author houxuyang
-     *
-     * @Description //新增车辆信息
-     * @Date 17:28 2020/7/1
-     * @Param [vehicleType, vehicleSeatsNumber, vehicleNumber, vehicleAffiliationCompany, vehicleAffiliationPersonal]
-     * @return com.tdkj.RNS.common.RnsResponse
-     **/
-  /*  @ResponseBody
+     *跳转添加车辆界面
+     * @return
+     */
+    @RequestMapping("/goaddvehicleinfo")
+    public String goaddvehicleinfo() {
+        return "page/vehicleinfo/addvehicleinfo";
+    }
+
+    @ResponseBody
     @RequestMapping("/addvehicleinfo")
-    public OAResponseList addcompany(String vehicleType,Integer vehicleSeatsNumber,String vehicleNumber,Integer vehicleAffiliationCompany,Integer vehicleAffiliationPersonal) {
-        Vehicleinfo vehicleinfo1 =vehicleinfoService.queryByvehicleNumber(vehicleNumber);
-        if (vehicleinfo1 != null) {
-            return OAResponseList.setResult(HTTP_RNS_CODE_500,"车辆已存在");
+    public OAResponse addvehicleinfo(String vehicletype,Integer vehicleseatsnumber,String vehiclenumber) {
+        //根据车牌号查询该车辆是否存在
+        Vehicleinfo oldvehicleinfo =vehicleinfoService.queryByvehicleNumber(vehiclenumber);
+        if (null!=oldvehicleinfo) {
+            return OAResponse.setResult(HTTP_RNS_CODE_500,"车辆已存在");
         }
+        Employee employee = employeeService.queryById(ShiroUtils.getPrincipal().getEmployeeid());
         Vehicleinfo vehicleinfo=new Vehicleinfo();
-        vehicleinfo.setVehicleType(vehicleType);
-        vehicleinfo.setVehicleSeatsNumber(vehicleSeatsNumber);
-        vehicleinfo.setVehicleNumber(vehicleNumber);
-        vehicleinfo.setVehicleStatus(1); //刚注册都为未用
-        vehicleinfo.setVehicleAffiliationCompany(vehicleAffiliationCompany);
-        vehicleinfo.setVehicleAffiliationPersonal(vehicleAffiliationPersonal);
-        vehicleinfo.setCreateTime(new Date());
+        vehicleinfo.setVehicletype(vehicletype);
+        vehicleinfo.setVehicleseatsnumber(vehicleseatsnumber);
+        vehicleinfo.setVehiclenumber(vehiclenumber);
+        vehicleinfo.setStatus(VehicleStatusEnmu.To_be_used.getCode()); //刚注册都为待使用
+        vehicleinfo.setVehicleaffiliationcorpbasicinfo(employee.getCorpid());
+        vehicleinfo.setVehicleaffiliationpersonal(employee.getEmployeeid());
+        vehicleinfo.setCreatedate(new Date());
         vehicleinfoService.insert(vehicleinfo);
-        return OAResponseList.setResult(HTTP_RNS_CODE_200,ADD_SUCCESS);
-    }*/
+        return OAResponse.setResult(HTTP_RNS_CODE_200,ADD_SUCCESS);
+    }
 
     /**
      * @Author houxuyang
@@ -131,17 +138,23 @@ public class VehicleinfoController {
 
         return OAResponse.setResult(HTTP_RNS_CODE_200,UPDATE_SUCCESS);
     }*/
+
     /**
-     * @Author houxuyang
-     * @Description //删除车辆
-     * @Date 17:33 2020/7/1
-     * @Param [vehicleinfoId]
-     * @return com.tdkj.RNS.common.RnsResponse
-     **/
+     * 删除车辆信息
+     * @param vehicleinfoid
+     * @return
+     */
     @ResponseBody
     @RequestMapping("/delvehicleinfo")
-    public OAResponse delvehicleinfo(Integer vehicleinfoId) {
-        vehicleinfoService.deleteById(vehicleinfoId);
-        return OAResponse.setResult(HTTP_RNS_CODE_200,REMOVE_SUCCESS);
+    public OAResponse delvehicleinfo(Integer vehicleinfoid) {
+        Vehicleinfo vehicleinfo =vehicleinfoService.queryById(vehicleinfoid);
+        if (VehicleStatusEnmu.Has_been_used.getCode()==vehicleinfo.getStatus()){
+            //说明车辆正在被使用那么是不能删除的。
+            return OAResponse.setResult(HTTP_RNS_CODE_500,"删除失败，车辆正在使用");
+        }else{
+            vehicleinfoService.deleteById(vehicleinfoid);
+            return OAResponse.setResult(HTTP_RNS_CODE_200,REMOVE_SUCCESS);
+        }
+
     }
 }

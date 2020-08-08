@@ -62,4 +62,11 @@ public interface VehicleinfoService {
      * @return java.util.List<com.tdkj.System.entity.VO.VehicleinfoVO>
      **/
     List<VehicleinfoVO> queryAllvehicleinfo(Vehicleinfo vehicleinfo);
+
+    /**
+     * 根据车牌号查询该车辆是否存在
+     * @param vehiclenumber
+     * @return
+     */
+    Vehicleinfo queryByvehicleNumber(String vehiclenumber);
 }
