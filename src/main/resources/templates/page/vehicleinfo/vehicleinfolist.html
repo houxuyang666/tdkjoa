@@ -78,7 +78,7 @@
                 <a class="layui-btn layui-btn-xs layui-btn-normal " lay-event="applay"><i class="layui-icon">&#xe6b2;</i>申请用车</a>
                 {{# } }}
                 <a  class="layui-btn layui-btn-xs layui-btn-danger " lay-event="delete"><i class="layui-icon">&#xe640;</i>删除</a>
-                <!--<a shiro:hasPermission="vehicleinfo:delete" class="layui-btn layui-btn-xs layui-btn-danger " lay-event="delete"><i class="layui-icon">&#xe640;</i>删除</a>-->
+                <a shiro:hasPermission="vehicleinfo:delete" class="layui-btn layui-btn-xs layui-btn-danger " lay-event="delete"><i class="layui-icon">&#xe640;</i>删除</a>
             </script>
 
         </div>
@@ -118,8 +118,8 @@
                 {field: "corpname", title: "隶属公司",},
                 {
                     field: "status", title: "车辆状态", sort: true, templet: function (row) {
-                        if (row.vehicleStatus == 1) return "<span style='color:#FFB800 '>在用</span>";
-                        else if (row.vehicleStatus == 0) return "<span style='color: #1E9FFF'>未用</span>";
+                        if (row.status == 1) return "<span style='color:#FFB800 '>在用</span>";
+                        else if (row.status == 0) return "<span style='color: #1E9FFF'>未用</span>";
                         else return "<span style='color:#5FB878 '>已申请</span>";
                     }
                 },

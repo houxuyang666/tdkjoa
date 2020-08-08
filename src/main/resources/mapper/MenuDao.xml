@@ -114,7 +114,7 @@
         select m.Perms as perms
         from user u join role_menu rm on u.RoleId= rm.RoleId
         join menu m on rm.MenuId =m.MenuId
-        where u.UserID=#{userid} and m.Perms is not null
+        where u.UserID=#{userid} and m.Perms !=""
     </select>
 
 
