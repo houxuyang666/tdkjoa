@@ -1,5 +1,6 @@
 package com.tdkj.System.controller;
 
+import com.tdkj.System.Enum.UserStatusEnmu;
 import com.tdkj.System.common.OAResponse;
 import com.tdkj.System.entity.User;
 import com.tdkj.System.service.EmployeeService;
@@ -39,19 +40,21 @@ public class UserController {
     private EmployeeService employeeService;
 
 
+    private static final Integer roleid =1;
+
+
     /**
      * @Author houxuyang
      * @Description //重置某个用户密码
-     * @Date 15:50 2020/5/26
-     * @Param [id, oldpassword, newpassword]
-     * @return java.lang.String
+     * @Date 11:17 2020/8/10
+     * @Param [employeeid]
+     * @return com.tdkj.System.common.OAResponse
      **/
     @ResponseBody
     @RequestMapping("/setpsd")
     public OAResponse setpsd(Integer employeeid) {
         log.info("重置密码");
-        Integer rid =1;
-        if(rid.equals(ShiroUtils.getPrincipal().getRoleid())){
+        if(roleid.equals(ShiroUtils.getPrincipal().getRoleid())){
             User user =userService.queryByemployeeid(employeeid);
             user.setPassword(Md5Util.Md5Password(user.getSalt(),"123456"));
             user.setModifydate(new Date());
@@ -60,6 +63,37 @@ public class UserController {
             return OAResponse.setResult(HTTP_RNS_CODE_200,UPDATE_SUCCESS);
         }
         return OAResponse.setResult(HTTP_RNS_CODE_500,UPDATE_FAULT+":只有超级管理员可以重置用户密码");
+    }
+
+
+    /**
+     * @Author houxuyang
+     * @Description //修改账号状态
+     * @Date 11:17 2020/8/10
+     * @Param [id, status]
+     * @return com.tdkj.System.common.OAResponse
+     **/
+    @ResponseBody
+    @RequestMapping("/setuserstatus")
+    public OAResponse setuserstatus(Integer employeeid) {
+        log.info("修改账号状态");
+        User user =userService.queryByemployeeid(employeeid);
+        if(roleid.equals(ShiroUtils.getPrincipal().getRoleid())){
+            //0,"注销" 1,"正常");
+            if (UserStatusEnmu.Normal.getCode()==user.getStatus()){
+                user.setStatus(0);
+                user.setModifydate(new Date());
+                userService.update(user);
+            }else if (UserStatusEnmu.Cancellation.getCode()==user.getStatus()){
+                user.setStatus(1);
+                user.setModifydate(new Date());
+                userService.update(user);
+            }else{
+                return OAResponse.setResult(HTTP_RNS_CODE_200,"未知错误");
+            }
+            return OAResponse.setResult(HTTP_RNS_CODE_200,UPDATE_SUCCESS);
+        }
+        return OAResponse.setResult(HTTP_RNS_CODE_500,UPDATE_FAULT+":只有超级管理员可以操作");
     }
 
 }

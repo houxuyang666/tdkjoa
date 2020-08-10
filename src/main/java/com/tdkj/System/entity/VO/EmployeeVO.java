@@ -31,6 +31,8 @@ public class EmployeeVO implements Serializable {
      * 部门ID 关联部门表
      */
     private Integer departmentid;
+
+
     /**
      * 部门名称
      */
@@ -43,6 +45,10 @@ public class EmployeeVO implements Serializable {
      * 员工姓名
      */
     private String name;
+    /**
+     * 账号状态
+     */
+    private Integer userstatus;
     /**
      * 岗位名称
      */

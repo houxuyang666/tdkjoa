@@ -59,9 +59,9 @@
 
             <script type="text/html" id="currentTableBar">
                 <a   class="layui-btn layui-btn-xs " lay-event="ChongZhiPwd"><i class="layui-icon">&#xe673;</i>重置密码</a>
-                {{# if(d.status==0){ }}
+                {{# if(d.userstatus==0){ }}
                 <a   class="layui-btn layui-btn-xs layui-btn-normal " lay-event="delete"><i class="layui-icon">&#xe624;</i>启用</a>
-                {{#  } else { }}
+                {{#  } else if(d.userstatus==1){ }}
                 <a  class="layui-btn layui-btn-xs layui-btn-danger " lay-event="delete"><i class="layui-icon">&#xe67e;</i>注销</a>
                 {{#  } }}
             </script>
@@ -303,10 +303,10 @@
                 url:"/user/setuserstatus",
                 type:"post",
                 dataType:"json",
-                data:{id:data.id,status:data.status},
+                data:{employeeid:data.employeeid},
                 success:function (res) {
                     if(res.responseCode=="200"){
-                        //layer.msg(res.message);
+                        layer.msg(res.message);
                         layui.table.reload("userList");
                     }else {
                         layer.msg(res.message);

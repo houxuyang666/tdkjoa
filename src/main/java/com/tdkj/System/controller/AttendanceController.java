@@ -94,7 +94,7 @@ public class AttendanceController {
                 attendanceService.insert(attendance);
                 return OAResponse.setResult(HTTP_RNS_CODE_200, "迟到签到成功");
             }else{
-                return OAResponse.setResult(HTTP_RNS_CODE_200, "签到失败，未在指定时间内签到");
+                return OAResponse.setResult(HTTP_RNS_CODE_500, "签到失败，未在指定时间内签到");
             }
         }else if(DateUtil.isbefore(data3)){ /*DateUtil.isbefore(data3)&&null==oldattendance.getClosedate()*/
             //签退时 判断是否在设置好的下班点之后
