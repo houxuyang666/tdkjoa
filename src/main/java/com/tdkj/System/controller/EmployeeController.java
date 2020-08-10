@@ -107,7 +107,7 @@ public class EmployeeController {
                           String cellphone,String email,String authorizationcode,String urgentlinkman,String urgentlinkmanphone,
                           @RequestParam(value ="positiveidcardimage",required = false) MultipartFile positiveidcardimage,
                           @RequestParam(value ="negativeidcardimage",required = false) MultipartFile negativeidcardimage,
-                          @RequestParam(value ="laborcontract",required = false) MultipartFile laborcontract) throws Exception {
+                          @RequestParam(value ="file",required = false) MultipartFile laborcontract) throws Exception {
         User olduser = userService.findByName(username);
         if (null != olduser) {
             return OAResponse.setResult(HTTP_RNS_CODE_500,"用户名已存在");
@@ -144,14 +144,14 @@ public class EmployeeController {
         employee.setAge(age);
         employee.setNation(nation);
         employee.setEdulevel(edulevel);
-        if(null!=birthday&&"".equals(birthday)){
+        if(null!=birthday&&birthday.length()>0){
             employee.setBirthday(DateUtil.getformatDate(birthday));
         }
         employee.setAddress(address);
-        if(null!=entrydate){
+        if(null!=entrydate&&entrydate.length()>0){
             employee.setEntrydate(DateUtil.getformatDate(entrydate));
         }
-        if(null!=regulardate){
+        if(null!=regulardate&&regulardate.length()>0){
             employee.setRegulardate(DateUtil.getformatDate(regulardate));
         }
         if(null!=headimage&&headimage.getSize()>0){
