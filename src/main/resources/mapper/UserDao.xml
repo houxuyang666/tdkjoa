@@ -118,4 +118,16 @@
         where UserName = #{username}
     </select>
 
+
+    <!--根据员工id获取登陆信息-->
+    <select id="queryByemployeeid" resultMap="UserMap">
+        select
+          UserId, EmployeeId, UserName, Password, Salt, Status, RoleId, CreateDate, ModifyDate
+        from user
+        where EmployeeId = #{employeeid}
+    </select>
+
+
+
+
 </mapper>

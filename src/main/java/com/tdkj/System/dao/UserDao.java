@@ -71,4 +71,13 @@ public interface UserDao {
      * @return com.tdkj.System.entity.User
      **/
     User findByName(String username);
+
+    /**
+     * @Author houxuyang
+     * @Description //根据员工id获取登陆信息
+     * @Date 10:01 2020/8/10
+     * @Param [employeeid]
+     * @return com.tdkj.System.entity.User
+     **/
+    User queryByemployeeid(Integer employeeid);
 }
