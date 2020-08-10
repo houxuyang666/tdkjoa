@@ -96,4 +96,41 @@ public class UserController {
         return OAResponse.setResult(HTTP_RNS_CODE_500,UPDATE_FAULT+":只有超级管理员可以操作");
     }
 
+    /**
+     * @Author houxuyang
+     * @Description //跳转修改密码页面
+     * @Date 14:25 2020/8/10
+     * @Param []
+     * @return java.lang.String
+     **/
+    @RequestMapping("/goupdatepsd")
+    public String goupdatepsd() {
+        return "page/employee/updatepsd";
+    }
+
+
+    /*@ResponseBody
+    @RequestMapping("/updatepsd")
+    public OAResponse updatepsd(String oldpassword,String newpassword) {
+        log.info("修改密码");
+        //根据用户id查询出来用户信息
+        User user =userService.queryById(ShiroUtils.getPrincipal().getId());
+        //将输入的原密码进行加密后 与数据库密码进行对比
+        String dbpassword = Md5Util.Md5Password(user.getSalt(), oldpassword);
+        if (!dbpassword.equals(user.getPassword())){
+            return OAResponse.setResult(HTTP_RNS_CODE_500,"原密码错误");
+        }
+        //密码正确后进入  将新密码进行加密
+        newpassword=Md5Util.Md5Password(user.getSalt(), newpassword);
+        user.setPassword(newpassword);
+        user.setModifyTime(new Date());
+        userService.update(user);
+        log.info("密码修改成功");
+
+        return OAResponse.setResult(HTTP_RNS_CODE_200,UPDATE_SUCCESS);
+    }*/
+
+
+
+
 }

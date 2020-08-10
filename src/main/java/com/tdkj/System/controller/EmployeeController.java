@@ -67,7 +67,13 @@ public class EmployeeController {
     @Value("${file.uploadFile}")
     private String uploadFile;
 
-
+    /**
+     * @Author houxuyang
+     * @Description //跳转员工列表页面
+     * @Date 14:24 2020/8/10
+     * @Param []
+     * @return java.lang.String
+     **/
     @RequestMapping("/goemployee")
     public String goemployee() {
         return "page/employee/employeelist";
@@ -134,12 +140,12 @@ public class EmployeeController {
         employee.setCorpid(corpbasicinfo.getCorpid());
         employee.setDepartmentid(departmentid);
         /*上级领导的employee的ID*/
-        employee.setSuperid(1);
+        employee.setSuperid(1); //上级领导ID
         employee.setName(name);
         employee.setJobtitle(jobtitle);
         employee.setIdcardtype(idcardtype);
         employee.setIdcardnumber(idcardnumber);
-        employee.setStatus(EmployeeStatusEnmu.on_the_job.getCode());
+        employee.setStatus(EmployeeStatusEnmu.on_the_job.getCode()); //在职
         employee.setGender(gender);
         employee.setAge(age);
         employee.setNation(nation);
@@ -213,4 +219,17 @@ public class EmployeeController {
         }while(1!=value);
         return OAResponse.setResult(HTTP_RNS_CODE_200,ADD_SUCCESS);
     }
+
+    /**
+     * @Author houxuyang
+     * @Description //跳转个人信息页面
+     * @Date 14:25 2020/8/10
+     * @Param []
+     * @return java.lang.String
+     **/
+    @RequestMapping("/goemployeeinfo")
+    public String goemployeeinfo() {
+        return "page/employee/employeeinfo";
+    }
+
 }
