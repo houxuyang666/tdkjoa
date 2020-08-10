@@ -65,38 +65,38 @@ var PublicFun = {
     },
 
     //ajax请求异步通用函数
-    FunPostAjax:function (url,data,success,msgerror) {
+    FunPostAjax: function (url, data, success, msgerror) {
         $.ajax({
-            url:url,
-            dataType:"json",
-            type:"POST",
-            async:false,
-            data:data,
-            success:success,
-            error:function () {
+            url: url,
+            dataType: "json",
+            type: "POST",
+            async: false,
+            data: data,
+            success: success,
+            error: function () {
                 PublicFun.LayerMsgError(msgerror);
             }
         })
     },
 
     //请求上传图片的交互
-    FunPostAjaxProcessData:function (url,data,success,msgerror) {
+    FunPostAjaxProcessData: function (url, data, success, msgerror) {
         $.ajax({
-            url:url,
-            dataType:"json",
-            type:"POST",
-            processData:false,
+            url: url,
+            dataType: "json",
+            type: "POST",
+            processData: false,
             contentType: false,
-            data:data,
-            success:success,
-            error:function () {
+            data: data,
+            success: success,
+            error: function () {
                 PublicFun.LayerMsgError(msgerror);
             }
         })
     },
 
     //格式日期控件 传入Id名 和 你想要的字符串
-    layerDate:function ($id,formats) {
+    layerDate: function ($id, formats) {
         //var obj = new Date();
         layui.laydate.render({
             elem: $id,
@@ -107,7 +107,7 @@ var PublicFun = {
         });
     },
     //接收参数
-    queryString:function (key) {
+    queryString: function (key) {
         var regex_str = "^.+\\?.*?\\b" + key + "=(.*?)(?:(?=&)|$|#)"
         var regex = new RegExp(regex_str, "i");
         var url = window.location.toString();
@@ -115,119 +115,122 @@ var PublicFun = {
         return undefined;
     },
     //格式化时间
-    FormatDate:function (datetime,fmt) {
-        if(parseInt(datetime)==datetime){
-            if(datetime.length==10){
-                datetime=parseInt(datetime)*1000;
-            }else if(datetime.length==13){
-                datetime=parseInt(datetime);
+    FormatDate: function (datetime, fmt) {
+        if (parseInt(datetime) == datetime) {
+            if (datetime.length == 10) {
+                datetime = parseInt(datetime) * 1000;
+            } else if (datetime.length == 13) {
+                datetime = parseInt(datetime);
             }
         }
-        datetime=new Date(datetime);
-        var o={
-            "M+" : datetime.getMonth()+1,                 //月份
-            "d+" : datetime.getDate(),                    //日
-            "h+" : datetime.getHours(),                   //小时
-            "m+" : datetime.getMinutes(),                 //分
-            "s+" : datetime.getSeconds(),                 //秒
-            "q+" : Math.floor((datetime.getMonth()+3)/3), //季度
-            "S"  : datetime.getMilliseconds()             //毫秒
+        datetime = new Date(datetime);
+        var o = {
+            "M+": datetime.getMonth() + 1,                 //月份
+            "d+": datetime.getDate(),                    //日
+            "h+": datetime.getHours(),                   //小时
+            "m+": datetime.getMinutes(),                 //分
+            "s+": datetime.getSeconds(),                 //秒
+            "q+": Math.floor((datetime.getMonth() + 3) / 3), //季度
+            "S": datetime.getMilliseconds()             //毫秒
         };
-        if(/(y+)/.test(fmt))
-            fmt=fmt.replace(RegExp.$1, (datetime.getFullYear()+"").substr(4 - RegExp.$1.length));
-        for(var k in o)
-            if(new RegExp("("+ k +")").test(fmt))
-                fmt = fmt.replace(RegExp.$1, (RegExp.$1.length==1) ? (o[k]) : (("00"+ o[k]).substr((""+ o[k]).length)));
+        if (/(y+)/.test(fmt))
+            fmt = fmt.replace(RegExp.$1, (datetime.getFullYear() + "").substr(4 - RegExp.$1.length));
+        for (var k in o)
+            if (new RegExp("(" + k + ")").test(fmt))
+                fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
         return fmt;
     },
     //重新渲染表单函数
-    RenderForm:function () {
-        layui.use('form',function () {
-            var form=layui.form;
+    RenderForm: function () {
+        layui.use('form', function () {
+            var form = layui.form;
             form.render();
         })
     },
 
     //获取菜单数据/menu/getmenu
-    GetMenuInfo:function () {
+    GetMenuInfo: function () {
         var jsonMenu;
-        PublicFun.FunPostAjax("/menu/getmenu","",function(res){
-            if(res.responseCode==200){
+        PublicFun.FunPostAjax("/menu/getmenu", "", function (res) {
+            if (res.responseCode == 200) {
                 //console.log(res.data);
-                jsonMenu=res.data;
+                jsonMenu = res.data;
             }
-        },"菜单接口请求失败！！！");
+        }, "菜单接口请求失败！！！");
 
-        var jsonData=eval(jsonMenu);
+        var jsonData = eval(jsonMenu);
         //绑定的字段
-        var jsonDataTree=[];
+        var jsonDataTree = [];
         //将json串转换成树形结构
-        for (var i in jsonData){  //parentId为0时表示为根节点
-            if(jsonData[i].parentid=="0"){
-                var tempObject={};
-                tempObject.title=jsonData[i].title;
-                tempObject.menuid=jsonData[i].menuid;
-                tempObject.children=getChildren(tempObject.menuid);
+        for (var i in jsonData) {  //parentId为0时表示为根节点
+            if (jsonData[i].parentid == "0") {
+                var tempObject = {};
+                tempObject.title = jsonData[i].title;
+                tempObject.menuid = jsonData[i].menuid;
+                tempObject.children = getChildren(tempObject.menuid);
                 jsonDataTree.push(tempObject);
             }
         }
+
         //递归体  即对每条jsonData逐条递归找childs
-        function getChildren(id){
-            var  tempArray=[];
-            for(var i in jsonData){
-                if(jsonData[i].parentid==id){
-                    var tempChild={};
-                    tempChild.title=jsonData[i].title;
-                    tempChild.menuid=jsonData[i].menuid;
-                    if(selectChildren(jsonData[i].menuid)){   //若存在子节点，继续递归；否则为叶节点，停止递归
-                        tempChild.children=getChildren(jsonData[i].menuid);
+        function getChildren(id) {
+            var tempArray = [];
+            for (var i in jsonData) {
+                if (jsonData[i].parentid == id) {
+                    var tempChild = {};
+                    tempChild.title = jsonData[i].title;
+                    tempChild.menuid = jsonData[i].menuid;
+                    if (selectChildren(jsonData[i].menuid)) {   //若存在子节点，继续递归；否则为叶节点，停止递归
+                        tempChild.children = getChildren(jsonData[i].menuid);
                     }
                     tempArray.push(tempChild);
                 }
             }
             return tempArray;
         }
-        function selectChildren(id){   // 是否存在子节点
-            for(var i in jsonData){
-                if(jsonData[i].parentid==id){
+
+        function selectChildren(id) {   // 是否存在子节点
+            for (var i in jsonData) {
+                if (jsonData[i].parentid == id) {
                     return true;
                 }
             }
             return false;
         }
+
         return jsonDataTree;
     },
 
     //绑定公司下拉框
-      BindCompanyList: function () {
-          $.ajax({
-              url: "/company/selectallcompany",
-              dataType: "json",
-              type: "post",
-              success: function (res) {
-                  var data = res.data;
-                  //layer.alert(JSON.stringify(data));
-                  var html = '';
-                  if (data != null && data != "") {
-                      for (var i = 0; i < data.length; i++) {
-                          html += '<option value="' + data[i].companyId + '">' + data[i].companyName + '</option>';
-                      }
-                  } else {
-                      html += "";
-                  }
-                  $('#companyList').append(html);
-                  layui.form.render("select");
-              },
-              error: function () {
-                  PublicFun.LayerMsgError("公司下拉框请求失败")
-              }
-          })
-      },
+    BindCompanyList: function () {
+        $.ajax({
+            url: "/company/selectallcompany",
+            dataType: "json",
+            type: "post",
+            success: function (res) {
+                var data = res.data;
+                //layer.alert(JSON.stringify(data));
+                var html = '';
+                if (data != null && data != "") {
+                    for (var i = 0; i < data.length; i++) {
+                        html += '<option value="' + data[i].companyId + '">' + data[i].companyName + '</option>';
+                    }
+                } else {
+                    html += "";
+                }
+                $('#companyList').append(html);
+                layui.form.render("select");
+            },
+            error: function () {
+                PublicFun.LayerMsgError("公司下拉框请求失败")
+            }
+        })
+    },
 
     //绑定 获取角色为领导的人 下拉框
-    BindDepthead:function () {
-        PublicFun.FunPostAjax("/department/selectdeptemployee","",function (res) {
-            if(res.code==0){
+    BindDepthead: function () {
+        PublicFun.FunPostAjax("/department/selectdeptemployee", "", function (res) {
+            if (res.code == 0) {
                 var data = res.data.list;
                 //layer.alert(JSON.stringify(data));
                 var html = '';
@@ -242,9 +245,19 @@ var PublicFun = {
                 layui.form.render("select");
             }
 
-        },"角色为领导的人下拉框接口请求失败！！！")
-    }
+        }, "角色为领导的人下拉框接口请求失败！！！")
+    },
 
+    //转化为整数
+    FunZhzs: function (value) {
+        value = value.replace(/[^\d]/g, "");
+        if ("" != value) {
+            value = parseInt(value);
+        } else {
+            PublicFun.LayerMsgError("填写数字");
+        }
+        return value;
+    }
 
 
 }
