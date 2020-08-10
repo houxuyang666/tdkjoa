@@ -109,12 +109,12 @@ public class UserController {
     }
 
 
-    /*@ResponseBody
+    @ResponseBody
     @RequestMapping("/updatepsd")
     public OAResponse updatepsd(String oldpassword,String newpassword) {
         log.info("修改密码");
         //根据用户id查询出来用户信息
-        User user =userService.queryById(ShiroUtils.getPrincipal().getId());
+        User user =userService.queryById(ShiroUtils.getPrincipal().getUserid());
         //将输入的原密码进行加密后 与数据库密码进行对比
         String dbpassword = Md5Util.Md5Password(user.getSalt(), oldpassword);
         if (!dbpassword.equals(user.getPassword())){
@@ -123,12 +123,11 @@ public class UserController {
         //密码正确后进入  将新密码进行加密
         newpassword=Md5Util.Md5Password(user.getSalt(), newpassword);
         user.setPassword(newpassword);
-        user.setModifyTime(new Date());
+        user.setModifydate(new Date());
         userService.update(user);
         log.info("密码修改成功");
-
         return OAResponse.setResult(HTTP_RNS_CODE_200,UPDATE_SUCCESS);
-    }*/
+    }
 
 
 
