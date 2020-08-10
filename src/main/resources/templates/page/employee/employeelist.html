@@ -209,6 +209,8 @@
             var index = layui.layer.open({
                 title : "添加员工",
                 type : 2,//ifream层
+                maxmin: true,
+                shadeClose: true,
                 area:["100%","100%"],
                 content : "/employee/goadd",
                 success : function(layero, index){

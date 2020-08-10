@@ -27,7 +27,9 @@
 
     </style>
     <style type="text/css">
-        iframe{height: 95% !important;}
+        iframe {
+            height: 95% !important;
+        }
     </style>
 </head>
 
@@ -84,7 +86,7 @@
                                data-icon="fa fa-gears">修改密码</a>
                         </dd>
                         <dd>
-                            <a href="javascript:;" layuimini-content-href="attendance/add" data-title="签到"
+                            <a href="javascript:;" id="qiandao" data-title="签到"
                                data-icon="fa fa-gears">签到</a>
                         </dd>
                         <dd>
@@ -155,8 +157,10 @@
 
     </div>
 </div>
+<script src="/js/jquery-1.8.3.js" charset="utf-8"></script>
 <script src="/statics/lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
 <script src="/js/lay-config.js?v=2.0.0" charset="utf-8"></script>
+<script src="/js/public.js" charset="utf-8"></script>
 <script>
     layui.use(['jquery', 'layer', 'miniAdmin', 'miniTongji'], function () {
         var $ = layui.jquery, layer = layui.layer,
@@ -191,6 +195,27 @@
                 window.location = '/logout';
             });
         });
+
+        //员工签到
+        $("#qiandao").click(function () {
+            PublicFun.FunPostAjax("attendance/add", "", function (res) {
+                if (res.responseCode == 200) {
+                    layer.open({
+                        type: 1,
+                        content:"<div style=\"padding: 50px 100px;\">"+res.message+"</div>" ,
+                        area: ['300px', '210px'],
+                        offset: "rb",
+                        shade:0,
+                        zIndex: layer.zIndex,
+                        time:5000,
+                        anim:2,
+                })
+                } else {
+                    PublicFun.LayerMsgError(res.message);
+                }
+            }, "签到接口请求失败！！！");
+
+        })
 
 
     });
