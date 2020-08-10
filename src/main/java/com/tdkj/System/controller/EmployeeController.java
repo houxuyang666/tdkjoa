@@ -103,11 +103,11 @@ public class EmployeeController {
     public OAResponse add(String username,
                           Integer departmentid,String name, String jobtitle,Integer idcardtype,String idcardnumber,
                           Integer gender,Integer age,String nation,Integer edulevel,String birthday,String address,
-                          String entrydate, String regulardate,@RequestParam("headimage") MultipartFile headimage,Integer politicstype,
+                          String entrydate, String regulardate,@RequestParam( value ="headimage",required = false) MultipartFile headimage,Integer politicstype,
                           String cellphone,String email,String authorizationcode,String urgentlinkman,String urgentlinkmanphone,
-                          @RequestParam("positiveidcardimage") MultipartFile positiveidcardimage,
-                          @RequestParam("negativeidcardimage") MultipartFile negativeidcardimage,
-                          @RequestParam("laborcontract") MultipartFile laborcontract) throws Exception {
+                          @RequestParam(value ="positiveidcardimage",required = false) MultipartFile positiveidcardimage,
+                          @RequestParam(value ="negativeidcardimage",required = false) MultipartFile negativeidcardimage,
+                          @RequestParam(value ="laborcontract",required = false) MultipartFile laborcontract) throws Exception {
         User olduser = userService.findByName(username);
         if (null != olduser) {
             return OAResponse.setResult(HTTP_RNS_CODE_500,"用户名已存在");
@@ -115,7 +115,7 @@ public class EmployeeController {
         Corpbasicinfo corpbasicinfo=corpbasicinfoService.queryByemployeeId(ShiroUtils.getPrincipal().getEmployeeid());
         Fileinfo fileinfo =new Fileinfo();
         FileuploadUtils fileuploadUtils =new FileuploadUtils();
-        if(0!=laborcontract.getSize()){
+        if(null!=laborcontract&&laborcontract.getSize()>0){
             //合同
             String laborcontractUrl = fileuploadUtils.Fileupload(laborcontract,uploadFile,"劳动合同",name);
             log.info("附件上传成功");
@@ -144,11 +144,17 @@ public class EmployeeController {
         employee.setAge(age);
         employee.setNation(nation);
         employee.setEdulevel(edulevel);
-        employee.setBirthday(DateUtil.getformatDate(birthday));
+        if(null!=birthday&&"".equals(birthday)){
+            employee.setBirthday(DateUtil.getformatDate(birthday));
+        }
         employee.setAddress(address);
-        employee.setEntrydate(DateUtil.getformatDate(entrydate));
-        employee.setRegulardate(DateUtil.getformatDate(regulardate));
-        if(0!=headimage.getSize()){
+        if(null!=entrydate){
+            employee.setEntrydate(DateUtil.getformatDate(entrydate));
+        }
+        if(null!=regulardate){
+            employee.setRegulardate(DateUtil.getformatDate(regulardate));
+        }
+        if(null!=headimage&&headimage.getSize()>0){
             //上传头像照 并返回url
             String headimageurl = fileuploadUtils.Fileupload(headimage,uploadImageFolder,"头像",name);
             employee.setHeadimageurl(headimageurl);
@@ -160,13 +166,13 @@ public class EmployeeController {
         employee.setAuthorizationcode(authorizationcode);
         employee.setUrgentlinkman(urgentlinkman);
         employee.setUrgentlinkmanphone(urgentlinkmanphone);
-        if(0!=positiveidcardimage.getSize()){
+        if(null!=positiveidcardimage&&positiveidcardimage.getSize()>0){
             //上传身份证正面照，并返回url
             String positiveidcardimageurl = fileuploadUtils.Fileupload(positiveidcardimage,uploadImageFolder,"身份证正面照",name);
             employee.setPositiveidcardimageurl(positiveidcardimageurl);
             log.info("身份证正面上传成功");
         }
-        if(0!=negativeidcardimage.getSize()){
+        if(null!=negativeidcardimage&&negativeidcardimage.getSize()>0){
             //上传身份证反面照，并返回url
             String negativeidcardimageurl = fileuploadUtils.Fileupload(negativeidcardimage,uploadImageFolder,"身份证反面照",name);
             employee.setNegativeidcardimageurl(negativeidcardimageurl);

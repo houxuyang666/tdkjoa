@@ -27,6 +27,7 @@
             信息填写
         </blockquote>-->
         <form class="layui-form" id="employeeForm">
+
             <div class="layui-form-item">
 
                 <div class="layui-inline">
@@ -281,7 +282,7 @@
                 </div>
             </div>
             <div class="layui-form-item" style="text-align: center; margin-top:50px;">
-                <button class="layui-btn" id="Surebtn" lay-submit="" lay-filter="SureAdd"><i class="layui-icon">&#xe605;</i>确定添加
+                <button class="layui-btn" id="Surebtn" lay-submit="" lay-filter="Surebtn"><i class="layui-icon">&#xe605;</i>确定添加
                 </button>
             </div>
         </form>
@@ -341,7 +342,6 @@
             }
         });
 
-
         //图像
         upload.render({
             elem: '#headimagebtn'
@@ -357,8 +357,8 @@
         });
 
         //监听提交
-        form.on('submit(SureAdd)', function (data) {
-            var formdata = new FormData($("#fileinfoform")[0]);
+        form.on('submit(Surebtn)', function (data) {
+            var formdata = new FormData($("#employeeForm")[0]);
             console.log(formdata);
             console.log(data.field);
             PublicFun.FunPostAjaxProcessData("/employee/add", formdata, function (res) {
