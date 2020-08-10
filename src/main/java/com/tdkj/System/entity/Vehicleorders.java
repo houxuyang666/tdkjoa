@@ -9,11 +9,11 @@ import java.util.Date;
  * (Vehicleorders)实体类
  *
  * @author makejava
- * @since 2020-08-07 17:01:45
+ * @since 2020-08-10 15:17:14
  */
 @Data
 public class Vehicleorders implements Serializable {
-    private static final long serialVersionUID = -36494431922198418L;
+    private static final long serialVersionUID = -83781885491543558L;
     /**
      * 订单ID
      */
@@ -21,7 +21,7 @@ public class Vehicleorders implements Serializable {
     /**
      * 部门名称 车辆id
      */
-    private String vehicleid;
+    private Integer vehicleid;
     /**
      * 员工id
      */
@@ -33,7 +33,7 @@ public class Vehicleorders implements Serializable {
     /**
      * 开始地址
      */
-    private Integer beganaddress;
+    private String beganaddress;
     /**
      * 目的地地址
      */
@@ -78,7 +78,5 @@ public class Vehicleorders implements Serializable {
      * 编辑时间
      */
     private Date modifydate;
-
-
 
 }

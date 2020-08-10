@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>车辆列表</title>
+    <link rel="stylesheet" href="/statics/lib/layui-v2.5.5/css/layui.css" media="all">
+    <link rel="stylesheet" href="/css/public.css" media="all">
+    <link rel="stylesheet" href="/css/themes/default.css" media="all">
+    <link rel="stylesheet" href="/statics/lib/font-awesome-4.7.0/css/font-awesome.min.css" media="all">
+</head>
+<body>
+<input type="hidden" id="orderId">
+<input type="hidden" id="vehicleId">
+<div class="layuimini-container">
+    <div class="layuimini-main">
+        <blockquote class="layui-elem-quote">
+            订单列表<br>
+        </blockquote>
+       <!-- <p id="p" style="display: none" th:text="${session.user.getId()}"></p>-->
+
+        <div>
+
+            <fieldset class="table-search-fieldset">
+                <legend>搜索信息</legend>
+                <div style="margin: 10px 10px 10px 10px">
+                    <form class="layui-form layui-form-pane" action="">
+                        <div class="layui-form-item">
+                            <div class="layui-inline">
+                                <label class="layui-form-label">车牌号</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="vehicleNumber" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                            <!--<div class="layui-inline">
+                                <label class="layui-form-label">所属公司</label>
+                                <div class="layui-input-inline">
+                                    <select name="companyName" id="companyList" lay-filter="companyId">
+                                        <option value=""></option>
+                                    </select>
+                                </div>
+                            </div>-->
+                            <div class="layui-inline">
+                                <button type="submit" class="layui-btn layui-btn-primary" lay-submit
+                                        lay-filter="searchBtn"><i class="layui-icon"></i> 搜 索
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </fieldset>
+
+
+            <table id="CarList" lay-filter="CarList" class="layui-hide"></table>
+
+            <script type="text/html" id="toolbar">
+                <div class="layui-btn-container">
+                    <button class="layui-btn layui-btn-sm " lay-event="refresh"><i class="layui-icon">&#xe669;</i>刷新
+                    </button>
+                </div>
+            </script>
+
+            <script type="text/html" id="currentTableBar">
+                {{#if(d.orderStatus===0){ }}
+                <a class="layui-btn layui-btn-xs layui-btn-normal " lay-event="endCarOrders"><i class="layui-icon">&#x1006;</i>结束用车</a>
+                {{# }else{ }}
+                <a class="layui-btn layui-btn-xs layui-btn-normal layui-disabled "  lay-event=""><i class="layui-icon">&#x1006;</i>结束用车</a>
+                {{# } }}
+            </script>
+
+        </div>
+    </div>
+</div>
+
+<script src="/statics/lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
+<script src="/js/public.js" charset="utf-8"></script>
+<script type="text/javascript" th:inline="none">
+    PublicFun.ImportJs("/statics/lib/jquery-3.4.1/jquery-3.4.1.min.js");
+
+    layui.use(['form', 'table', 'util'], function () {
+        var $ = layui.jquery,
+            form = layui.form,
+            util = layui.util,
+            table = layui.table;
+
+
+        var userId = $("#p").text();
+        //实例化表格
+        table.render({
+            elem: '#CarList',
+            url: '/vehicleorders/selecvehicleorders',
+            toolbar: '#toolbar',
+            defaultToolbar: ['filter', 'exports', 'print'],
+            parseData: function (res) { //res 即为原始返回的数据
+                return {
+                    "code": res.code, //解析接口状态
+                    "msg": res.message, //解析提示文本
+                    "count": res.data.total, //解析数据长度
+                    "data": res.data.list //解析数据列表
+                };
+            },
+            cols: [[
+                {field: "checkbox", type: 'checkbox'},
+                {field: "orderid", title: "订单编号", sort: true, width: 180},
+                {field: "vehicletype", title: "所用车辆", sort: true, width: 100},
+                {field: "vehicledrivername", title: "司机（bug）", width: 100},
+                {field: "employeename", title: "申请人", width: 100},
+                {field: "beganaddress", title: "开始地点", width: 180},
+                {field: "destinationaddress", title: "目的地", width: 180},
+                {field: "endaddress", title: "结束地点", width: 180},
+                {field: "mileage", title: "行驶公里数", width: 100},
+                {field: "mileagebeganurl", title: "开始地点公里数照片", width: 180,templet:
+                        function (d) {
+                            if(d.mileagebeganurl!=null && d.mileagebeganurl!="" ){
+                                return   '<div><img src="/image/'+d.mileagebeganurl+'" alt="暂无缩略图"  style=" width:30px; height:30px;"></div>'
+                            }else{
+                                return '<div>请上传真实图片</div>'
+                            }
+                        }
+                },
+                {field: "mileageendurl", title: "结束地点公里数照片", width: 180,templet:
+                        function (d) {
+                            if(d.mileageendurl!=null && d.mileageendurl!="" ){
+                                return   '<div><img src="/image/'+d.mileageendurl+'" alt="暂无缩略图"  style=" width:30px; height:30px;"></div>'
+                            }else{
+                                return '<div>请上传真实图片</div>'
+                            }
+                        }
+                },
+                {
+                    field: "begandate", title: "开始时间", sort: true, width: 170, templet: function (d) {
+                        if (d.begandate == null || d.begandate == "") {
+                            return " ";
+                        } else {
+                            return layui.util.toDateString(d.begandate, 'yyyy-MM-dd HH:mm:ss');
+                        }
+                    }
+                },
+                {
+                    field: "enddate", title: "结束时间", sort: true, width: 170, templet: function (d) {
+                        if (d.enddate == null || d.enddate == "") {
+                            return " ";
+                        } else {
+                            return layui.util.toDateString(d.enddate, 'yyyy-MM-dd HH:mm:ss');
+                        }
+                    }
+                },
+                {field: "orderdesc", title: "订单备注信息", width: 200},
+                {
+                    field: "status",
+                    title: "订单状态",
+                    sort: true,
+                    width: 100,
+                    fixed: 'right',
+                    templet: function (row) {
+                        if (row.status == 1) return "<span style='color:#3399CC '>进行中</span>";
+                        else if (row.status == 0) return "<span style='color: #FFB800'>已申请</span>";
+                        else return "<span style='color:#FF0033 '>已结束</span>";
+                    }
+                },
+                {title: '操作', toolbar: '#currentTableBar', align: "center", fixed: 'right', width: 100}
+            ]],
+            limits: [10, 15, 20, 25, 50, 100],
+            limit: 10,
+            page: true,
+            where: {userId: userId},
+            done:function () {
+                FunShow_img();//显示大图
+            }
+            //skin: 'line'
+        });
+
+        //搜索事件操作
+        form.on("submit(searchBtn)", function (data) {
+            var formData = data.field;//获取搜索新信息
+            var selectCompanyListText = $("#companyList").find("option:selected").text();
+            //搜索重载
+            table.reload("CarList", {
+                page: {
+                    curr: 1
+                },
+                where: {
+                    vehicleNumber: formData.vehicleNumber,
+                    companyName: selectCompanyListText
+                }
+            }, "data");
+            return false;
+        });
+
+        //表格结束订单操作事件
+        table.on("tool(CarList)", function (obj) {
+            var data = obj.data;
+            if (obj.event === "endCarOrders") {
+                $("#orderId").val(data.orderId);
+                $("#vehicleId").val(data.vehicleId);
+                var index = layer.open({
+                    title: '结束用车订单',
+                    type: 2,
+                    shade: 0.2,
+                    maxmin: true,
+                    shadeClose: true,
+                    area: ['50%', '80%'],
+                    content: '/table/goupdatevehicleorders',
+                    success: function (layero, index) {
+                        //赋值
+                        var body = layer.getChildFrame("body", index);
+                        body.contents().find("#orderId").text(data.orderId);
+                        body.contents().find("#vehicleId").text(data.vehicleId);
+                        body.contents().find("#vehicleDriver").text(data.vehicleDriver);
+                        body.contents().find("#beganAddress").text(data.beganAddress);
+                        body.contents().find("#destinationAddress").text(data.destinationAddress);
+                        body.contents().find("#beganTime").text(layui.util.toDateString(data.beganTime));
+                    },
+                    end: function () {
+                        //刷新表格
+                        layui.table.reload("CarList");
+                    }
+                });
+                $(window).on("resize", function () {
+                    layer.full(index);
+                });
+            }
+        });
+
+        //刷新操作
+        table.on("toolbar(CarList)", function (obj) {
+            var checkStatus = table.checkStatus(obj.config.id);
+            switch (obj.event) {
+                case "refresh":
+                    table.reload("CarList");
+                    break;
+            }
+        });
+        //绑定公司下拉框绑定
+        //PublicFun.BindCompanyList();
+
+
+    });
+
+    //显示放大图片
+    function FunShow_img() {
+        var img_show = null; // tips提示
+        $("td img").hover(function(){
+            var kd=$(this).width();
+            kd1=kd*4;          //图片放大倍数
+            kd2=kd*4+30;       //图片放大倍数
+            var img = "<img class='img_msg' src='"+$(this).attr('src')+"' style='width:"+kd1+"px;' />";
+            img_show = layer.tips(img, this,{
+                tips:[2, 'rgba(41,41,41,.5)']
+                ,area: [kd2+'px']
+            });
+        },function(){
+            layer.close(img_show);
+        });
+        $('td img').attr('style','max-width:60px;display:block!important');
+        $('td img').attr('style'," cursor: pointer;");
+    }
+
+
+</script>
+</body>
+</html>

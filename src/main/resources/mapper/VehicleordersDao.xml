@@ -4,10 +4,10 @@
 
     <resultMap type="com.tdkj.System.entity.Vehicleorders" id="VehicleordersMap">
         <result property="orderid" column="OrderID" jdbcType="VARCHAR"/>
-        <result property="vehicleid" column="VehicleID" jdbcType="VARCHAR"/>
+        <result property="vehicleid" column="VehicleID" jdbcType="INTEGER"/>
         <result property="employeeid" column="EmployeeID" jdbcType="INTEGER"/>
         <result property="vehicledriverid" column="VehicleDriverID" jdbcType="INTEGER"/>
-        <result property="beganaddress" column="BeganAddress" jdbcType="INTEGER"/>
+        <result property="beganaddress" column="BeganAddress" jdbcType="VARCHAR"/>
         <result property="destinationaddress" column="DestinationAddress" jdbcType="VARCHAR"/>
         <result property="endaddress" column="EndAddress" jdbcType="VARCHAR"/>
         <result property="mileage" column="Mileage" jdbcType="VARCHAR"/>
@@ -25,7 +25,7 @@
     <select id="queryById" resultMap="VehicleordersMap">
         select
           OrderID, VehicleID, EmployeeID, VehicleDriverID, BeganAddress, DestinationAddress, EndAddress, Mileage, MileageBeganUrl, MileageEndUrl, BeganDate, EndDate, Status, OrderDesc, CreateDate, ModifyDate
-        from activiti.vehicleorders
+        from vehicleorders
         where OrderID = #{orderid}
     </select>
 
@@ -33,7 +33,7 @@
     <select id="queryAllByLimit" resultMap="VehicleordersMap">
         select
           OrderID, VehicleID, EmployeeID, VehicleDriverID, BeganAddress, DestinationAddress, EndAddress, Mileage, MileageBeganUrl, MileageEndUrl, BeganDate, EndDate, Status, OrderDesc, CreateDate, ModifyDate
-        from activiti.vehicleorders
+        from vehicleorders
         limit #{offset}, #{limit}
     </select>
 
@@ -42,12 +42,12 @@
         select
         OrderID, VehicleID, EmployeeID, VehicleDriverID, BeganAddress, DestinationAddress, EndAddress, Mileage,
         MileageBeganUrl, MileageEndUrl, BeganDate, EndDate, Status, OrderDesc, CreateDate, ModifyDate
-        from activiti.vehicleorders
+        from vehicleorders
         <where>
             <if test="orderid != null and orderid != ''">
                 and OrderID = #{orderid}
             </if>
-            <if test="vehicleid != null and vehicleid != ''">
+            <if test="vehicleid != null">
                 and VehicleID = #{vehicleid}
             </if>
             <if test="employeeid != null">
@@ -56,7 +56,7 @@
             <if test="vehicledriverid != null">
                 and VehicleDriverID = #{vehicledriverid}
             </if>
-            <if test="beganaddress != null">
+            <if test="beganaddress != null and beganaddress != ''">
                 and BeganAddress = #{beganaddress}
             </if>
             <if test="destinationaddress != null and destinationaddress != ''">
@@ -97,15 +97,15 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="orderid" useGeneratedKeys="true">
-        insert into activiti.vehicleorders(VehicleID, EmployeeID, VehicleDriverID, BeganAddress, DestinationAddress, EndAddress, Mileage, MileageBeganUrl, MileageEndUrl, BeganDate, EndDate, Status, OrderDesc, CreateDate, ModifyDate)
-        values (#{vehicleid}, #{employeeid}, #{vehicledriverid}, #{beganaddress}, #{destinationaddress}, #{endaddress}, #{mileage}, #{mileagebeganurl}, #{mileageendurl}, #{begandate}, #{enddate}, #{status}, #{orderdesc}, #{createdate}, #{modifydate})
+        insert into vehicleorders(OrderID,VehicleID, EmployeeID, VehicleDriverID, BeganAddress, DestinationAddress, EndAddress, Mileage, MileageBeganUrl, MileageEndUrl, BeganDate, EndDate, Status, OrderDesc, CreateDate, ModifyDate)
+        values (#{orderid},#{vehicleid}, #{employeeid}, #{vehicledriverid}, #{beganaddress}, #{destinationaddress}, #{endaddress}, #{mileage}, #{mileagebeganurl}, #{mileageendurl}, #{begandate}, #{enddate}, #{status}, #{orderdesc}, #{createdate}, #{modifydate})
     </insert>
 
     <!--通过主键修改数据-->
     <update id="update">
-        update activiti.vehicleorders
+        update vehicleorders
         <set>
-            <if test="vehicleid != null and vehicleid != ''">
+            <if test="vehicleid != null">
                 VehicleID = #{vehicleid},
             </if>
             <if test="employeeid != null">
@@ -114,7 +114,7 @@
             <if test="vehicledriverid != null">
                 VehicleDriverID = #{vehicledriverid},
             </if>
-            <if test="beganaddress != null">
+            <if test="beganaddress != null and beganaddress != ''">
                 BeganAddress = #{beganaddress},
             </if>
             <if test="destinationaddress != null and destinationaddress != ''">
@@ -156,7 +156,35 @@
 
     <!--通过主键删除-->
     <delete id="deleteById">
-        delete from activiti.vehicleorders where OrderID = #{orderid}
+        delete from vehicleorders where OrderID = #{orderid}
     </delete>
+
+    <!--查询指定行数据-->
+    <select id="selecvehicleorders" resultType="com.tdkj.System.entity.VO.VehicleordersVO">
+        select
+            OrderID as orderid,
+            VehicleID as vehicleid,
+            vinfo.VehicleType as vehicletype,
+            e.EmployeeID as employeeid,
+            e.Name as employeename,
+            VehicleDriverID as vehicledriverid,
+            e.name as vehicledrivername,
+            BeganAddress as beganaddress,
+            DestinationAddress as destinationaddress,
+            EndAddress as endaddress,
+            Mileage as mileage,
+            MileageBeganUrl as mileagebeganurl,
+            MileageEndUrl as mileageendurl,
+            BeganDate as begandate,
+            EndDate as enddate,
+            vord.Status as status,
+            OrderDesc as orderdesc,
+            vord.CreateDate as createdate,
+            vord.ModifyDate as modifydate
+        from vehicleorders vord
+            LEFT JOIN vehicleinfo vinfo on vord.VehicleID =vinfo.VehicleinfoID
+            LEFT JOIN employee e  on vord.EmployeeID =e.EmployeeId where vord.EmployeeID = #{employeeid}
+
+    </select>
 
 </mapper>

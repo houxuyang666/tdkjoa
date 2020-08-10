@@ -1,5 +1,6 @@
 package com.tdkj.System.dao;
 
+import com.tdkj.System.entity.VO.VehicleordersVO;
 import com.tdkj.System.entity.Vehicleorders;
 import org.apache.ibatis.annotations.Param;
 
@@ -63,4 +64,12 @@ public interface VehicleordersDao {
      */
     int deleteById(String orderid);
 
+    /**
+     * @Author houxuyang
+     * @Description //根据员工ID查询所申请的车辆订单
+     * @Date 15:44 2020/8/10
+     * @Param [employeeid]
+     * @return java.util.List<com.tdkj.System.entity.VO.VehicleordersVO>
+     **/
+    List<VehicleordersVO> selecvehicleorders(Integer employeeid);
 }

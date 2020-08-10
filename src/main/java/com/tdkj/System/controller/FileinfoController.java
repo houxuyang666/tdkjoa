@@ -162,7 +162,12 @@ public class FileinfoController {
             log.info("合同模板上传成功");
         }
         Corpbasicinfo corpbasicinfo =corpbasicinfoService.queryById(employee.getCorpid());
-        String fileUrl =setSign(fileinfo,corpbasicinfo.getSignurl(),uploadContractTemplateFile,uploadImageFolder);
+        String fileUrl =null;
+        if(null!=corpbasicinfo.getSignurl()&&corpbasicinfo.getSignurl().length()>0){
+            fileUrl =setSign(fileinfo,corpbasicinfo.getSignurl(),uploadContractTemplateFile,uploadImageFolder);
+        }else{
+            return OAResponse.setResult(0,"添加成功，未获取电子签名。无法生成新模板");
+        }
         //更新表中路径信息
         Fileinfo newfileinfo =new Fileinfo();
         newfileinfo.setFileinfoid(fileinfo.getFileinfoid());

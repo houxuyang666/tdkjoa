@@ -213,15 +213,15 @@
                     maxmin: true,
                     shadeClose: true,
                     area: ['50%', '80%'],
-                    content: '/table/goaddvehicleorders',
+                    content: '/vehicleorders/goaddvehicleorders',
                     success: function (layero, index) {
                         //赋值
                         var body = layer.getChildFrame("body", index);
-                        body.contents().find("#vehicleId").text(data.vehicleinfoId);
-                        body.contents().find("#vehicleType").text(data.vehicleType);
-                        body.contents().find("#vehicleSeatsNumber").text(data.vehicleSeatsNumber);
-                        body.contents().find("#vehicleNumber").text(data.vehicleNumber);
-                        body.contents().find("#companyName").text(data.companyName);
+                        body.contents().find("#vehicleid").text(data.vehicleinfoid);
+                        body.contents().find("#vehicletype").text(data.vehicletype);
+                        body.contents().find("#vehicleseatsnumber").text(data.vehicleseatsnumber);
+                        body.contents().find("#vehiclenumber").text(data.vehiclenumber);
+                        body.contents().find("#corpname").text(data.corpname);
                     },
                     end: function () {
                         //刷新表格
