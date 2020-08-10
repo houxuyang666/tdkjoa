@@ -260,7 +260,7 @@
             var  data=obj.data;
             switch (obj.event) {
                 case "ChongZhiPwd":
-                    ChongZhiPwd(data.id);
+                    ChongZhiPwd(data.employeeid);
                     break;
                 case "delete":
                     DeleteUser(data);
@@ -270,12 +270,12 @@
 
     });
     //重置密码操作
-    function ChongZhiPwd(id) {
+    function ChongZhiPwd(employeeid) {
         $.ajax({
             url:"/user/setpsd",
             type:"post",
             dataType:"json",
-            data:{id:id},
+            data:{employeeid:employeeid},
             success:function (res) {
                 if(res.responseCode=="200"){
                     layer.msg(res.message);
