@@ -272,6 +272,6 @@ public class EmployeeController {
             //employee.setHeadimageurl(headimageurl);
             log.info("头像修改成功");
         }
-        return OAResponse.setResult(HTTP_RNS_CODE_200,"头像修改成功",uploadImageFolder+headimageurl);
+        return OAResponse.setResult(HTTP_RNS_CODE_200,"头像修改成功",upload+headimageurl);
     }
 }
