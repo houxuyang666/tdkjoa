@@ -232,4 +232,23 @@ public class EmployeeController {
         return "page/employee/employeeinfo";
     }
 
+
+
+    @ResponseBody
+    @RequestMapping("/updateemployeeimage")
+    public OAResponse updateemployeeimage(@RequestParam( value ="headimage",required = false) MultipartFile headimage) {
+        log.info("修改头像");
+        Employee employee =this.employeeService.queryById(ShiroUtils.getPrincipal().getEmployeeid());
+        if(null!=headimage&&headimage.getSize()>0){
+            //上传头像照 并返回url
+            FileuploadUtils fileuploadUtils =new FileuploadUtils();
+            //删除原始头像
+            fileuploadUtils.Filedelete(uploadImageFolder,employee.getHeadimageurl());
+            //上传新头像
+            String headimageurl = fileuploadUtils.Fileupload(headimage,uploadImageFolder,"头像",employee.getName());
+            //employee.setHeadimageurl(headimageurl);
+            log.info("头像修改成功");
+        }
+        return OAResponse.setResult(HTTP_RNS_CODE_200,"头像修改成功");
+    }
 }

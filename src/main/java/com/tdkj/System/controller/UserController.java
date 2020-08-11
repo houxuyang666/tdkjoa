@@ -59,8 +59,8 @@ public class UserController {
             user.setPassword(Md5Util.Md5Password(user.getSalt(),"123456"));
             user.setModifydate(new Date());
             userService.update(user);
-            log.info("密码修改成功");
-            return OAResponse.setResult(HTTP_RNS_CODE_200,UPDATE_SUCCESS);
+            log.info("重置密码成功");
+            return OAResponse.setResult(HTTP_RNS_CODE_200,"重置密码成功");
         }
         return OAResponse.setResult(HTTP_RNS_CODE_500,UPDATE_FAULT+":只有超级管理员可以重置用户密码");
     }
@@ -84,14 +84,16 @@ public class UserController {
                 user.setStatus(0);
                 user.setModifydate(new Date());
                 userService.update(user);
+                return OAResponse.setResult(HTTP_RNS_CODE_200,"注销成功");
             }else if (UserStatusEnmu.Cancellation.getCode()==user.getStatus()){
                 user.setStatus(1);
                 user.setModifydate(new Date());
                 userService.update(user);
+                return OAResponse.setResult(HTTP_RNS_CODE_200,"启用成功");
             }else{
                 return OAResponse.setResult(HTTP_RNS_CODE_200,"未知错误");
             }
-            return OAResponse.setResult(HTTP_RNS_CODE_200,UPDATE_SUCCESS);
+
         }
         return OAResponse.setResult(HTTP_RNS_CODE_500,UPDATE_FAULT+":只有超级管理员可以操作");
     }
