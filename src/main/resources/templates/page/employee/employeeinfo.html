@@ -97,6 +97,8 @@
                         <div class="layui-card-header">资料修改</div>
                         <div class="layui-card-body" style="padding: 20px;">
                             <form class="layui-form layui-form-pane" action="">
+                                <!--隐藏员工ID-->
+                                <input type="hidden" name="employeeid" th:value="${employee.employeeid}">
                                 <div class="layui-form-item">
                                     <label class="layui-form-label">姓名</label>
                                     <div class="layui-input-block">
@@ -125,7 +127,7 @@
                                 <div class="layui-form-item">
                                     <label class="layui-form-label">电话</label>
                                     <div class="layui-input-block">
-                                        <input type="text" name="tel" lay-verify="required|phone" lay-reqtext="电话不能为空" th:value="${employee.cellphone}"
+                                        <input type="text" name="cellphone" lay-verify="required|phone" lay-reqtext="电话不能为空" th:value="${employee.cellphone}"
                                                autocomplete="off" placeholder="请输入电话" class="layui-input">
                                     </div>
                                 </div>
@@ -174,11 +176,8 @@
 <script src="/statics/lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
 <script src="/statics/lib/cropper/cropper.js"></script>
 <script src="/statics/lib/cropper/croppers.js"></script>
+<script src="/js/public.js"></script>
 <script type="text/javascript">
-
-
-
-
     layui.use(['form'], function () {
         var form = layui.form
             , layer = layui.layer;
@@ -200,65 +199,18 @@
                  title: '最终的提交信息'
              })
             var FormData = data.field;
-
+            PublicFun.FunPostAjax("",FormData,function (res) {
+                if(res.responseCode==200){
+                    layer.msg(res.message);
+                    window.location.reload();
+                }else {
+                    layer.msg(res.message);
+                }
+            })
             return false;
         });
 
-        function InitInfo() {
-            $.ajax({
-                url: "/userinfo/userinfo",
-                data: "",
-                dataType: "json",
-                type: "POST",
-                //请求成功时的数据1.40
-                success: function (msg) {
-                    if (msg.responseCode == "200") {
 
-                        $("#name").text(msg.data.name);
-                        if (msg.data.sex == "0") {
-                            $("#sex").text("女");
-                        } else if (msg.data.sex == "1") {
-                            $("#sex").text("男");
-                        } else {
-                            $("#sex").text("未知");
-                        }
-
-                        $("#age").text(msg.data.age);
-                        $("#phone").text(msg.data.tel);
-                        $("#company").text(msg.data.companyName);
-                        $('input[name="name"]').val(msg.data.name);
-                        $('input[name="age"]').val(msg.data.age);
-                        $('input[name="tel"]').val(msg.data.tel);
-
-                        var listData = msg.data2;
-                        //layer.msg(JSON.stringify(msg.data2[1].companyId));
-                        if (msg.data2 == null && msg.data2 == "") {
-                            layer.msg("暂无公司下拉信息");
-                        } else {
-                            var html = '';
-                            for (var i = 0; i < listData.length; i++) {
-                                html += '<option value="' + listData[i].companyId + '">' + listData[i].companyName + '</option>';
-                            }
-                            //alert(html);
-                        }
-                        $('#companyList').append(html);
-                    }
-                    //layui.form.render("select");
-                    $('#companyList').val(msg.data.companyId);
-                    layui.form.render("select");
-                },
-                //请求出错时的处理
-                error: function () {
-                    layer.msg("网络异常,请检查后再试", {
-                        icon: 2,
-                        shade: this.shade,
-                        scrollbar: false,
-                        time: 3000,
-                        shadeClose: true
-                    });
-                }
-            });
-        }
 
     });
 
