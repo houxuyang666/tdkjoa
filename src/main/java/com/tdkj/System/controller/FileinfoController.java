@@ -82,6 +82,9 @@ public class FileinfoController {
     @Value("${file.uploadImageFolder}")
     private String uploadImageFolder;
 
+    @Value("${file.uploadFile}")
+    private String uploadFile;
+
     private static final Integer width =120;
 
     private static final Integer height =60;
@@ -252,13 +255,41 @@ public class FileinfoController {
      * @return com.tdkj.System.common.OAResponse
      **/
     @RequestMapping("/download")
-    public void downloadFile(Integer fileinfoid, HttpServletResponse response) throws Exception {
+    public void download(Integer fileinfoid, HttpServletResponse response) throws Exception {
         //根据文件id在数据库中获取文件名
         Fileinfo fileinfo = this.fileinfoService.queryById(fileinfoid);
         FileuploadUtils fileuploadUtils =new FileuploadUtils();
         fileuploadUtils.Filedownload(uploadContractTemplateFile,fileinfo.getUrl(),response);
     }
 
+
+    /**
+     * @Author houxuyang
+     * @Description //TODO
+     * @Date 16:14 2020/8/11
+     * @Param
+     * @return
+     **/
+
+    /**
+     * @Author houxuyang
+     * @Description //循环下载合同附件
+     * @Date 13:35 2020/8/6
+     * @Param [fileinfoid, request, response]
+     * @return com.tdkj.System.common.OAResponse
+     **/
+    @RequestMapping("/downloadFile")
+    public void downloadFile(Integer[] employeeid, HttpServletResponse response) throws Exception {
+        FileuploadUtils fileuploadUtils =new FileuploadUtils();
+        for (int j = 0; j < employeeid.length; j++) {
+            Employee employee = this.employeeService.queryById(employeeid[j]);
+            if (null!=employee.getFileinfoid()){
+                //根据文件id在数据库中获取文件名
+                Fileinfo fileinfo = this.fileinfoService.queryById(employee.getFileinfoid());
+                fileuploadUtils.Filedownload(uploadFile,fileinfo.getUrl(),response);
+            }
+        }
+    }
 
     /**
      *
