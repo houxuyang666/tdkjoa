@@ -151,16 +151,14 @@
         function FunDownLoad(checkStatus){
             //layer.alert(checkStatus.data.length);
             var checkCount=checkStatus.data.length;
-            var employeeid="";
-            for (var i=0;i<checkCount;i++){
-                employeeid=employeeid+checkStatus.data[i].employeeid+",";
-            }
-            if(checkCount!=null&&checkCount!=""){
+
+            if(checkCount==1){
                 //执行下载附件合同操作
-                //console.log(employeeid);
-                window.location.href="/fileinfo/downloadFile?employeeid="+employeeid;
+                window.location.href="/fileinfo/downloadFile?employeeid="+checkStatus.data[0].employeeid;
+            }else if(checkCount>1){
+                layer.msg("只能对单行进行下载！！！");
             }else{
-                layer.msg("你没有选中任何行！！！");
+                layer.msg("请选择需要下载的行！！！");
             }
         }
 
@@ -177,13 +175,14 @@
     });
     //查看详细信息操作
     function FunLookDetail(data) {
-        layer.alert(JSON.stringify(data));
+        //layer.alert(JSON.stringify(data));
+        console.log(data);
         var index = layui.layer.open({
             title : "查看员工详细信息",
             type : 2,//ifream层
             maxmin: true,
             shadeClose: true,
-            area:["100%","100%"],
+            area:["80%","80%"],
             content : "/employee/renshidangandetail",
             success : function(layero, index){
                 setTimeout(function(){
