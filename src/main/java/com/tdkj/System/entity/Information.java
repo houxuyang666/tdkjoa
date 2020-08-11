@@ -1,5 +1,7 @@
 package com.tdkj.System.entity;
 
+import lombok.Data;
+
 import java.util.Date;
 import java.io.Serializable;
 
@@ -9,6 +11,7 @@ import java.io.Serializable;
  * @author makejava
  * @since 2020-08-11 09:53:40
  */
+@Data
 public class Information implements Serializable {
     private static final long serialVersionUID = -23019221290519723L;
     
@@ -41,70 +44,5 @@ public class Information implements Serializable {
     * 修改时间
     */
     private Date modifydate;
-
-
-    public Integer getInfoid() {
-        return infoid;
-    }
-
-    public void setInfoid(Integer infoid) {
-        this.infoid = infoid;
-    }
-
-    public String getInfotitle() {
-        return infotitle;
-    }
-
-    public void setInfotitle(String infotitle) {
-        this.infotitle = infotitle;
-    }
-
-    public String getInfoimg() {
-        return infoimg;
-    }
-
-    public void setInfoimg(String infoimg) {
-        this.infoimg = infoimg;
-    }
-
-    public String getInfocontent() {
-        return infocontent;
-    }
-
-    public void setInfocontent(String infocontent) {
-        this.infocontent = infocontent;
-    }
-
-    public Date getInfodate() {
-        return infodate;
-    }
-
-    public void setInfodate(Date infodate) {
-        this.infodate = infodate;
-    }
-
-    public Integer getCorpid() {
-        return corpid;
-    }
-
-    public void setCorpid(Integer corpid) {
-        this.corpid = corpid;
-    }
-
-    public Date getCreatedate() {
-        return createdate;
-    }
-
-    public void setCreatedate(Date createdate) {
-        this.createdate = createdate;
-    }
-
-    public Date getModifydate() {
-        return modifydate;
-    }
-
-    public void setModifydate(Date modifydate) {
-        this.modifydate = modifydate;
-    }
 
 }

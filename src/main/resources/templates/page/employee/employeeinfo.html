@@ -65,27 +65,27 @@
                                 </tr>
                                 <tr>
                                     <td>职务:</td>
-                                    <td><label id="job" th:text="${employee.jobtitle}">java开发</label></td>
+                                    <td><label id="jobtitle" th:text="${employee.jobtitle}">java开发</label></td>
                                 </tr>
                                 <tr>
                                     <td>联系电话:</td>
-                                    <td><label id="phone" th:text="${employee.cellphone}">15225513715</label></td>
+                                    <td><label id="cellphone" th:text="${employee.cellphone}">15225513715</label></td>
                                 </tr>
                                 <tr>
                                     <td>所属部门:</td>
-                                    <td><label id="company" th:text="${employee.departmentid}">研发事业部</label></td>
+                                    <td><label id="deptname" th:text="${employee.deptname}">研发事业部</label></td>
                                 </tr>
                                 <tr>
                                     <td>创建时间:</td>
-                                    <td><label id="time" th:text="${#dates.format(employee.createdate, 'yyyy-MM-dd HH:mm:ss')}">2020-8-11</label></td>
+                                    <td><label id="createdate" th:text="${#dates.format(employee.createdate, 'yyyy-MM-dd HH:mm:ss')}">2020-8-11</label></td>
                                 </tr>
                                 <tr>
                                     <td>入职时间:</td>
-                                    <td><label id="ruzhitime" th:text="${#dates.format(employee.entrydate, 'yyyy年MM月dd日')}">2020-8-11</label></td>
+                                    <td><label id="entrydate" th:text="${#dates.format(employee.entrydate, 'yyyy年MM月dd日')}">2020-8-11</label></td>
                                 </tr>
                                 <tr>
                                     <td>转正时间:</td>
-                                    <td><label id="zhuanzhengtime" th:text="${#dates.format(employee.regulardate, 'yyyy年MM月dd日')}">2020-8-11</label></td>
+                                    <td><label id="regulardate" th:text="${#dates.format(employee.regulardate, 'yyyy年MM月dd日')}">2020-8-11</label></td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -199,7 +199,7 @@
                  title: '最终的提交信息'
              })
             var FormData = data.field;
-            PublicFun.FunPostAjax("",FormData,function (res) {
+            PublicFun.FunPostAjax("/employee/updateemployee",FormData,function (res) {
                 if(res.responseCode==200){
                     layer.msg(res.message);
                     window.location.reload();

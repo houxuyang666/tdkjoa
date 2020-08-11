@@ -34,8 +34,7 @@ import java.util.UUID;
 
 import static com.tdkj.System.common.OAResultCode.HTTP_RNS_CODE_200;
 import static com.tdkj.System.common.OAResultCode.HTTP_RNS_CODE_500;
-import static com.tdkj.System.common.OAResultType.ADD_SUCCESS;
-import static com.tdkj.System.common.OAResultType.FIND_SUCCESS;
+import static com.tdkj.System.common.OAResultType.*;
 
 /**
  * (Employee)表控制层
@@ -242,7 +241,13 @@ public class EmployeeController {
         return "page/employee/employeeinfo";
     }
 */
-
+    /**
+     * @Author houxuyang
+     * @Description //跳转个人信息页面 获取员工个人信息返回到页面
+     * @Date 14:32 2020/8/11
+     * @Param []
+     * @return org.springframework.web.servlet.ModelAndView
+     **/
     @RequestMapping("/goemployeeinfo")
     public ModelAndView goemployeeinfo(){
         log.info("goemployeeinfo");
@@ -255,7 +260,13 @@ public class EmployeeController {
     }
 
 
-
+    /**
+     * @Author houxuyang
+     * @Description //修改员工头像
+     * @Date 14:33 2020/8/11
+     * @Param [headimage]
+     * @return com.tdkj.System.common.OAResponse
+     **/
     @ResponseBody
     @RequestMapping("/updateemployeeimage")
     public OAResponse updateemployeeimage(@RequestParam( value ="headimage",required = false) MultipartFile headimage) {
@@ -276,4 +287,29 @@ public class EmployeeController {
         }
         return OAResponse.setResult(HTTP_RNS_CODE_500,"头像修改失败，未找到头像");
     }
+
+
+
+
+    @ResponseBody
+    @RequestMapping("/updateemployee")
+    public OAResponse updateemployee(Integer employeeid,String name,Integer gender,Integer age,String cellphone,
+                                     String idcardnumber,String email ,String address) {
+        log.info("修改个人信息");
+        Employee employee =this.employeeService.queryById(employeeid);
+        if(null!=employee){
+            employee.setName(name);
+            employee.setGender(gender);
+            employee.setAge(age);
+            employee.setCellphone(cellphone);
+            employee.setIdcardnumber(idcardnumber);
+            employee.setEmail(email);
+            employee.setAddress(address);
+            employeeService.update(employee);
+            return OAResponse.setResult(HTTP_RNS_CODE_200,UPDATE_SUCCESS);
+        }
+        return OAResponse.setResult(HTTP_RNS_CODE_200,UPDATE_FAULT);
+    }
+
+
 }
