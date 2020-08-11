@@ -1,10 +1,216 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:shiro="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>人事档案</title>
+    <link rel="stylesheet" href="/statics/lib/layui-v2.5.5/css/layui.css" media="all">
+    <link rel="stylesheet" href="/css/public.css" media="all">
+    <link rel="stylesheet" href="/css/themes/default.css" media="all">
+    <link rel="stylesheet" href="/statics/lib/font-awesome-4.7.0/css/font-awesome.min.css" media="all">
 </head>
 <body>
-<p>人事档案</p>
+<div class="layuimini-container">
+    <div class="layuimini-main">
+        <blockquote class="layui-elem-quote">
+            人事档案列表<br>
+        </blockquote>
+        <div>
+
+            <fieldset class="table-search-fieldset">
+                <legend>搜索信息</legend>
+                <div style="margin: 10px 10px 10px 10px">
+                    <form class="layui-form layui-form-pane" action="">
+                        <div class="layui-form-item">
+                            <div class="layui-inline">
+                                <label class="layui-form-label">员工名称</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="name" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-inline">
+                                <label class="layui-form-label">证件号码</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="idcardnumber" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-inline">
+                                <button type="submit" class="layui-btn layui-btn-primary"  lay-submit lay-filter="searchBtn"><i class="layui-icon"></i> 搜 索</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </fieldset>
+
+
+            <table id="danganList" lay-filter="danganList" class="layui-hide"></table>
+
+
+            <script type="text/html" id="toolbar">
+                <div class="layui-btn-container">
+                    <button class="layui-btn layui-btn-warm layui-btn-sm " lay-event="downloadHT"><i class="layui-icon">&#xe66e;</i>下载合同附件
+                    </button>
+                    <button class="layui-btn layui-btn-normal layui-btn-sm " lay-event="refresh"><i class="layui-icon">&#xe669;</i>刷新
+                    </button>
+                </div>
+            </script>
+
+            <script type="text/html" id="currentTableBar">
+                <a   class="layui-btn layui-btn-xs " lay-event="LookDetail"><i class="layui-icon">&#xe60a;</i>详细信息</a>
+            </script>
+
+        </div>
+    </div>
+</div>
+
+<script src="/statics/lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
+<script src="/js/public.js" charset="utf-8"></script>
+<script type="text/javascript" th:inline="none">
+    PublicFun.ImportJs("/statics/lib/jquery-3.4.1/jquery-3.4.1.min.js");
+    layui.use(['form', 'table'], function () {
+        var $ = layui.jquery,
+            form = layui.form,
+            table = layui.table;
+
+        //实例化表格
+        table.render({
+            elem: '#danganList',
+            url: '/employee/selectemployee',
+            toolbar: '#toolbar',
+            defaultToolbar: ['filter', 'exports', 'print'],
+            parseData: function (res) { //res 即为原始返回的数据
+                return {
+                    "code": res.code, //解析接口状态
+                    "msg": res.message, //解析提示文本
+                    "count": res.data.total, //解析数据长度
+                    "data": res.data.list //解析数据列表
+                };
+            },
+            cols:[[
+                {field:"checkbox",type:'checkbox'},
+                    {field:"employeeid",title:"员工ID",sort:true,width:100},
+                {field:"name",title:"姓名"},
+                {field:"deptname",title:"所属部门",},
+                {field:"jobtitle",title:"岗位",},
+                {field:"idcardnumber",title:"证件号码",width:180,sort:true},
+                {field:"status",title:"状态",templet:function (data) {
+                        if(data.status==0) return "离职";
+                        else  return "在职";
+                    }},
+                {field:"gender",title:"性别",templet:function (data) {
+                        if(data.gender==0) return "女"
+                        else if(data.gender==1) return "男"
+                        else  return "未知"
+                    }},
+                {field: "entrydate", title: "入职时间",sort:true,templet: function (d) {
+                        return layui.util.toDateString(d.entrydate, 'yyyy-MM-dd');
+                    }},
+                {field: "regulardate", title: "转正时间",sort:true,templet: function (d) {
+                        return layui.util.toDateString(d.regulardate, 'yyyy-MM-dd');
+                    }},
+                {title: '操作', toolbar: '#currentTableBar', align: "center",fixed: 'right'}
+            ]],
+            limits: [10, 15, 20, 25, 50, 100],
+            limit: 10,
+            page: true,
+        });
+
+        //搜索事件操作
+        form.on("submit(searchBtn)",function (data) {
+            var formData=data.field;//获取搜索新信息
+            //var selectText=$("#companyList").find("option:selected").text();
+            //layer.msg(selectText);
+            var canshu={
+                "name":formData.name,
+                "idcardnumber":formData.idcardnumber,
+            }
+            //搜索重载
+            table.reload("danganList",{
+                url:"/employee/selectemployee",
+                page:{
+                    curr:1
+                },
+                where:canshu
+            },"data");
+            return false;
+        });
+
+        //监听头工具栏事件
+        table.on('toolbar(danganList)', function(obj){
+            var checkStatus = table.checkStatus(obj.config.id);
+            switch(obj.event){
+                case "refresh":
+                    layui.table.reload("danganList");
+                    break;
+                case "downloadHT":
+                    FunDownLoad(checkStatus);
+                    break;
+            };
+        });
+
+        //下载附件合同操作
+        function FunDownLoad(checkStatus){
+            //layer.alert(checkStatus.data.length);
+            var checkCount=checkStatus.data.length;
+            var employeeid=[];
+            for (var i=0;i<checkCount;i++){
+                employeeid.push(checkStatus.data[i].employeeid);
+            }
+            if(checkCount!=null&&checkCount!=""){
+                //执行下载附件合同操作
+                //console.log(employeeid);
+                $.ajax({
+                    async : false,
+                    cache : false,
+                    traditional: true,//防止深度序列化
+                    type : 'POST',
+                    data : {
+                        employeeid:employeeid
+                    },
+                    url : "/fileinfo/downloadFile",// 请求的action路径
+                    error : function() {// 请求失败处理函数
+                        PublicFun.LayerMsgError("接口请求失败，请联系管理员或刷新网页");
+                    },
+                    success : function(data) {
+                      //console.log(data);
+                    }
+                });
+            }else{
+                layer.msg("你没有选中任何行！！！");
+            }
+        }
+
+        //表格操作事件
+        table.on("tool(danganList)",function (obj) {
+            var  data=obj.data;
+            switch (obj.event) {
+                case "LookDetail":
+                    FunLookDetail(data);
+                    break;
+            }
+        });
+
+    });
+    //查看详细信息操作
+    function FunLookDetail(data) {
+        layer.alert(JSON.stringify(data));
+        var index = layui.layer.open({
+            title : "查看员工详细信息",
+            type : 2,//ifream层
+            maxmin: true,
+            shadeClose: true,
+            area:["100%","100%"],
+            content : "/employee/goadd",
+            success : function(layero, index){
+                setTimeout(function(){
+                    layui.layer.tips('点击此处返回员工列表', '.layui-layer-setwin .layui-layer-close', {
+                        tips: 3
+                    });
+                },500);
+                //子页面赋值
+                var body=layer.getChildFrame("body",index);
+            }
+        })
+    }
+</script>
 </body>
 </html>

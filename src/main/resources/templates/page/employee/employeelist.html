@@ -97,7 +97,7 @@
                   {field:"checkbox",type:'checkbox'},
                   {field:"employeeid",title:"员工ID",width:100,sort:true,},
                   {field:"name",title:"姓名",width:100},
-                  {field:"deptname",title:"所属员工",width:100},
+                  {field:"deptname",title:"所属部门",width:100},
                   {field:"jobtitle",title:"岗位",width:100},
                   {field:"idcardnumber",title:"证件号码",width:200},
                   {field:"status",title:"状态",width:100,sort:true,templet:function (data) {
@@ -200,7 +200,7 @@
                     layui.table.reload("employeeList");
                     break;
                  case 'update':
-                     ToUpdateEmployee(checkStatus);
+                     //ToUpdateEmployee(checkStatus);
                      break;
             };
         });
@@ -220,6 +220,9 @@
                             tips: 3
                         });
                     },500)
+                },
+                end:function () {
+                    layui.table.reload("employeeList");
                 }
             })
         }

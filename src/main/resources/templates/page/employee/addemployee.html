@@ -364,7 +364,7 @@
             console.log(formdata);
             console.log(data.field);
             PublicFun.FunPostAjaxProcessData("/employee/add", formdata, function (res) {
-                if (res.responseCode == 0) {
+                if (res.responseCode == 200) {
                     var index =layer.alert(res.message,{title:"提示信息"},function () {
                         parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
                         parent.layer.close(index); //再执行关闭
