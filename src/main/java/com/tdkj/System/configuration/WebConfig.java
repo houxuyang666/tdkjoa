@@ -13,7 +13,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class WebConfig implements WebMvcConfigurer {
         @Override
         public void addResourceHandlers(ResourceHandlerRegistry registry) {
-            registry.addResourceHandler("/image/**").addResourceLocations("file:D:/temp/images/");
+            registry.addResourceHandler("/upload/**").addResourceLocations("file:D:/upload/");
          }
 }
 

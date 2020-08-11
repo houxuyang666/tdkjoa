@@ -68,6 +68,9 @@ public class EmployeeController {
     @Value("${file.uploadFile}")
     private String uploadFile;
 
+
+    private String upload ="/upload/images/";
+
     /**
      * @Author houxuyang
      * @Description //跳转员工列表页面
@@ -244,7 +247,7 @@ public class EmployeeController {
     public ModelAndView goemployeeinfo(){
         log.info("goemployeeinfo");
         Employee employee =this.employeeService.queryById(ShiroUtils.getPrincipal().getEmployeeid());
-        employee.setHeadimageurl(uploadImageFolder+employee.getHeadimageurl());
+        employee.setHeadimageurl(upload+employee.getHeadimageurl());
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("page/employee/employeeinfo");
         modelAndView.addObject("employee",employee);
