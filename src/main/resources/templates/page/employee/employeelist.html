@@ -50,8 +50,8 @@
                     <button  class="layui-btn layui-btn-normal layui-btn-sm " lay-event="add"><i class="layui-icon">&#xe654;</i>
                         添加
                     </button>
-                    <button class="layui-btn layui-btn-sm layui-btn-warm " lay-event="update"><i class="layui-icon">&#xe642;</i>修改
-                    </button>
+                    <!--<button class="layui-btn layui-btn-sm layui-btn-warm " lay-event="update"><i class="layui-icon">&#xe642;</i>修改
+                    </button>-->
                     <button class="layui-btn layui-btn-sm " lay-event="refresh"><i class="layui-icon">&#xe669;</i>刷新
                     </button>
                 </div>
@@ -138,10 +138,7 @@
                   {field: "regulardate", title: "转正时间",width:120,templet: function (d) {
                           return layui.util.toDateString(d.regulardate, 'yyyy-MM-dd');
                       }},
-                  {field: "departuredate", title: "离职时间",width:170,templet: function (d) {
-                          if(d.departuredate==null) return ""
-                          else return layui.util.toDateString(d.departuredate, 'yyyy-MM-dd HH:mm:ss');
-                      }},
+
                   {field:"politicstype",title:"政治面貌",width:100,sort:true,templet:function (data) {
                           if(data.politicstype==1) return "中共党员"
                           else if(data.politicstype==2) return "中共预备党员"
@@ -155,6 +152,10 @@
                   {field:"urgentlinkmanphone",title:"紧急联系电话",width:170,},
                   {field: "createdate", title: "创建时间",width:170,templet: function (d) {
                           return layui.util.toDateString(d.createdate, 'yyyy-MM-dd HH:mm:ss');
+                      }},
+                  {field: "departuredate", title: "离职时间",width:170,templet: function (d) {
+                          if(d.departuredate==null) return ""
+                          else return layui.util.toDateString(d.departuredate, 'yyyy-MM-dd HH:mm:ss');
                       }},
                   {field: "modifydate", title: "编辑时间",width:170,templet: function (d) {
                           if(d.modifydate==null) return ""
@@ -224,7 +225,7 @@
         }
 
         //打开 修改员工的弹出层
-        function ToUpdateEmployee(checkStatus){
+        /*function ToUpdateEmployee(checkStatus){
             //alert(checkStatus.length);
             if(checkStatus.data.length==1){
                 //执行修改操作
@@ -239,10 +240,10 @@
                     success: function (layero,index) {
                         //赋值
                         var  body=layer.getChildFrame("body",index);
-                           /* body.contents().find('input[name="vehicleinfoId"]').val(n.vehicleinfoId);
+                           /!* body.contents().find('input[name="vehicleinfoId"]').val(n.vehicleinfoId);
                             body.contents().find('input[name="vehicleType"]').val(n.vehicleType);
                             body.contents().find('input[name="vehicleSeatsNumber"]').val(n.vehicleSeatsNumber);
-                            body.contents().find('input[name="vehicleNumber"]').val(n.vehicleNumber);*/
+                            body.contents().find('input[name="vehicleNumber"]').val(n.vehicleNumber);*!/
                     },
                     end: function () {
                         //刷新表格
@@ -254,7 +255,7 @@
             }else {
                 layer.msg("你没有选中任何行！！！")
             }
-        }
+        }*/
 
 
         //表格操作事件
@@ -309,7 +310,7 @@
                 success:function (res) {
                     if(res.responseCode=="200"){
                         layer.msg(res.message);
-                        layui.table.reload("userList");
+                        layui.table.reload("employeeList");
                     }else {
                         layer.msg(res.message);
                     }

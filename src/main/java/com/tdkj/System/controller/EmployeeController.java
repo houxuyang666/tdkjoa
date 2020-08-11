@@ -274,6 +274,6 @@ public class EmployeeController {
             employeeService.update(employee);
             return OAResponse.setResult(HTTP_RNS_CODE_200,"头像修改成功",upload+headimageurl);
         }
-        return OAResponse.setResult(HTTP_RNS_CODE_200,"头像修改失败，未找到头像");
+        return OAResponse.setResult(HTTP_RNS_CODE_500,"头像修改失败，未找到头像");
     }
 }

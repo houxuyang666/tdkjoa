@@ -45,24 +45,47 @@
                                     </td>
                                 </tr>
                                 <tr>
+                                    <td>登录名称:</td>
+                                    <td><label id="loginName">hxy</label></td>
+                                </tr>
+                                <tr>
                                     <td>姓名:</td>
-                                    <td><label id="name" th:text="${employee.name}"></label></td>
+                                    <td><label id="name" th:text="${employee.name}">侯旭阳</label></td>
                                 </tr>
                                 <tr>
                                     <td>性别:</td>
-                                    <td><label id="gender" th:text="${employee.gender}"></label></td>
+                                    <td th:switch="${employee.gender}">
+                                        <label th:case="1">男</label>
+                                        <label th:case="0">女</label>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>年龄:</td>
-                                    <td><label id="age" th:text="${employee.age}"></label></td>
+                                    <td><label id="age" th:text="${employee.age}">23</label></td>
+                                </tr>
+                                <tr>
+                                    <td>职务:</td>
+                                    <td><label id="job" th:text="${employee.jobtitle}">java开发</label></td>
                                 </tr>
                                 <tr>
                                     <td>联系电话:</td>
-                                    <td><label id="cellphone" th:text="${employee.cellphone}" ></label></td>
+                                    <td><label id="phone" th:text="${employee.cellphone}">15225513715</label></td>
                                 </tr>
                                 <tr>
-                                    <td>所属公司:</td>
-                                    <td><label id="company">河南唐都科技有限公司</label></td>
+                                    <td>所属部门:</td>
+                                    <td><label id="company" th:text="${employee.departmentid}">研发事业部</label></td>
+                                </tr>
+                                <tr>
+                                    <td>创建时间:</td>
+                                    <td><label id="time" th:text="${#dates.format(employee.createdate, 'yyyy-MM-dd HH:mm:ss')}">2020-8-11</label></td>
+                                </tr>
+                                <tr>
+                                    <td>入职时间:</td>
+                                    <td><label id="ruzhitime" th:text="${#dates.format(employee.entrydate, 'yyyy年MM月dd日')}">2020-8-11</label></td>
+                                </tr>
+                                <tr>
+                                    <td>转正时间:</td>
+                                    <td><label id="zhuanzhengtime" th:text="${#dates.format(employee.regulardate, 'yyyy年MM月dd日')}">2020-8-11</label></td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -77,7 +100,7 @@
                                 <div class="layui-form-item">
                                     <label class="layui-form-label">姓名</label>
                                     <div class="layui-input-block">
-                                        <input type="text" name="name" lay-verify="required" lay-reqtext="姓名不能为空"
+                                        <input type="text" name="name" lay-verify="required" lay-reqtext="姓名不能为空" th:value="${employee.name}"
                                                autocomplete="off" placeholder="请输入姓名" class="layui-input">
                                     </div>
                                 </div>
@@ -85,49 +108,50 @@
                                 <div class="layui-form-item">
                                     <label class="layui-form-label">性别</label>
                                     <div class="layui-input-block">
-                                        <select name="sex" lay-filter="sex">
+                                        <select name="sex" th:field="${employee.gender}" th:value="${employee.gender}" lay-filter="sex">
                                             <option value=""></option>
-                                            <option value="1">男</option>
-                                            <option value="0">女</option>
+                                            <option value="1"  th:selected="${employee.gender=='1'}">男</option>
+                                            <option value="0"  th:selected="${employee.gender=='0'}">女</option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="layui-form-item">
                                     <label class="layui-form-label">年龄</label>
                                     <div class="layui-input-block">
-                                        <input type="text" name="age" lay-verify="age" onkeyup="value=Zhzs(this.value)"
+                                        <input type="text" name="age" lay-verify="age" onkeyup="value=Zhzs(this.value)" th:value="${employee.age}"
                                                autocomplete="off" placeholder="请输入年龄" class="layui-input">
                                     </div>
                                 </div>
                                 <div class="layui-form-item">
                                     <label class="layui-form-label">电话</label>
                                     <div class="layui-input-block">
-                                        <input type="text" name="tel" lay-verify="required|phone" lay-reqtext="电话不能为空"
+                                        <input type="text" name="tel" lay-verify="required|phone" lay-reqtext="电话不能为空" th:value="${employee.cellphone}"
                                                autocomplete="off" placeholder="请输入电话" class="layui-input">
                                     </div>
                                 </div>
-
                                 <div class="layui-form-item">
-                                    <label class="layui-form-label">所属公司</label>
+                                <label class="layui-form-label">证件号码</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="idcardnumber" lay-verify="required|identity" autocomplete="off" th:value="${employee.idcardnumber}"
+                                           placeholder="请输入证件号码"
+                                           class="layui-input">
+                                </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">邮箱</label>
                                     <div class="layui-input-block">
-                                        <select name="companyId" id="companyList" lay-verify="requiredCompany"
-                                                lay-filter="companyId">
-                                            <option value=""></option>
-
-                                        </select>
+                                        <input type="text" name="email" id="email" lay-verify="required|email"  autocomplete="off" placeholder="请输入邮箱" th:value="${employee.email}"
+                                                lay-filter="email" class="layui-input">
                                     </div>
                                 </div>
-                                <!--样式-->
+
                                 <div class="layui-form-item">
-                                   <input type="text" th:value="${employee.name}">
-                                   <input type="text" th:value="${employee.jobtitle}">
-                                   <input type="text" th:value="${employee.idcardnumber}">
-                                   <input type="text" th:value="${employee.headimageurl}">
-                                   <input type="text" th:value="${employee.username}">
+                                    <label class="layui-form-label">详细地址</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="address" id="address"  autocomplete="off" placeholder="请输入详细地址" th:value="${employee.address}"
+                                               lay-filter="address" class="layui-input">
+                                    </div>
                                 </div>
-
-                                <!--样式-->
-
                                 <div class="layui-form-item">
                                     <button class="layui-btn layui-btn-normal" lay-submit="" lay-filter="saveBtn">确认保存
                                     </button>
@@ -267,10 +291,10 @@
             ,saveH:500     //保存高度
             ,mark:1/1    //选取比例
             ,area: ['60%', '98%'] //弹窗宽度
-            ,url: '{:U("api/oss/upload_car")}'  //图片上传接口返回和（layui 的upload 模块）返回的JOSN一样
+            ,url: '/employee/updateemployeeimage'  //图片上传接口返回和（layui 的upload 模块）返回的JOSN一样
             ,pathimage:imgPath
             , done: function(res) { //上传完毕回调
-                if(res.success){
+                if(res.code==200){
                     layer.msg("保存成功");
                     $("#TuImage").find("img").attr('src',res.url);
                 }else {

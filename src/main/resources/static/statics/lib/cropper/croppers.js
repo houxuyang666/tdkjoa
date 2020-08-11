@@ -93,7 +93,7 @@ layui.config({
                         height: saveH
                     }).toBlob(function(blob){
                         var formData=new FormData();
-                        formData.append('file',blob,'head.jpg');
+                        formData.append('headimage',blob,'head.jpg');
                         $.ajax({
                             method:"post",
                             url: url, //用于文件上传的服务器端请求地址
@@ -101,12 +101,13 @@ layui.config({
                             processData: false,
                             contentType: false,
                             success:function(result){
-                                if(result.code == 0){
-                                    layer.msg(result.msg,{icon: 1});
+                                if(result.responseCode == 200){
+                                    layer.msg(result.message,{icon: 1});
                                     layer.closeAll('page');
-                                    return done(result.data.src);
-                                }else if(result.code == -1){
-                                    layer.alert(result.msg,{icon: 2});
+                                    var json={url:result.data,code:result.responseCode};
+                                    return done(json);
+                                }else{
+                                    layer.alert(result.message,{icon: 2});
                                 }
 
                             }
