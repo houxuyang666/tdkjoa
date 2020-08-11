@@ -271,7 +271,8 @@ public class EmployeeController {
             headimageurl = fileuploadUtils.Fileupload(headimage,uploadImageFolder,"头像",employee.getName());
             //employee.setHeadimageurl(headimageurl);
             log.info("头像修改成功");
+            return OAResponse.setResult(HTTP_RNS_CODE_200,"头像修改成功",upload+headimageurl);
         }
-        return OAResponse.setResult(HTTP_RNS_CODE_200,"头像修改成功",upload+headimageurl);
+        return OAResponse.setResult(HTTP_RNS_CODE_200,"头像修改失败，未找到头像");
     }
 }
