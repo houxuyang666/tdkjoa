@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tdkj.System.dao.InformationDao">
+
+    <resultMap type="com.tdkj.System.entity.Information" id="InformationMap">
+        <result property="infoid" column="InfoId" jdbcType="INTEGER"/>
+        <result property="infotitle" column="InfoTitle" jdbcType="VARCHAR"/>
+        <result property="infoimg" column="InfoImg" jdbcType="VARCHAR"/>
+        <result property="infocontent" column="InfoContent" jdbcType="VARCHAR"/>
+        <result property="infodate" column="InfoDate" jdbcType="TIMESTAMP"/>
+        <result property="corpid" column="CorpId" jdbcType="INTEGER"/>
+        <result property="createdate" column="CreateDate" jdbcType="TIMESTAMP"/>
+        <result property="modifydate" column="ModifyDate" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="InformationMap">
+        select
+          InfoId, InfoTitle, InfoImg, InfoContent, InfoDate, CorpId, CreateDate, ModifyDate
+        from information
+        where InfoId = #{infoid}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="InformationMap">
+        select
+          InfoId, InfoTitle, InfoImg, InfoContent, InfoDate, CorpId, CreateDate, ModifyDate
+        from information
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="InformationMap">
+        select
+        InfoId, InfoTitle, InfoImg, InfoContent, InfoDate, CorpId, CreateDate, ModifyDate
+        from information
+        <where>
+            <if test="infoid != null">
+                and InfoId = #{infoid}
+            </if>
+            <if test="infotitle != null and infotitle != ''">
+                and InfoTitle = #{infotitle}
+            </if>
+            <if test="infoimg != null and infoimg != ''">
+                and InfoImg = #{infoimg}
+            </if>
+            <if test="infocontent != null and infocontent != ''">
+                and InfoContent = #{infocontent}
+            </if>
+            <if test="infodate != null">
+                and InfoDate = #{infodate}
+            </if>
+            <if test="corpid != null">
+                and CorpId = #{corpid}
+            </if>
+            <if test="createdate != null">
+                and CreateDate = #{createdate}
+            </if>
+            <if test="modifydate != null">
+                and ModifyDate = #{modifydate}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="infoid" useGeneratedKeys="true">
+        insert into information(InfoTitle, InfoImg, InfoContent, InfoDate, CorpId, CreateDate, ModifyDate)
+        values (#{infotitle}, #{infoimg}, #{infocontent}, #{infodate}, #{corpid}, #{createdate}, #{modifydate})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update information
+        <set>
+            <if test="infotitle != null and infotitle != ''">
+                InfoTitle = #{infotitle},
+            </if>
+            <if test="infoimg != null and infoimg != ''">
+                InfoImg = #{infoimg},
+            </if>
+            <if test="infocontent != null and infocontent != ''">
+                InfoContent = #{infocontent},
+            </if>
+            <if test="infodate != null">
+                InfoDate = #{infodate},
+            </if>
+            <if test="corpid != null">
+                CorpId = #{corpid},
+            </if>
+            <if test="createdate != null">
+                CreateDate = #{createdate},
+            </if>
+            <if test="modifydate != null">
+                ModifyDate = #{modifydate},
+            </if>
+        </set>
+        where InfoId = #{infoid}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from information where InfoId = #{infoid}
+    </delete>
+
+</mapper>
