@@ -1,10 +1,117 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>danan </title>
+    <title>用户资料卡</title>
+    <link rel="stylesheet" href="/statics/lib/layui-v2.5.5/css/layui.css" media="all">
+    <link rel="stylesheet" href="/css/public.css" media="all">
+    <link rel="stylesheet" href="/statics/lib/cropper/cropper.css" media="all">
+    <style type="text/css">
+        #TuImage {
+            text-align: center;
+        }
+
+        #TuImage img {
+            width: 150px;
+            height: 100px;
+            margin: 10px auto;
+            border-radius: 50%;
+        }
+    </style>
 </head>
 <body>
+<div class="layuimini-container">
+    <div class="layuimini-main">
+        <blockquote class="layui-elem-quote layui-text" style="margin-bottom: 10px">
+            这是员工的资料卡
+        </blockquote>
+        <fieldset class="layui-elem-field layui-field-title"></fieldset>
+        <div style="padding: 20px;background-color: #F2F2F2;">
+            <div class="layui-card">
+                <div class="layui-card-header" style="">个人资料</div>
+                <div class="layui-card-body" style="padding: 20px;">
+                    <table class="layui-table" lay-skin="line">
+                        <colgroup>
+                            <col width="80">
+                            <col width="150">
+                        </colgroup>
+                        <tbody>
+                        <tr>
+                            <td id="TuImage" colspan="2">
+                                <img th:src="@{${employee.headimageurl}}"/><br/>
+                                <!--<img src="/images/bg.jpg"/>-->
+                                <a href="javascript:;" id="UpdateImg">修改图像</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>登录名称:</td>
+                            <td><label id="loginName">hxy</label></td>
+                        </tr>
+                        <tr>
+                            <td>姓名:</td>
+                            <td><label id="name">侯旭阳</label></td>
+                        </tr>
+                        <tr>
+                            <td>性别:</td>
+                            <td>
+                                <label id="gender">男</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>年龄:</td>
+                            <td><label id="age">23</label></td>
+                        </tr>
+                        <tr>
+                            <td>职务:</td>
+                            <td><label id="jobtitle">java开发</label></td>
+                        </tr>
+                        <tr>
+                            <td>联系电话:</td>
+                            <td><label id="cellphone">15225513715</label></td>
+                        </tr>
+                        <tr>
+                            <td>所属部门:</td>
+                            <td><label id="deptname">研发事业部</label></td>
+                        </tr>
+                        <tr>
+                            <td>创建时间:</td>
+                            <td><label id="createdate">2020-8-11</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>入职时间:</td>
+                            <td><label id="entrydate">2020-8-11</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>转正时间:</td>
+                            <td><label id="regulardate">2020-8-11</label>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+
+<script src="/statics/lib/jquery-3.4.1/jquery-3.4.1.min.js" charset="utf-8"></script>
+<script src="/statics/lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
+<script src="/js/public.js"></script>
+<script type="text/javascript">
+    layui.use(['form'], function () {
+        var form = layui.form
+            , layer = layui.layer;
+
+    });
+
+
+</script>
+
 
 </body>
 </html>

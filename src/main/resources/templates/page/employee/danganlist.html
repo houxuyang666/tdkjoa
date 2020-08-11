@@ -151,29 +151,14 @@
         function FunDownLoad(checkStatus){
             //layer.alert(checkStatus.data.length);
             var checkCount=checkStatus.data.length;
-            var employeeid=[];
+            var employeeid="";
             for (var i=0;i<checkCount;i++){
-                employeeid.push(checkStatus.data[i].employeeid);
+                employeeid=employeeid+checkStatus.data[i].employeeid+",";
             }
             if(checkCount!=null&&checkCount!=""){
                 //执行下载附件合同操作
                 //console.log(employeeid);
-                $.ajax({
-                    async : false,
-                    cache : false,
-                    traditional: true,//防止深度序列化
-                    type : 'POST',
-                    data : {
-                        employeeid:employeeid
-                    },
-                    url : "/fileinfo/downloadFile",// 请求的action路径
-                    error : function() {// 请求失败处理函数
-                        PublicFun.LayerMsgError("接口请求失败，请联系管理员或刷新网页");
-                    },
-                    success : function(data) {
-                      //console.log(data);
-                    }
-                });
+                window.location.href="fileinfo/downloadFile?employeeid="+employeeid;
             }else{
                 layer.msg("你没有选中任何行！！！");
             }
@@ -199,7 +184,7 @@
             maxmin: true,
             shadeClose: true,
             area:["100%","100%"],
-            content : "/employee/goadd",
+            content : "/employee/renshidangandetail",
             success : function(layero, index){
                 setTimeout(function(){
                     layui.layer.tips('点击此处返回员工列表', '.layui-layer-setwin .layui-layer-close', {

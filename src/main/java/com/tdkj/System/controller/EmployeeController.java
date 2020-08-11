@@ -88,6 +88,12 @@ public class EmployeeController {
         return "page/employee/danganlist";
     }
 
+    //跳转到人事档案详情界面
+    @RequestMapping("/renshidangandetail")
+    public String renshidangandetail() {
+        return "page/employee/dangandetail";
+    }
+
     @ResponseBody
     @RequestMapping("/selectemployee")
     public OAResponseList selectemployee(Integer page, Integer limit,String name,String idcardnumber) {
