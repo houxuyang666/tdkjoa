@@ -82,6 +82,14 @@ public class FileinfoController {
     @Value("${file.uploadImageFolder}")
     private String uploadImageFolder;
 
+    private static final Integer width =120;
+
+    private static final Integer height =60;
+
+    private static final String png ="png";
+
+
+
     /*跳转查询合同页面*/
     @RequestMapping("/goselectfile")
     public String goselectfile() {
@@ -114,7 +122,6 @@ public class FileinfoController {
     public String goadd() {
         return "page/file/addfileinfo";
     }
-
 
 
    /* @RequestMapping("/goadd")
@@ -196,9 +203,9 @@ public class FileinfoController {
         String url = uploadImageFolder+signurl; //图片路径
         String templateurl = uploadContractTemplateFile+fileinfo.getUrl(); //文件路径
         Map<String, Object> header = new HashMap<String, Object>(); //存图片
-        header.put("width", 120);
-        header.put("height", 60);
-        header.put("type", "png");
+        header.put("width", width);
+        header.put("height", height);
+        header.put("type", png);
         header.put("content", url);//图片路径
         Map<String, Object> param = new HashMap<String, Object>(); //图片或者文本的
         param.put("imgSign" , header);
