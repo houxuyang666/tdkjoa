@@ -32,6 +32,18 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     /**
+     * @Author houxuyang
+     * @Description //获取VO
+     * @Date 11:16 2020/8/11
+     * @Param [employeeid]
+     * @return com.tdkj.System.entity.VO.EmployeeVO
+     **/
+    @Override
+    public EmployeeVO queryemployeeVOById(Integer employeeid) {
+        return this.employeeDao.queryemployeeVOById(employeeid);
+    }
+
+    /**
      * 查询多条数据
      *
      * @param offset 查询起始位置

@@ -22,6 +22,15 @@ public interface EmployeeService {
     Employee queryById(Integer employeeid);
 
     /**
+     * @Author houxuyang
+     * @Description //获取vo
+     * @Date 11:15 2020/8/11
+     * @Param [employeeid]
+     * @return com.tdkj.System.entity.VO.EmployeeVO
+     **/
+    EmployeeVO queryemployeeVOById(Integer employeeid);
+
+    /**
      * 查询多条数据
      *
      * @param offset 查询起始位置

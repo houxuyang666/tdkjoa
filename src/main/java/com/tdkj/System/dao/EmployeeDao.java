@@ -110,5 +110,12 @@ public interface EmployeeDao {
 
     List<EmployeeVO> queryAllMail(Integer corpid,String name,String cellphone);
 
-
+    /**
+     * @Author houxuyang
+     * @Description //获取VO
+     * @Date 11:16 2020/8/11
+     * @Param [employeeid]
+     * @return com.tdkj.System.entity.VO.EmployeeVO
+     **/
+    EmployeeVO queryemployeeVOById(Integer employeeid);
 }

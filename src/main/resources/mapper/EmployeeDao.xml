@@ -384,4 +384,49 @@
             </if>
         </where>
     </select>
+
+
+    <select id="queryemployeeVOById" resultType="com.tdkj.System.entity.VO.EmployeeVO">
+        select e.EmployeeId as employeeid,
+            e.CorpId as corpid,
+            c.CorpName as  corpname,
+            e.DepartmentId as  departmentid,
+            d.DeptName as deptname,
+            e.SuperID as superid,
+						u.UserName as username,
+            e.Name as name,
+            e.JobTitle as jobtitle,
+            e.IdcardType as idcardtype,
+            e.IdcardNumber as idcardnumber,
+            u.Status as userstatus,
+            e.Status as status,
+            e.Gender as gender,
+            e.Age as age,
+            e.Nation as nation,
+            e.EduLevel as edulevel,
+            e.Birthday	as birthday,
+            e.Address as address,
+            e.EntryDate as entrydate,
+            e.RegularDate as regulardate,
+            e.DepartureDate as departuredate,
+            e.HeadimageUrl as headimageurl,
+            e.PoliticsType as politicstype,
+            e.CellPhone as cellphone,
+            e.email as email,
+            e.UrgentLinkMan as urgentlinkman,
+            e.UrgentLinkManPhone as  urgentlinkmanphone,
+            e.PositiveIdCardImageurl as positiveidcardimageurl,
+            e.NegativeIdCardImageurl as negativeidcardimageurl,
+            e.FileinfoId as fileinfoid,
+            f.URL as fileUrl,
+            e.CreateDate as createdate,
+            e.ModifyDate as modifydate
+        from employee e LEFT join corpbasicinfo c on e.CorpId =c.CorpId
+            LEFT JOIN  department d on e.DepartmentId =d.DeptId
+            LEFT JOIN fileinfo f on e.FileinfoId =f.FileInfoID
+            LEFT JOIN user u on e.EmployeeId =u.EmployeeId
+						WHERE e.EmployeeId = #{employeeid}
+    </select>
+
+
 </mapper>

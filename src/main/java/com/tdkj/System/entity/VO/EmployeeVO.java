@@ -31,8 +31,10 @@ public class EmployeeVO implements Serializable {
      * 部门ID 关联部门表
      */
     private Integer departmentid;
-
-
+    /**
+     * 账号登陆密码
+     */
+    private String username;
     /**
      * 部门名称
      */

@@ -246,11 +246,11 @@ public class EmployeeController {
     @RequestMapping("/goemployeeinfo")
     public ModelAndView goemployeeinfo(){
         log.info("goemployeeinfo");
-        Employee employee =this.employeeService.queryById(ShiroUtils.getPrincipal().getEmployeeid());
-        employee.setHeadimageurl(upload+employee.getHeadimageurl());
+        EmployeeVO employeeVO =employeeService.queryemployeeVOById(ShiroUtils.getPrincipal().getEmployeeid());
+        employeeVO.setHeadimageurl(upload+employeeVO.getHeadimageurl());
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("page/employee/employeeinfo");
-        modelAndView.addObject("employee",employee);
+        modelAndView.addObject("employee",employeeVO);
         return modelAndView;
     }
 
