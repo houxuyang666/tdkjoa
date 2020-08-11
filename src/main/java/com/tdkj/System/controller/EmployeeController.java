@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -233,9 +234,21 @@ public class EmployeeController {
      * @Param []
      * @return java.lang.String
      **/
-    @RequestMapping("/goemployeeinfo")
+  /*  @RequestMapping("/goemployeeinfo")
     public String goemployeeinfo() {
         return "page/employee/employeeinfo";
+    }
+*/
+
+    @RequestMapping("/goemployeeinfo")
+    public ModelAndView goemployeeinfo(){
+        log.info("goemployeeinfo");
+        Employee employee =this.employeeService.queryById(ShiroUtils.getPrincipal().getEmployeeid());
+        employee.setHeadimageurl(uploadImageFolder+employee.getHeadimageurl());
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("page/employee/employeeinfo");
+        modelAndView.addObject("employee",employee);
+        return modelAndView;
     }
 
 
@@ -245,16 +258,17 @@ public class EmployeeController {
     public OAResponse updateemployeeimage(@RequestParam( value ="headimage",required = false) MultipartFile headimage) {
         log.info("修改头像");
         Employee employee =this.employeeService.queryById(ShiroUtils.getPrincipal().getEmployeeid());
+        String headimageurl=null;
         if(null!=headimage&&headimage.getSize()>0){
             //上传头像照 并返回url
             FileuploadUtils fileuploadUtils =new FileuploadUtils();
             //删除原始头像
             fileuploadUtils.Filedelete(uploadImageFolder,employee.getHeadimageurl());
             //上传新头像
-            String headimageurl = fileuploadUtils.Fileupload(headimage,uploadImageFolder,"头像",employee.getName());
+            headimageurl = fileuploadUtils.Fileupload(headimage,uploadImageFolder,"头像",employee.getName());
             //employee.setHeadimageurl(headimageurl);
             log.info("头像修改成功");
         }
-        return OAResponse.setResult(HTTP_RNS_CODE_200,"头像修改成功");
+        return OAResponse.setResult(HTTP_RNS_CODE_200,"头像修改成功",uploadImageFolder+headimageurl);
     }
 }

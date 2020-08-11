@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>用户资料卡</title>
@@ -116,6 +116,15 @@
                                         </select>
                                     </div>
                                 </div>
+                                <!--样式-->
+                                <div class="layui-form-item">
+                                   <input type="text" th:value="${employee.name}">
+                                   <input type="text" th:value="${employee.jobtitle}">
+                                   <input type="text" th:value="${employee.idcardnumber}">
+                                   <input type="text" th:value="${employee.headimageurl}">
+                                </div>
+
+                                <!--样式-->
 
                                 <div class="layui-form-item">
                                     <button class="layui-btn layui-btn-normal" lay-submit="" lay-filter="saveBtn">确认保存
