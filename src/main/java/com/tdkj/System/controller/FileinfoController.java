@@ -265,29 +265,19 @@ public class FileinfoController {
 
     /**
      * @Author houxuyang
-     * @Description //TODO
-     * @Date 16:14 2020/8/11
-     * @Param
-     * @return
-     **/
-
-    /**
-     * @Author houxuyang
-     * @Description //循环下载合同附件
+     * @Description //循环下载员工合同附件
      * @Date 13:35 2020/8/6
      * @Param [fileinfoid, request, response]
      * @return com.tdkj.System.common.OAResponse
      **/
     @RequestMapping("/downloadFile")
-    public void downloadFile(Integer[] employeeid, HttpServletResponse response) throws Exception {
-        FileuploadUtils fileuploadUtils =new FileuploadUtils();
-        for (int j = 0; j < employeeid.length; j++) {
-            Employee employee = this.employeeService.queryById(employeeid[j]);
-            if (null!=employee.getFileinfoid()){
-                //根据文件id在数据库中获取文件名
-                Fileinfo fileinfo = this.fileinfoService.queryById(employee.getFileinfoid());
-                fileuploadUtils.Filedownload(uploadFile,fileinfo.getUrl(),response);
-            }
+    public void downloadFile(Integer employeeid, HttpServletResponse response) throws Exception {
+        Employee employee = this.employeeService.queryById(employeeid);
+        if (null!=employee.getFileinfoid()){
+            //根据文件id在数据库中获取文件名
+           Fileinfo fileinfo = this.fileinfoService.queryById(employee.getFileinfoid());
+           FileuploadUtils fileuploadUtils =new FileuploadUtils();
+           fileuploadUtils.Filedownload(uploadFile,fileinfo.getUrl(),response);
         }
     }
 
