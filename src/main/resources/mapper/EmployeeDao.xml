@@ -284,6 +284,7 @@
             e.Nation as nation,
             e.EduLevel as edulevel,
             e.Birthday	as birthday,
+            e.Address as address,
             e.EntryDate as entrydate,
             e.RegularDate as regulardate,
             e.DepartureDate as departuredate,
