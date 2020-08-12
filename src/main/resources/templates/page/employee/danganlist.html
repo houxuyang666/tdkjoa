@@ -9,13 +9,15 @@
     <link rel="stylesheet" href="/statics/lib/font-awesome-4.7.0/css/font-awesome.min.css" media="all">
 </head>
 <body>
+<input type="hidden" id="headimageurl">
+<input type="hidden" id="positiveidcardimageurl">
+<input type="hidden" id="negativeidcardimageurl">
 <div class="layuimini-container">
     <div class="layuimini-main">
         <blockquote class="layui-elem-quote">
             人事档案列表<br>
         </blockquote>
         <div>
-
             <fieldset class="table-search-fieldset">
                 <legend>搜索信息</legend>
                 <div style="margin: 10px 10px 10px 10px">
@@ -34,7 +36,9 @@
                                 </div>
                             </div>
                             <div class="layui-inline">
-                                <button type="submit" class="layui-btn layui-btn-primary"  lay-submit lay-filter="searchBtn"><i class="layui-icon"></i> 搜 索</button>
+                                <button type="submit" class="layui-btn layui-btn-primary" lay-submit
+                                        lay-filter="searchBtn"><i class="layui-icon"></i> 搜 索
+                                </button>
                             </div>
                         </div>
                     </form>
@@ -55,7 +59,7 @@
             </script>
 
             <script type="text/html" id="currentTableBar">
-                <a   class="layui-btn layui-btn-xs " lay-event="LookDetail"><i class="layui-icon">&#xe60a;</i>详细信息</a>
+                <a class="layui-btn layui-btn-xs " lay-event="LookDetail"><i class="layui-icon">&#xe60a;</i>详细信息</a>
             </script>
 
         </div>
@@ -85,29 +89,37 @@
                     "data": res.data.list //解析数据列表
                 };
             },
-            cols:[[
-                {field:"checkbox",type:'checkbox'},
-                    {field:"employeeid",title:"员工ID",sort:true,width:100},
-                {field:"name",title:"姓名"},
-                {field:"deptname",title:"所属部门",},
-                {field:"jobtitle",title:"岗位",},
-                {field:"idcardnumber",title:"证件号码",width:180,sort:true},
-                {field:"status",title:"状态",templet:function (data) {
-                        if(data.status==0) return "离职";
-                        else  return "在职";
-                    }},
-                {field:"gender",title:"性别",templet:function (data) {
-                        if(data.gender==0) return "女"
-                        else if(data.gender==1) return "男"
-                        else  return "未知"
-                    }},
-                {field: "entrydate", title: "入职时间",sort:true,templet: function (d) {
+            cols: [[
+                {field: "checkbox", type: 'checkbox'},
+                {field: "employeeid", title: "员工ID", sort: true, width: 100},
+                {field: "name", title: "姓名"},
+                {field: "deptname", title: "所属部门",},
+                {field: "jobtitle", title: "岗位",},
+                {field: "idcardnumber", title: "证件号码", width: 180, sort: true},
+                {
+                    field: "status", title: "状态", templet: function (data) {
+                        if (data.status == 0) return "离职";
+                        else return "在职";
+                    }
+                },
+                {
+                    field: "gender", title: "性别", templet: function (data) {
+                        if (data.gender == 0) return "女"
+                        else if (data.gender == 1) return "男"
+                        else return "未知"
+                    }
+                },
+                {
+                    field: "entrydate", title: "入职时间", sort: true, templet: function (d) {
                         return layui.util.toDateString(d.entrydate, 'yyyy-MM-dd');
-                    }},
-                {field: "regulardate", title: "转正时间",sort:true,templet: function (d) {
+                    }
+                },
+                {
+                    field: "regulardate", title: "转正时间", sort: true, templet: function (d) {
                         return layui.util.toDateString(d.regulardate, 'yyyy-MM-dd');
-                    }},
-                {title: '操作', toolbar: '#currentTableBar', align: "center",fixed: 'right'}
+                    }
+                },
+                {title: '操作', toolbar: '#currentTableBar', align: "center", fixed: 'right'}
             ]],
             limits: [10, 15, 20, 25, 50, 100],
             limit: 10,
@@ -115,56 +127,57 @@
         });
 
         //搜索事件操作
-        form.on("submit(searchBtn)",function (data) {
-            var formData=data.field;//获取搜索新信息
+        form.on("submit(searchBtn)", function (data) {
+            var formData = data.field;//获取搜索新信息
             //var selectText=$("#companyList").find("option:selected").text();
             //layer.msg(selectText);
-            var canshu={
-                "name":formData.name,
-                "idcardnumber":formData.idcardnumber,
+            var canshu = {
+                "name": formData.name,
+                "idcardnumber": formData.idcardnumber,
             }
             //搜索重载
-            table.reload("danganList",{
-                url:"/employee/selectemployee",
-                page:{
-                    curr:1
+            table.reload("danganList", {
+                url: "/employee/selectemployee",
+                page: {
+                    curr: 1
                 },
-                where:canshu
-            },"data");
+                where: canshu
+            }, "data");
             return false;
         });
 
         //监听头工具栏事件
-        table.on('toolbar(danganList)', function(obj){
+        table.on('toolbar(danganList)', function (obj) {
             var checkStatus = table.checkStatus(obj.config.id);
-            switch(obj.event){
+            switch (obj.event) {
                 case "refresh":
                     layui.table.reload("danganList");
                     break;
                 case "downloadHT":
                     FunDownLoad(checkStatus);
                     break;
-            };
+            }
+            ;
         });
 
         //下载附件合同操作
-        function FunDownLoad(checkStatus){
+        function FunDownLoad(checkStatus) {
             //layer.alert(checkStatus.data.length);
-            var checkCount=checkStatus.data.length;
+            var checkCount = checkStatus.data.length;
 
-            if(checkCount==1){
+            if (checkCount == 1) {
                 //执行下载附件合同操作
-                window.location.href="/fileinfo/downloadFile?employeeid="+checkStatus.data[0].employeeid;
-            }else if(checkCount>1){
+                window.location.href = "/fileinfo/downloadFile?employeeid=" + checkStatus.data[0].employeeid;
+            } else if (checkCount > 1) {
                 layer.msg("只能对单行进行下载！！！");
-            }else{
+            } else {
                 layer.msg("请选择需要下载的行！！！");
             }
         }
 
         //表格操作事件
-        table.on("tool(danganList)",function (obj) {
-            var  data=obj.data;
+        table.on("tool(danganList)", function (obj) {
+            var data = obj.data;
             switch (obj.event) {
                 case "LookDetail":
                     FunLookDetail(data);
@@ -173,27 +186,77 @@
         });
 
     });
+
     //查看详细信息操作
     function FunLookDetail(data) {
-        //layer.alert(JSON.stringify(data));
-        console.log(data);
+        //console.log(data);
+        //input框赋值;
+        $("#headimageurl").val(data.headimageurl);
+        $("#positiveidcardimageurl").val(data.positiveidcardimageurl);
+        $("#negativeidcardimageurl").val(data.negativeidcardimageurl);
         var index = layui.layer.open({
-            title : "查看员工详细信息",
-            type : 2,//ifream层
+            title: "查看员工详细信息",
+            type: 2,//ifream层
             maxmin: true,
             shadeClose: true,
-            area:["80%","80%"],
-            content : "/employee/renshidangandetail",
-            success : function(layero, index){
-                setTimeout(function(){
+            area: ["80%", "80%"],
+            content: "/employee/renshidangandetail",
+            success: function (layero, index) {
+                setTimeout(function () {
                     layui.layer.tips('点击此处返回员工列表', '.layui-layer-setwin .layui-layer-close', {
                         tips: 3
                     });
-                },500);
+                }, 500);
                 //子页面赋值
-                var body=layer.getChildFrame("body",index);
+                var body = layer.getChildFrame("body", index);
+                body.contents().find("#username").text(data.username);
+                body.contents().find("#name").text(data.name);
+                body.contents().find("#jobtitle").text(data.jobtitle);
+                body.contents().find("#corpname").text(data.corpname);
+                body.contents().find("#email").text(data.email);
+                body.contents().find("#createdate").text(PublicFun.FormatDate(data.createdate, "yyyy-MM-dd"));
+                if (data.idcardtype == 1)
+                    body.contents().find("#idcardtype").text("身份证");
+                else
+                    body.contents().find("#idcardtype").text("其他");
+                body.contents().find("#idcardnumber").text(data.idcardnumber);
+                if (data.gender == 1)
+                    body.contents().find("#gender").text("男");
+                else if (data.gender == 0)
+                    body.contents().find("#gender").text("女");
+                else
+                    body.contents().find("#gender").text("未知");
+                body.contents().find("#age").text(data.age);
+                body.contents().find("#edulevel").text(FunEdulevel(data.edulevel));
+                body.contents().find("#nation").text(data.nation);
+                body.contents().find("#address").text(data.address);
+                body.contents().find("#birthday").text(PublicFun.FormatDate(data.birthday, "yyyy-MM-dd"));
+                body.contents().find("#politicstype").text(data.politicstype);
+                body.contents().find("#entrydate").text(PublicFun.FormatDate(data.entrydate, "yyyy-MM-dd"));
+                body.contents().find("#regulardate").text(PublicFun.FormatDate(data.regulardate, "yyyy-MM-dd"));
+                body.contents().find("#cellphone").text(data.cellphone);
+                body.contents().find("#urgentlinkman").text(data.urgentlinkman);
+                body.contents().find("#urgentlinkmanphone").text(data.urgentlinkmanphone);
+                if (data.status == 1)
+                    body.contents().find("#status").text("在职");
+                else
+                    body.contents().find("#status").text("离职");
             }
-        })
+        });
+    }
+
+    ///学历判断
+    function FunEdulevel(edulevel) {
+        if (edulevel == 1) return "博士后"
+        else if (edulevel == 2) return "博士"
+        else if (edulevel == 3) return "研究生"
+        else if (edulevel == 4) return "硕士"
+        else if (edulevel == 5) return "本科"
+        else if (edulevel == 6) return "大专"
+        else if (edulevel == 7) return "中专"
+        else if (edulevel == 8) return "高中"
+        else if (edulevel == 9) return "其他"
+        else return "未知"
     }
 </script>
 </body>

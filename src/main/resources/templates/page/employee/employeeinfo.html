@@ -46,7 +46,7 @@
                                 </tr>
                                 <tr>
                                     <td>登录名称:</td>
-                                    <td><label id="loginName" th:text="${employee.username}"></label></td>
+                                    <td><label id="loginName" th:text="${employee.username}">chr</label></td>
                                 </tr>
                                 <tr>
                                     <td>姓名:</td>
@@ -86,6 +86,22 @@
                                 <tr>
                                     <td>转正时间:</td>
                                     <td><label id="regulardate" th:text="${#dates.format(employee.regulardate, 'yyyy年MM月dd日')}">2020-8-11</label></td>
+                                </tr>
+
+                                <tr>
+                                    <td  colspan="2">
+                                        <img  th:src="@{${employee.positiveidcardimageurl}}" /><br/>
+                                        <!--<img src="/images/bg.jpg"/>-->
+                                        <!--<a href="javascript:;" id="UpdateImg">修改图像</a>-->
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td colspan="2">
+                                        <img  th:src="@{${employee.negativeidcardimageurl}}" /><br/>
+                                        <!--<img src="/images/bg.jpg"/>-->
+                                       <!-- <a href="javascript:;" id="UpdateImg">修改图像</a>-->
+                                    </td>
                                 </tr>
                                 </tbody>
                             </table>

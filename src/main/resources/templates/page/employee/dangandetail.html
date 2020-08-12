@@ -17,10 +17,17 @@
             margin: 10px auto;
             border-radius: 50%;
         }
-        #idImage{
+
+        #idImage {
             width: 200px;
             height: 200px;
         }
+
+        #positiveidcardimageurl,#negativeidcardimageurl{
+        max-width: 250px !important;
+        height:200px !important;
+        }
+
     </style>
 </head>
 <body>
@@ -42,12 +49,12 @@
             <tbody>
             <tr>
                 <td id="TuImage" colspan="6">
-                    <img src="/images/bg.jpg"/>
+                    <img src="" onerror="this.onerror==null;this.src='/images/default.png'" />
                 </td>
             </tr>
             <tr>
                 <td>登录名称:</td>
-                <td><label id="loginname">chr</label></td>
+                <td><label id="username">chr</label></td>
                 <td>员工姓名:</td>
                 <td><label id="name">常浩然</label></td>
                 <td>员工职位:</td>
@@ -55,9 +62,9 @@
             </tr>
             <tr>
                 <td>所属公司:</td>
-                <td><label id="corpid">河南唐都科技有限公司</label></td>
-                <td>上级领导:</td>
-                <td><label id="superid">总经理</label></td>
+                <td><label id="corpname">河南唐都科技有限公司</label></td>
+                <td>邮箱:</td>
+                <td><label id="email">2020-7-18</label></td>
                 <td>创建时间:</td>
                 <td><label id="createdate">2012-12-12</label></td>
             </tr>
@@ -96,30 +103,30 @@
             <tr>
                 <td>联系电话:</td>
                 <td><label id="cellphone">152255137415</label></td>
-                <td>邮箱:</td>
-                <td><label id="email">2020-7-18</label></td>
                 <td>紧急联系人:</td>
                 <td><label id="urgentlinkman">耶稣撒冷</label></td>
-            </tr>
-            <tr>
                 <td>紧急联系人电话:</td>
                 <td><label id="urgentlinkmanphone">152255137415</label></td>
+            </tr>
+            <tr>
                 <td>员工状态:</td>
                 <td><label id="status">在职</label></td>
+                <td></td>
+                <td></td>
                 <td></td>
                 <td></td>
             </tr>
 
             <tr id="idImage">
                 <td>身份证正面照:</td>
-                <td colspan="2"><img id="positiveidcardimageurl" src="" /></td>
+                <!--th:src="@{${employee.positiveidcardimageurl}}" th:src="@{${employee.negativeidcardimageurl}}"-->
+                <td colspan="2"><img id="positiveidcardimageurl" onerror="this.onerror==null;this.src='/images/default.png'"/></td>
                 <td>身份证反面照:</td>
-                <td colspan="2"><img id="negativeidcardimageurl" src="" /></td>
+                <td colspan="2"><img id="negativeidcardimageurl" onerror="this.onerror==null;this.src='/images/default.png'"/></td>
             </tr>
 
             </tbody>
         </table>
-
 
     </div>
 </div>
@@ -132,6 +139,39 @@
     layui.use(['form'], function () {
         var form = layui.form
             , layer = layui.layer;
+
+        //获取父页面的找照片路径
+        var headimageurl = parent.$("#headimageurl").val();
+        var positiveidcardimageurl = parent.$("#positiveidcardimageurl").val();
+        var negativeidcardimageurl = parent.$("#negativeidcardimageurl").val();
+
+        console.log(GetImgUrl());
+        console.log(headimageurl + "==" + positiveidcardimageurl + "==" + negativeidcardimageurl);
+
+        if(headimageurl!=null&&headimageurl!="")
+            $("#TuImage img").attr("src",GetImgUrl()+headimageurl);
+        else
+            $("#TuImage img").attr("src","/images/default.png");
+
+        if(positiveidcardimageurl!=null&&positiveidcardimageurl!="")
+            $("#positiveidcardimageurl").attr("src",GetImgUrl()+positiveidcardimageurl);
+        else
+            $("#positiveidcardimageurl").attr("src","/images/default.png");
+
+        if(negativeidcardimageurl!=null&&negativeidcardimageurl!="")
+            $("#negativeidcardimageurl").attr("src",GetImgUrl()+negativeidcardimageurl);
+        else
+            $("#negativeidcardimageurl").attr("src","/images/default.png");
+
+        //获取图片前缀路径
+        function GetImgUrl() {
+            var imgurl = "";
+            PublicFun.FunPostAjax("/employee/selectemployee", {page: 1,limit: 10}, function (res) {
+                if (res.code == 0)
+                    imgurl = res.data1;
+            }, "图片前缀路径获取失败！！！");
+            return imgurl;
+        }
 
     });
 
