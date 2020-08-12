@@ -67,6 +67,22 @@ public class DepartmentController {
         return OAResponseList.setResult(Code, FIND_SUCCESS, pageInfo);
     }
 
+    /**
+     * @return com.tdkj.System.common.OAResponseList
+     * @Author houxuyang
+     * @Description //查询本公司部门列表 不分页
+     * @Date 16:02 2020/8/3
+     * @Param [page, limit]s
+     **/
+    @ResponseBody
+    @RequestMapping("/queryalldepartment")
+    public OAResponseList queryalldepartment() {
+
+        Employee employee = employeeService.queryById(ShiroUtils.getPrincipal().getEmployeeid());
+        List<DepartmentVO> departmentVOList = departmentService.queryDeptByCorpId(employee.getCorpid());
+        return OAResponseList.setResult(Code, FIND_SUCCESS, departmentVOList);
+    }
+
     /*跳转添加部门*/
     @RequestMapping("goadddepartment")
     public String goadddepartment() {
