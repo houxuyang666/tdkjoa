@@ -77,11 +77,11 @@ public class DepartmentController {
     @ResponseBody
     @RequestMapping("/queryalldepartment")
     public OAResponseList queryalldepartment() {
-
         Employee employee = employeeService.queryById(ShiroUtils.getPrincipal().getEmployeeid());
         List<DepartmentVO> departmentVOList = departmentService.queryDeptByCorpId(employee.getCorpid());
         return OAResponseList.setResult(Code, FIND_SUCCESS, departmentVOList);
     }
+    
 
     /*跳转添加部门*/
     @RequestMapping("goadddepartment")
