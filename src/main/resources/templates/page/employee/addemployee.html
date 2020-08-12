@@ -64,10 +64,10 @@
                     <div class="layui-input-inline">
                         <select name="departmentid" id="departmentid" lay-filter="departmentid" lay-verify="required">
                             <option value="" selected=""></option>
-                            <option value="1">测试部门1</option>
+                         <!--   <option value="1">测试部门1</option>
                             <option value="2">测试部门2</option>
                             <option value="3">测试部门3</option>
-                            <option value="4">测试部门4</option>
+                            <option value="4">测试部门4</option>-->
                         </select>
                     </div>
                 </div>
@@ -302,6 +302,9 @@
             $ = layui.$,
             upload = layui.upload,
             laydate = layui.laydate;
+
+        //绑定部门下拉框
+        PublicFun.BindDepList();
 
         PublicFun.layerDate("#birthday", "yyyy-MM-dd");
         PublicFun.layerDate("#entrydate", "yyyy-MM-dd");

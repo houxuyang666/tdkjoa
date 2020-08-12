@@ -230,7 +230,7 @@ var PublicFun = {
     //绑定部门下拉框
     BindDepList: function () {
         $.ajax({
-            url: "/department/selectdepartment",
+            url: "/department/queryalldepartment",
             dataType: "json",
             type: "post",
             success: function (res) {
