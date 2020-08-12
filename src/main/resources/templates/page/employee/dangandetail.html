@@ -145,21 +145,21 @@
         var positiveidcardimageurl = parent.$("#positiveidcardimageurl").val();
         var negativeidcardimageurl = parent.$("#negativeidcardimageurl").val();
 
-        console.log(GetImgUrl());
-        console.log(headimageurl + "==" + positiveidcardimageurl + "==" + negativeidcardimageurl);
-
+        //console.log(GetImgUrl());
+        //console.log(headimageurl + "==" + positiveidcardimageurl + "==" + negativeidcardimageurl);
+        var img=GetImgUrl();
         if(headimageurl!=null&&headimageurl!="")
-            $("#TuImage img").attr("src",GetImgUrl()+headimageurl);
+            $("#TuImage img").attr("src",img+headimageurl);
         else
             $("#TuImage img").attr("src","/images/default.png");
 
         if(positiveidcardimageurl!=null&&positiveidcardimageurl!="")
-            $("#positiveidcardimageurl").attr("src",GetImgUrl()+positiveidcardimageurl);
+            $("#positiveidcardimageurl").attr("src",img+positiveidcardimageurl);
         else
             $("#positiveidcardimageurl").attr("src","/images/default.png");
 
         if(negativeidcardimageurl!=null&&negativeidcardimageurl!="")
-            $("#negativeidcardimageurl").attr("src",GetImgUrl()+negativeidcardimageurl);
+            $("#negativeidcardimageurl").attr("src",img+negativeidcardimageurl);
         else
             $("#negativeidcardimageurl").attr("src","/images/default.png");
 
