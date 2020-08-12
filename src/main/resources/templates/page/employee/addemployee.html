@@ -364,19 +364,50 @@
         //监听提交
         form.on('submit(Surebtn)', function (data) {
             var formdata = new FormData($("#employeeForm")[0]);
-            console.log(formdata);
-            console.log(data.field);
-            PublicFun.FunPostAjaxProcessData("/employee/add", formdata, function (res) {
-                if (res.responseCode == 200) {
-                    layer.alert(res.message,{title:"提示信息"},function () {
-                        var index =parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
-                        parent.layer.close(index); //再执行关闭
-                    });
+            /*  console.log(formdata);
+             console.log(data.field);
+          * PublicFun.FunPostAjaxProcessData("/employee/add", formdata, function (res) {
+                 if (res.responseCode == 200) {
+                     layer.alert(res.message,{title:"提示信息"},function () {
+                         var index =parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                         parent.layer.close(index); //再执行关闭
+                     });
 
-                } else {
-                    layer.msg(res.message)
+                 } else {
+                     layer.msg(res.message)
+                 }
+             }, "请求失败，请检查网络或联系管理员")*/
+            $.ajax({
+                url:"/employee/add",
+                type:"POST",
+                dataType:"json",
+                processData: false,
+                contentType: false,
+                data:formdata,
+                beforeSend:function () {
+                    //弹出loding层
+                    layer.load(2,{shade:[0.5,"#333"]});
+                },
+                success:function (res) {
+                    if (res.responseCode == 200) {
+                        layer.alert(res.message,{title:"提示信息"},function () {
+                            var index =parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                            parent.layer.close(index); //再执行关闭
+                        });
+
+                    } else {
+                        layer.msg(res.message)
+                    }
+                },
+                error:function () {
+                    PublicFun.LayerMsgError("请求失败，请联系管理员或刷新网页");
+                },
+                complete:function () {
+                    //关掉loading
+                    layer.closeAll("loading");
                 }
-            }, "请求失败，请检查网络或联系管理员")
+            })
+
 
             return false;
         });
