@@ -51,20 +51,6 @@
                     <input type="password" name="password" lay-verify="password" placeholder="密码" autocomplete="off" class="layui-input">
                 </div>
 
-              <!--  <div class="layui-form-item">
-                    <label class="layui-icon layui-icon-vercode" for="captcha"></label>
-                    <input type="text" name="captcha" lay-verify="required|captcha" placeholder="图形验证码" autocomplete="off" class="layui-input verification captcha" value="xszg">
-                    <div class="captcha-img">
-                        <img id="captchaPic" src="../images/captcha.jpg">
-                    </div>
-                </div>-->
-
-                <!--                 *-->
-                <!--                 * @author Chang-->
-                <!--                 * @description 验证码-->
-                <!--                 * @date 2020/6/16 17:00  -->
-                <!--                 * @return -->
-                <!--                 */-->
                 <div class="layui-form-item">
                     <div class="layui-row">
                         <div class="layui-col-xs7">
@@ -92,7 +78,7 @@
 </div>
 <script src="/statics/lib/jquery-3.4.1/jquery-3.4.1.min.js" charset="utf-8"></script>
 <script src="/statics/lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
-<script src="/statics/lib/jq-module/jquery.particleground.min.js" charset="utf-8"></script>
+<!--<script src="/statics/lib/jq-module/jquery.particleground.min.js" charset="utf-8"></script>-->
 <script>
     layui.use(['form'], function () {
         var form = layui.form,
@@ -111,13 +97,13 @@
         // 登录过期的时候，跳出ifram框架
         if (top.location != self.location) top.location = self.location;
 
-        // 粒子线条背景
+      /*  // 粒子线条背景
         $(document).ready(function(){
             $('.layui-container').particleground({
                 dotColor:'#7ec7fd',
                 lineColor:'#7ec7fd'
             });
-        });
+        });*/
 
         // 进行登录操作 /login
         form.on('submit(login)', function (data) {
