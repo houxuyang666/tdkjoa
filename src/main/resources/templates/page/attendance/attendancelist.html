@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:shiro="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>考勤列表</title>
+    <link rel="stylesheet" href="/statics/lib/layui-v2.5.5/css/layui.css" media="all">
+    <link rel="stylesheet" href="/css/public.css" media="all">
+    <link rel="stylesheet" href="/css/themes/default.css" media="all">
+    <link rel="stylesheet" href="/statics/lib/font-awesome-4.7.0/css/font-awesome.min.css" media="all">
+</head>
+<body>
+<div class="layuimini-container">
+    <div class="layuimini-main">
+        <blockquote class="layui-elem-quote">
+            考勤列表<br>
+        </blockquote>
+        <div>
+
+            <fieldset class="table-search-fieldset">
+                <legend>搜索信息</legend>
+                <div style="margin: 10px 10px 10px 10px">
+                    <form class="layui-form layui-form-pane" action="">
+                        <div class="layui-form-item">
+                            <div class="layui-inline">
+                                <label class="layui-form-label">员工名称</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="name" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-inline">
+                                <label class="layui-form-label">日期</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" class="layui-input" autocomplete="off" name="timedate" id="timedate">
+                                </div>
+                            </div>
+                            <div class="layui-inline">
+                                <button type="submit" class="layui-btn layui-btn-primary"  lay-submit lay-filter="searchBtn"><i class="layui-icon"></i> 搜 索</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </fieldset>
+
+
+            <table id="attendanceList" lay-filter="attendanceList" class="layui-hide"></table>
+
+
+            <script type="text/html" id="toolbar">
+                <div class="layui-btn-container">
+                    <button class="layui-btn layui-btn-sm " lay-event="refresh"><i class="layui-icon">&#xe669;</i>刷新
+                    </button>
+                </div>
+            </script>
+
+        </div>
+    </div>
+</div>
+
+<script src="/statics/lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
+<script src="/js/public.js" charset="utf-8"></script>
+<script type="text/javascript" th:inline="none">
+    PublicFun.ImportJs("/statics/lib/jquery-3.4.1/jquery-3.4.1.min.js");
+    layui.use(['form', 'table',"laydate"], function () {
+        var $ = layui.jquery,
+            form = layui.form,
+            laydate = layui.laydate,
+            table = layui.table;
+
+
+        //实例化表格
+        table.render({
+            elem: '#attendanceList',
+            url: '/attendance/selectattendance',
+            toolbar: '#toolbar',
+            defaultToolbar: ['filter', 'exports', 'print'],
+            parseData: function (res) { //res 即为原始返回的数据
+                return {
+                    "code": res.code, //解析接口状态
+                    "msg": res.message, //解析提示文本
+                    "count": res.data.total, //解析数据长度
+                    "data": res.data.list //解析数据列表
+                };
+            },
+            cols:[[
+                {field:"checkbox",type:'checkbox'},
+                {field:"deptname",title:"所属部门",width:100},
+                {field:"name",title:"姓名",width:100},
+                {field:"day1",title:"day1",width:70},
+                {field:"day2",title:"day2",width:70},
+                {field:"day3",title:"day3",width:70},
+                {field:"day4",title:"day4",width:70},
+                {field:"day5",title:"day5",width:70},
+                {field:"day6",title:"day6",width:70},
+                {field:"day7",title:"day7",width:70},
+                {field:"day8",title:"day8",width:70},
+                {field:"day9",title:"day9",width:70},
+                {field:"day10",title:"day10",width:70},
+                {field:"day11",title:"day11",width:70},
+                {field:"day12",title:"day12",width:70},
+                {field:"day14",title:"day14",width:70},
+                {field:"day15",title:"day15",width:70},
+                {field:"day16",title:"day16",width:70},
+                {field:"day17",title:"day17",width:70},
+                {field:"day18",title:"day18",width:70},
+                {field:"day19",title:"day19",width:70},
+                {field:"day20",title:"day20",width:70},
+                {field:"day21",title:"day21",width:70},
+                {field:"day22",title:"day22",width:70},
+                {field:"day23",title:"day23",width:70},
+                {field:"day24",title:"day24",width:70},
+                {field:"day25",title:"day25",width:70},
+                {field:"day26",title:"day26",width:70},
+                {field:"day27",title:"day27",width:70},
+                {field:"day28",title:"day28",width:70},
+                {field:"day29",title:"day29",width:70},
+                {field:"day30",title:"day30",width:70},
+                {field:"day31",title:"day31",width:70},
+            ]],
+            limits: [10, 15, 20, 25, 50, 100],
+            limit: 10,
+            page: true,
+            //skin: 'line'
+        });
+
+        PublicFun.layerDate("#timedate", "yyyy-MM");
+
+        //搜索事件操作
+        form.on("submit(searchBtn)",function (data) {
+            var formData=data.field;//获取搜索新信息
+            var canshu={
+                "name":formData.name,
+                "timedate":formData.timedate,
+            }
+            //搜索重载
+            table.reload("attendanceList",{
+                url:"/attendance/selectattendance",
+                page:{
+                    curr:1
+                },
+                where:canshu
+            },"data");
+            return false;
+        });
+
+        //监听头工具栏事件
+        table.on('toolbar(attendanceList)', function(obj){
+            switch(obj.event){
+                case "refresh":
+                    layui.table.reload("attendanceList");
+                    break;
+            };
+        });
+
+    });
+</script>
+</body>
+</html>

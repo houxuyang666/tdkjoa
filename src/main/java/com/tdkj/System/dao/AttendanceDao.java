@@ -1,6 +1,7 @@
 package com.tdkj.System.dao;
 
 import com.tdkj.System.entity.Attendance;
+import com.tdkj.System.entity.VO.AttendanceVO;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -71,4 +72,13 @@ public interface AttendanceDao {
      * @return com.tdkj.System.entity.Attendance
      **/
     Attendance queryByIdAndData(@Param("userid")Integer userid,@Param("today") String today);
+
+    /**
+     * @Author houxuyang
+     * @Description //查询员工签到情况
+     * @Date 10:33 2020/8/12
+     * @Param [year, month, corpid]
+     * @return java.util.List<com.tdkj.System.entity.VO.AttendanceVO>
+     **/
+    List<AttendanceVO> queryAllData(String year, String month, Integer corpid, String name);
 }

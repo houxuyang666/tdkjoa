@@ -1,7 +1,12 @@
 package com.tdkj.System.controller;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.tdkj.System.common.OAResponse;
+import com.tdkj.System.common.OAResponseList;
 import com.tdkj.System.entity.Attendance;
+import com.tdkj.System.entity.Employee;
+import com.tdkj.System.entity.VO.AttendanceVO;
 import com.tdkj.System.service.AttendanceService;
 import com.tdkj.System.service.EmployeeService;
 import com.tdkj.System.utils.DateUtil;
@@ -14,10 +19,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import static com.tdkj.System.common.OAResultCode.HTTP_RNS_CODE_200;
 import static com.tdkj.System.common.OAResultCode.HTTP_RNS_CODE_500;
+import static com.tdkj.System.common.OAResultType.FIND_SUCCESS;
 
 /**
  * (Attendance)表控制层
@@ -71,6 +79,13 @@ public class AttendanceController {
     }
 
 
+    /**
+     * @Author houxuyang
+     * @Description //员工签到
+     * @Date 10:47 2020/8/12
+     * @Param []
+     * @return com.tdkj.System.common.OAResponse
+     **/
     @ResponseBody
     @RequestMapping("/add")
     public OAResponse add() throws Exception {
@@ -114,4 +129,36 @@ public class AttendanceController {
             return OAResponse.setResult(HTTP_RNS_CODE_500, "请勿重复点击");
         }
     }
+
+
+    @RequestMapping("goselectattendance")
+    public String goselectattendance() {
+        return "page/attendance/attendancelist";
+    }
+
+
+
+
+    @ResponseBody
+    @RequestMapping("/selectattendance")
+    public OAResponseList selectattendance(String name,String timedate ,Integer page, Integer limit){
+        String year;
+        String month;
+        if (null==timedate||""==timedate) {
+            Calendar cal = Calendar.getInstance();
+            year = String.valueOf(cal.get(Calendar.YEAR));
+            month = String.valueOf(cal.get(Calendar.MONTH )+1);
+        }else{
+            year=timedate.split("-")[0];
+            month=timedate.split("-")[1];
+        }
+
+        Employee employee = this.employeeService.queryById(ShiroUtils.getPrincipal().getEmployeeid());
+        PageHelper.startPage(page,limit,true);
+        List<AttendanceVO> attendanceVOS=this.attendanceService.queryAllData(year,month,employee.getCorpid(),name);
+        PageInfo<AttendanceVO> pageInfo=new PageInfo<>(attendanceVOS);
+        return OAResponseList.setResult(0,FIND_SUCCESS,pageInfo);
+    }
+
+
 }

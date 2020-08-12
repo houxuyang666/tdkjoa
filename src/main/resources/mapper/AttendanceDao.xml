@@ -110,4 +110,61 @@
         where UserID = #{userid} and WorkDate BETWEEN concat(#{today},' 00:00:00') AND concat(#{today},' 23:59:59')
     </select>
 
+
+    <select id="queryAllData" resultType="com.tdkj.System.entity.VO.AttendanceVO">
+        select d.DeptName as deptname,
+            e.name name,
+            case when extract(day from a.WorkDate)=1 then a.attendanceDesc end  as day1,
+            case when extract(day from a.WorkDate)=2 then a.attendanceDesc end  as day2,
+            case when extract(day from a.WorkDate)=3 then a.attendanceDesc end  as day3,
+            case when extract(day from a.WorkDate)=4 then a.attendanceDesc end  as day4,
+            case when extract(day from a.WorkDate)=5 then a.attendanceDesc end  as day5,
+            case when extract(day from a.WorkDate)=6 then a.attendanceDesc end  as day6,
+            case when extract(day from a.WorkDate)=7 then a.attendanceDesc end  as day7,
+            case when extract(day from a.WorkDate)=8 then a.attendanceDesc end  as day8,
+            case when extract(day from a.WorkDate)=9 then a.attendanceDesc end  as day9,
+            case when extract(day from a.WorkDate)=10 then a.attendanceDesc end  as day10,
+            case when extract(day from a.WorkDate)=11 then a.attendanceDesc end  as day11,
+            case when extract(day from a.WorkDate)=12 then a.attendanceDesc end  as day12,
+            case when extract(day from a.WorkDate)=13 then a.attendanceDesc end  as day13,
+            case when extract(day from a.WorkDate)=14 then a.attendanceDesc end  as day14,
+            case when extract(day from a.WorkDate)=15 then a.attendanceDesc end  as day15,
+            case when extract(day from a.WorkDate)=16 then a.attendanceDesc end  as day16,
+            case when extract(day from a.WorkDate)=17 then a.attendanceDesc end  as day17,
+            case when extract(day from a.WorkDate)=18 then a.attendanceDesc end  as day18,
+            case when extract(day from a.WorkDate)=19 then a.attendanceDesc end  as day19,
+            case when extract(day from a.WorkDate)=20 then a.attendanceDesc end  as day20,
+            case when extract(day from a.WorkDate)=21 then a.attendanceDesc end  as day21,
+            case when extract(day from a.WorkDate)=22 then a.attendanceDesc end  as day22,
+            case when extract(day from a.WorkDate)=23 then a.attendanceDesc end  as day23,
+            case when extract(day from a.WorkDate)=24 then a.attendanceDesc end  as day24,
+            case when extract(day from a.WorkDate)=25 then a.attendanceDesc end  as day25,
+            case when extract(day from a.WorkDate)=26 then a.attendanceDesc end  as day26,
+            case when extract(day from a.WorkDate)=27 then a.attendanceDesc end  as day27,
+            case when extract(day from a.WorkDate)=28 then a.attendanceDesc end  as day28,
+            case when extract(day from a.WorkDate)=29 then a.attendanceDesc end  as day29,
+            case when extract(day from a.WorkDate)=30 then a.attendanceDesc end  as day30,
+            case when extract(day from a.WorkDate)=31 then a.attendanceDesc end  as day31
+        from attendance a LEFT JOIN  user u on a.UserID =u.userid
+                          LEFT JOIN employee e  on e.EmployeeId =u.EmployeeId
+                          LEFT JOIN department d on d.DeptId =a.DeptId
+                          where  extract(year from a.WorkDate)=#{year}
+                          and    extract(month from a.WorkDate)=#{month}
+                          and   a.CorpID =#{corpid}
+                        <if test="name != null and name != ''">
+                            and e.name like concat('%',#{name},'%')
+                        </if>
+                        group by e.name
+    </select>
+
+
+
+
+
+
+
+
+
+
+
 </mapper>

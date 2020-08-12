@@ -2,6 +2,7 @@ package com.tdkj.System.service.impl;
 
 import com.tdkj.System.dao.AttendanceDao;
 import com.tdkj.System.entity.Attendance;
+import com.tdkj.System.entity.VO.AttendanceVO;
 import com.tdkj.System.service.AttendanceService;
 import org.springframework.stereotype.Service;
 
@@ -80,5 +81,10 @@ public class AttendanceServiceImpl implements AttendanceService {
     @Override
     public Attendance queryByIdAndData(Integer userid, String today) {
         return this.attendanceDao.queryByIdAndData(userid,today);
+    }
+
+    @Override
+    public List<AttendanceVO> queryAllData(String year, String month, Integer corpid, String name) {
+        return this.attendanceDao.queryAllData(year,month,corpid,name);
     }
 }

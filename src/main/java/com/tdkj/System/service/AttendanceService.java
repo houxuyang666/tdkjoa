@@ -1,6 +1,7 @@
 package com.tdkj.System.service;
 
 import com.tdkj.System.entity.Attendance;
+import com.tdkj.System.entity.VO.AttendanceVO;
 
 import java.util.List;
 
@@ -61,4 +62,13 @@ public interface AttendanceService {
      * @return com.tdkj.System.entity.Attendance
      **/
     Attendance queryByIdAndData(Integer userid, String today);
+
+    /**
+     * @Author houxuyang
+     * @Description //查询公司员工签到情况
+     * @Date 10:33 2020/8/12
+     * @Param [year, month, corpid]
+     * @return java.util.List<com.tdkj.System.entity.VO.AttendanceVO>
+     **/
+    List<AttendanceVO> queryAllData(String year, String month, Integer corpid, String name);
 }
