@@ -277,6 +277,7 @@
             e.JobTitle as jobtitle,
             e.IdcardType as idcardtype,
             e.IdcardNumber as idcardnumber,
+            u.UserName as username,
             u.Status as userstatus,
             e.Status as status,
             e.Gender as gender,
@@ -301,9 +302,9 @@
             e.CreateDate as createdate,
             e.ModifyDate as modifydate
         from employee e LEFT join corpbasicinfo c on e.CorpId =c.CorpId
-            LEFT JOIN  department d on e.DepartmentId =d.DeptId
-            LEFT JOIN fileinfo f on e.FileinfoId =f.FileInfoID
-            LEFT JOIN user u on e.EmployeeId =u.EmployeeId
+        LEFT JOIN  department d on e.DepartmentId =d.DeptId
+        LEFT JOIN fileinfo f on e.FileinfoId =f.FileInfoID
+        LEFT JOIN user u on e.EmployeeId =u.EmployeeId
         <where>
             <if test="name != null and name != ''">
                 and e.Name like concat('%',#{name},'%')

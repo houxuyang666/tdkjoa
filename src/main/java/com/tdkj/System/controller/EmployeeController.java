@@ -94,6 +94,13 @@ public class EmployeeController {
         return "page/employee/dangandetail";
     }
 
+    /**
+     * @Author houxuyang
+     * @Description //查询当前公司的所有员工信息
+     * @Date 9:26 2020/8/12
+     * @Param [page, limit, name, idcardnumber]
+     * @return com.tdkj.System.common.OAResponseList
+     **/
     @ResponseBody
     @RequestMapping("/selectemployee")
     public OAResponseList selectemployee(Integer page, Integer limit,String name,String idcardnumber) {
@@ -103,7 +110,7 @@ public class EmployeeController {
         PageHelper.startPage(page,limit,true);
         List<EmployeeVO> employeeVOList=employeeService.queryAllEmployee(corpbasicinfo.getCorpid(),name,idcardnumber);
         PageInfo<EmployeeVO> pageInfo=new PageInfo<>(employeeVOList);
-        return OAResponseList.setResult(0,FIND_SUCCESS,pageInfo);
+        return OAResponseList.setResult(0,FIND_SUCCESS,pageInfo,upload);
     }
 
     @RequestMapping("goadd")
@@ -259,8 +266,8 @@ public class EmployeeController {
         log.info("goemployeeinfo");
         EmployeeVO employeeVO =employeeService.queryemployeeVOById(ShiroUtils.getPrincipal().getEmployeeid());
         employeeVO.setHeadimageurl(upload+employeeVO.getHeadimageurl());
-        employeeVO.setPositiveidcardimageurl(upload+employeeVO.getPositiveidcardimageurl());
-        employeeVO.setNegativeidcardimageurl(upload+employeeVO.getNegativeidcardimageurl());
+        //employeeVO.setPositiveidcardimageurl(upload+employeeVO.getPositiveidcardimageurl());
+        //employeeVO.setNegativeidcardimageurl(upload+employeeVO.getNegativeidcardimageurl());
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("page/employee/employeeinfo");
         modelAndView.addObject("employee",employeeVO);
