@@ -259,6 +259,8 @@ public class EmployeeController {
         log.info("goemployeeinfo");
         EmployeeVO employeeVO =employeeService.queryemployeeVOById(ShiroUtils.getPrincipal().getEmployeeid());
         employeeVO.setHeadimageurl(upload+employeeVO.getHeadimageurl());
+        employeeVO.setPositiveidcardimageurl(upload+employeeVO.getPositiveidcardimageurl());
+        employeeVO.setNegativeidcardimageurl(upload+employeeVO.getNegativeidcardimageurl());
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("page/employee/employeeinfo");
         modelAndView.addObject("employee",employeeVO);
