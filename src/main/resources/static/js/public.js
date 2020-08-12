@@ -227,6 +227,32 @@ var PublicFun = {
         })
     },
 
+    //绑定部门下拉框
+    BindDepList: function () {
+        $.ajax({
+            url: "/department/selectdepartment",
+            dataType: "json",
+            type: "post",
+            success: function (res) {
+                var data = res.data;
+                //layer.alert(JSON.stringify(data));
+                var html = '';
+                if (data != null && data != "") {
+                    for (var i = 0; i < data.length; i++) {
+                        html += '<option value="' + data[i].deptid + '">' + data[i].deptname + '</option>';
+                    }
+                } else {
+                    html += "";
+                }
+                $('#departmentid').append(html);
+                layui.form.render("select");
+            },
+            error: function () {
+                PublicFun.LayerMsgError("部门下拉框请求失败")
+            }
+        })
+    },
+
     //绑定 获取角色为领导的人 下拉框
     BindDepthead: function () {
         PublicFun.FunPostAjax("/department/selectdeptemployee", "", function (res) {

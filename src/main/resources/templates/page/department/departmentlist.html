@@ -124,10 +124,6 @@
                     layui.table.reload("departmentList");
                 }
             })
-            //改变窗口大小时，重置弹窗的宽高，防止超出可视区域（如F12调出debug的操作）
-            $(window).on("resize",function(){
-                layui.layer.full(index);
-            })
         }
 
         //修改部门
@@ -154,10 +150,6 @@
                 end:function () {
                     layui.table.reload("departmentList")
                 }
-            })
-            //改变窗口大小时，重置弹窗的宽高，防止超出可视区域（如F12调出debug的操作）
-            $(window).on("resize",function(){
-                layui.layer.full(index);
             })
         }
 
