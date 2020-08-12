@@ -22,11 +22,10 @@
     </select>
 
     <!--查询指定行数据-->
-    <select id="queryAllByLimit" resultMap="InformationMap">
+    <select id="queryAllByCropId" resultMap="InformationMap">
         select
           InfoId, InfoTitle, InfoImg, InfoContent, InfoDate, CorpId, CreateDate, ModifyDate
         from information
-        limit #{offset}, #{limit}
     </select>
 
     <!--通过实体作为筛选条件查询-->
@@ -60,6 +59,7 @@
                 and ModifyDate = #{modifydate}
             </if>
         </where>
+        order by InfoDate desc
     </select>
 
     <!--新增所有列-->

@@ -33,13 +33,11 @@ public class InformationServiceImpl implements InformationService {
     /**
      * 查询多条数据
      *
-     * @param offset 查询起始位置
-     * @param limit 查询条数
      * @return 对象列表
      */
     @Override
-    public List<Information> queryAllByLimit(int offset, int limit) {
-        return this.informationDao.queryAllByLimit(offset, limit);
+    public List<Information> queryAllByCropId(Integer Corpid) {
+        return this.informationDao.queryAllByCropId(Corpid);
     }
 
     /**
@@ -75,5 +73,10 @@ public class InformationServiceImpl implements InformationService {
     @Override
     public boolean deleteById(Integer infoid) {
         return this.informationDao.deleteById(infoid) > 0;
+    }
+
+    @Override
+    public List<Information> queryAll(Information information) {
+        return informationDao.queryAll(information);
     }
 }

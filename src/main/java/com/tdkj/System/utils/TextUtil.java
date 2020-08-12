@@ -1,5 +1,7 @@
 package com.tdkj.System.utils;
 
+import org.springframework.web.bind.annotation.GetMapping;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -32,5 +34,17 @@ public class TextUtil {
             }
         }
         return list;
+    }
+
+    public static String getfirstImg(String content){
+        List<String> imgUrls = getImgStr(content);
+        if (imgUrls.isEmpty()) {
+          return  "default.png";
+        } else {
+            String s = imgUrls.get(0);
+            Integer end = s.lastIndexOf("/") + 1;
+            String firsturl = s.substring(end);
+            return firsturl;
+        }
     }
 }

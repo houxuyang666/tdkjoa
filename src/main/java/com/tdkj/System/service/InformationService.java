@@ -22,11 +22,9 @@ public interface InformationService {
     /**
      * 查询多条数据
      *
-     * @param offset 查询起始位置
-     * @param limit 查询条数
      * @return 对象列表
      */
-    List<Information> queryAllByLimit(int offset, int limit);
+    List<Information> queryAllByCropId(Integer Corpid);
 
     /**
      * 新增数据
@@ -51,5 +49,10 @@ public interface InformationService {
      * @return 是否成功
      */
     boolean deleteById(Integer infoid);
+
+
+    List<Information> queryAll(Information information);
+
+
 
 }

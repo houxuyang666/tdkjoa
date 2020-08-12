@@ -23,11 +23,9 @@ public interface InformationDao {
     /**
      * 查询指定行数据
      *
-     * @param offset 查询起始位置
-     * @param limit 查询条数
      * @return 对象列表
      */
-    List<Information> queryAllByLimit(@Param("offset") int offset, @Param("limit") int limit);
+    List<Information> queryAllByCropId(Integer Corpid);
 
 
     /**
@@ -61,5 +59,7 @@ public interface InformationDao {
      * @return 影响行数
      */
     int deleteById(Integer infoid);
+
+
 
 }
