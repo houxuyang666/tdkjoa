@@ -96,7 +96,7 @@ public class ProcurementController {
     }
 
 
-    @Transactional
+    /*@Transactional
     @ResponseBody
     @RequestMapping("/add")
     public OAResponse add(String prodate, Integer protype, String goodsname, String unit, String type, Integer number, BigDecimal price,
@@ -135,13 +135,73 @@ public class ProcurementController {
         procurement.setStatus(ProcurementStatusEnmu.Under_review.getCode());
         procurement.setFileinfoid(fileinfo.getFileinfoid());
         procurement.setCreatedate(new Date());
+        *//*插入采购订单表*//*
+        Procurement insert = this.procurementService.insert(procurement);
+        *//*直接启动流程实例*//*
+        this.proflowService.startProcess(insert.getProid());
+        *//*启动后通过查询流程实例的business_key 找到流程定义实例 再通过流程实例*//*
+        //拼接流程定义Key
+        String processDefinitionKey = "LeavebillOr";
+
+        try{
+            String businessKey =processDefinitionKey+":"+insert.getProid();
+            Execution execution = this.runtimeService.createExecutionQuery().processInstanceBusinessKey(businessKey).singleResult();
+            Task task = this.taskService.createTaskQuery().executionId(execution.getProcessInstanceId()).singleResult();
+            *//*直接跳过自己提交申请的步骤 提交到上级领导*//*
+            this.proflowService.completeTask(insert.getProid(),task.getId(),"提交申请","提交");
+        }catch (Exception e){
+            return OAResponse.setResult(500,"您没有上级，无法添加采购订单");
+        }
+
+        return OAResponse.setResult(200,ADD_SUCCESS);
+    }*/
+
+    @Transactional
+    @ResponseBody
+    @RequestMapping("/add")
+    public OAResponse add(String prodate, Integer protype, String goodsname, String unit, String type, Integer number, BigDecimal price,
+                          BigDecimal totalamount, String prodesc,@RequestParam("file") MultipartFile file ) throws  Exception {
+        Employee employee =this.employeeService.queryById(ShiroUtils.getPrincipal().getEmployeeid());
+        Fileinfo fileinfo =new Fileinfo();
+        FileuploadUtils fileuploadUtils =new FileuploadUtils();
+        if(null!=file&&file.getSize()>0){
+            //合同
+            String fileUrl = fileuploadUtils.Fileupload(file,uploadFile,desc,goodsname);
+            log.info("附件上传成功");
+            fileinfo.setCorpid(employee.getCorpid());
+            fileinfo.setFileinfotype(FileTypeEnmu.Procurement_contract.getCode());
+            fileinfo.setName(goodsname+desc);
+            fileinfo.setUrl(fileUrl);
+            fileinfo.setCreatedate(new Date());
+            fileinfo= fileinfoService.insert(fileinfo);
+            log.info("附件插入成功");
+        }
+        Procurement procurement =new Procurement();
+        //生成4为随机数 第二个参数为是否要字母 第三个参数是否要数字
+        String code= RandomStringUtils.random(4, true, true);
+        procurement.setProid(DateUtil.getformatDate(new Date())+code);
+        procurement.setCorpid(employee.getCorpid());
+        procurement.setProdate(DateUtil.formatDate(prodate));
+        procurement.setProtype(protype);
+        procurement.setGoodsname(goodsname);
+        procurement.setUnit(unit);
+        procurement.setType(type);
+        procurement.setNumber(number);
+        procurement.setPrice(price);
+        procurement.setTotalamount(totalamount);
+        procurement.setProdesc(prodesc);
+        procurement.setApplicantid(ShiroUtils.getPrincipal().getUserid());
+        procurement.setApplicationdeptid(employee.getDepartmentid());
+        procurement.setStatus(ProcurementStatusEnmu.Under_review.getCode());
+        procurement.setFileinfoid(fileinfo.getFileinfoid());
+        procurement.setCreatedate(new Date());
         /*插入采购订单表*/
         Procurement insert = this.procurementService.insert(procurement);
         /*直接启动流程实例*/
         this.proflowService.startProcess(insert.getProid());
         /*启动后通过查询流程实例的business_key 找到流程定义实例 再通过流程实例*/
         //拼接流程定义Key
-        String processDefinitionKey = "LeavebillOr";
+        String processDefinitionKey = "Pro";
 
         try{
             String businessKey =processDefinitionKey+":"+insert.getProid();

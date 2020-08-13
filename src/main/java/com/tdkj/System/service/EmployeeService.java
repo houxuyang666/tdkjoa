@@ -115,5 +115,5 @@ public interface EmployeeService {
 
    //根据公司的id,姓名，电话号码查询全部员工的通讯录
     List<EmployeeVO> queryAllMail(Integer corpid, String name, String cellphone);
-};
+}
 

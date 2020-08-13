@@ -12,7 +12,7 @@ import java.util.List;
  * (Warehouse)表服务实现类
  *
  * @author makejava
- * @since 2020-07-17 14:51:08
+ * @since 2020-08-13 15:12:27
  */
 @Service("warehouseService")
 public class WarehouseServiceImpl implements WarehouseService {
@@ -26,7 +26,7 @@ public class WarehouseServiceImpl implements WarehouseService {
      * @return 实例对象
      */
     @Override
-    public Warehouse queryById(Integer warehouseid) {
+    public Warehouse queryById(String warehouseid) {
         return this.warehouseDao.queryById(warehouseid);
     }
 
@@ -73,7 +73,20 @@ public class WarehouseServiceImpl implements WarehouseService {
      * @return 是否成功
      */
     @Override
-    public boolean deleteById(Integer warehouseid) {
+    public boolean deleteById(String warehouseid) {
         return this.warehouseDao.deleteById(warehouseid) > 0;
     }
+
+    /**
+     * @Author houxuyang
+     * @Description //根据名称查询库中是否存在商品
+     * @Date 15:30 2020/8/13
+     * @Param [goodsname]
+     * @return com.tdkj.System.entity.Warehouse
+     **/
+    @Override
+    public Warehouse queryBygoodsname(String goodsname) {
+        return this.warehouseDao.queryBygoodsname(goodsname);
+    }
+
 }

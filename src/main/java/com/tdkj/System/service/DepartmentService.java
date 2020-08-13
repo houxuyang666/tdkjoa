@@ -62,4 +62,13 @@ public interface DepartmentService {
      * @return java.util.List<com.tdkj.System.entity.VO.DepartmentVO>
      **/
     List<DepartmentVO> queryDeptByCorpId(Integer corpid);
+
+    /**
+     * @Author houxuyang
+     * @Description //模糊查询综合办公室
+     * @Date 13:46 2020/8/13
+     * @Param [deptname]
+     * @return com.tdkj.System.entity.Department
+     **/
+    Department queryDeptLikeName(String deptname, Integer corpid);
 }

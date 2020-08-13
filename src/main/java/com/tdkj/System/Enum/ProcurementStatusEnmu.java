@@ -16,7 +16,9 @@ public enum ProcurementStatusEnmu {
 
     give_up(3,"放弃"),
 
-    rejected(4,"驳回");
+    rejected(4,"驳回"),
+
+    Purchase_complete(5,"购买完成");
 
 
     private String desc;//文字描述

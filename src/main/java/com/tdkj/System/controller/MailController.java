@@ -43,32 +43,24 @@ private EmployeeService employeeService;
         return OAResponseList.setResult(0,FIND_SUCCESS,pageInfo);
 
     }
-    //跳转到员工通讯页面
-    @RequestMapping("goallmaillist")
-    public String goallmaillist() {
-        return "page/allmaillist";
-    }
 
-
-    //查询员工通讯录
-
-    @RequestMapping("/selectallmail")
-    @ResponseBody
-    public OAResponseList selectallmail(Integer page, Integer limit, String name, String cellphone) {
-        Employee employee = employeeService.queryById(ShiroUtils.getPrincipal().getEmployeeid());
-
-        PageHelper.startPage(page,limit,true);
-        List<EmployeeVO> employeeVOList=employeeService.queryAllMail(employee.getCorpid(),name,cellphone);
-        PageInfo<EmployeeVO> pageInfo=new PageInfo<>(employeeVOList);
-        return OAResponseList.setResult(0,FIND_SUCCESS,pageInfo);
-
-    }
-
-
-
-
-
-
-
+//    //跳转到员工通讯页面
+//    @RequestMapping("goallmaillist")
+//    public String goallmaillist() {
+//        return "page/allmaillist";
+//    }
+//
+//
+//    //查询员工通讯录
+//    @RequestMapping("/selectallmail")
+//    @ResponseBody
+//    public OAResponseList selectallmail(Integer page, Integer limit, String name, String cellphone) {
+//        Employee employee = employeeService.queryById(ShiroUtils.getPrincipal().getEmployeeid());
+//
+//        PageHelper.startPage(page,limit,true);
+//        List<EmployeeVO> employeeVOList=employeeService.queryAllMail(employee.getCorpid(),name,cellphone);
+//        PageInfo<EmployeeVO> pageInfo=new PageInfo<>(employeeVOList);
+//        return OAResponseList.setResult(0,FIND_SUCCESS,pageInfo);
+//    }
 
 }

@@ -9,7 +9,7 @@ import java.util.List;
  * (Warehouse)表数据库访问层
  *
  * @author makejava
- * @since 2020-07-17 14:51:08
+ * @since 2020-08-13 15:12:25
  */
 public interface WarehouseDao {
 
@@ -19,7 +19,7 @@ public interface WarehouseDao {
      * @param warehouseid 主键
      * @return 实例对象
      */
-    Warehouse queryById(Integer warehouseid);
+    Warehouse queryById(String warehouseid);
 
     /**
      * 查询指定行数据
@@ -61,6 +61,14 @@ public interface WarehouseDao {
      * @param warehouseid 主键
      * @return 影响行数
      */
-    int deleteById(Integer warehouseid);
+    int deleteById(String warehouseid);
 
+    /**
+     * @Author houxuyang
+     * @Description //根据名称查询库中是否存在商品
+     * @Date 15:30 2020/8/13
+     * @Param [goodsname]
+     * @return com.tdkj.System.entity.Warehouse
+     **/
+    Warehouse queryBygoodsname(String goodsname);
 }

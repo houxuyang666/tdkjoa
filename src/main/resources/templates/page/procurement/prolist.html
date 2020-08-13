@@ -43,8 +43,9 @@
                 <a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="viewSpProcess">审批查询</a>
                 {{#  } else if(d.status==4){ }}
                 <a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="viewSpProcess">审批查询</a>
+                {{#  } else if(d.status==5){ }}
+                <a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="viewSpProcess">购买完成</a>
                 {{#  } }}
-
             </script>
         </div>
     </div>
@@ -123,6 +124,8 @@
                             html="<font color=gray>已放弃</font>"
                         }else if(d.status==4) {
                             html="<font color=red>驳回</font>"
+                        }else if(d.status==5) {
+                            html="<font color=green>购买完成</font>"
                         }else{
                             html="<font color=red>未知状态</font>"
                         }

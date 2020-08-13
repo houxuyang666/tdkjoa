@@ -83,4 +83,16 @@ public class DepartmentServiceImpl implements DepartmentService {
         return this.departmentDao.queryDeptByCorpId(corpid);
     }
 
+    /**
+     * @Author houxuyang
+     * @Description //模糊查询综合办公室
+     * @Date 13:46 2020/8/13
+     * @Param [deptname]
+     * @return com.tdkj.System.entity.Department
+     **/
+    @Override
+    public Department queryDeptLikeName(String deptname, Integer corpid) {
+        return this.departmentDao.queryDeptLikeName(deptname,corpid);
+    }
+
 }

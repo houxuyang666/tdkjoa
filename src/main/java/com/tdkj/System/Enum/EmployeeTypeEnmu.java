@@ -13,7 +13,7 @@ public enum EmployeeTypeEnmu {
 
     Enterprise_staff(3,"企业职员"),
 
-    Field_staff(4,"外勤人员");
+    Field_staff(4,"司机");
 
 
     private String desc;//文字描述

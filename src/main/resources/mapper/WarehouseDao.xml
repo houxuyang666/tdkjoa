@@ -3,7 +3,7 @@
 <mapper namespace="com.tdkj.System.dao.WarehouseDao">
 
     <resultMap type="com.tdkj.System.entity.Warehouse" id="WarehouseMap">
-        <result property="warehouseid" column="WarehouseId" jdbcType="INTEGER"/>
+        <result property="warehouseid" column="WarehouseId" jdbcType="VARCHAR"/>
         <result property="corpid" column="CorpId" jdbcType="INTEGER"/>
         <result property="goodsname" column="GoodsName" jdbcType="VARCHAR"/>
         <result property="unit" column="Unit" jdbcType="VARCHAR"/>
@@ -19,7 +19,7 @@
     <select id="queryById" resultMap="WarehouseMap">
         select
           WarehouseId, CorpId, GoodsName, Unit, Type, TotalNumbe, Price, TotalAmount, CreateDate, ModifyDate
-        from tdkjoa.warehouse
+        from warehouse
         where WarehouseId = #{warehouseid}
     </select>
 
@@ -27,7 +27,7 @@
     <select id="queryAllByLimit" resultMap="WarehouseMap">
         select
           WarehouseId, CorpId, GoodsName, Unit, Type, TotalNumbe, Price, TotalAmount, CreateDate, ModifyDate
-        from tdkjoa.warehouse
+        from warehouse
         limit #{offset}, #{limit}
     </select>
 
@@ -35,9 +35,9 @@
     <select id="queryAll" resultMap="WarehouseMap">
         select
         WarehouseId, CorpId, GoodsName, Unit, Type, TotalNumbe, Price, TotalAmount, CreateDate, ModifyDate
-        from tdkjoa.warehouse
+        from warehouse
         <where>
-            <if test="warehouseid != null">
+            <if test="warehouseid != null and warehouseid != ''">
                 and WarehouseId = #{warehouseid}
             </if>
             <if test="corpid != null">
@@ -72,13 +72,13 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="warehouseid" useGeneratedKeys="true">
-        insert into tdkjoa.warehouse(CorpId, GoodsName, Unit, Type, TotalNumbe, Price, TotalAmount, CreateDate, ModifyDate)
-        values (#{corpid}, #{goodsname}, #{unit}, #{type}, #{totalnumbe}, #{price}, #{totalamount}, #{createdate}, #{modifydate})
+        insert into warehouse(WarehouseId,CorpId, GoodsName, Unit, Type, TotalNumbe, Price, TotalAmount, CreateDate, ModifyDate)
+        values (#{warehouseid},#{corpid}, #{goodsname}, #{unit}, #{type}, #{totalnumbe}, #{price}, #{totalamount}, #{createdate}, #{modifydate})
     </insert>
 
     <!--通过主键修改数据-->
     <update id="update">
-        update tdkjoa.warehouse
+        update warehouse
         <set>
             <if test="corpid != null">
                 CorpId = #{corpid},
@@ -113,7 +113,14 @@
 
     <!--通过主键删除-->
     <delete id="deleteById">
-        delete from tdkjoa.warehouse where WarehouseId = #{warehouseid}
+        delete from warehouse where WarehouseId = #{warehouseid}
     </delete>
+
+    <!--根据名称查询库中是否存在商品-->
+    <select id="queryBygoodsname" resultMap="WarehouseMap">
+        select
+          WarehouseId, CorpId, GoodsName, Unit, Type, TotalNumbe, Price, TotalAmount, CreateDate, ModifyDate
+        from warehouse where GoodsName = #{goodsname}
+    </select>
 
 </mapper>

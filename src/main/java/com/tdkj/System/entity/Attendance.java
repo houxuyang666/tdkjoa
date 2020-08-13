@@ -9,11 +9,11 @@ import java.util.Date;
  * (Attendance)实体类
  *
  * @author makejava
- * @since 2020-07-17 14:51:08
+ * @since 2020-08-13 08:11:25
  */
 @Data
 public class Attendance implements Serializable {
-    private static final long serialVersionUID = 772433905503578053L;
+    private static final long serialVersionUID = -73127869279638035L;
     /**
      * 考勤ID 自增ID
      */
@@ -22,6 +22,10 @@ public class Attendance implements Serializable {
      * 员工ID
      */
     private Integer userid;
+    /**
+     * 公司ID
+     */
+    private Integer corpid;
     /**
      * 部门ID
      */
@@ -37,7 +41,7 @@ public class Attendance implements Serializable {
     /**
      * 备注
      */
-    private String attendanceDesc;
+    private String attendancedesc;
     /**
      * 创建时间
      */
@@ -46,5 +50,6 @@ public class Attendance implements Serializable {
      * 编辑时间
      */
     private Date modifydate;
+
 
 }

@@ -178,11 +178,11 @@ public class WorkFlowServiceImpl implements WorkFlowService {
     public PageInfo qureyCurrentUserTask(Integer page, Integer limit) {
         Employee employee =employeeService.queryById(ShiroUtils.getPrincipal().getEmployeeid());
         //1.得到办理人信息
-        String assignee =employee.getName();
+         String assignee =employee.getName();
         //2.查询总数
         //long count = this.taskService.createTaskQuery().taskAssignee(assignee).count();
         //3.查询集合
-        List<Task> taskList = this.taskService.createTaskQuery().taskAssignee(assignee).listPage(page, limit);
+        List<Task> taskList = this.taskService.createTaskQuery().taskAssignee(assignee).orderByTaskCreateTime().desc().listPage(page, limit);
 
         /*添加判断*/
 

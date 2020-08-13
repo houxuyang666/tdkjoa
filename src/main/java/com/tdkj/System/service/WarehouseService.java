@@ -8,7 +8,7 @@ import java.util.List;
  * (Warehouse)表服务接口
  *
  * @author makejava
- * @since 2020-07-17 14:51:08
+ * @since 2020-08-13 15:12:26
  */
 public interface WarehouseService {
 
@@ -18,7 +18,7 @@ public interface WarehouseService {
      * @param warehouseid 主键
      * @return 实例对象
      */
-    Warehouse queryById(Integer warehouseid);
+    Warehouse queryById(String warehouseid);
 
     /**
      * 查询多条数据
@@ -51,6 +51,14 @@ public interface WarehouseService {
      * @param warehouseid 主键
      * @return 是否成功
      */
-    boolean deleteById(Integer warehouseid);
+    boolean deleteById(String warehouseid);
 
+    /**
+     * @Author houxuyang
+     * @Description //根据名称查询仓库是否存在该商品
+     * @Date 15:29 2020/8/13
+     * @Param [goodsname]
+     * @return com.tdkj.System.entity.Warehouse
+     **/
+    Warehouse queryBygoodsname(String goodsname);
 }

@@ -111,5 +111,18 @@
 
 
 
+    <!--模糊查询综合办公室-->
+    <select id="queryDeptLikeName" resultMap="DepartmentMap">
+        select
+            DeptName as deptname,
+            DeptHeadID as deptheadid
+        from department
+        where CorpId =#{corpid}
+            and deptname like concat('%',#{deptname},'%')
+
+    </select>
+
+
+
 
 </mapper>

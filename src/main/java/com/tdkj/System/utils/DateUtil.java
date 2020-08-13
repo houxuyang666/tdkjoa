@@ -63,8 +63,8 @@ public class DateUtil {
         return usDate;
     }
 
-    public static String getformatDate(Date date) throws ParseException {
-       return  new SimpleDateFormat(FULL_TIME_PATTERN).format(new Date());
+    public static String getformatDate(Date date){
+       return  new SimpleDateFormat(FULL_TIME_PATTERN).format(date);
     }
 
     public static String getToday(){

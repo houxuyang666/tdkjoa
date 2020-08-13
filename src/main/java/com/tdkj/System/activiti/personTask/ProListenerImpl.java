@@ -1,6 +1,8 @@
 package com.tdkj.System.activiti.personTask;
 
+import com.tdkj.System.entity.Department;
 import com.tdkj.System.entity.Employee;
+import com.tdkj.System.service.DepartmentService;
 import com.tdkj.System.service.EmployeeService;
 import com.tdkj.System.utils.ShiroUtils;
 import org.activiti.engine.delegate.DelegateTask;
@@ -17,15 +19,11 @@ import javax.servlet.http.HttpServletRequest;
  * @date 2020/7/23 15:26
  */
 @Component
-public class TaskListenerImpl implements TaskListener {
+public class ProListenerImpl implements TaskListener {
 
-    /*监听器*/
-    /* 修改流程图
-
-    申请人不变， 删除部门审核以及总经理审核的变量*/
     @Override
     public void notify(DelegateTask delegateTask) {
-        System.out.println("进来了TaskListenerImpl");
+        System.out.println("进来了ProListenerImpl");
 
         //取出IOC容器
         System.out.println(ShiroUtils.getPrincipal().getEmployeeid());
@@ -34,10 +32,16 @@ public class TaskListenerImpl implements TaskListener {
                 .getWebApplicationContext(request.getServletContext());
         //从IOC容器里面取出UserService
         EmployeeService employeeService=applicationContext.getBean(EmployeeService.class);
+        DepartmentService departmentService=applicationContext.getBean(DepartmentService.class);
 
-        //1.根据用户id获取当前用户的上级领导
-        Employee employee =employeeService.querySuperById(ShiroUtils.getPrincipal().getEmployeeid());
+        //1.获取综合办公室领导的ID
+        Employee employee =employeeService.queryById(ShiroUtils.getPrincipal().getEmployeeid());
+        //模糊查询综合办公室
+        String deptname ="综合办公室";
+        Department department =departmentService.queryDeptLikeName(deptname,employee.getCorpid());
+        Employee deptemployee =employeeService.queryById(department.getDeptheadid());
+
         //2.指定办理人
-        delegateTask.setAssignee(employee.getName());
+        delegateTask.setAssignee(deptemployee.getName());
     }
 }

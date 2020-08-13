@@ -89,23 +89,25 @@ public class AttendanceController {
     @ResponseBody
     @RequestMapping("/add")
     public OAResponse add() throws Exception {
-        //根据当前用户获取到部门ID
+
         Attendance oldattendance = attendanceService.queryByIdAndData(ShiroUtils.getPrincipal().getUserid(), DateUtil.getToday());
         if (null == oldattendance) {
             //如果今天没有数据 那么表明今天没有签到 可以签到
             int deptID = employeeService.queryByUserIdGetDeptID(ShiroUtils.getPrincipal().getEmployeeid());
-            log.info(ShiroUtils.getPrincipal().getUserid().toString());
+            Employee employee = employeeService.queryById(ShiroUtils.getPrincipal().getEmployeeid());
             Attendance attendance =new Attendance();
             attendance.setUserid(ShiroUtils.getPrincipal().getUserid());
             attendance.setDeptid(deptID);
+            attendance.setCorpid(employee.getCorpid());
             attendance.setWorkdate(new Date());
             attendance.setCreatedate(new Date());
             if (DateUtil.isBeforeAndAfter(data1,data2)){ //在此时间段内签到为正常签到
+                attendance.setAttendancedesc("正常");
                 attendanceService.insert(attendance);
                 return OAResponse.setResult(HTTP_RNS_CODE_200, "签到成功");
             }else if(DateUtil.isBeforeAndAfter(data2,data4)){
                 //否则为迟到签到
-                attendance.setAttendanceDesc("迟到");
+                attendance.setAttendancedesc("迟到");
                 attendanceService.insert(attendance);
                 return OAResponse.setResult(HTTP_RNS_CODE_200, "迟到签到成功");
             }else{

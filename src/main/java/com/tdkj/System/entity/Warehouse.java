@@ -3,21 +3,22 @@ package com.tdkj.System.entity;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
  * (Warehouse)实体类
  *
  * @author makejava
- * @since 2020-07-17 14:51:08
+ * @since 2020-08-13 15:11:02
  */
 @Data
 public class Warehouse implements Serializable {
-    private static final long serialVersionUID = 288270505528730696L;
+    private static final long serialVersionUID = -99993612922729802L;
     /**
      * 编号ID 仓库ID
      */
-    private Integer warehouseid;
+    private String warehouseid;
     /**
      * 公司编号 公司ID
      */
@@ -41,11 +42,11 @@ public class Warehouse implements Serializable {
     /**
      * 单价
      */
-    private Double price;
+    private BigDecimal price;
     /**
      * 总金额
      */
-    private Double totalamount;
+    private BigDecimal totalamount;
     /**
      * 创建时间
      */
@@ -54,5 +55,4 @@ public class Warehouse implements Serializable {
      * 编辑时间
      */
     private Date modifydate;
-
 }

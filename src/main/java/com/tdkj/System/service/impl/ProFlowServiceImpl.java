@@ -2,9 +2,11 @@ package com.tdkj.System.service.impl;
 
 import com.github.pagehelper.PageInfo;
 import com.tdkj.System.Enum.AuditStatusEnmu;
+import com.tdkj.System.Enum.ProcurementStatusEnmu;
 import com.tdkj.System.entity.Employee;
 import com.tdkj.System.entity.Procurement;
 import com.tdkj.System.entity.VO.ProcurementVO;
+import com.tdkj.System.entity.Warehouse;
 import com.tdkj.System.entity.ect.ActCommentEntity;
 import com.tdkj.System.entity.ect.ActTaskEntity;
 import com.tdkj.System.service.EmployeeService;
@@ -28,10 +30,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author hxy
@@ -53,13 +52,15 @@ public class ProFlowServiceImpl implements ProFlowService {
     private RepositoryService repositoryService;
     @Autowired
     private HistoryService historyService;
+    @Autowired
+    private WarehouseServiceImpl warehouseService;
 
 
     /*启动采购流程*/
     @Override
     public void startProcess(String proid) {
         //找到流程的KEY
-        String processDefinitionKey = "LeavebillOr"; //获取对象名称
+        String processDefinitionKey = "Pro"; //获取对象名称
         String businessKey =processDefinitionKey+":"+proid;
         Map<String, Object> variables =new HashMap<>();
         Employee employee =employeeService.queryById(ShiroUtils.getPrincipal().getEmployeeid());
@@ -80,7 +81,7 @@ public class ProFlowServiceImpl implements ProFlowService {
         //String assignee =employee.getName();
 
         //3.查询集合
-        List<Task> taskList = this.taskService.createTaskQuery().taskAssignee(employee.getName()).listPage(page, limit);
+        List<Task> taskList = this.taskService.createTaskQuery().taskAssignee(employee.getName()).orderByTaskCreateTime().desc().listPage(page, limit);
         List<ActTaskEntity> actTaskEntities = new ArrayList<>();
         for (Task task : taskList) {
             ProcessInstance processInstance = this.runtimeService.createProcessInstanceQuery().processInstanceId(task.getProcessInstanceId()).singleResult();
@@ -167,15 +168,9 @@ public class ProFlowServiceImpl implements ProFlowService {
         Map<String, Object> variables = new HashMap<>();
         variables.put("outcome", outcome);
         this.taskService.complete(taskId, variables);
-        if("驳回".equals(outcome)){
+        if(ProcurementStatusEnmu.rejected.getDesc().equals(outcome)){
             this.runtimeService.deleteProcessInstance(task.getProcessInstanceId(),"驳回");
         }
-        //创建时就直接提交到经理 所以没有放弃选项
-        /*else if ("放弃".equals(outcome)){
-            this.runtimeService.deleteProcessInstance(task.getProcessInstanceId(), "放弃");
-        }*/
-        //判断流程是否结束
-        /*act_ru_task*/
         //已知流程实例ID
         ProcessInstance processInstance = this.runtimeService.createProcessInstanceQuery()
                 .processInstanceId(processInstanceID).singleResult();
@@ -189,20 +184,59 @@ public class ProFlowServiceImpl implements ProFlowService {
             }else{
                 procurement.setStatus(AuditStatusEnmu.Review_completed.getCode());
             }*/
-            if("驳回".equals(outcome)){
+            if(ProcurementStatusEnmu.rejected.getDesc().equals(outcome)){ //驳回
                 procurement.setStatus(AuditStatusEnmu.rejected.getCode());
+            }else if (ProcurementStatusEnmu.Purchase_complete.getDesc().equals(outcome)){ //购买完成
+                procurement.setStatus(ProcurementStatusEnmu.Purchase_complete.getCode());
+            }
+            procurement.setModifydate(new Date());
+            //获取该订单信息插入到仓库表中
+            Procurement procurement1 = this.procurementService.queryById(proid);
+            Warehouse warehouse = this.warehouseService.queryBygoodsname(procurement1.getGoodsname());
+            if (null==warehouse){//证明数据库中不存在
+                //String code= RandomStringUtils.random(4, true, true);
+                //warehouse.setWarehouseid(DateUtil.getformatDate(new Date())+code);
+                log.info(procurement1.getProid());
+                Warehouse warehouse1=new Warehouse();
+                warehouse1.setWarehouseid(procurement1.getProid());
+                warehouse1.setCorpid(procurement1.getCorpid());
+                warehouse1.setGoodsname(procurement1.getGoodsname());
+                warehouse1.setUnit(procurement1.getUnit());
+                warehouse1.setType(procurement1.getType());
+                warehouse1.setTotalnumbe(procurement1.getNumber());
+                warehouse1.setPrice(procurement1.getPrice());
+                warehouse1.setTotalamount(procurement1.getTotalamount());
+                warehouse1.setCreatedate(new Date());
+                this.warehouseService.insert(warehouse1);
             }else{
-                procurement.setStatus(AuditStatusEnmu.Review_completed.getCode());
+                Warehouse warehouse2=new Warehouse();
+                warehouse2.setWarehouseid(warehouse.getWarehouseid());
+                warehouse2.setTotalnumbe(procurement1.getNumber()+warehouse.getTotalnumbe());
+                warehouse2.setTotalamount(procurement1.getTotalamount().add(warehouse.getTotalamount()));
+                warehouse2.setModifydate(new Date());
+                this.warehouseService.update(warehouse2);
             }
             this.procurementService.update(procurement);
+            /*购买完成后 插入仓库表*/
         }
+    }
+
+    /**
+     * @Author houxuyang
+     * @Description //购买完成后插入仓库表
+     * @Date 15:04 2020/8/13
+     * @Param [proid]
+     * @return void
+     **/
+    public void insertWarehouse(String proid) throws Exception {
+
     }
 
     @Override
     public PageInfo queryCommentByProid(String proid) {
         //组装businessKey
         //String businessKey =Leavebill.class.getSimpleName()+":"+id;
-        String businessKey ="LeavebillOr"+":"+proid;
+        String businessKey ="Pro"+":"+proid;
 
         HistoricProcessInstance historicProcessInstance = this.historyService.createHistoricProcessInstanceQuery().processInstanceBusinessKey(businessKey).singleResult();
         /*获取历史流程实例id*/
