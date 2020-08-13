@@ -76,4 +76,16 @@ public class RoleServiceImpl implements RoleService {
     public boolean deleteById(Integer roleid) {
         return this.roleDao.deleteById(roleid) > 0;
     }
+
+    /**
+     * @Author houxuyang
+     * @Description //获取除超级管理员以外的权限
+     * @Date 14:44 2020/8/13
+     * @Param []
+     * @return java.util.List<com.tdkj.System.entity.Role>
+     **/
+    @Override
+    public List<Role> queryAll(Role role) {
+        return this.roleDao.queryAll(role);
+    }
 }

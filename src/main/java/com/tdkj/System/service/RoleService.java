@@ -53,4 +53,12 @@ public interface RoleService {
      */
     boolean deleteById(Integer roleid);
 
+    /**
+     * @Author houxuyang
+     * @Description //获取除超级管理员以外的权限
+     * @Date 14:43 2020/8/13
+     * @Param []
+     * @return java.util.List<com.tdkj.System.entity.Role>
+     **/
+    List<Role> queryAll(Role role);
 }

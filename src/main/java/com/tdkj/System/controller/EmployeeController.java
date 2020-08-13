@@ -3,15 +3,11 @@ package com.tdkj.System.controller;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.tdkj.System.Enum.EmployeeStatusEnmu;
-import com.tdkj.System.Enum.EmployeeTypeEnmu;
 import com.tdkj.System.Enum.FileTypeEnmu;
 import com.tdkj.System.Enum.UserStatusEnmu;
 import com.tdkj.System.common.OAResponse;
 import com.tdkj.System.common.OAResponseList;
-import com.tdkj.System.entity.Corpbasicinfo;
-import com.tdkj.System.entity.Employee;
-import com.tdkj.System.entity.Fileinfo;
-import com.tdkj.System.entity.User;
+import com.tdkj.System.entity.*;
 import com.tdkj.System.entity.VO.EmployeeVO;
 import com.tdkj.System.service.*;
 import com.tdkj.System.utils.*;
@@ -60,6 +56,8 @@ public class EmployeeController {
     private FileinfoService fileinfoService;
     @Autowired
     private CorpbasicinfoService corpbasicinfoService;
+    @Autowired
+    private DepartmentService departmentService;
 
     @Value("${file.uploadImageFolder}")
     private String uploadImageFolder;
@@ -131,7 +129,7 @@ public class EmployeeController {
     public OAResponse add(String username,
                           Integer departmentid,String name, String jobtitle,Integer idcardtype,String idcardnumber,
                           Integer gender,Integer age,String nation,Integer edulevel,String birthday,String address,
-                          String entrydate, String regulardate,@RequestParam( value ="headimage",required = false) MultipartFile headimage,Integer politicstype,
+                          String entrydate, String regulardate,Integer roleid,@RequestParam( value ="headimage",required = false) MultipartFile headimage,Integer politicstype,
                           String cellphone,String email,String authorizationcode,String urgentlinkman,String urgentlinkmanphone,
                           @RequestParam(value ="positiveidcardimage",required = false) MultipartFile positiveidcardimage,
                           @RequestParam(value ="negativeidcardimage",required = false) MultipartFile negativeidcardimage,
@@ -161,8 +159,9 @@ public class EmployeeController {
         }
         employee.setCorpid(corpbasicinfo.getCorpid());
         employee.setDepartmentid(departmentid);
+        Department department = departmentService.queryById(departmentid);
         /*上级领导的employee的ID*/
-        employee.setSuperid(1); //上级领导ID
+        employee.setSuperid(department.getDeptheadid()); //上级领导ID
         employee.setName(name);
         employee.setJobtitle(jobtitle);
         employee.setIdcardtype(idcardtype);
@@ -219,7 +218,7 @@ public class EmployeeController {
         user.setStatus(UserStatusEnmu.Normal.getCode());
         user.setSalt(uuid);
         //后期可修改
-        user.setRoleid(EmployeeTypeEnmu.Admin.getCode());
+        user.setRoleid(roleid);
         user.setCreatedate(new Date());
         userService.insert(user);
         log.info("账号生成成功");
@@ -235,7 +234,7 @@ public class EmployeeController {
                 i++;
                 if(i==3){
                     log.info("发送三次失败");
-                    break;
+                    return OAResponse.setResult(HTTP_RNS_CODE_200,"账号生成成功，邮件发送失败");
                 }
             }
         }while(1!=value);
