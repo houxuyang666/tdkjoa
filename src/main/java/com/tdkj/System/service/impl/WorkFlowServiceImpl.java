@@ -69,6 +69,8 @@ public class WorkFlowServiceImpl implements WorkFlowService {
     @Autowired
     private ProcurementService procurementService;
 
+    private String processDefinitionKey = "Leavebill";
+
 
     public OAResponseList querProcessDeploy(WorkFlowVO workFlowVO) {
         PageInfo<ActdeploymentEntity> pageInfo = new PageInfo<ActdeploymentEntity>();
@@ -159,7 +161,7 @@ public class WorkFlowServiceImpl implements WorkFlowService {
     public void startProcess(Integer leavbillid) {
         //找到流程的KEY
         //String processDefinitionKey = Leavebill.class.getSimpleName(); //获取对象名称
-        String processDefinitionKey = "LeavebillOr"; //获取对象名称
+        //String processDefinitionKey = "LeavebillOr"; //获取对象名称
         String businessKey =processDefinitionKey+":"+leavbillid; //"Leavbill:1"
         Map<String, Object> variables =new HashMap<>();
         /*设置流程变量获取当前用户 也就是谁提交的请假单（设置下个流程的办理人）*/
@@ -182,7 +184,7 @@ public class WorkFlowServiceImpl implements WorkFlowService {
         //2.查询总数
         //long count = this.taskService.createTaskQuery().taskAssignee(assignee).count();
         //3.查询集合
-        List<Task> taskList = this.taskService.createTaskQuery().taskAssignee(assignee).orderByTaskCreateTime().desc().listPage(page, limit);
+        List<Task> taskList = this.taskService.createTaskQuery().taskAssignee(assignee).orderByTaskCreateTime().desc().list();
 
         /*添加判断*/
 
@@ -372,7 +374,7 @@ public class WorkFlowServiceImpl implements WorkFlowService {
     public PageInfo queryCommentByLeavebillid(Integer id) {
         //组装businessKey
         //String businessKey =Leavebill.class.getSimpleName()+":"+id;
-        String businessKey ="LeavebillOr"+":"+id;
+        String businessKey =processDefinitionKey+":"+id;
 
         HistoricProcessInstance historicProcessInstance = this.historyService.createHistoricProcessInstanceQuery().processInstanceBusinessKey(businessKey).singleResult();
         /*获取历史流程实例id*/

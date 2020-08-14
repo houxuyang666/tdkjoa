@@ -52,6 +52,7 @@ public class LeavebillController {
     @Autowired
     private TaskService taskService;
 
+    private String processDefinitionKey = "Leavebill";
 
     /**
      * 通过主键查询单条数据
@@ -103,7 +104,7 @@ public class LeavebillController {
         this.workFlowService.startProcess(insert.getId());
         /*启动后通过查询流程实例的business_key 找到流程定义实例 再通过流程实例*/
         //拼接流程定义Key
-        String processDefinitionKey = "LeavebillOr";
+        //String processDefinitionKey = "LeavebillOr";
         String businessKey = processDefinitionKey + ":" + insert.getId();
         Execution execution = this.runtimeService.createExecutionQuery().processInstanceBusinessKey(businessKey).singleResult();
         Task task = this.taskService.createTaskQuery().executionId(execution.getProcessInstanceId()).singleResult();
