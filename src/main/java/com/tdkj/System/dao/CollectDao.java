@@ -1,6 +1,7 @@
 package com.tdkj.System.dao;
 
 import com.tdkj.System.entity.Collect;
+import com.tdkj.System.entity.VO.CollectVO;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -63,4 +64,12 @@ public interface CollectDao {
      */
     int deleteById(String collectid);
 
+    /**
+     * @Author houxuyang
+     * @Description //根据条件查询本公司的领用记录
+     * @Date 13:52 2020/8/14
+     * @Param [collectVO]
+     * @return java.util.List<com.tdkj.System.entity.VO.CollectVO>
+     **/
+    List<CollectVO> queryBycollectVO(CollectVO collectVO);
 }

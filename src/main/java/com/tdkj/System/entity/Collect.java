@@ -15,7 +15,7 @@ import java.util.Date;
 public class Collect implements Serializable {
     private static final long serialVersionUID = 851224694046130732L;
     /**
-     * 编号ID 仓库ID
+     * 编号ID
      */
     private String collectid;
     /**

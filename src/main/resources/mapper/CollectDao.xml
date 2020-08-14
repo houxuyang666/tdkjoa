@@ -116,4 +116,38 @@
         delete from collect where CollectId = #{collectid}
     </delete>
 
+
+    <!--根据条件查询本公司的领用记录-->
+    <select id="queryBycollectVO" resultType="com.tdkj.System.entity.VO.CollectVO">
+        select
+        CollectId as collectid,
+        coll.CorpId as corpid,
+        c.CorpName as corpname,
+        coll.DeptId as deptid,
+        d.DeptName as deptname,
+        coll.EmployeeId as employeeid,
+        e.Name as name,
+        coll.GoodsName as goodsname,
+        coll.Unit as unit,
+        coll.Type as type,
+        coll.Number as number,
+        coll.CreateDate as createdate,
+        coll.ModifyDate as modifydate
+        from collect coll LEFT JOIN corpbasicinfo c on coll.CorpId =c.CorpId
+        LEFT JOIN department d on coll.DeptId =d.DeptId
+        LEFT JOIN employee e on coll.EmployeeId =e.EmployeeId
+        <where>
+            <if test="name != null and name != ''">
+                and e.Name like concat('%',#{name},'%')
+            </if>
+            <if test="goodsname != null and goodsname != ''">
+                and coll.GoodsName like concat('%',#{goodsname},'%')
+            </if>
+             and coll.CorpId =#{corpid}
+        </where>
+        order by coll.CreateDate desc
+    </select>
+
+
+
 </mapper>

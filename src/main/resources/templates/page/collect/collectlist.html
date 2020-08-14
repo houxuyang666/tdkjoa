@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:shiro="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>领用列表</title>
+    <link rel="stylesheet" href="/statics/lib/layui-v2.5.5/css/layui.css" media="all">
+    <link rel="stylesheet" href="/css/public.css" media="all">
+    <link rel="stylesheet" href="/css/themes/default.css" media="all">
+    <link rel="stylesheet" href="/statics/lib/font-awesome-4.7.0/css/font-awesome.min.css" media="all">
+</head>
+<body>
+<div class="layuimini-container">
+    <div class="layuimini-main">
+        <blockquote class="layui-elem-quote">
+            领用列表<br>
+        </blockquote>
+        <div>
+
+            <fieldset class="table-search-fieldset">
+                <legend>搜索信息</legend>
+                <div style="margin: 10px 10px 10px 10px">
+                    <form class="layui-form layui-form-pane" action="">
+                        <div class="layui-form-item">
+                            <div class="layui-inline">
+                                <label class="layui-form-label">领用人</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="name" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-inline">
+                                <label class="layui-form-label">货物名称</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="goodsname" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-inline">
+                                <button type="submit" class="layui-btn layui-btn-primary"  lay-submit lay-filter="searchBtn"><i class="layui-icon"></i> 搜 索</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </fieldset>
+
+
+            <table id="collectList" lay-filter="collectList" class="layui-hide"></table>
+
+            <script type="text/html" id="toolbar">
+                <div class="layui-btn-container">
+                    <button class="layui-btn layui-btn-sm " lay-event="refresh"><i class="layui-icon">&#xe669;</i>刷新
+                    </button>
+                </div>
+            </script>
+
+            <script type="text/html" id="currentTableBar">
+                <!--{{# if(d.totalnumbe>0){ }}
+                <a   class="layui-btn layui-btn-xs " lay-event="getgoods"><i class="layui-icon">&#xe673;</i>申请领用</a>
+                {{#  } else{ }}
+                <a  class="layui-btn layui-btn-xs layui-btn-danger "><i class="layui-icon">&#xe67e;</i>货物不足</a>
+                {{#  } }}-->
+            </script>
+
+        </div>
+    </div>
+</div>
+
+<script src="/statics/lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
+<script src="/js/public.js" charset="utf-8"></script>
+<script type="text/javascript" th:inline="none">
+    PublicFun.ImportJs("/statics/lib/jquery-3.4.1/jquery-3.4.1.min.js");
+    layui.use(['form', 'table'], function () {
+        var $ = layui.jquery,
+            form = layui.form,
+            table = layui.table;
+
+        //实例化表格
+        table.render({
+            elem: '#collectList',
+            url: '/collect/selectcollect',
+            toolbar: '#toolbar',
+            defaultToolbar: ['filter', 'exports', 'print'],
+            parseData: function (res) { //res 即为原始返回的数据
+                return {
+                    "code": res.code, //解析接口状态
+                    "msg": res.message, //解析提示文本
+                    "count": res.data.total, //解析数据长度
+                    "data": res.data.list //解析数据列表
+                };
+            },
+        cols:[[
+                {field:"checkbox",type:'checkbox'},
+                {field:"collectid",title:"记录编号",width:200},
+                {field:"deptname",title:"领用部门",width:200},
+                {field:"name",title:"领用人",width:200},
+                {field:"goodsname",title:"货物名称",width:200},
+                {field:"unit",title:"单位",width:200},
+                {field:"type",title:"型号",width:200},
+                {field:"number",title:"领用数量",width:200},
+                {field:"createdate", title: "领用时间",width:170,templet: function (d) {
+                        return layui.util.toDateString(d.createdate, 'yyyy-MM-dd HH:mm:ss');
+                    }}
+                //{title: '操作', toolbar: '#currentTableBar', width:200, align: "center",fixed: 'right'}
+            ]],
+            limits: [10, 15, 20, 25, 50, 100],
+            limit: 10,
+            page: true,
+            //skin: 'line'
+        });
+
+        //搜索事件操作
+        form.on("submit(searchBtn)",function (data) {
+            var formData=data.field;//获取搜索新信息
+            //var selectText=$("#companyList").find("option:selected").text();
+            //layer.msg(selectText);
+            var canshu={
+                "goodsname":formData.goodsname,
+                "name":formData.name,
+            }
+            //搜索重载
+            table.reload("collectList",{
+                url:"/collect/selectcollect",
+                page:{
+                    curr:1
+                },
+                where:canshu
+            },"data");
+            return false;
+        });
+
+        //监听头工具栏事件
+        table.on('toolbar(collectList)', function(obj){
+            //var checkStatus=table.checkStatus(obj.config.id);
+            switch(obj.event){
+                case 'refresh':
+                    layui.table.reload("collectList");
+                    break;
+            };
+        });
+    });
+
+</script>
+</body>
+</html>

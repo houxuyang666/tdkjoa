@@ -1,8 +1,12 @@
 package com.tdkj.System.controller;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.tdkj.System.common.OAResponse;
+import com.tdkj.System.common.OAResponseList;
 import com.tdkj.System.entity.Collect;
 import com.tdkj.System.entity.Employee;
+import com.tdkj.System.entity.VO.CollectVO;
 import com.tdkj.System.entity.Warehouse;
 import com.tdkj.System.service.CollectService;
 import com.tdkj.System.service.EmployeeService;
@@ -18,11 +22,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
-
 import java.text.ParseException;
 import java.util.Date;
+import java.util.List;
 
 import static com.tdkj.System.common.OAResultCode.HTTP_RNS_CODE_200;
+import static com.tdkj.System.common.OAResultCode.HTTP_RNS_CODE_500;
+import static com.tdkj.System.common.OAResultType.FIND_SUCCESS;
 
 /**
  * (Collect)表控制层
@@ -65,6 +71,9 @@ public class CollectController {
         log.info("/getgoods");
         //获取仓库中该产品的信息
         Warehouse warehouse = this.warehouseService.queryById(warehouseid);
+        if (warehouse.getTotalnumbe()<number){
+            return OAResponse.setResult(HTTP_RNS_CODE_500,"库存不足");
+        }
         Employee employee = this.employeeService.queryById(ShiroUtils.getPrincipal().getEmployeeid());
         Collect collect =new Collect();
         String code= RandomStringUtils.random(4, true, true);
@@ -87,4 +96,41 @@ public class CollectController {
         this.warehouseService.update(warehouse1);
         return OAResponse.setResult(HTTP_RNS_CODE_200,"领用成功");
     }
+
+
+    /*跳转领用页面*/
+    @RequestMapping("/goselectcollect")
+    public String goselectcollect() {
+        return "page/collect/collectlist";
+    }
+
+
+    /**
+     * @Author houxuyang
+     * @Description //TODO
+     * @Date 13:44 2020/8/14
+     * @Param [page, limit, name, goodsname]
+     * @return com.tdkj.System.common.OAResponseList
+     **/
+    @ResponseBody
+    @RequestMapping("/selectcollect")
+    public OAResponseList selectcollect(Integer page, Integer limit, String name, String goodsname) {
+        log.info("selectemployee");
+        Employee employee = this.employeeService.queryById(ShiroUtils.getPrincipal().getEmployeeid());
+        //获取当前用户的所在公司
+        CollectVO collectVO =new CollectVO();
+        if (null!=name){
+            collectVO.setName(name);
+        }
+        if (null!=goodsname){
+            collectVO.setGoodsname(goodsname);
+        }
+        collectVO.setCorpid(employee.getCorpid());
+        PageHelper.startPage(page,limit,true);
+        //根据条件查询本公司的领用记录
+        List<CollectVO> collectVOS=this.collectService.queryBycollectVO(collectVO);
+        PageInfo<CollectVO> pageInfo=new PageInfo<>(collectVOS);
+        return OAResponseList.setResult(0,FIND_SUCCESS,pageInfo);
+    }
+
 }

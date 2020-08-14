@@ -2,6 +2,7 @@ package com.tdkj.System.service.impl;
 
 import com.tdkj.System.dao.CollectDao;
 import com.tdkj.System.entity.Collect;
+import com.tdkj.System.entity.VO.CollectVO;
 import com.tdkj.System.service.CollectService;
 import org.springframework.stereotype.Service;
 
@@ -75,5 +76,17 @@ public class CollectServiceImpl implements CollectService {
     @Override
     public boolean deleteById(String collectid) {
         return this.collectDao.deleteById(collectid) > 0;
+    }
+
+    /**
+     * @Author houxuyang
+     * @Description //根据条件查询本公司的领用记录
+     * @Date 13:51 2020/8/14
+     * @Param [collectVO]
+     * @return java.util.List<com.tdkj.System.entity.VO.CollectVO>
+     **/
+    @Override
+    public List<CollectVO> queryBycollectVO(CollectVO collectVO) {
+        return this.collectDao.queryBycollectVO(collectVO);
     }
 }

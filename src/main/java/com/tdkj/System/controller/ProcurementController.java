@@ -81,7 +81,7 @@ public class ProcurementController {
     @RequestMapping("/selectpro")
     public OAResponseList selectpro(Integer page, Integer limit) {
         //如果是超级管理员那么可以查询所有 ，但是公司需要区分
-        PageHelper.startPage(0,10,true);
+        PageHelper.startPage(page,limit,true);
         /*根据用户id查询所申请的采购单*/
         List<ProcurementVO> procurementList=procurementService.queryByApplicantId(ShiroUtils.getPrincipal().getUserid());
         PageInfo<ProcurementVO> pageInfo=new PageInfo<>(procurementList);
@@ -188,6 +188,9 @@ public class ProcurementController {
         procurement.setType(type);
         procurement.setNumber(number);
         procurement.setPrice(price);
+        if(String.valueOf(totalamount).length()>7){
+            return OAResponse.setResult(500,"金额太大，请分批提交");
+        }
         procurement.setTotalamount(totalamount);
         procurement.setProdesc(prodesc);
         procurement.setApplicantid(ShiroUtils.getPrincipal().getUserid());

@@ -1,6 +1,7 @@
 package com.tdkj.System.service;
 
 import com.tdkj.System.entity.Collect;
+import com.tdkj.System.entity.VO.CollectVO;
 
 import java.util.List;
 
@@ -53,4 +54,12 @@ public interface CollectService {
      */
     boolean deleteById(String collectid);
 
+    /**
+     * @Author houxuyang
+     * @Description //根据条件查询本公司的领用记录
+     * @Date 13:51 2020/8/14
+     * @Param [collectVO]
+     * @return java.util.List<com.tdkj.System.entity.VO.CollectVO>
+     **/
+    List<CollectVO> queryBycollectVO(CollectVO collectVO);
 }
