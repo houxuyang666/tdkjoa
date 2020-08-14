@@ -89,4 +89,16 @@ public class WarehouseServiceImpl implements WarehouseService {
         return this.warehouseDao.queryBygoodsname(goodsname);
     }
 
+    /**
+     * @Author houxuyang
+     * @Description //查询该公司的仓库列表
+     * @Date 10:17 2020/8/14
+     * @Param [warehouse]
+     * @return java.util.List<com.tdkj.System.entity.Warehouse>
+     **/
+    @Override
+    public List<Warehouse> queryAll(Warehouse warehouse) {
+        return this.warehouseDao.queryAll(warehouse);
+    }
+
 }

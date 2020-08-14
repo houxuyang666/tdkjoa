@@ -71,6 +71,13 @@ public class LeavebillController {
         return "page/leavebill/leavebilllist";
     }
 
+    /**
+     * @Author houxuyang
+     * @Description //查询考勤申请
+     * @Date 10:45 2020/8/14
+     * @Param [page, limit]
+     * @return com.tdkj.System.common.OAResponseList
+     **/
     @ResponseBody
     @RequestMapping("/selectleavebill")
     public OAResponseList selectleavebill(Integer page, Integer limit) {
@@ -79,7 +86,7 @@ public class LeavebillController {
         //获取当前用户的id
         Leavebill leavebill = new Leavebill();
         leavebill.setUserid(ShiroUtils.getPrincipal().getUserid());
-        PageHelper.startPage(0, 10, true);
+        PageHelper.startPage(page, limit, true);
         List<Leavebill> leavebillList = leavebillService.queryAllLeavebill(leavebill);
         PageInfo<Leavebill> pageInfo = new PageInfo<>(leavebillList);
         return OAResponseList.setResult(0, FIND_SUCCESS, pageInfo);

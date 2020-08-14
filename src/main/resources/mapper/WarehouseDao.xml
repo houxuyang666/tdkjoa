@@ -44,7 +44,7 @@
                 and CorpId = #{corpid}
             </if>
             <if test="goodsname != null and goodsname != ''">
-                and GoodsName = #{goodsname}
+                and GoodsName like concat('%',#{goodsname},'%')
             </if>
             <if test="unit != null and unit != ''">
                 and Unit = #{unit}

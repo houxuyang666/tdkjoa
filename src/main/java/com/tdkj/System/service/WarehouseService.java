@@ -61,4 +61,13 @@ public interface WarehouseService {
      * @return com.tdkj.System.entity.Warehouse
      **/
     Warehouse queryBygoodsname(String goodsname);
+
+    /**
+     * @Author houxuyang
+     * @Description //查询该公司的仓库列表
+     * @Date 10:17 2020/8/14
+     * @Param [warehouse]
+     * @return java.util.List<com.tdkj.System.entity.Warehouse>
+     **/
+    List<Warehouse> queryAll(Warehouse warehouse);
 }
