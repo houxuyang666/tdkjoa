@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>考勤记录</title>
+    <link rel="stylesheet" href="/statics/lib/layui-v2.5.5/css/layui.css" media="all">
+    <link rel="stylesheet" href="/css/public.css" media="all">
+    <link rel="stylesheet" href="/css/themes/default.css" media="all">
+    <link rel="stylesheet" href="/statics/lib/font-awesome-4.7.0/css/font-awesome.min.css" media="all">
+    <script src="/statics/lib/jquery-3.4.1/jquery-3.4.1.min.js"></script>
+</head>
+<body>
+<div class="layuimini-container">
+    <div class="layuimini-main">
+        <blockquote class="layui-elem-quote">
+            考勤记录<br>
+        </blockquote>
+        <div>
+            <table id="leavebillList" lay-filter="leavebillList" class="layui-hide"></table>
+
+            <!--表格工具条-->
+            <script type="text/html" id="toolbar">
+                <button class="layui-btn layui-btn-sm " lay-event="refresh"><i class="layui-icon">&#xe669;</i>刷新
+                </button>
+
+            </script>
+            <script type="text/html" id="leaveBillListBar">
+                <a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="viewSpProcess">审批查询</a>
+            </script>
+        </div>
+    </div>
+</div>
+
+<script src="/statics/lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
+<script type="text/javascript" th:inline="none">
+    layui.use(['form', 'table'], function () {
+        var $ = layui.jquery,
+            form = layui.form,
+            table = layui.table;
+
+        //实例化表格
+        table.render({
+            elem: '#leavebillList',
+            url: '/leavebill/selectapproval',
+            toolbar: '#toolbar',
+            defaultToolbar: ['filter', 'exports', 'print'],
+            parseData: function (res) { //res 即为原始返回的数据
+                return {
+                    "code": res.code, //解析接口状态
+                    "msg": res.message, //解析提示文本
+                    "count": res.data.total, //解析数据长度
+                    "data": res.data.list //解析数据列表
+                };
+            },
+
+            cols: [[
+                {field: "checkbox", type: 'checkbox'},
+                {field: 'id', title: 'ID', minWidth:100, align:"center"},
+                {field: 'name', title: '姓名', minWidth:100, align:"center"},
+                {field: 'deptname', title: '所属部门', minWidth:100, align:"center"},
+                {field: 'title', title: '标题', minWidth:100, align:"center"},
+                {field: 'content', title: '原因', minWidth:100, align:"center"},
+                {field: 'days', title: '天数', minWidth:100, align:"center"},
+                {field: 'leavetime', title: '申请时间', minWidth:100, align:"center"},
+                {field: 'status', title: '状态', minWidth:100, align:"center",templet:function(d){
+                        var html="";
+                        if(d.status==0){
+                            html="<font color=red>未提交</font>"
+                        }else if(d.status==1){
+                            html="<font color=orange>审批中</font>"
+                        }else if(d.status==2){
+                            html="<font color=blue>审批完成</font>"
+                        }else if(d.status==3){
+                            html="<font color=gray>已放弃</font>"
+                        }else if(d.status==4) {
+                            html="<font color=red>驳回</font>"
+                        }else{
+                            html="<font color=red>未知状态</font>"
+                        }
+                        return html;
+                    }},
+                {title: '操作', toolbar: '#leaveBillListBar', align: "center", fixed: 'right'}
+            ]],
+
+            limits: [10, 15, 20, 25, 50, 100],
+            limit: 10,
+            page: true
+            //skin: 'line'
+        });
+        //监听头工具栏事件
+        table.on('toolbar(leavebillList)', function(obj){
+            switch(obj.event){
+                case 'refresh':
+                    layui.table.reload("leavebillList");
+                    break;
+            };
+        });
+
+        //列表操作
+        table.on('tool(leavebillList)', function(obj){
+            var layEvent = obj.event,
+                data = obj.data;
+           if(layEvent==='viewSpProcess'){
+                viewSpProcess(data);
+            }
+        });
+
+        //查看审批进度
+        function viewSpProcess(data){
+            var index = layui.layer.open({
+                title : data.title+"的审批进度",
+                type : 2,
+                area:["800px","500px"],
+                content : "/workflow/viewSpProcess?id="+data.id,
+                success : function(layero, index){
+                    setTimeout(function(){
+                        layui.layer.tips('点击此处返回请假单列表', '.layui-layer-setwin .layui-layer-close', {
+                            tips: 3
+                        });
+                    },500)
+                }
+            })
+            //layui.layer.full(index);
+            //改变窗口大小时，重置弹窗的宽高，防止超出可视区域（如F12调出debug的操作）
+            $(window).on("resize",function(){
+                layui.layer.full(index);
+            })
+        }
+    });
+</script>
+</body>
+</html>

@@ -5,7 +5,10 @@ import com.github.pagehelper.PageInfo;
 import com.tdkj.System.Enum.AuditStatusEnmu;
 import com.tdkj.System.common.OAResponse;
 import com.tdkj.System.common.OAResponseList;
+import com.tdkj.System.entity.Employee;
 import com.tdkj.System.entity.Leavebill;
+import com.tdkj.System.entity.VO.LeavebillVO;
+import com.tdkj.System.service.EmployeeService;
 import com.tdkj.System.service.LeavebillService;
 import com.tdkj.System.service.WorkFlowService;
 import com.tdkj.System.utils.DateUtil;
@@ -51,6 +54,8 @@ public class LeavebillController {
     private RuntimeService runtimeService;
     @Autowired
     private TaskService taskService;
+    @Autowired
+    private EmployeeService employeeService;
 
     private String processDefinitionKey = "Leavebill";
 
@@ -105,8 +110,8 @@ public class LeavebillController {
     public OAResponse add(String title, String content, Double days, String leavetime) throws Exception {
         log.info("addleavebill");
         /*请假流程单 生成时状态为未申请*/
-
-        Leavebill leavebill = new Leavebill(title, content, days, DateUtil.formatDate(leavetime), AuditStatusEnmu.Under_review.getCode(), ShiroUtils.getPrincipal().getUserid());
+        Employee employee = employeeService.queryById(ShiroUtils.getPrincipal().getEmployeeid());
+        Leavebill leavebill = new Leavebill(title, content, days, DateUtil.formatDate(leavetime), AuditStatusEnmu.Under_review.getCode(), ShiroUtils.getPrincipal().getUserid(),employee.getCorpid());
         Leavebill insert = leavebillService.insert(leavebill);
         this.workFlowService.startProcess(insert.getId());
         /*启动后通过查询流程实例的business_key 找到流程定义实例 再通过流程实例*/
@@ -124,16 +129,17 @@ public class LeavebillController {
         return "page/leavebill/updateleavebill";
     }
 
-    @ResponseBody
+    //直接提交并启动 走不到修改
+    /*@ResponseBody
     @RequestMapping("/update")
     public OAResponse update(Integer id, String title, String content, Double days, String leavetime) throws Exception {
         log.info("updateleavebill");
-        /*修改请假单内容*/
+        *//*修改请假单内容*//*
         Leavebill leavebill = new Leavebill(title, content, days, DateUtil.formatDate(leavetime), AuditStatusEnmu.To_audit.getCode(), ShiroUtils.getPrincipal().getUserid());
         leavebill.setId(id);
         leavebillService.update(leavebill);
         return OAResponse.setResult(0, UPDATE_SUCCESS);
-    }
+    }*/
 
     @ResponseBody
     @RequestMapping("/delete")
@@ -142,5 +148,49 @@ public class LeavebillController {
         /*删除请假单*/
         leavebillService.deleteById(id);
         return OAResponse.setResult(0, REMOVE_SUCCESS);
+    }
+
+
+
+    /**
+     * @Author houxuyang
+     * @Description //跳转页面
+     * @Date 16:26 2020/8/14
+     * @Param []
+     * @return java.lang.String
+     **/
+    @RequestMapping("goapproval")
+    public String goapproval() {
+        return "page/leavebill/approvallist";
+    }
+
+
+
+    /**
+     * @Author houxuyang
+     * @Description //查询本公司考勤申请
+     * @Date 10:45 2020/8/14
+     * @Param [page, limit]
+     * @return com.tdkj.System.common.OAResponseList
+     **/
+    @ResponseBody
+    @RequestMapping("/selectapproval")
+    public OAResponseList selectapproval(Integer page, Integer limit,String deptname,String name) {
+        log.info("selectapproval");
+        /*查询本公司所有的考勤申请*/
+        Employee employee = employeeService.queryById(ShiroUtils.getPrincipal().getEmployeeid());
+        LeavebillVO leavebillVO = new LeavebillVO();
+        if (null!=deptname){
+            leavebillVO.setDeptname(deptname);
+        }
+        if (null!=name){
+            leavebillVO.setName(name);
+        }
+        leavebillVO.setCorpid(employee.getCorpid());
+        PageHelper.startPage(page, limit, true);
+        /*根据条件查询该公司的所有考勤申请*/
+        List<LeavebillVO> leavebillVOList = leavebillService.queryAllByLeavebillVO(leavebillVO);
+        PageInfo<LeavebillVO> pageInfo = new PageInfo<>(leavebillVOList);
+        return OAResponseList.setResult(0, FIND_SUCCESS, pageInfo);
     }
 }

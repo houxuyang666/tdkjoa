@@ -3,9 +3,6 @@ package com.tdkj.System.entity.VO;
 import com.tdkj.System.entity.Leavebill;
 import lombok.Data;
 
-import java.io.Serializable;
-import java.util.Date;
-
 /**
  * (Leavebill)实体类
  *
@@ -14,13 +11,13 @@ import java.util.Date;
  */
 @Data
 public class LeavebillVO extends Leavebill {
-    //批量删除使用
-    private Integer[] ids;
-
-    private Integer page;
-    private Integer limit;
-    private Date startTime;
-    private Date endTime;
-
+    /**
+     * 部门名称
+     */
+    private String deptname;
+    /**
+     * 员工名称
+     */
+    private String name;
 
 }

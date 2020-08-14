@@ -66,4 +66,13 @@ public interface LeavebillDao {
 
 
     List<Leavebill> queryAllLeaveBill(Leavebill leavebill);
+
+    /**
+     * @Author houxuyang
+     * @Description //根据条件查询该公司的所有考勤申请
+     * @Date 16:09 2020/8/14
+     * @Param [leavebillVO]
+     * @return java.util.List<com.tdkj.System.entity.VO.LeavebillVO>
+     **/
+    List<LeavebillVO> queryAllByLeavebillVO(LeavebillVO leavebillVO);
 }

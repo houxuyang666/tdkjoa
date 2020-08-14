@@ -1,6 +1,7 @@
 package com.tdkj.System.service;
 
 import com.tdkj.System.entity.Leavebill;
+import com.tdkj.System.entity.VO.LeavebillVO;
 
 import java.util.List;
 
@@ -52,7 +53,16 @@ public interface LeavebillService {
      * @return 是否成功
      */
     boolean deleteById(Integer id);
-    /*查询本人请假单*/
 
+    /*查询本人请假单*/
     List<Leavebill> queryAllLeavebill(Leavebill leavebill);
+
+    /**
+     * @Author houxuyang
+     * @Description //根据条件查询该公司的所有考勤申请
+     * @Date 16:09 2020/8/14
+     * @Param [leavebillVO]
+     * @return java.util.List<com.tdkj.System.entity.VO.LeavebillVO>
+     **/
+    List<LeavebillVO> queryAllByLeavebillVO(LeavebillVO leavebillVO);
 }

@@ -2,6 +2,7 @@ package com.tdkj.System.service.impl;
 
 import com.tdkj.System.dao.LeavebillDao;
 import com.tdkj.System.entity.Leavebill;
+import com.tdkj.System.entity.VO.LeavebillVO;
 import com.tdkj.System.service.LeavebillService;
 import org.springframework.stereotype.Service;
 
@@ -81,6 +82,19 @@ public class LeavebillServiceImpl implements LeavebillService {
     @Override
     public List<Leavebill> queryAllLeavebill(Leavebill leavebill) {
         return this.LeaveBillDao.queryAllLeaveBill(leavebill);
+    }
+
+
+    /**
+     * @Author houxuyang
+     * @Description //根据条件查询该公司的所有考勤申请
+     * @Date 16:09 2020/8/14
+     * @Param [leavebillVO]
+     * @return java.util.List<com.tdkj.System.entity.VO.LeavebillVO>
+     **/
+    @Override
+    public List<LeavebillVO> queryAllByLeavebillVO(LeavebillVO leavebillVO) {
+        return this.LeaveBillDao.queryAllByLeavebillVO(leavebillVO);
     }
 
 }
