@@ -8,7 +8,7 @@ import java.util.List;
  * (Collect)表服务接口
  *
  * @author makejava
- * @since 2020-07-17 14:51:02
+ * @since 2020-08-14 11:47:56
  */
 public interface CollectService {
 
@@ -18,7 +18,7 @@ public interface CollectService {
      * @param collectid 主键
      * @return 实例对象
      */
-    Collect queryById(Integer collectid);
+    Collect queryById(String collectid);
 
     /**
      * 查询多条数据
@@ -51,6 +51,6 @@ public interface CollectService {
      * @param collectid 主键
      * @return 是否成功
      */
-    boolean deleteById(Integer collectid);
+    boolean deleteById(String collectid);
 
 }

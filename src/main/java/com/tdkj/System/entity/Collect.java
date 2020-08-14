@@ -9,15 +9,15 @@ import java.util.Date;
  * (Collect)实体类
  *
  * @author makejava
- * @since 2020-07-17 14:51:02
+ * @since 2020-08-14 12:13:13
  */
 @Data
 public class Collect implements Serializable {
-    private static final long serialVersionUID = -34172941035932296L;
+    private static final long serialVersionUID = 851224694046130732L;
     /**
      * 编号ID 仓库ID
      */
-    private Integer collectid;
+    private String collectid;
     /**
      * 公司编号 公司ID
      */
@@ -29,7 +29,7 @@ public class Collect implements Serializable {
     /**
      * 领用人 用户ID
      */
-    private Integer userid;
+    private Integer employeeid;
     /**
      * 货物名称
      */
@@ -45,7 +45,7 @@ public class Collect implements Serializable {
     /**
      * 数量
      */
-    private Integer numbe;
+    private Integer number;
     /**
      * 创建时间
      */
@@ -54,6 +54,5 @@ public class Collect implements Serializable {
      * 编辑时间
      */
     private Date modifydate;
-
 
 }

@@ -3,14 +3,14 @@
 <mapper namespace="com.tdkj.System.dao.CollectDao">
 
     <resultMap type="com.tdkj.System.entity.Collect" id="CollectMap">
-        <result property="collectid" column="CollectId" jdbcType="INTEGER"/>
+        <result property="collectid" column="CollectId" jdbcType="VARCHAR"/>
         <result property="corpid" column="CorpId" jdbcType="INTEGER"/>
         <result property="deptid" column="DeptId" jdbcType="INTEGER"/>
-        <result property="userid" column="UserId" jdbcType="INTEGER"/>
+        <result property="employeeid" column="EmployeeId" jdbcType="INTEGER"/>
         <result property="goodsname" column="GoodsName" jdbcType="VARCHAR"/>
         <result property="unit" column="Unit" jdbcType="VARCHAR"/>
         <result property="type" column="Type" jdbcType="VARCHAR"/>
-        <result property="numbe" column="Numbe" jdbcType="INTEGER"/>
+        <result property="number" column="Number" jdbcType="INTEGER"/>
         <result property="createdate" column="CreateDate" jdbcType="TIMESTAMP"/>
         <result property="modifydate" column="ModifyDate" jdbcType="TIMESTAMP"/>
     </resultMap>
@@ -18,26 +18,26 @@
     <!--查询单个-->
     <select id="queryById" resultMap="CollectMap">
         select
-          CollectId, CorpId, DeptId, UserId, GoodsName, Unit, Type, Numbe, CreateDate, ModifyDate
-        from tdkjoa.collect
+          CollectId, CorpId, DeptId, EmployeeId, GoodsName, Unit, Type, Number, CreateDate, ModifyDate
+        from collect
         where CollectId = #{collectid}
     </select>
 
     <!--查询指定行数据-->
     <select id="queryAllByLimit" resultMap="CollectMap">
         select
-          CollectId, CorpId, DeptId, UserId, GoodsName, Unit, Type, Numbe, CreateDate, ModifyDate
-        from tdkjoa.collect
+          CollectId, CorpId, DeptId, EmployeeId, GoodsName, Unit, Type, Number, CreateDate, ModifyDate
+        from collect
         limit #{offset}, #{limit}
     </select>
 
     <!--通过实体作为筛选条件查询-->
     <select id="queryAll" resultMap="CollectMap">
         select
-        CollectId, CorpId, DeptId, UserId, GoodsName, Unit, Type, Numbe, CreateDate, ModifyDate
-        from tdkjoa.collect
+        CollectId, CorpId, DeptId, EmployeeId, GoodsName, Unit, Type, Number, CreateDate, ModifyDate
+        from collect
         <where>
-            <if test="collectid != null">
+            <if test="collectid != null and collectid != ''">
                 and CollectId = #{collectid}
             </if>
             <if test="corpid != null">
@@ -46,8 +46,8 @@
             <if test="deptid != null">
                 and DeptId = #{deptid}
             </if>
-            <if test="userid != null">
-                and UserId = #{userid}
+            <if test="employeeid != null">
+                and EmployeeId = #{employeeid}
             </if>
             <if test="goodsname != null and goodsname != ''">
                 and GoodsName = #{goodsname}
@@ -58,8 +58,8 @@
             <if test="type != null and type != ''">
                 and Type = #{type}
             </if>
-            <if test="numbe != null">
-                and Numbe = #{numbe}
+            <if test="number != null">
+                and Number = #{number}
             </if>
             <if test="createdate != null">
                 and CreateDate = #{createdate}
@@ -72,13 +72,13 @@
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="collectid" useGeneratedKeys="true">
-        insert into tdkjoa.collect(CorpId, DeptId, UserId, GoodsName, Unit, Type, Numbe, CreateDate, ModifyDate)
-        values (#{corpid}, #{deptid}, #{userid}, #{goodsname}, #{unit}, #{type}, #{numbe}, #{createdate}, #{modifydate})
+        insert into collect(CollectId,CorpId, DeptId, EmployeeId, GoodsName, Unit, Type, Number, CreateDate, ModifyDate)
+        values (#{collectid},#{corpid}, #{deptid}, #{employeeid}, #{goodsname}, #{unit}, #{type}, #{number}, #{createdate}, #{modifydate})
     </insert>
 
     <!--通过主键修改数据-->
     <update id="update">
-        update tdkjoa.collect
+        update collect
         <set>
             <if test="corpid != null">
                 CorpId = #{corpid},
@@ -86,8 +86,8 @@
             <if test="deptid != null">
                 DeptId = #{deptid},
             </if>
-            <if test="userid != null">
-                UserId = #{userid},
+            <if test="employeeid != null">
+                EmployeeId = #{employeeid},
             </if>
             <if test="goodsname != null and goodsname != ''">
                 GoodsName = #{goodsname},
@@ -98,8 +98,8 @@
             <if test="type != null and type != ''">
                 Type = #{type},
             </if>
-            <if test="numbe != null">
-                Numbe = #{numbe},
+            <if test="number != null">
+                Number = #{number},
             </if>
             <if test="createdate != null">
                 CreateDate = #{createdate},
@@ -113,7 +113,7 @@
 
     <!--通过主键删除-->
     <delete id="deleteById">
-        delete from tdkjoa.collect where CollectId = #{collectid}
+        delete from collect where CollectId = #{collectid}
     </delete>
 
 </mapper>

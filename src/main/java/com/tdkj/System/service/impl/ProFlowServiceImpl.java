@@ -12,6 +12,7 @@ import com.tdkj.System.entity.ect.ActTaskEntity;
 import com.tdkj.System.service.EmployeeService;
 import com.tdkj.System.service.ProFlowService;
 import com.tdkj.System.service.ProcurementService;
+import com.tdkj.System.utils.DateUtil;
 import com.tdkj.System.utils.ShiroUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.activiti.engine.HistoryService;
@@ -26,6 +27,7 @@ import org.activiti.engine.impl.pvm.process.ActivityImpl;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Comment;
 import org.activiti.engine.task.Task;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -194,10 +196,9 @@ public class ProFlowServiceImpl implements ProFlowService {
             Procurement procurement1 = this.procurementService.queryById(proid);
             Warehouse warehouse = this.warehouseService.queryBygoodsname(procurement1.getGoodsname());
             if (null==warehouse){//证明数据库中不存在
-                //String code= RandomStringUtils.random(4, true, true);
-                //warehouse.setWarehouseid(DateUtil.getformatDate(new Date())+code);
-                log.info(procurement1.getProid());
                 Warehouse warehouse1=new Warehouse();
+                String code= RandomStringUtils.random(4, true, true);
+                warehouse1.setWarehouseid(DateUtil.getformatDate(new Date())+code);
                 warehouse1.setWarehouseid(procurement1.getProid());
                 warehouse1.setCorpid(procurement1.getCorpid());
                 warehouse1.setGoodsname(procurement1.getGoodsname());

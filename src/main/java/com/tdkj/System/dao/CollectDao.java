@@ -9,7 +9,7 @@ import java.util.List;
  * (Collect)表数据库访问层
  *
  * @author makejava
- * @since 2020-07-17 14:51:02
+ * @since 2020-08-14 11:48:20
  */
 public interface CollectDao {
 
@@ -19,7 +19,7 @@ public interface CollectDao {
      * @param collectid 主键
      * @return 实例对象
      */
-    Collect queryById(Integer collectid);
+    Collect queryById(String collectid);
 
     /**
      * 查询指定行数据
@@ -61,6 +61,6 @@ public interface CollectDao {
      * @param collectid 主键
      * @return 影响行数
      */
-    int deleteById(Integer collectid);
+    int deleteById(String collectid);
 
 }

@@ -12,7 +12,7 @@ import java.util.List;
  * (Collect)表服务实现类
  *
  * @author makejava
- * @since 2020-07-17 14:51:02
+ * @since 2020-08-14 11:47:57
  */
 @Service("collectService")
 public class CollectServiceImpl implements CollectService {
@@ -26,7 +26,7 @@ public class CollectServiceImpl implements CollectService {
      * @return 实例对象
      */
     @Override
-    public Collect queryById(Integer collectid) {
+    public Collect queryById(String collectid) {
         return this.collectDao.queryById(collectid);
     }
 
@@ -73,7 +73,7 @@ public class CollectServiceImpl implements CollectService {
      * @return 是否成功
      */
     @Override
-    public boolean deleteById(Integer collectid) {
+    public boolean deleteById(String collectid) {
         return this.collectDao.deleteById(collectid) > 0;
     }
 }
