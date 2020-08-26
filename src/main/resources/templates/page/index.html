@@ -188,9 +188,18 @@
         });*/
 
         $('.login-out').on("click", function () {
-            layer.msg('退出登录成功', function () {
+           /* layer.msg('退出登录成功', function () {
                 window.location = '/logout';
+            });*/
+
+            layer.confirm('确定要退出吗', {
+                btn: ['确认','取消'] //按钮
+            }, function(){
+                window.location = '/logout';
+            }, function(){
+                layer.closeAll()
             });
+
         });
 
         //员工签到
