@@ -125,4 +125,9 @@ public class EmployeeServiceImpl implements EmployeeService {
         return this.employeeDao.queryAllMail(corpid,name,cellphone);
     }
 
+    @Override
+    public List<EmployeeVO> queryByCorpID(Integer corpid, Integer roleid) {
+        return this.employeeDao.queryByCorpID(corpid,roleid);
+    }
+
 }

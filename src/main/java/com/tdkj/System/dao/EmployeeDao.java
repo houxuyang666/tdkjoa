@@ -118,4 +118,13 @@ public interface EmployeeDao {
      * @return com.tdkj.System.entity.VO.EmployeeVO
      **/
     EmployeeVO queryemployeeVOById(Integer employeeid);
+
+    /**
+     * @Author houxuyang
+     * @Description //获取公司下所有员工 用于当司机所用
+     * @Date 15:54 2020/8/26
+     * @Param [corpid, role]
+     * @return java.util.List<com.tdkj.System.entity.VO.EmployeeVO>
+     **/
+    List<EmployeeVO> queryByCorpID(Integer corpid, Integer roleid);
 }

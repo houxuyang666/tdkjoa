@@ -6,9 +6,12 @@ import com.tdkj.System.Enum.VehicleOrdersStatusEnmu;
 import com.tdkj.System.Enum.VehicleStatusEnmu;
 import com.tdkj.System.common.OAResponse;
 import com.tdkj.System.common.OAResponseList;
+import com.tdkj.System.entity.Employee;
+import com.tdkj.System.entity.VO.EmployeeVO;
 import com.tdkj.System.entity.VO.VehicleordersVO;
 import com.tdkj.System.entity.Vehicleinfo;
 import com.tdkj.System.entity.Vehicleorders;
+import com.tdkj.System.service.EmployeeService;
 import com.tdkj.System.service.VehicleinfoService;
 import com.tdkj.System.service.VehicleordersService;
 import com.tdkj.System.utils.DateUtil;
@@ -47,6 +50,8 @@ public class VehicleordersController {
     private VehicleordersService vehicleordersService;
     @Autowired
     private VehicleinfoService vehicleinfoService;
+    @Autowired
+    private EmployeeService employeeService;
 
     @Value("${file.uploadvehicleordersImage")
     private String uploadFolder;
@@ -127,6 +132,26 @@ public class VehicleordersController {
     public String goupdatevehicleorders()  {
         log.info("goupdatevehicleorders");
         return "page/table/updatevehicleorders";
+    }
+
+
+
+    /**
+     * @Author houxuyang
+     * @Description //获取所有员工 当司机
+     * @Date 15:49 2020/8/26
+     * @Param []
+     * @return com.tdkj.System.common.OAResponse
+     **/
+    @ResponseBody
+    @RequestMapping("/getdrivers")
+    public OAResponse getdrivers() {
+        Employee employee = this.employeeService.queryById(ShiroUtils.getPrincipal().getEmployeeid());
+        //获取本公司所有的员工
+        Integer roleid =3;//普通员工
+        List<EmployeeVO> employeeVOList =this.employeeService.queryByCorpID(employee.getCorpid(),roleid);
+
+        return OAResponse.setResult(HTTP_RNS_CODE_200,"订单已生成");
     }
 
 

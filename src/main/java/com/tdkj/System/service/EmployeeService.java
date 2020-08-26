@@ -109,11 +109,13 @@ public interface EmployeeService {
      * @return java.util.List<com.tdkj.System.entity.Employee>
      **/
     List<Employee> queryemployeeByRoleid(Integer roleid, Integer corpid);
-//根据公司的ID查询员工的通讯录
+    //根据公司的ID查询员工的通讯录
    List<EmployeeVO> queryMyMail(Integer corpid,String name,String cellphone);
-
 
    //根据公司的id,姓名，电话号码查询全部员工的通讯录
     List<EmployeeVO> queryAllMail(Integer corpid, String name, String cellphone);
+
+    //获取本公司所有的员工
+    List<EmployeeVO> queryByCorpID(Integer corpid, Integer roleid);
 }
 
