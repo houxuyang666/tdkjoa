@@ -145,13 +145,15 @@ public class VehicleordersController {
      **/
     @ResponseBody
     @RequestMapping("/getdrivers")
-    public OAResponse getdrivers() {
+    public OAResponseList getdrivers() {
         Employee employee = this.employeeService.queryById(ShiroUtils.getPrincipal().getEmployeeid());
         //获取本公司所有的员工
         Integer roleid =3;//普通员工
         List<EmployeeVO> employeeVOList =this.employeeService.queryByCorpID(employee.getCorpid(),roleid);
-
-        return OAResponse.setResult(HTTP_RNS_CODE_200,"订单已生成");
+        if (employeeVOList.size()>0){
+            return OAResponseList.setResult(HTTP_RNS_CODE_200,"获取司机",employeeVOList);
+        }
+        return OAResponseList.setResult(HTTP_RNS_CODE_500,"未找到司机");
     }
 
 

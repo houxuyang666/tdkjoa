@@ -33,5 +33,12 @@ public class OAResponseList {
         return OAResponseList;
     }
 
+    public static OAResponseList setResult(Integer code, String message) {
+        OAResponseList OAResponseList =new OAResponseList();
+        OAResponseList.setCode(code);
+        OAResponseList.setMessage(message);
+        return OAResponseList;
+    }
+
 
 }
