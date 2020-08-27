@@ -66,9 +66,9 @@
                     <div class="layui-input-block">
                         <select name="vehicledriverid" id="vehicledriverid">
                             <option value="">--请选择--</option>
-                            <option value="1" >司机1</option>
+                            <!--<option value="1" >司机1</option>
                             <option value="2">司机2</option>
-                            <option value="3">司机3</option>
+                            <option value="3">司机3</option>-->
                         </select>
                     </div>
                 </div>
@@ -167,6 +167,8 @@
                 ,"请求失败，请检查网络或联系管理员");
             return false;
         });
+        //绑定司机下拉框
+        PublicFun.BindDriver();
 
         //绑定公司下拉框
         //PublicFun.BindCompanyList();
