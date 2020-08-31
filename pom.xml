@@ -199,12 +199,21 @@
 			<artifactId>ooxml-schemas</artifactId>
 			<version>1.3</version>
 		</dependency>
+		<!--po文件预览结束-->
+
+		<!--身份证json识别开始-->
 		<dependency>
 			<groupId>org.jsoup</groupId>
 			<artifactId>jsoup</artifactId>
 			<version>1.11.3</version>
 		</dependency>
-		<!--po文件预览结束-->
+		<dependency>
+			<groupId>com.vaadin.external.google</groupId>
+			<artifactId>android-json</artifactId>
+			<version>0.0.20131108.vaadin1</version>
+			<scope>compile</scope>
+		</dependency>
+		<!--身份证json识别结束-->
     </dependencies>
 
 	<build>
