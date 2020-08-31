@@ -79,6 +79,28 @@ public class FileuploadUtils {
         return url;
     }
 
+
+
+
+
+    public String FileuploadTempimage(MultipartFile multipartFile,String uploadImageFolder,String desc){
+        String url=null;
+        //创建图片文件夹 存放上传的图片
+        File path = new File(uploadImageFolder);
+        if(!path.exists()){
+            path.mkdirs();
+        }
+        //获取文件后缀名
+        String filesuffix = getfilesuffix(multipartFile);
+        try{
+            multipartFile.transferTo(new File(path+"/"+desc+"."+filesuffix));
+            url =desc+"."+filesuffix;
+        }catch (IOException e){
+            return "上传失败";
+        }
+        return url;
+    }
+
     /**
      * @Author houxuyang
      * @Description //上传合同模板
