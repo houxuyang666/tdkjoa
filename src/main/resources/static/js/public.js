@@ -295,6 +295,27 @@ var PublicFun = {
         }, "角色下拉框接口请求失败！！！")
     },
 
+    //绑定司机 下拉框
+    BindDriver:function(){
+        PublicFun.FunPostAjax("/vehicleorders/getdrivers ", "", function (res) {
+            if (res.code == 200) {
+                var data = res.data;
+                //layer.alert(JSON.stringify(data));
+                var html = '';
+                if (data != null && data != "") {
+                    for (var i = 0; i < data.length; i++) {
+                        html += '<option value="' + data[i].employeeid + '">' + data[i].name + '</option>';
+                    }
+                } else {
+                    html += "";
+                }
+                $('#vehicledriverid').append(html);
+                layui.form.render("select");
+            }
+
+        }, "角色下拉框接口请求失败！！！")
+    },
+
 
     //转化为整数
     FunZhzs: function (value) {
