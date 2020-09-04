@@ -62,36 +62,36 @@ public class CorpbasicinfoController {
 
 
     /**
+     * @return com.github.pagehelper.PageInfo<com.tdkj.System.entity.Corpbasicinfo>
      * @Author houxuyang
      * @Description //查询公司列表
      * @Date 14:40 2020/8/3
      * @Param [page, limit, corpname, corpcode]
-     * @return com.github.pagehelper.PageInfo<com.tdkj.System.entity.Corpbasicinfo>
      **/
     @ResponseBody
     @RequestMapping("/selectcorpbasicinfo")
-    public OAResponseList selectemployee(Integer page, Integer limit, String corpname, String corpcode){
-        PageHelper.startPage(page,limit,true);
+    public OAResponseList selectemployee(Integer page, Integer limit, String corpname, String corpcode) {
+        PageHelper.startPage(page, limit, true);
         log.info(corpname);
         log.info(corpcode);
-        Corpbasicinfo corpbasicinfo =new Corpbasicinfo();
-        if(null!=corpname){
+        Corpbasicinfo corpbasicinfo = new Corpbasicinfo();
+        if (null != corpname) {
             corpbasicinfo.setCorpname(corpname);
         }
-        if(null!=corpcode){
+        if (null != corpcode) {
             corpbasicinfo.setCorpcode(corpcode);
         }
         List<Corpbasicinfo> corpbasicinfoList = corpbasicinfoService.queryAll(corpbasicinfo);
-        PageInfo<Corpbasicinfo> pageInfo=new PageInfo<>(corpbasicinfoList);
-        return OAResponseList.setResult(0,FIND_SUCCESS,pageInfo);
+        PageInfo<Corpbasicinfo> pageInfo = new PageInfo<>(corpbasicinfoList);
+        return OAResponseList.setResult(0, FIND_SUCCESS, pageInfo);
     }
 
     /**
+     * @return com.tdkj.System.common.OAResponse
      * @Author houxuyang
      * @Description //添加公司
      * @Date 15:08 2020/8/3
      * @Param [corpcode, corpname, corptype, licensenum, address, zipcode, legalman, legalmanduty, legalmanidcardtype, legalmanidcardnumber, registerdate, establishdate, officphone, faxnumber, linkman, linkphone, signname, signurl, email, website]
-     * @return com.tdkj.System.common.OAResponse
      **/
     @Transactional
     @ResponseBody
@@ -99,62 +99,62 @@ public class CorpbasicinfoController {
     public OAResponse add(String corpcode, String corpname, Integer corptype, String licensenum, String address, String zipcode,
                           String legalman, String legalmanduty, Integer legalmanidcardtype, String legalmanidcardnumber,
                           String registerdate, String establishdate, String officphone, String faxnumber, String linkman,
-                          String linkphone, String signname, @RequestParam("signurl") MultipartFile signurl, String email, String website) throws Exception{
-            Corpbasicinfo oldcorpbasicinfo =corpbasicinfoService.queryByCode(corpcode);
-            if (null!=oldcorpbasicinfo) {
-                return OAResponse.setResult(HTTP_RNS_CODE_500,"公司已存在");
-            }
-            Corpbasicinfo corpbasicinfo=new Corpbasicinfo();
-            corpbasicinfo.setCorpcode(corpcode);
-            corpbasicinfo.setCorpname(corpname);
-            corpbasicinfo.setCorptype(corptype);
-            corpbasicinfo.setLicensenum(licensenum);
-            corpbasicinfo.setAddress(address);
-            corpbasicinfo.setZipcode(zipcode);
-            corpbasicinfo.setLegalman(legalman);
-            corpbasicinfo.setLegalmanduty(legalmanduty);
-            corpbasicinfo.setLegalmanidcardtype(legalmanidcardtype);
-            corpbasicinfo.setLegalmanidcardnumber(legalmanidcardnumber);
-            corpbasicinfo.setRegisterdate(DateUtil.getformatDate(registerdate));
-            corpbasicinfo.setEstablishdate(DateUtil.getformatDate(establishdate));
-            corpbasicinfo.setOfficphone(officphone);
-            corpbasicinfo.setFaxnumber(faxnumber);
-            corpbasicinfo.setLinkman(linkman);
-            corpbasicinfo.setLinkphone(linkphone);
-            corpbasicinfo.setSignname(signname);
-            FileuploadUtils fileuploadUtils =new FileuploadUtils();
-            if(null!=signurl&&signurl.getSize()>0){
-                //上传头像照 并返回url
-                String sign = fileuploadUtils.Fileuploadimage(signurl,uploadImageFolder,"signurl",legalman);
-                corpbasicinfo.setSignurl(sign);
-                log.info("电子签名");
-            }
-            corpbasicinfo.setEmail(email);
-            corpbasicinfo.setWebsite(website);
-            corpbasicinfo.setCreatedate(new Date());
-            corpbasicinfoService.insert(corpbasicinfo);
-            //Log log = LogUtils.setLog("添加公司"+corpname);
-            //logService.insert(log);
-        return OAResponse.setResult(HTTP_RNS_CODE_200,ADD_SUCCESS);
+                          String linkphone, String signname, @RequestParam("signurl") MultipartFile signurl, String email, String website) throws Exception {
+        Corpbasicinfo oldcorpbasicinfo = corpbasicinfoService.queryByCode(corpcode);
+        if (null != oldcorpbasicinfo) {
+            return OAResponse.setResult(HTTP_RNS_CODE_500, "公司已存在");
+        }
+        Corpbasicinfo corpbasicinfo = new Corpbasicinfo();
+        corpbasicinfo.setCorpcode(corpcode);
+        corpbasicinfo.setCorpname(corpname);
+        corpbasicinfo.setCorptype(corptype);
+        corpbasicinfo.setLicensenum(licensenum);
+        corpbasicinfo.setAddress(address);
+        corpbasicinfo.setZipcode(zipcode);
+        corpbasicinfo.setLegalman(legalman);
+        corpbasicinfo.setLegalmanduty(legalmanduty);
+        corpbasicinfo.setLegalmanidcardtype(legalmanidcardtype);
+        corpbasicinfo.setLegalmanidcardnumber(legalmanidcardnumber);
+        corpbasicinfo.setRegisterdate(DateUtil.getformatDate(registerdate));
+        corpbasicinfo.setEstablishdate(DateUtil.getformatDate(establishdate));
+        corpbasicinfo.setOfficphone(officphone);
+        corpbasicinfo.setFaxnumber(faxnumber);
+        corpbasicinfo.setLinkman(linkman);
+        corpbasicinfo.setLinkphone(linkphone);
+        corpbasicinfo.setSignname(signname);
+        FileuploadUtils fileuploadUtils = new FileuploadUtils();
+        if (null != signurl && signurl.getSize() > 0) {
+            //上传头像照 并返回url
+            String sign = fileuploadUtils.Fileuploadimage(signurl, uploadImageFolder, "signurl", legalman);
+            corpbasicinfo.setSignurl(sign);
+            log.info("电子签名");
+        }
+        corpbasicinfo.setEmail(email);
+        corpbasicinfo.setWebsite(website);
+        corpbasicinfo.setCreatedate(new Date());
+        corpbasicinfoService.insert(corpbasicinfo);
+        //Log log = LogUtils.setLog("添加公司"+corpname);
+        //logService.insert(log);
+        return OAResponse.setResult(HTTP_RNS_CODE_200, ADD_SUCCESS);
     }
 
 
     /**
+     * @return com.tdkj.System.common.OAResponse
      * @Author houxuyang
      * @Description //修改公司
      * @Date 15:08 2020/8/3
      * @Param [corpcode, corpname, corptype, licensenum, address, zipcode, legalman, legalmanduty, legalmanidcardtype, legalmanidcardnumber, registerdate, establishdate, officphone, faxnumber, linkman, linkphone, signname, signurl, email, website]
-     * @return com.tdkj.System.common.OAResponse
      **/
     @Transactional
     @ResponseBody
     @RequestMapping("/update")
-    public OAResponse update(Integer corpid,String corpcode, String corpname, Integer corptype, String licensenum, String address, String zipcode,
-                          String legalman, String legalmanduty, Integer legalmanidcardtype, String legalmanidcardnumber,
-                          String registerdate, String establishdate, String officphone, String faxnumber, String linkman,
-                          String linkphone, String signname, @RequestParam("signurl") MultipartFile signurl, String email, String website) throws Exception{
+    public OAResponse update(Integer corpid, String corpcode, String corpname, Integer corptype, String licensenum, String address, String zipcode,
+                             String legalman, String legalmanduty, Integer legalmanidcardtype, String legalmanidcardnumber,
+                             String registerdate, String establishdate, String officphone, String faxnumber, String linkman,
+                             String linkphone, String signname, @RequestParam("signurl") MultipartFile signurl, String email, String website) throws Exception {
 
-        Corpbasicinfo corpbasicinfo=new Corpbasicinfo();
+        Corpbasicinfo corpbasicinfo = new Corpbasicinfo();
         corpbasicinfo.setCorpid(corpid);
         corpbasicinfo.setCorpcode(corpcode);
         corpbasicinfo.setCorpname(corpname);
@@ -173,10 +173,10 @@ public class CorpbasicinfoController {
         corpbasicinfo.setLinkman(linkman);
         corpbasicinfo.setLinkphone(linkphone);
         corpbasicinfo.setSignname(signname);
-        FileuploadUtils fileuploadUtils =new FileuploadUtils();
-        if(null!=signurl&&signurl.getSize()>0){
+        FileuploadUtils fileuploadUtils = new FileuploadUtils();
+        if (null != signurl && signurl.getSize() > 0) {
             //上传头像照 并返回url
-            String sign = fileuploadUtils.Fileuploadimage(signurl,uploadImageFolder,"signurl",legalman);
+            String sign = fileuploadUtils.Fileuploadimage(signurl, uploadImageFolder, "signurl", legalman);
             corpbasicinfo.setSignurl(sign);
             log.info("电子签名");
         }
@@ -186,7 +186,7 @@ public class CorpbasicinfoController {
         corpbasicinfoService.update(corpbasicinfo);
         //Log log = LogUtils.setLog("添加公司"+corpname);
         //logService.insert(log);
-        return OAResponse.setResult(HTTP_RNS_CODE_200,UPDATE_SUCCESS);
+        return OAResponse.setResult(HTTP_RNS_CODE_200, UPDATE_SUCCESS);
     }
 
 
@@ -196,7 +196,6 @@ public class CorpbasicinfoController {
         this.corpbasicinfoService.deleteById(corpid);
         return OAResponse.setResult(HTTP_RNS_CODE_200, REMOVE_SUCCESS);
     }
-
 
 
 }

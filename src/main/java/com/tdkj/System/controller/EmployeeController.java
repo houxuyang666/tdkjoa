@@ -66,14 +66,14 @@ public class EmployeeController {
     private String uploadFile;
 
 
-    private String upload ="/upload/images/";
+    private String upload = "/upload/images/";
 
     /**
+     * @return java.lang.String
      * @Author houxuyang
      * @Description //跳转员工列表页面
      * @Date 14:24 2020/8/10
      * @Param []
-     * @return java.lang.String
      **/
     @RequestMapping("/goemployee")
     public String goemployee() {
@@ -93,22 +93,22 @@ public class EmployeeController {
     }
 
     /**
+     * @return com.tdkj.System.common.OAResponseList
      * @Author houxuyang
      * @Description //查询当前公司的所有员工信息
      * @Date 9:26 2020/8/12
      * @Param [page, limit, name, idcardnumber]
-     * @return com.tdkj.System.common.OAResponseList
      **/
     @ResponseBody
     @RequestMapping("/selectemployee")
-    public OAResponseList selectemployee(Integer page, Integer limit,String name,String idcardnumber) {
+    public OAResponseList selectemployee(Integer page, Integer limit, String name, String idcardnumber) {
         log.info("selectemployee");
         //获取当前用户的所在公司
-        Corpbasicinfo corpbasicinfo=corpbasicinfoService.queryByemployeeId(ShiroUtils.getPrincipal().getEmployeeid());
-        PageHelper.startPage(page,limit,true);
-        List<EmployeeVO> employeeVOList=employeeService.queryAllEmployee(corpbasicinfo.getCorpid(),name,idcardnumber);
-        PageInfo<EmployeeVO> pageInfo=new PageInfo<>(employeeVOList);
-        return OAResponseList.setResult(0,FIND_SUCCESS,pageInfo,upload);
+        Corpbasicinfo corpbasicinfo = corpbasicinfoService.queryByemployeeId(ShiroUtils.getPrincipal().getEmployeeid());
+        PageHelper.startPage(page, limit, true);
+        List<EmployeeVO> employeeVOList = employeeService.queryAllEmployee(corpbasicinfo.getCorpid(), name, idcardnumber);
+        PageInfo<EmployeeVO> pageInfo = new PageInfo<>(employeeVOList);
+        return OAResponseList.setResult(0, FIND_SUCCESS, pageInfo, upload);
     }
 
     @RequestMapping("goadd")
@@ -117,44 +117,44 @@ public class EmployeeController {
     }
 
     /**
+     * @return com.tdkj.System.common.OAResponse
      * @Author houxuyang
      * @Description //添加新入职员工，上传头像，身份证照片，合同等信息
      * @Date 13:11 2020/7/20
      * @Param [username, password, corpid, departmentid, name, jobtitle, idcardtype, idcardnumber, gender, age, nation, edulevel, birthday, address, entrydate, regulardate, headimage, politicstype, cellphone, email, authorizationcode, urgentlinkman, urgentlinkmanphone, positiveidcardimage, negativeidcardimage, laborcontract]
-     * @return com.tdkj.System.common.OAResponse
      **/
     @Transactional
     @ResponseBody
     @RequestMapping("/add")
     public OAResponse add(String username,
-                          Integer departmentid,String name, String jobtitle,Integer idcardtype,String idcardnumber,
-                          Integer gender,Integer age,String nation,Integer edulevel,String birthday,String address,
-                          String entrydate, String regulardate,Integer roleid,@RequestParam( value ="headimage",required = false) MultipartFile headimage,Integer politicstype,
-                          String cellphone,String email,String authorizationcode,String urgentlinkman,String urgentlinkmanphone,
-                          @RequestParam(value ="positiveidcardimage",required = false) MultipartFile positiveidcardimage,
-                          @RequestParam(value ="negativeidcardimage",required = false) MultipartFile negativeidcardimage,
-                          @RequestParam(value ="file",required = false) MultipartFile laborcontract) throws Exception {
+                          Integer departmentid, String name, String jobtitle, Integer idcardtype, String idcardnumber,
+                          Integer gender, Integer age, String nation, Integer edulevel, String birthday, String address,
+                          String entrydate, String regulardate, Integer roleid, @RequestParam(value = "headimage", required = false) MultipartFile headimage, Integer politicstype,
+                          String cellphone, String email, String authorizationcode, String urgentlinkman, String urgentlinkmanphone,
+                          @RequestParam(value = "positiveidcardimage", required = false) MultipartFile positiveidcardimage,
+                          @RequestParam(value = "negativeidcardimage", required = false) MultipartFile negativeidcardimage,
+                          @RequestParam(value = "file", required = false) MultipartFile laborcontract) throws Exception {
         User olduser = userService.findByName(username);
         if (null != olduser) {
-            return OAResponse.setResult(HTTP_RNS_CODE_500,"用户名已存在");
+            return OAResponse.setResult(HTTP_RNS_CODE_500, "用户名已存在");
         }
-        Corpbasicinfo corpbasicinfo=corpbasicinfoService.queryByemployeeId(ShiroUtils.getPrincipal().getEmployeeid());
-        Fileinfo fileinfo =new Fileinfo();
-        FileuploadUtils fileuploadUtils =new FileuploadUtils();
-        if(null!=laborcontract&&laborcontract.getSize()>0){
+        Corpbasicinfo corpbasicinfo = corpbasicinfoService.queryByemployeeId(ShiroUtils.getPrincipal().getEmployeeid());
+        Fileinfo fileinfo = new Fileinfo();
+        FileuploadUtils fileuploadUtils = new FileuploadUtils();
+        if (null != laborcontract && laborcontract.getSize() > 0) {
             //合同
-            String laborcontractUrl = fileuploadUtils.Fileupload(laborcontract,uploadFile,"劳动合同",name);
+            String laborcontractUrl = fileuploadUtils.Fileupload(laborcontract, uploadFile, "劳动合同", name);
             log.info("附件上传成功");
             fileinfo.setCorpid(corpbasicinfo.getCorpid());
             fileinfo.setFileinfotype(FileTypeEnmu.Labor_contract.getCode());
-            fileinfo.setName(name+"劳动合同");
+            fileinfo.setName(name + "劳动合同");
             fileinfo.setUrl(laborcontractUrl);
             fileinfo.setCreatedate(new Date());
-            fileinfo= fileinfoService.insert(fileinfo);
+            fileinfo = fileinfoService.insert(fileinfo);
             log.info("附件插入成功");
         }
-        Employee employee =new Employee();
-        if(null!=fileinfo.getFileinfoid()){
+        Employee employee = new Employee();
+        if (null != fileinfo.getFileinfoid()) {
             employee.setFileinfoid(fileinfo.getFileinfoid());
         }
         employee.setCorpid(corpbasicinfo.getCorpid());
@@ -171,19 +171,19 @@ public class EmployeeController {
         employee.setAge(age);
         employee.setNation(nation);
         employee.setEdulevel(edulevel);
-        if(null!=birthday&&birthday.length()>0){
+        if (null != birthday && birthday.length() > 0) {
             employee.setBirthday(DateUtil.getformatDate(birthday));
         }
         employee.setAddress(address);
-        if(null!=entrydate&&entrydate.length()>0){
+        if (null != entrydate && entrydate.length() > 0) {
             employee.setEntrydate(DateUtil.getformatDate(entrydate));
         }
-        if(null!=regulardate&&regulardate.length()>0){
+        if (null != regulardate && regulardate.length() > 0) {
             employee.setRegulardate(DateUtil.getformatDate(regulardate));
         }
-        if(null!=headimage&&headimage.getSize()>0){
+        if (null != headimage && headimage.getSize() > 0) {
             //上传头像照 并返回url
-            String headimageurl = fileuploadUtils.Fileupload(headimage,uploadImageFolder,"头像",name);
+            String headimageurl = fileuploadUtils.Fileupload(headimage, uploadImageFolder, "头像", name);
             employee.setHeadimageurl(headimageurl);
             log.info("头像上传成功");
         }
@@ -193,28 +193,28 @@ public class EmployeeController {
         employee.setAuthorizationcode(authorizationcode);
         employee.setUrgentlinkman(urgentlinkman);
         employee.setUrgentlinkmanphone(urgentlinkmanphone);
-        if(null!=positiveidcardimage&&positiveidcardimage.getSize()>0){
+        if (null != positiveidcardimage && positiveidcardimage.getSize() > 0) {
             //上传身份证正面照，并返回url
-            String positiveidcardimageurl = fileuploadUtils.Fileupload(positiveidcardimage,uploadImageFolder,"身份证正面照",name);
+            String positiveidcardimageurl = fileuploadUtils.Fileupload(positiveidcardimage, uploadImageFolder, "身份证正面照", name);
             employee.setPositiveidcardimageurl(positiveidcardimageurl);
             log.info("身份证正面上传成功");
         }
-        if(null!=negativeidcardimage&&negativeidcardimage.getSize()>0){
+        if (null != negativeidcardimage && negativeidcardimage.getSize() > 0) {
             //上传身份证反面照，并返回url
-            String negativeidcardimageurl = fileuploadUtils.Fileupload(negativeidcardimage,uploadImageFolder,"身份证反面照",name);
+            String negativeidcardimageurl = fileuploadUtils.Fileupload(negativeidcardimage, uploadImageFolder, "身份证反面照", name);
             employee.setNegativeidcardimageurl(negativeidcardimageurl);
             log.info("身份证反面上传成功");
         }
         employee.setCreatedate(new Date());
-        employee=employeeService.insert(employee);
+        employee = employeeService.insert(employee);
         log.info("员工信息插入成功");
-        User user =new User();
-        if(null!=employee.getEmployeeid()){
+        User user = new User();
+        if (null != employee.getEmployeeid()) {
             user.setEmployeeid(employee.getEmployeeid());
         }
         String uuid = UUID.randomUUID().toString().replaceAll("-", "");
         user.setUsername(username);
-        user.setPassword(Md5Util.Md5Password(uuid,"123456"));
+        user.setPassword(Md5Util.Md5Password(uuid, "123456"));
         user.setStatus(UserStatusEnmu.Normal.getCode());
         user.setSalt(uuid);
         //后期可修改
@@ -223,22 +223,22 @@ public class EmployeeController {
         userService.insert(user);
         log.info("账号生成成功");
         /*使用do while会更好*/
-        int value=0;
-        int i=0;
-        do{
-            value=EmailUtils.sandEmail("smtp.163.com","houxuyang0801@163.com","KXIRPGFLESJBQYAO",email,corpbasicinfo.getCorpname(),"尊敬的"+name+"你好！ 欢迎加入"+corpbasicinfo.getCorpname()+"，您的职位为"+jobtitle+",OA地址为："+"固定网址"+";账号为："+username+";密码为：123456;请尽快登录修改密码");
-            if(1==value){
+        int value = 0;
+        int i = 0;
+        do {
+            value = EmailUtils.sandEmail("smtp.163.com", "houxuyang0801@163.com", "KXIRPGFLESJBQYAO", email, corpbasicinfo.getCorpname(), "尊敬的" + name + "你好！ 欢迎加入" + corpbasicinfo.getCorpname() + "，您的职位为" + jobtitle + ",OA地址为：" + "固定网址" + ";账号为：" + username + ";密码为：123456;请尽快登录修改密码");
+            if (1 == value) {
                 log.info("邮件发送成功");
                 break;
-            }else{
+            } else {
                 i++;
-                if(i==3){
+                if (i == 3) {
                     log.info("发送三次失败");
-                    return OAResponse.setResult(HTTP_RNS_CODE_200,"账号生成成功，邮件发送失败");
+                    return OAResponse.setResult(HTTP_RNS_CODE_200, "账号生成成功，邮件发送失败");
                 }
             }
-        }while(1!=value);
-        return OAResponse.setResult(HTTP_RNS_CODE_200,ADD_SUCCESS);
+        } while (1 != value);
+        return OAResponse.setResult(HTTP_RNS_CODE_200, ADD_SUCCESS);
     }
 
     /**
@@ -253,65 +253,64 @@ public class EmployeeController {
         return "page/employee/employeeinfo";
     }
 */
+
     /**
+     * @return org.springframework.web.servlet.ModelAndView
      * @Author houxuyang
      * @Description //跳转个人信息页面 获取员工个人信息返回到页面
      * @Date 14:32 2020/8/11
      * @Param []
-     * @return org.springframework.web.servlet.ModelAndView
      **/
     @RequestMapping("/goemployeeinfo")
-    public ModelAndView goemployeeinfo(){
+    public ModelAndView goemployeeinfo() {
         log.info("goemployeeinfo");
-        EmployeeVO employeeVO =employeeService.queryemployeeVOById(ShiroUtils.getPrincipal().getEmployeeid());
-        employeeVO.setHeadimageurl(upload+employeeVO.getHeadimageurl());
+        EmployeeVO employeeVO = employeeService.queryemployeeVOById(ShiroUtils.getPrincipal().getEmployeeid());
+        employeeVO.setHeadimageurl(upload + employeeVO.getHeadimageurl());
         //employeeVO.setPositiveidcardimageurl(upload+employeeVO.getPositiveidcardimageurl());
         //employeeVO.setNegativeidcardimageurl(upload+employeeVO.getNegativeidcardimageurl());
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("page/employee/employeeinfo");
-        modelAndView.addObject("employee",employeeVO);
+        modelAndView.addObject("employee", employeeVO);
         return modelAndView;
     }
 
 
     /**
+     * @return com.tdkj.System.common.OAResponse
      * @Author houxuyang
      * @Description //修改员工头像
      * @Date 14:33 2020/8/11
      * @Param [headimage]
-     * @return com.tdkj.System.common.OAResponse
      **/
     @ResponseBody
     @RequestMapping("/updateemployeeimage")
-    public OAResponse updateemployeeimage(@RequestParam( value ="headimage",required = false) MultipartFile headimage) {
+    public OAResponse updateemployeeimage(@RequestParam(value = "headimage", required = false) MultipartFile headimage) {
         log.info("修改头像");
-        Employee employee =this.employeeService.queryById(ShiroUtils.getPrincipal().getEmployeeid());
-        String headimageurl=null;
-        if(null!=headimage&&headimage.getSize()>0){
+        Employee employee = this.employeeService.queryById(ShiroUtils.getPrincipal().getEmployeeid());
+        String headimageurl = null;
+        if (null != headimage && headimage.getSize() > 0) {
             //上传头像照 并返回url
-            FileuploadUtils fileuploadUtils =new FileuploadUtils();
+            FileuploadUtils fileuploadUtils = new FileuploadUtils();
             //删除原始头像
-            fileuploadUtils.Filedelete(uploadImageFolder,employee.getHeadimageurl());
+            fileuploadUtils.Filedelete(uploadImageFolder, employee.getHeadimageurl());
             //上传新头像
-            headimageurl = fileuploadUtils.Fileupload(headimage,uploadImageFolder,"头像",employee.getName());
+            headimageurl = fileuploadUtils.Fileupload(headimage, uploadImageFolder, "头像", employee.getName());
             employee.setHeadimageurl(headimageurl);
             log.info("头像修改成功");
             employeeService.update(employee);
-            return OAResponse.setResult(HTTP_RNS_CODE_200,"头像修改成功",upload+headimageurl);
+            return OAResponse.setResult(HTTP_RNS_CODE_200, "头像修改成功", upload + headimageurl);
         }
-        return OAResponse.setResult(HTTP_RNS_CODE_500,"头像修改失败，未找到头像");
+        return OAResponse.setResult(HTTP_RNS_CODE_500, "头像修改失败，未找到头像");
     }
-
-
 
 
     @ResponseBody
     @RequestMapping("/updateemployee")
-    public OAResponse updateemployee(Integer employeeid,String name,Integer gender,Integer age,String cellphone,
-                                     String idcardnumber,String email ,String address) {
+    public OAResponse updateemployee(Integer employeeid, String name, Integer gender, Integer age, String cellphone,
+                                     String idcardnumber, String email, String address) {
         log.info("修改个人信息");
-        Employee employee =this.employeeService.queryById(employeeid);
-        if(null!=employee){
+        Employee employee = this.employeeService.queryById(employeeid);
+        if (null != employee) {
             employee.setName(name);
             employee.setGender(gender);
             employee.setAge(age);
@@ -320,9 +319,9 @@ public class EmployeeController {
             employee.setEmail(email);
             employee.setAddress(address);
             employeeService.update(employee);
-            return OAResponse.setResult(HTTP_RNS_CODE_200,UPDATE_SUCCESS);
+            return OAResponse.setResult(HTTP_RNS_CODE_200, UPDATE_SUCCESS);
         }
-        return OAResponse.setResult(HTTP_RNS_CODE_200,UPDATE_FAULT);
+        return OAResponse.setResult(HTTP_RNS_CODE_200, UPDATE_FAULT);
     }
 
 

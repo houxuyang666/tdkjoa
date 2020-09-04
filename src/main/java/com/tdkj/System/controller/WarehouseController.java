@@ -35,7 +35,7 @@ public class WarehouseController {
     @Resource
     private WarehouseService warehouseService;
     @Autowired
-    private EmployeeService  employeeService;
+    private EmployeeService employeeService;
 
     /*跳转仓库页面*/
     @RequestMapping("/goselectwarehouse")
@@ -45,34 +45,27 @@ public class WarehouseController {
 
 
     /**
+     * @return com.tdkj.System.common.OAResponseList
      * @Author houxuyang
      * @Description //查询库存
      * @Date 10:18 2020/8/14
      * @Param [page, limit, goodsname]
-     * @return com.tdkj.System.common.OAResponseList
      **/
     @ResponseBody
     @RequestMapping("/selectwarehouse")
-    public OAResponseList selectwarehouse(Integer page, Integer limit,String goodsname) {
+    public OAResponseList selectwarehouse(Integer page, Integer limit, String goodsname) {
         log.info("/selectwarehouse");
         Employee employee = this.employeeService.queryById(ShiroUtils.getPrincipal().getEmployeeid());
-        Warehouse warehouse =new Warehouse();
-        if (null!=goodsname){
+        Warehouse warehouse = new Warehouse();
+        if (null != goodsname) {
             warehouse.setGoodsname(goodsname);
         }
         warehouse.setCorpid(employee.getCorpid());
-        PageHelper.startPage(page,limit,true);
-        List<Warehouse> warehouseList= warehouseService.queryAll(warehouse);
-        PageInfo<Warehouse> pageInfo=new PageInfo<>(warehouseList);
-        return OAResponseList.setResult(0,FIND_SUCCESS,pageInfo);
+        PageHelper.startPage(page, limit, true);
+        List<Warehouse> warehouseList = warehouseService.queryAll(warehouse);
+        PageInfo<Warehouse> pageInfo = new PageInfo<>(warehouseList);
+        return OAResponseList.setResult(0, FIND_SUCCESS, pageInfo);
     }
-
-
-
-
-
-
-
 
 
 }

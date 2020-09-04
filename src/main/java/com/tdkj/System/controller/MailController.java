@@ -19,8 +19,8 @@ import static com.tdkj.System.common.OAResultType.FIND_SUCCESS;
 @Controller
 @RequestMapping("mail")
 public class MailController {
-@Autowired
-private EmployeeService employeeService;
+    @Autowired
+    private EmployeeService employeeService;
 
 
     //跳转到公司通讯页面
@@ -34,13 +34,13 @@ private EmployeeService employeeService;
 
     @RequestMapping("/selectmymail")
     @ResponseBody
-    public OAResponseList selectmymail(Integer page, Integer limit,String name,String cellphone) {
+    public OAResponseList selectmymail(Integer page, Integer limit, String name, String cellphone) {
         Employee employee = employeeService.queryById(ShiroUtils.getPrincipal().getEmployeeid());
 
-        PageHelper.startPage(page,limit,true);
-        List<EmployeeVO> employeeVOList=employeeService.queryMyMail(employee.getCorpid(),name,cellphone);
-        PageInfo<EmployeeVO> pageInfo=new PageInfo<>(employeeVOList);
-        return OAResponseList.setResult(0,FIND_SUCCESS,pageInfo);
+        PageHelper.startPage(page, limit, true);
+        List<EmployeeVO> employeeVOList = employeeService.queryMyMail(employee.getCorpid(), name, cellphone);
+        PageInfo<EmployeeVO> pageInfo = new PageInfo<>(employeeVOList);
+        return OAResponseList.setResult(0, FIND_SUCCESS, pageInfo);
 
     }
 

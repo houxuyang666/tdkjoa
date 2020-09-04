@@ -55,31 +55,32 @@ public class VehicleinfoController {
      */
     @ResponseBody
     @RequestMapping("/selectvehicleinfo")
-    public OAResponseList vehicleinfolist(Integer page, Integer limit, String vehiclenumber,String vehicletype,Integer corpid) {
+    public OAResponseList vehicleinfolist(Integer page, Integer limit, String vehiclenumber, String vehicletype, Integer corpid) {
         //Employee employee = employeeService.queryById(ShiroUtils.getPrincipal().getEmployeeid());
         Vehicleinfo vehicleinfo = new Vehicleinfo();
-        if (null!=vehiclenumber){
+        if (null != vehiclenumber) {
             vehicleinfo.setVehiclenumber(vehiclenumber);
         }
-        if (null!=corpid){
+        if (null != corpid) {
             vehicleinfo.setVehicleaffiliationcorpbasicinfo(corpid);
         }
-        if (null!=vehicletype){
+        if (null != vehicletype) {
             vehicleinfo.setVehicletype(vehicletype);
         }
-        PageHelper.startPage(page,limit,true);
-        List<VehicleinfoVO> vehicleinfoVOList=vehicleinfoService.queryAllvehicleinfo(vehicleinfo);
-        PageInfo<VehicleinfoVO> pageInfo=new PageInfo<>(vehicleinfoVOList);
+        PageHelper.startPage(page, limit, true);
+        List<VehicleinfoVO> vehicleinfoVOList = vehicleinfoService.queryAllvehicleinfo(vehicleinfo);
+        PageInfo<VehicleinfoVO> pageInfo = new PageInfo<>(vehicleinfoVOList);
 
         /*查询所有司机*/
         //List<UserinfoVO> userinfoVOList=userinfoService.Alldriver();
 
-        return OAResponseList.setResult(0,FIND_SUCCESS,pageInfo);
+        return OAResponseList.setResult(0, FIND_SUCCESS, pageInfo);
         //return OAResponseList.setResult(0,FIND_SUCCESS,pageInfo,userinfoVOList);
     }
 
     /**
-     *跳转添加车辆界面
+     * 跳转添加车辆界面
+     *
      * @return
      */
     @RequestMapping("/goaddvehicleinfo")
@@ -89,14 +90,14 @@ public class VehicleinfoController {
 
     @ResponseBody
     @RequestMapping("/addvehicleinfo")
-    public OAResponse addvehicleinfo(String vehicletype,Integer vehicleseatsnumber,String vehiclenumber) {
+    public OAResponse addvehicleinfo(String vehicletype, Integer vehicleseatsnumber, String vehiclenumber) {
         //根据车牌号查询该车辆是否存在
-        Vehicleinfo oldvehicleinfo =vehicleinfoService.queryByvehicleNumber(vehiclenumber);
-        if (null!=oldvehicleinfo) {
-            return OAResponse.setResult(HTTP_RNS_CODE_500,"车辆已存在");
+        Vehicleinfo oldvehicleinfo = vehicleinfoService.queryByvehicleNumber(vehiclenumber);
+        if (null != oldvehicleinfo) {
+            return OAResponse.setResult(HTTP_RNS_CODE_500, "车辆已存在");
         }
         Employee employee = employeeService.queryById(ShiroUtils.getPrincipal().getEmployeeid());
-        Vehicleinfo vehicleinfo=new Vehicleinfo();
+        Vehicleinfo vehicleinfo = new Vehicleinfo();
         vehicleinfo.setVehicletype(vehicletype);
         vehicleinfo.setVehicleseatsnumber(vehicleseatsnumber);
         vehicleinfo.setVehiclenumber(vehiclenumber);
@@ -105,7 +106,7 @@ public class VehicleinfoController {
         vehicleinfo.setVehicleaffiliationpersonal(employee.getEmployeeid());
         vehicleinfo.setCreatedate(new Date());
         vehicleinfoService.insert(vehicleinfo);
-        return OAResponse.setResult(HTTP_RNS_CODE_200,ADD_SUCCESS);
+        return OAResponse.setResult(HTTP_RNS_CODE_200, ADD_SUCCESS);
     }
 
     /**
@@ -141,19 +142,20 @@ public class VehicleinfoController {
 
     /**
      * 删除车辆信息
+     *
      * @param vehicleinfoid
      * @return
      */
     @ResponseBody
     @RequestMapping("/delvehicleinfo")
     public OAResponse delvehicleinfo(Integer vehicleinfoid) {
-        Vehicleinfo vehicleinfo =vehicleinfoService.queryById(vehicleinfoid);
-        if (VehicleStatusEnmu.Has_been_used.getCode()==vehicleinfo.getStatus()){
+        Vehicleinfo vehicleinfo = vehicleinfoService.queryById(vehicleinfoid);
+        if (VehicleStatusEnmu.Has_been_used.getCode() == vehicleinfo.getStatus()) {
             //说明车辆正在被使用那么是不能删除的。
-            return OAResponse.setResult(HTTP_RNS_CODE_500,"删除失败，车辆正在使用");
-        }else{
+            return OAResponse.setResult(HTTP_RNS_CODE_500, "删除失败，车辆正在使用");
+        } else {
             vehicleinfoService.deleteById(vehicleinfoid);
-            return OAResponse.setResult(HTTP_RNS_CODE_200,REMOVE_SUCCESS);
+            return OAResponse.setResult(HTTP_RNS_CODE_200, REMOVE_SUCCESS);
         }
 
     }

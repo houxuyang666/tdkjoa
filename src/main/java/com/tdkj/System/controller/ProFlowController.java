@@ -68,9 +68,9 @@ public class ProFlowController {
     public OAResponseList queryCurrentUserTask() {
         log.info("loadCurrentUserTask");
         /*分页值需要页面传*/
-        Integer page =0;
-        Integer limit =10;
-        return OAResponseList.setResult(0, FIND_SUCCESS,this.proflowService.qureyCurrentUserTask(page,limit));
+        Integer page = 0;
+        Integer limit = 10;
+        return OAResponseList.setResult(0, FIND_SUCCESS, this.proflowService.qureyCurrentUserTask(page, limit));
     }
 
 
@@ -80,14 +80,14 @@ public class ProFlowController {
         /*log.info("goDoTask");
         log.info(taskId);*/
         //1.根据任务ID查询采购单信息
-        ProcurementVO procurement =this.proflowService.queryProByTaskId(taskId);
+        ProcurementVO procurement = this.proflowService.queryProByTaskId(taskId);
         //2.根据任务ID查询连线信息
-        List<String> outcomeName=this.proflowService.queryOutComeByTaskId(taskId);
+        List<String> outcomeName = this.proflowService.queryOutComeByTaskId(taskId);
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("page/procurement/doProTask");
-        modelAndView.addObject("procurement",procurement);
-        modelAndView.addObject("outcomes",outcomeName);
-        modelAndView.addObject("taskId",taskId);
+        modelAndView.addObject("procurement", procurement);
+        modelAndView.addObject("outcomes", outcomeName);
+        modelAndView.addObject("taskId", taskId);
         return modelAndView;
     }
 
@@ -97,7 +97,7 @@ public class ProFlowController {
     public OAResponseList loadAllCommentByTaskId(String taskId) {
         log.info("loadAllCommentByTaskId");
         log.info(taskId);
-        return OAResponseList.setResult(0,FIND_SUCCESS,this.workFlowService.queryCommentByTaskId(taskId));
+        return OAResponseList.setResult(0, FIND_SUCCESS, this.workFlowService.queryCommentByTaskId(taskId));
     }
 
 
@@ -105,24 +105,24 @@ public class ProFlowController {
     @Transactional
     @ResponseBody
     @RequestMapping("/doTask")
-    public OAResponse doTask(String proid,String taskId,String comments,String outcome) {
-        try{
-            this.proflowService.completeTask(proid,taskId,comments,outcome);
-            return OAResponse.setResult(200,"任务完成成功");
-        }catch (Exception e){
+    public OAResponse doTask(String proid, String taskId, String comments, String outcome) {
+        try {
+            this.proflowService.completeTask(proid, taskId, comments, outcome);
+            return OAResponse.setResult(200, "任务完成成功");
+        } catch (Exception e) {
             e.printStackTrace();
-            return OAResponse.setResult(500,"任务完成失败");
+            return OAResponse.setResult(500, "任务完成失败");
         }
     }
 
     /*根据采购单ID查询审批批注信息和采购单信息*/
     @RequestMapping("/viewSpProcess")
-    public ModelAndView viewSpProcess (String proid){
+    public ModelAndView viewSpProcess(String proid) {
         ModelAndView modelAndView = new ModelAndView();
         /*查询请假单信息*/
         ProcurementVO procurementVO = this.procurementService.queryProVOByProId(proid);
         modelAndView.setViewName("page/procurement/viewProView");
-        modelAndView.addObject("procurement",procurementVO);
+        modelAndView.addObject("procurement", procurementVO);
         return modelAndView;
     }
 
@@ -130,8 +130,8 @@ public class ProFlowController {
     /*根据采购单的ID 查询批注信息*/
     @ResponseBody
     @RequestMapping("/loadCommentByProid")
-    public OAResponseList loadCommentByProid (String proid){
-        return OAResponseList.setResult(0,FIND_SUCCESS,this.proflowService.queryCommentByProid(proid));
+    public OAResponseList loadCommentByProid(String proid) {
+        return OAResponseList.setResult(0, FIND_SUCCESS, this.proflowService.queryCommentByProid(proid));
     }
 
 

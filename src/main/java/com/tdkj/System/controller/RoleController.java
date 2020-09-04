@@ -35,8 +35,8 @@ public class RoleController {
     public OAResponseList selectrole() {
         log.info("selectrole");
         //获取除超级管理员以外的权限
-        List<Role> role=roleService.queryAll(new Role());
-        return OAResponseList.setResult(0,FIND_SUCCESS,role);
+        List<Role> role = roleService.queryAll(new Role());
+        return OAResponseList.setResult(0, FIND_SUCCESS, role);
     }
 
 }

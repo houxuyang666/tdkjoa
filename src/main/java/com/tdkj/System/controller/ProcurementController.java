@@ -69,7 +69,7 @@ public class ProcurementController {
     @Value("${file.uploadFile}")
     private String uploadFile;
 
-    private static final String desc ="采购订单";
+    private static final String desc = "采购订单";
 
 
     @RequestMapping("/goselectpro")
@@ -81,12 +81,12 @@ public class ProcurementController {
     @RequestMapping("/selectpro")
     public OAResponseList selectpro(Integer page, Integer limit) {
         //如果是超级管理员那么可以查询所有 ，但是公司需要区分
-        PageHelper.startPage(page,limit,true);
+        PageHelper.startPage(page, limit, true);
         /*根据用户id查询所申请的采购单*/
-        List<ProcurementVO> procurementList=procurementService.queryByApplicantId(ShiroUtils.getPrincipal().getUserid());
-        PageInfo<ProcurementVO> pageInfo=new PageInfo<>(procurementList);
+        List<ProcurementVO> procurementList = procurementService.queryByApplicantId(ShiroUtils.getPrincipal().getUserid());
+        PageInfo<ProcurementVO> pageInfo = new PageInfo<>(procurementList);
 
-        return OAResponseList.setResult(0,FIND_SUCCESS,pageInfo);
+        return OAResponseList.setResult(0, FIND_SUCCESS, pageInfo);
     }
 
 
@@ -160,26 +160,26 @@ public class ProcurementController {
     @ResponseBody
     @RequestMapping("/add")
     public OAResponse add(String prodate, Integer protype, String goodsname, String unit, String type, Integer number, BigDecimal price,
-                          BigDecimal totalamount, String prodesc,@RequestParam("file") MultipartFile file ) throws  Exception {
-        Employee employee =this.employeeService.queryById(ShiroUtils.getPrincipal().getEmployeeid());
-        Fileinfo fileinfo =new Fileinfo();
-        FileuploadUtils fileuploadUtils =new FileuploadUtils();
-        if(null!=file&&file.getSize()>0){
+                          BigDecimal totalamount, String prodesc, @RequestParam("file") MultipartFile file) throws Exception {
+        Employee employee = this.employeeService.queryById(ShiroUtils.getPrincipal().getEmployeeid());
+        Fileinfo fileinfo = new Fileinfo();
+        FileuploadUtils fileuploadUtils = new FileuploadUtils();
+        if (null != file && file.getSize() > 0) {
             //合同
-            String fileUrl = fileuploadUtils.Fileupload(file,uploadFile,desc,goodsname);
+            String fileUrl = fileuploadUtils.Fileupload(file, uploadFile, desc, goodsname);
             log.info("附件上传成功");
             fileinfo.setCorpid(employee.getCorpid());
             fileinfo.setFileinfotype(FileTypeEnmu.Procurement_contract.getCode());
-            fileinfo.setName(goodsname+desc);
+            fileinfo.setName(goodsname + desc);
             fileinfo.setUrl(fileUrl);
             fileinfo.setCreatedate(new Date());
-            fileinfo= fileinfoService.insert(fileinfo);
+            fileinfo = fileinfoService.insert(fileinfo);
             log.info("附件插入成功");
         }
-        Procurement procurement =new Procurement();
+        Procurement procurement = new Procurement();
         //生成4为随机数 第二个参数为是否要字母 第三个参数是否要数字
-        String code= RandomStringUtils.random(4, true, true);
-        procurement.setProid(DateUtil.getformatDate(new Date())+code);
+        String code = RandomStringUtils.random(4, true, true);
+        procurement.setProid(DateUtil.getformatDate(new Date()) + code);
         procurement.setCorpid(employee.getCorpid());
         procurement.setProdate(DateUtil.formatDate(prodate));
         procurement.setProtype(protype);
@@ -188,8 +188,8 @@ public class ProcurementController {
         procurement.setType(type);
         procurement.setNumber(number);
         procurement.setPrice(price);
-        if(String.valueOf(totalamount).length()>7){
-            return OAResponse.setResult(500,"金额太大，请分批提交");
+        if (String.valueOf(totalamount).length() > 7) {
+            return OAResponse.setResult(500, "金额太大，请分批提交");
         }
         procurement.setTotalamount(totalamount);
         procurement.setProdesc(prodesc);
@@ -206,36 +206,34 @@ public class ProcurementController {
         //拼接流程定义Key
         String processDefinitionKey = "Pro";
 
-        try{
-            String businessKey =processDefinitionKey+":"+insert.getProid();
+        try {
+            String businessKey = processDefinitionKey + ":" + insert.getProid();
             Execution execution = this.runtimeService.createExecutionQuery().processInstanceBusinessKey(businessKey).singleResult();
             Task task = this.taskService.createTaskQuery().executionId(execution.getProcessInstanceId()).singleResult();
             /*直接跳过自己提交申请的步骤 提交到上级领导*/
-            this.proflowService.completeTask(insert.getProid(),task.getId(),"提交申请","提交");
-        }catch (Exception e){
-            return OAResponse.setResult(500,"您没有上级，无法添加采购订单");
+            this.proflowService.completeTask(insert.getProid(), task.getId(), "提交申请", "提交");
+        } catch (Exception e) {
+            return OAResponse.setResult(500, "您没有上级，无法添加采购订单");
         }
 
-        return OAResponse.setResult(200,ADD_SUCCESS);
+        return OAResponse.setResult(200, ADD_SUCCESS);
     }
 
 
-
-
     @RequestMapping("/goupdate")
-    public ModelAndView goupdate(String proid){
+    public ModelAndView goupdate(String proid) {
         ProcurementVO procurementVO = this.procurementService.queryProVOByProId(proid);
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("page/procurement/updatepro");
-        modelAndView.addObject("procurement",procurementVO);
+        modelAndView.addObject("procurement", procurementVO);
         return modelAndView;
     }
 
 
     @ResponseBody
     @RequestMapping("/update")
-    public OAResponse update(String proid,String prodate, Integer protype, String goodsname, String unit, String type, Integer number,
-                             BigDecimal price, BigDecimal totalamount, String prodesc) throws Exception{
+    public OAResponse update(String proid, String prodate, Integer protype, String goodsname, String unit, String type, Integer number,
+                             BigDecimal price, BigDecimal totalamount, String prodesc) throws Exception {
         Procurement procurement = this.procurementService.queryById(proid);
         procurement.setProdate(DateUtil.formatDate(prodate));
         procurement.setProtype(protype);
@@ -248,22 +246,22 @@ public class ProcurementController {
         procurement.setProdesc(prodesc);
         procurement.setModifydate(new Date());
         this.procurementService.update(procurement);
-        return OAResponse.setResult(200,UPDATE_SUCCESS);
+        return OAResponse.setResult(200, UPDATE_SUCCESS);
     }
 
     @Transactional
     @ResponseBody
     @RequestMapping("/delete")
-    public OAResponse delete(String proid){
+    public OAResponse delete(String proid) {
         Procurement procurement = procurementService.queryById(proid);
         /*判断是否有附件 如果有也一起删除附件 如果没有只删除订单*/
-        if (null!=procurement.getFileinfoid()){
+        if (null != procurement.getFileinfoid()) {
             this.procurementService.deleteById(proid);
             this.fileinfoService.deleteById(procurement.getFileinfoid());
-        }else{
+        } else {
             this.procurementService.deleteById(proid);
         }
-        return OAResponse.setResult(200,REMOVE_SUCCESS);
+        return OAResponse.setResult(200, REMOVE_SUCCESS);
     }
 
 

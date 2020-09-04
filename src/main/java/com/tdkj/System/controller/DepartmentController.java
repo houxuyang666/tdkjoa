@@ -39,9 +39,9 @@ public class DepartmentController {
     @Autowired
     private EmployeeService employeeService;
 
-    private static final Integer  RoleID =2;
+    private static final Integer RoleID = 2;
 
-    private static final Integer  Code =0;
+    private static final Integer Code = 0;
 
     /*跳转部门列表*/
     @RequestMapping("goselectdepartment")
@@ -81,7 +81,7 @@ public class DepartmentController {
         List<DepartmentVO> departmentVOList = departmentService.queryDeptByCorpId(employee.getCorpid());
         return OAResponseList.setResult(Code, FIND_SUCCESS, departmentVOList);
     }
-    
+
 
     /*跳转添加部门*/
     @RequestMapping("goadddepartment")
@@ -112,7 +112,6 @@ public class DepartmentController {
     }
 
 
-
     /*跳转修改部门*/
     @RequestMapping("goupdatedepartment")
     public String goupdatedepartment() {
@@ -120,24 +119,23 @@ public class DepartmentController {
     }
 
     /**
+     * @return com.tdkj.System.common.OAResponseList
      * @Author houxuyang
      * @Description //查询本公司权限为领导的人员
      * @Date 11:33 2020/8/5
      * @Param [page, limit]
-     * @return com.tdkj.System.common.OAResponseList
      **/
     @ResponseBody
     @RequestMapping("/selectdeptemployee")
     public OAResponseList selectdeptemployee(Integer page, Integer limit) {
         /*获取当前登陆人员的公司ID*/
         Employee employee = employeeService.queryById(ShiroUtils.getPrincipal().getEmployeeid());
-        List<Employee> employeeList = employeeService.queryemployeeByRoleid(RoleID,employee.getCorpid());
-        PageInfo pageInfo =new PageInfo();
+        List<Employee> employeeList = employeeService.queryemployeeByRoleid(RoleID, employee.getCorpid());
+        PageInfo pageInfo = new PageInfo();
         pageInfo.setList(employeeList);
         pageInfo.setTotal(employeeList.size());
         return OAResponseList.setResult(Code, FIND_SUCCESS, pageInfo);
     }
-
 
 
     /**
@@ -149,7 +147,7 @@ public class DepartmentController {
      **/
     @ResponseBody
     @RequestMapping("/update")
-    public OAResponse update( Integer deptid,String deptname, Integer deptheadid, String deptdesc) {
+    public OAResponse update(Integer deptid, String deptname, Integer deptheadid, String deptdesc) {
         Department department = new Department();
         department.setDeptid(deptid);
         department.setDeptname(deptname);

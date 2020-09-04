@@ -158,11 +158,11 @@
         LEFT JOIN department d on d.DeptId =a.DeptId
         where  extract(year from a.WorkDate)=#{year}
         and    extract(month from a.WorkDate)=#{month}
-        and   a.CorpID =#{corpid}
-        <if test="name != null and name != ''">
+        and   a.CorpID =#{corpid} and a.userid=13
+     <!--   <if test="name != null and name != ''">
             and e.name like concat('%',#{name},'%')
         </if>
-        group by e.name
+        group by e.name-->
     </select>
 
 </mapper>

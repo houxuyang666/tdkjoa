@@ -23,12 +23,12 @@ public class SystemController {
 
 
     @RequestMapping("/goicon")
-    public  String  goicon(){
+    public String goicon() {
         return "page/icon";
     }
 
     @RequestMapping("/gosetting")
-    public  String  gosetting(){
+    public String gosetting() {
         return "page/setting";
     }
 

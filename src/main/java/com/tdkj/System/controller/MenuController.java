@@ -42,10 +42,9 @@ public class MenuController {
     @ResponseBody
     @RequestMapping("/getmenu")
     public OAResponse getmenu() {
-        List<Menu> menuList =menuService.findMenusAllMenu();
-        return OAResponse.setResult(HTTP_RNS_CODE_200,FIND_SUCCESS, OAJson.toJson(menuList));
+        List<Menu> menuList = menuService.findMenusAllMenu();
+        return OAResponse.setResult(HTTP_RNS_CODE_200, FIND_SUCCESS, OAJson.toJson(menuList));
     }
-
 
 
     @RequestMapping("/goaddmenu")
@@ -57,8 +56,8 @@ public class MenuController {
     @Transactional
     @ResponseBody
     @RequestMapping("/addmenu")
-    public OAResponse addmenu(Integer parentId,String title, String href, String perms,String icon,String target) {
-        Menu menu =new Menu();
+    public OAResponse addmenu(Integer parentId, String title, String href, String perms, String icon, String target) {
+        Menu menu = new Menu();
         menu.setParentid(parentId);
         menu.setTitle(title);
         menu.setHref(href);
@@ -66,11 +65,11 @@ public class MenuController {
         menu.setIcon(icon);
         menu.setTarget(target);
         menu.setCreatedate(new Date());
-        menu =menuService.insert(menu);
+        menu = menuService.insert(menu);
         log.info(menu.getMenuid().toString());
         /*添加时直接设置在权限管理表中插入关联*/
-        menuService.insertroleAndmenu(1,menu.getMenuid());
-        return OAResponse.setResult(HTTP_RNS_CODE_200,ADD_SUCCESS);
+        menuService.insertroleAndmenu(1, menu.getMenuid());
+        return OAResponse.setResult(HTTP_RNS_CODE_200, ADD_SUCCESS);
     }
 
     @RequestMapping("/goupdatemenu")
@@ -81,8 +80,8 @@ public class MenuController {
 
     @ResponseBody
     @RequestMapping("/updatemenu")
-    public OAResponse updatemenu(Integer menuId,Integer parentId,String title, String href, String perms,String icon,String target) {
-        Menu menu =new Menu();
+    public OAResponse updatemenu(Integer menuId, Integer parentId, String title, String href, String perms, String icon, String target) {
+        Menu menu = new Menu();
         menu.setMenuid(menuId);
         menu.setParentid(parentId);
         menu.setTitle(title);
@@ -92,7 +91,7 @@ public class MenuController {
         menu.setTarget(target);
         menu.setModifydate(new Date());
         menuService.update(menu);
-        return OAResponse.setResult(HTTP_RNS_CODE_200,UPDATE_SUCCESS);
+        return OAResponse.setResult(HTTP_RNS_CODE_200, UPDATE_SUCCESS);
     }
 
     @ResponseBody
@@ -100,14 +99,14 @@ public class MenuController {
     public OAResponse delemenu(Integer menuId) {
         menuService.deleteById(menuId);
         menuService.deleteroleAndmenuById(menuId);
-        return OAResponse.setResult(HTTP_RNS_CODE_200,REMOVE_SUCCESS);
+        return OAResponse.setResult(HTTP_RNS_CODE_200, REMOVE_SUCCESS);
     }
 
     @ResponseBody
     @RequestMapping("/addroleAndmenu")
-    public OAResponse addroleAndmenu(Integer roleId,Integer menuId) {
-        menuService.insertroleAndmenu(roleId,menuId);
-        return OAResponse.setResult(HTTP_RNS_CODE_200,ADD_SUCCESS);
+    public OAResponse addroleAndmenu(Integer roleId, Integer menuId) {
+        menuService.insertroleAndmenu(roleId, menuId);
+        return OAResponse.setResult(HTTP_RNS_CODE_200, ADD_SUCCESS);
     }
 
 }

@@ -7,7 +7,6 @@ import com.tdkj.System.entity.Corpbasicinfo;
 import com.tdkj.System.entity.ImgInfo;
 import com.tdkj.System.entity.Information;
 import com.tdkj.System.service.CorpbasicinfoService;
-import com.tdkj.System.service.EmployeeService;
 import com.tdkj.System.service.InformationService;
 import com.tdkj.System.utils.DateUtil;
 import com.tdkj.System.utils.FileuploadUtils;
@@ -15,14 +14,12 @@ import com.tdkj.System.utils.ShiroUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
@@ -165,7 +162,7 @@ public class InformationController {
 
     @GetMapping("selectone")
     @ResponseBody
-    public Information getone(Integer infoid){
+    public Information getone(Integer infoid) {
         Information information = informationService.queryById(infoid);
         return information;
     }
@@ -184,7 +181,7 @@ public class InformationController {
             );
         }
         boolean b = informationService.deleteById(infoid);
-        if (b){
+        if (b) {
             return OAResponse.setResult(200, "删除成功");
         }
         return OAResponse.setResult(500, "删除失败");
@@ -192,7 +189,7 @@ public class InformationController {
 
     @RequestMapping("modifyif")
     @ResponseBody
-    public OAResponse modifyif(Integer infoid, String infotitle, String infocontent, String infodate){
+    public OAResponse modifyif(Integer infoid, String infotitle, String infocontent, String infodate) {
         Information information = new Information();
         information.setInfoid(infoid);
         information.setInfotitle(infotitle);

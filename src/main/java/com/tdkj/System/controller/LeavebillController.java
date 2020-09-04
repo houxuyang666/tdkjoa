@@ -77,11 +77,11 @@ public class LeavebillController {
     }
 
     /**
+     * @return com.tdkj.System.common.OAResponseList
      * @Author houxuyang
      * @Description //查询考勤申请
      * @Date 10:45 2020/8/14
      * @Param [page, limit]
-     * @return com.tdkj.System.common.OAResponseList
      **/
     @ResponseBody
     @RequestMapping("/selectleavebill")
@@ -111,7 +111,7 @@ public class LeavebillController {
         log.info("addleavebill");
         /*请假流程单 生成时状态为未申请*/
         Employee employee = employeeService.queryById(ShiroUtils.getPrincipal().getEmployeeid());
-        Leavebill leavebill = new Leavebill(title, content, days, DateUtil.formatDate(leavetime), AuditStatusEnmu.Under_review.getCode(), ShiroUtils.getPrincipal().getUserid(),employee.getCorpid());
+        Leavebill leavebill = new Leavebill(title, content, days, DateUtil.formatDate(leavetime), AuditStatusEnmu.Under_review.getCode(), ShiroUtils.getPrincipal().getUserid(), employee.getCorpid());
         Leavebill insert = leavebillService.insert(leavebill);
         this.workFlowService.startProcess(insert.getId());
         /*启动后通过查询流程实例的business_key 找到流程定义实例 再通过流程实例*/
@@ -151,13 +151,12 @@ public class LeavebillController {
     }
 
 
-
     /**
+     * @return java.lang.String
      * @Author houxuyang
      * @Description //跳转页面
      * @Date 16:26 2020/8/14
      * @Param []
-     * @return java.lang.String
      **/
     @RequestMapping("goapproval")
     public String goapproval() {
@@ -165,25 +164,24 @@ public class LeavebillController {
     }
 
 
-
     /**
+     * @return com.tdkj.System.common.OAResponseList
      * @Author houxuyang
      * @Description //查询本公司考勤申请
      * @Date 10:45 2020/8/14
      * @Param [page, limit]
-     * @return com.tdkj.System.common.OAResponseList
      **/
     @ResponseBody
     @RequestMapping("/selectapproval")
-    public OAResponseList selectapproval(Integer page, Integer limit,String deptname,String name) {
+    public OAResponseList selectapproval(Integer page, Integer limit, String deptname, String name) {
         log.info("selectapproval");
         /*查询本公司所有的考勤申请*/
         Employee employee = employeeService.queryById(ShiroUtils.getPrincipal().getEmployeeid());
         LeavebillVO leavebillVO = new LeavebillVO();
-        if (null!=deptname){
+        if (null != deptname) {
             leavebillVO.setDeptname(deptname);
         }
-        if (null!=name){
+        if (null != name) {
             leavebillVO.setName(name);
         }
         leavebillVO.setCorpid(employee.getCorpid());

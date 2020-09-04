@@ -40,70 +40,70 @@ public class UserController {
     private EmployeeService employeeService;
 
 
-    private static final Integer roleid =1;
+    private static final Integer roleid = 1;
 
 
     /**
+     * @return com.tdkj.System.common.OAResponse
      * @Author houxuyang
      * @Description //重置某个用户密码
      * @Date 11:17 2020/8/10
      * @Param [employeeid]
-     * @return com.tdkj.System.common.OAResponse
      **/
     @ResponseBody
     @RequestMapping("/setpsd")
     public OAResponse setpsd(Integer employeeid) {
         log.info("重置密码");
-        if(roleid.equals(ShiroUtils.getPrincipal().getRoleid())){
-            User user =userService.queryByemployeeid(employeeid);
-            user.setPassword(Md5Util.Md5Password(user.getSalt(),"123456"));
+        if (roleid.equals(ShiroUtils.getPrincipal().getRoleid())) {
+            User user = userService.queryByemployeeid(employeeid);
+            user.setPassword(Md5Util.Md5Password(user.getSalt(), "123456"));
             user.setModifydate(new Date());
             userService.update(user);
             log.info("重置密码成功");
-            return OAResponse.setResult(HTTP_RNS_CODE_200,"重置密码成功");
+            return OAResponse.setResult(HTTP_RNS_CODE_200, "重置密码成功");
         }
-        return OAResponse.setResult(HTTP_RNS_CODE_500,UPDATE_FAULT+":只有超级管理员可以重置用户密码");
+        return OAResponse.setResult(HTTP_RNS_CODE_500, UPDATE_FAULT + ":只有超级管理员可以重置用户密码");
     }
 
 
     /**
+     * @return com.tdkj.System.common.OAResponse
      * @Author houxuyang
      * @Description //修改账号状态
      * @Date 11:17 2020/8/10
      * @Param [id, status]
-     * @return com.tdkj.System.common.OAResponse
      **/
     @ResponseBody
     @RequestMapping("/setuserstatus")
     public OAResponse setuserstatus(Integer employeeid) {
         log.info("修改账号状态");
-        User user =userService.queryByemployeeid(employeeid);
-        if(roleid.equals(ShiroUtils.getPrincipal().getRoleid())){
+        User user = userService.queryByemployeeid(employeeid);
+        if (roleid.equals(ShiroUtils.getPrincipal().getRoleid())) {
             //0,"注销" 1,"正常");
-            if (UserStatusEnmu.Normal.getCode()==user.getStatus()){
+            if (UserStatusEnmu.Normal.getCode() == user.getStatus()) {
                 user.setStatus(0);
                 user.setModifydate(new Date());
                 userService.update(user);
-                return OAResponse.setResult(HTTP_RNS_CODE_200,"注销成功");
-            }else if (UserStatusEnmu.Cancellation.getCode()==user.getStatus()){
+                return OAResponse.setResult(HTTP_RNS_CODE_200, "注销成功");
+            } else if (UserStatusEnmu.Cancellation.getCode() == user.getStatus()) {
                 user.setStatus(1);
                 user.setModifydate(new Date());
                 userService.update(user);
-                return OAResponse.setResult(HTTP_RNS_CODE_200,"启用成功");
-            }else{
-                return OAResponse.setResult(HTTP_RNS_CODE_200,"未知错误");
+                return OAResponse.setResult(HTTP_RNS_CODE_200, "启用成功");
+            } else {
+                return OAResponse.setResult(HTTP_RNS_CODE_200, "未知错误");
             }
 
         }
-        return OAResponse.setResult(HTTP_RNS_CODE_500,UPDATE_FAULT+":只有超级管理员可以操作");
+        return OAResponse.setResult(HTTP_RNS_CODE_500, UPDATE_FAULT + ":只有超级管理员可以操作");
     }
 
     /**
+     * @return java.lang.String
      * @Author houxuyang
      * @Description //跳转修改密码页面
      * @Date 14:25 2020/8/10
      * @Param []
-     * @return java.lang.String
      **/
     @RequestMapping("/goupdatepsd")
     public String goupdatepsd() {
@@ -113,25 +113,23 @@ public class UserController {
 
     @ResponseBody
     @RequestMapping("/updatepsd")
-    public OAResponse updatepsd(String oldpassword,String newpassword) {
+    public OAResponse updatepsd(String oldpassword, String newpassword) {
         log.info("修改密码");
         //根据用户id查询出来用户信息
-        User user =userService.queryById(ShiroUtils.getPrincipal().getUserid());
+        User user = userService.queryById(ShiroUtils.getPrincipal().getUserid());
         //将输入的原密码进行加密后 与数据库密码进行对比
         String dbpassword = Md5Util.Md5Password(user.getSalt(), oldpassword);
-        if (!dbpassword.equals(user.getPassword())){
-            return OAResponse.setResult(HTTP_RNS_CODE_500,"原密码错误");
+        if (!dbpassword.equals(user.getPassword())) {
+            return OAResponse.setResult(HTTP_RNS_CODE_500, "原密码错误");
         }
         //密码正确后进入  将新密码进行加密
-        newpassword=Md5Util.Md5Password(user.getSalt(), newpassword);
+        newpassword = Md5Util.Md5Password(user.getSalt(), newpassword);
         user.setPassword(newpassword);
         user.setModifydate(new Date());
         userService.update(user);
         log.info("密码修改成功");
-        return OAResponse.setResult(HTTP_RNS_CODE_200,UPDATE_SUCCESS);
+        return OAResponse.setResult(HTTP_RNS_CODE_200, UPDATE_SUCCESS);
     }
-
-
 
 
 }

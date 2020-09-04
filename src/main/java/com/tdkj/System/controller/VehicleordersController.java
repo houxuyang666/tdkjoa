@@ -58,12 +58,10 @@ public class VehicleordersController {
 
 
     @RequestMapping("/goaddvehicleorders")
-    public String goaddvehicleorders()  {
+    public String goaddvehicleorders() {
         log.info("goaddvehicleorders");
         return "page/vehicleorders/addvehicleorders";
     }
-
-
 
 
     @Transactional
@@ -71,18 +69,18 @@ public class VehicleordersController {
     @RequestMapping("/addvehicleorders")
     public OAResponse addvehicleorders(Integer vehicleid, Integer vehicledriverid, String beganaddress,
                                        String destinationaddress, String endaddress, String orderdesc) {
-        Vehicleinfo vehicleinfo=vehicleinfoService.queryById(vehicleid);
-        if (VehicleStatusEnmu.Has_been_used.getCode()==vehicleinfo.getStatus()){
-            return OAResponse.setResult(HTTP_RNS_CODE_500,"该车辆正在使用，请选择未使用车辆");
+        Vehicleinfo vehicleinfo = vehicleinfoService.queryById(vehicleid);
+        if (VehicleStatusEnmu.Has_been_used.getCode() == vehicleinfo.getStatus()) {
+            return OAResponse.setResult(HTTP_RNS_CODE_500, "该车辆正在使用，请选择未使用车辆");
         }
         //如果车辆被申请使用则修改该车辆的状态
         vehicleinfo.setStatus(VehicleStatusEnmu.Has_been_used.getCode());
         //订单申请时将车辆状态改为已申请
         vehicleinfoService.update(vehicleinfo);
-        Vehicleorders vehicleorders =new Vehicleorders();
+        Vehicleorders vehicleorders = new Vehicleorders();
         //生成4为随机数 第二个参数为是否要字母 第三个参数是否要数字
-        String code= RandomStringUtils.random(4, false, true);
-        vehicleorders.setOrderid(DateUtil.getDateFormat(new Date(),"yyyyMMddHHmmss")+code);
+        String code = RandomStringUtils.random(4, false, true);
+        vehicleorders.setOrderid(DateUtil.getDateFormat(new Date(), "yyyyMMddHHmmss") + code);
         vehicleorders.setVehicleid(vehicleid);
         vehicleorders.setEmployeeid(ShiroUtils.getPrincipal().getEmployeeid());
         vehicleorders.setVehicledriverid(vehicledriverid);
@@ -102,7 +100,7 @@ public class VehicleordersController {
         }*/
         vehicleorders.setCreatedate(new Date());
         vehicleordersService.insert(vehicleorders);
-        return OAResponse.setResult(HTTP_RNS_CODE_200,"订单已生成");
+        return OAResponse.setResult(HTTP_RNS_CODE_200, "订单已生成");
     }
 
 
@@ -112,48 +110,47 @@ public class VehicleordersController {
     }
 
     /**
+     * @return OAResponseList
      * @Author houxuyang
      * @Description //查询用户订单
      * @Date 15:42 2020/8/10
      * @Param [page, limit]
-     * @return OAResponseList
      **/
     @ResponseBody
     @RequestMapping("/selecvehicleorders")
     public OAResponseList selecvehicleorders(Integer page, Integer limit) {
-            PageHelper.startPage(page,limit,true);
-            /*根据员工ID查询所申请的车辆订单*/
-            List<VehicleordersVO> vehicleordersVOList=vehicleordersService.selecvehicleorders(ShiroUtils.getPrincipal().getEmployeeid());
-            PageInfo<VehicleordersVO> pageInfo=new PageInfo<>(vehicleordersVOList);
-            return OAResponseList.setResult(0,FIND_SUCCESS,pageInfo);
+        PageHelper.startPage(page, limit, true);
+        /*根据员工ID查询所申请的车辆订单*/
+        List<VehicleordersVO> vehicleordersVOList = vehicleordersService.selecvehicleorders(ShiroUtils.getPrincipal().getEmployeeid());
+        PageInfo<VehicleordersVO> pageInfo = new PageInfo<>(vehicleordersVOList);
+        return OAResponseList.setResult(0, FIND_SUCCESS, pageInfo);
     }
 
     @RequestMapping("/goupdatevehicleorders")
-    public String goupdatevehicleorders()  {
+    public String goupdatevehicleorders() {
         log.info("goupdatevehicleorders");
         return "page/table/updatevehicleorders";
     }
 
 
-
     /**
+     * @return com.tdkj.System.common.OAResponse
      * @Author houxuyang
      * @Description //获取所有员工 当司机
      * @Date 15:49 2020/8/26
      * @Param []
-     * @return com.tdkj.System.common.OAResponse
      **/
     @ResponseBody
     @RequestMapping("/getdrivers")
     public OAResponseList getdrivers() {
         Employee employee = this.employeeService.queryById(ShiroUtils.getPrincipal().getEmployeeid());
         //获取本公司所有的员工
-        Integer roleid =3;//普通员工
-        List<EmployeeVO> employeeVOList =this.employeeService.queryByCorpID(employee.getCorpid(),roleid);
-        if (employeeVOList.size()>0){
-            return OAResponseList.setResult(HTTP_RNS_CODE_200,"获取司机",employeeVOList);
+        Integer roleid = 3;//普通员工
+        List<EmployeeVO> employeeVOList = this.employeeService.queryByCorpID(employee.getCorpid(), roleid);
+        if (employeeVOList.size() > 0) {
+            return OAResponseList.setResult(HTTP_RNS_CODE_200, "获取司机", employeeVOList);
         }
-        return OAResponseList.setResult(HTTP_RNS_CODE_500,"未找到司机");
+        return OAResponseList.setResult(HTTP_RNS_CODE_500, "未找到司机");
     }
 
 

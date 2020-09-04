@@ -72,24 +72,24 @@ public class LoginController implements OAResultType, OAResultCode {
 
 
     /**
+     * @return com.tdkj.RNS.common.OAResponse
      * @Author houxuyang
      * @Description //查询目录
      * @Date 15:26 2020/6/18
      * @Param []
-     * @return com.tdkj.RNS.common.OAResponse
      **/
     @ResponseBody
     @RequestMapping("/indexinit")
     public OAResponse indexinit() {
-        MenuTree<Menu> menuList =menuService.findByUsernameGetMenu(ShiroUtils.getPrincipal().getUsername());
-        return OAResponse.setResult(HTTP_RNS_CODE_200,FIND_SUCCESS, OAJson.toJson(menuList),employeeService.getName(ShiroUtils.getPrincipal().getEmployeeid()));
+        MenuTree<Menu> menuList = menuService.findByUsernameGetMenu(ShiroUtils.getPrincipal().getUsername());
+        return OAResponse.setResult(HTTP_RNS_CODE_200, FIND_SUCCESS, OAJson.toJson(menuList), employeeService.getName(ShiroUtils.getPrincipal().getEmployeeid()));
     }
 
     @ResponseBody
     @RequestMapping("/login")
     @PostMapping
     public OAResponse login(String username, String password, boolean rememberMe, String verifyCode,
-                             HttpServletRequest request) throws Exception {
+                            HttpServletRequest request) throws Exception {
         log.info("-----login");
         /*使用Shiro编写认证操作
          *1.获取subjec
@@ -101,7 +101,7 @@ public class LoginController implements OAResultType, OAResultCode {
             User user = userService.findByName(username);
             if (0 == user.getStatus()) {
                 //model.addAttribute("msg", "账户已被冻结，请联系管理员");
-                return OAResponse.setResult(HTTP_RNS_CODE_401,"账户已被冻结，请联系管理员");
+                return OAResponse.setResult(HTTP_RNS_CODE_401, "账户已被冻结，请联系管理员");
             }
             password = Md5Util.Md5Password(user.getSalt(), password);
             /*2.封装用户数据*/ //记住我
@@ -117,17 +117,17 @@ public class LoginController implements OAResultType, OAResultCode {
             Session session1 = subject.getSession();
             session1.setAttribute("user", user);
             //session1.setAttribute("name", userinfoService.queryById(user.getUserinfoId()).getName());
-            return OAResponse.setResult(HTTP_RNS_CODE_200,"/index");
-        } catch(OAException e){
-            return OAResponse.setResult(HTTP_RNS_CODE_401,"验证码错误！");
-        }catch (UnknownAccountException e){
+            return OAResponse.setResult(HTTP_RNS_CODE_200, "/index");
+        } catch (OAException e) {
+            return OAResponse.setResult(HTTP_RNS_CODE_401, "验证码错误！");
+        } catch (UnknownAccountException e) {
             //UnknownAccountException 指的是用户名不存在 但是为了防止恶意扫描账号 提示为用户名或密码不正确
-            return OAResponse.setResult(HTTP_RNS_CODE_401,"用户名或密码错误！");
-        }catch (IncorrectCredentialsException e){
-            return OAResponse.setResult(HTTP_RNS_CODE_401,"用户名或密码错误");
-        }catch (NullPointerException e){
+            return OAResponse.setResult(HTTP_RNS_CODE_401, "用户名或密码错误！");
+        } catch (IncorrectCredentialsException e) {
+            return OAResponse.setResult(HTTP_RNS_CODE_401, "用户名或密码错误");
+        } catch (NullPointerException e) {
             //由于在此需要获取用户的盐值及用户名等 会出现null错误 所以添加try
-            return OAResponse.setResult(HTTP_RNS_CODE_401,"用户名或密码错误");
+            return OAResponse.setResult(HTTP_RNS_CODE_401, "用户名或密码错误");
         }
     }
 

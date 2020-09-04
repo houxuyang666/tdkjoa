@@ -58,26 +58,26 @@ public class CollectController {
 
 
     /**
+     * @return com.tdkj.System.common.OAResponseList
      * @Author houxuyang
      * @Description //申请领用
      * @Date 10:47 2020/8/14
      * @Param [goodsname]
-     * @return com.tdkj.System.common.OAResponseList
      **/
     @Transactional
     @ResponseBody
     @RequestMapping("/getgoods")
-    public OAResponse getgoods(String warehouseid, Integer number)throws ParseException {
+    public OAResponse getgoods(String warehouseid, Integer number) throws ParseException {
         log.info("/getgoods");
         //获取仓库中该产品的信息
         Warehouse warehouse = this.warehouseService.queryById(warehouseid);
-        if (warehouse.getTotalnumbe()<number){
-            return OAResponse.setResult(HTTP_RNS_CODE_500,"库存不足");
+        if (warehouse.getTotalnumbe() < number) {
+            return OAResponse.setResult(HTTP_RNS_CODE_500, "库存不足");
         }
         Employee employee = this.employeeService.queryById(ShiroUtils.getPrincipal().getEmployeeid());
-        Collect collect =new Collect();
-        String code= RandomStringUtils.random(4, true, true);
-        collect.setCollectid(DateUtil.getformatDate(new Date())+code);
+        Collect collect = new Collect();
+        String code = RandomStringUtils.random(4, true, true);
+        collect.setCollectid(DateUtil.getformatDate(new Date()) + code);
         collect.setCorpid(employee.getCorpid());
         collect.setDeptid(employee.getDepartmentid());
         collect.setEmployeeid(employee.getEmployeeid());
@@ -89,12 +89,12 @@ public class CollectController {
         //插入领用表
         this.collectService.insert(collect);
         ////减少仓库库存数量
-        Warehouse warehouse1 =new Warehouse();
+        Warehouse warehouse1 = new Warehouse();
         warehouse1.setWarehouseid(warehouseid);
-        warehouse1.setTotalnumbe(warehouse.getTotalnumbe()-number);
+        warehouse1.setTotalnumbe(warehouse.getTotalnumbe() - number);
         warehouse1.setModifydate(new Date());
         this.warehouseService.update(warehouse1);
-        return OAResponse.setResult(HTTP_RNS_CODE_200,"领用成功");
+        return OAResponse.setResult(HTTP_RNS_CODE_200, "领用成功");
     }
 
 
@@ -106,11 +106,11 @@ public class CollectController {
 
 
     /**
+     * @return com.tdkj.System.common.OAResponseList
      * @Author houxuyang
      * @Description //TODO
      * @Date 13:44 2020/8/14
      * @Param [page, limit, name, goodsname]
-     * @return com.tdkj.System.common.OAResponseList
      **/
     @ResponseBody
     @RequestMapping("/selectcollect")
@@ -118,19 +118,19 @@ public class CollectController {
         log.info("selectemployee");
         Employee employee = this.employeeService.queryById(ShiroUtils.getPrincipal().getEmployeeid());
         //获取当前用户的所在公司
-        CollectVO collectVO =new CollectVO();
-        if (null!=name){
+        CollectVO collectVO = new CollectVO();
+        if (null != name) {
             collectVO.setName(name);
         }
-        if (null!=goodsname){
+        if (null != goodsname) {
             collectVO.setGoodsname(goodsname);
         }
         collectVO.setCorpid(employee.getCorpid());
-        PageHelper.startPage(page,limit,true);
+        PageHelper.startPage(page, limit, true);
         //根据条件查询本公司的领用记录
-        List<CollectVO> collectVOS=this.collectService.queryBycollectVO(collectVO);
-        PageInfo<CollectVO> pageInfo=new PageInfo<>(collectVOS);
-        return OAResponseList.setResult(0,FIND_SUCCESS,pageInfo);
+        List<CollectVO> collectVOS = this.collectService.queryBycollectVO(collectVO);
+        PageInfo<CollectVO> pageInfo = new PageInfo<>(collectVOS);
+        return OAResponseList.setResult(0, FIND_SUCCESS, pageInfo);
     }
 
 }

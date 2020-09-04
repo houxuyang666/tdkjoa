@@ -61,6 +61,7 @@ public class IdCard {
          * https://ai.baidu.com/file/544D677F5D4E4F17B4122FBD60DB82B3
          * https://ai.baidu.com/file/470B3ACCA3FE43788B5A963BF0B625F3
          * 下载
+         * （调用百度接口）
          */
         @ResponseBody
         @RequestMapping("getidcode")

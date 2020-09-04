@@ -78,7 +78,7 @@ public class WorkFlowController {
             BeanUtils.copyProperties(deployment, entity);
             actdeploymentEntityArrayList.add(entity);
         }
-        PageInfo pageInfo =new PageInfo();
+        PageInfo pageInfo = new PageInfo();
         pageInfo.setTotal(count);
         pageInfo.setList(actdeploymentEntityArrayList);
 
@@ -97,7 +97,7 @@ public class WorkFlowController {
             BeanUtils.copyProperties(pro, entity);
             actProcessDefinitionEntities.add(entity);
         }
-        PageInfo pageInfo2 =new PageInfo();
+        PageInfo pageInfo2 = new PageInfo();
         pageInfo2.setTotal(count1);
         pageInfo2.setList(actProcessDefinitionEntities);
         return OAResponseList.setResult(0, FIND_SUCCESS, pageInfo, pageInfo2);
@@ -150,7 +150,7 @@ public class WorkFlowController {
         log.info(deploymentId);
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("page/workflow/viewProcessImage");
-        modelAndView.addObject("deploymentId",deploymentId);
+        modelAndView.addObject("deploymentId", deploymentId);
         return modelAndView;
     }
 
@@ -198,10 +198,10 @@ public class WorkFlowController {
     /*查询我的代办任务*/
     @ResponseBody
     @RequestMapping("/loadCurrentUserTask")
-    public OAResponseList queryCurrentUserTask(Integer page,Integer limit) {
+    public OAResponseList queryCurrentUserTask(Integer page, Integer limit) {
         log.info("loadCurrentUserTask");
         /*分页值需要页面传*/
-        return OAResponseList.setResult(0, FIND_SUCCESS,this.workFlowService.qureyCurrentUserTask(page,limit));
+        return OAResponseList.setResult(0, FIND_SUCCESS, this.workFlowService.qureyCurrentUserTask(page, limit));
     }
 
     /*跳转到办理任务页面*/
@@ -210,14 +210,14 @@ public class WorkFlowController {
         /*log.info("goDoTask");
         log.info(taskId);*/
         //1.根据任务ID查询请假单信息
-        Leavebill leavebill =this.workFlowService.queryLeaveBillByTaskId(taskId);
+        Leavebill leavebill = this.workFlowService.queryLeaveBillByTaskId(taskId);
         //2.根据任务ID查询连线信息
-        List<String> outcomeName=this.workFlowService.queryOutComeByTaskId(taskId);
+        List<String> outcomeName = this.workFlowService.queryOutComeByTaskId(taskId);
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("page/leavebill/dotaskManger");
-        modelAndView.addObject("leavebill",leavebill);
-        modelAndView.addObject("outcomes",outcomeName);
-        modelAndView.addObject("taskId",taskId);
+        modelAndView.addObject("leavebill", leavebill);
+        modelAndView.addObject("outcomes", outcomeName);
+        modelAndView.addObject("taskId", taskId);
         return modelAndView;
     }
 
@@ -227,20 +227,20 @@ public class WorkFlowController {
     public OAResponseList loadAllCommentByTaskId(String taskId) {
         log.info("loadAllCommentByTaskId");
         log.info(taskId);
-        return OAResponseList.setResult(0,FIND_SUCCESS,this.workFlowService.queryCommentByTaskId(taskId));
+        return OAResponseList.setResult(0, FIND_SUCCESS, this.workFlowService.queryCommentByTaskId(taskId));
     }
 
     /*完成任务*/
     @Transactional
     @ResponseBody
     @RequestMapping("/doTask")
-    public OAResponse doTask(Integer leavebillId,String taskId,String comments,String outcome) {
-        try{
-            this.workFlowService.completeTask(leavebillId,taskId,comments,outcome);
-            return OAResponse.setResult(200,"任务完成成功");
-        }catch (Exception e){
+    public OAResponse doTask(Integer leavebillId, String taskId, String comments, String outcome) {
+        try {
+            this.workFlowService.completeTask(leavebillId, taskId, comments, outcome);
+            return OAResponse.setResult(200, "任务完成成功");
+        } catch (Exception e) {
             e.printStackTrace();
-            return OAResponse.setResult(500,"任务完成失败");
+            return OAResponse.setResult(500, "任务完成失败");
         }
     }
 
@@ -251,51 +251,50 @@ public class WorkFlowController {
     public ModelAndView doTask(String taskId) {
         ModelAndView modelAndView = new ModelAndView();
         //取出流程部署id
-        ProcessDefinition processDefinition=this.workFlowService.queryPrcessDefinitionByTaskID(taskId);
+        ProcessDefinition processDefinition = this.workFlowService.queryPrcessDefinitionByTaskID(taskId);
         String deploymentId = processDefinition.getDeploymentId();
         //根据任务ID查询节点坐标
-        Map<String,Object> coordinate =this.workFlowService.queryTaskCoordinateByTaskId(taskId);
+        Map<String, Object> coordinate = this.workFlowService.queryTaskCoordinateByTaskId(taskId);
 
         modelAndView.setViewName("page/workflow/viewProcessImage");
         /*这里只是将部署ID传到页面 页面上会请求viewProcessImage 这个方法来获取图片流并显示*/
-        modelAndView.addObject("deploymentId",deploymentId);
-        modelAndView.addObject("c",coordinate);
+        modelAndView.addObject("deploymentId", deploymentId);
+        modelAndView.addObject("c", coordinate);
         return modelAndView;
     }
 
 
-
     /*根据请假单ID查询审批批注信息和请假单信息*/
     @RequestMapping("/viewSpProcess")
-    public ModelAndView viewSpProcess (Integer id){
+    public ModelAndView viewSpProcess(Integer id) {
         ModelAndView modelAndView = new ModelAndView();
         /*查询请假单信息*/
         Leavebill leavebill = leavebillService.queryById(id);
         modelAndView.setViewName("page/workflow/viewProcessView");
-        modelAndView.addObject("leavebill",leavebill);
+        modelAndView.addObject("leavebill", leavebill);
         return modelAndView;
     }
 
     /*根据请假单的ID 查询批注信息*/
     @ResponseBody
     @RequestMapping("/loadCommentByLeavebillid")
-    public OAResponseList loadCommentByLeavebillid (Integer id){
-        return OAResponseList.setResult(0,FIND_SUCCESS,this.workFlowService.queryCommentByLeavebillid(id));
+    public OAResponseList loadCommentByLeavebillid(Integer id) {
+        return OAResponseList.setResult(0, FIND_SUCCESS, this.workFlowService.queryCommentByLeavebillid(id));
     }
 
     /*查询我的审批记录*/
     @RequestMapping("/goapprovalrecord")
-    public String goapprovalrecord (){
+    public String goapprovalrecord() {
         return "page/workflow/viewapprovalrecord";
     }
 
 
     @ResponseBody
     @RequestMapping("/queryCurrentUserHistoryTask")
-    public OAResponseList queryCurrentUserHistoryTask (){
+    public OAResponseList queryCurrentUserHistoryTask() {
         Employee employee = employeeService.queryById(ShiroUtils.getPrincipal().getEmployeeid());
 
-        PageInfo pageInfo =this.workFlowService.queryCurrentUserHistoryTask(employee.getName());
-        return OAResponseList.setResult(0,FIND_SUCCESS,pageInfo);
+        PageInfo pageInfo = this.workFlowService.queryCurrentUserHistoryTask(employee.getName());
+        return OAResponseList.setResult(0, FIND_SUCCESS, pageInfo);
     }
 }
