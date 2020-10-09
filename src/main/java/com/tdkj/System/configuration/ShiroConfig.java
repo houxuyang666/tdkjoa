@@ -51,6 +51,8 @@ public class ShiroConfig{
         filterMap.put("/logout","logout");
         //放行用户注册
         filterMap.put("/user/register/**","anon");
+        /*放行app接口*/
+        filterMap.put("/app/**","anon");
 
 
 

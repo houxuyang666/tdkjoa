@@ -12,7 +12,7 @@ public enum VehicleOrdersStatusEnmu {
 
     Ongoing(1,"进行中"),
 
-    Has_ended(1,"已结束");
+    Has_ended(2,"已完成");
 
 
     private String desc;//文字描述
